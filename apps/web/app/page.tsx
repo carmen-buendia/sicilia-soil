@@ -16,7 +16,7 @@ import {
   Factory,
 } from "lucide-react";
 
-// Función para renderizar la bandera siciliana (Trinacria)
+// Render function for SicilianFlag (Trinacria)
 const SicilianFlag = () => (
   <div className="relative w-8 h-8">
     <div className="absolute inset-0 bg-gradient-to-r from-red-600 to-yellow-500 rounded-full"></div>
@@ -29,7 +29,7 @@ const SicilianFlag = () => (
   </div>
 );
 
-// Versión simple con texto
+// Version simple text
 const SicilianFlagSimple = () => (
   <span className="font-bold text-yellow-600 bg-red-600 px-2 py-1 rounded text-xs">
     SICILIA SOIL
@@ -58,7 +58,7 @@ export default function HomePage() {
   }, []);
 
   // ============================================
-  // DATOS DEL HUERTO
+  // DATA DEL HUERTO
   // ============================================
   const gardenZones = [
     {
