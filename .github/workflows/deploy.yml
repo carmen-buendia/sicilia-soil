@@ -1,0 +1,46 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v3
+      
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      - name: 📦 Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.15.0
+      
+      - name: 📦 Install dependencies
+        run: pnpm install
+      
+      - name: 🔨 Build for production
+        run: pnpm run build
+      
+      - name: 📝 Create release notes
+        run: |
+          echo "## 🚀 Despliegue automático" > release-notes.md
+          echo "" >> release-notes.md
+          echo "**Fecha:** $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> release-notes.md
+          echo "**Commit:** ${{ github.sha }}" >> release-notes.md
+      
+      - name: 📦 Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-output
+          path: |
+            apps/web/.next
+            apps/webrtc-server/dist
+          retention-days: 7
