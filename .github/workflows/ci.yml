@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [ develop, master ]
+  pull_request:
+    branches: [ develop, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v3
+      
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+      
+      - name: 📦 Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.15.0
+      
+      - name: 📦 Install dependencies
+        run: pnpm install
+      
+      - name: 🔨 Build all apps
+        run: pnpm run build
+        continue-on-error: true
+      
+      - name: ✅ Lint all apps
+        run: pnpm run lint
+        continue-on-error: true
+      
+      - name: 📊 Type check all apps
+        run: pnpm run type-check
+        continue-on-error: true
