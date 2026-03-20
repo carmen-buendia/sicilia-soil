@@ -2,7 +2,6 @@
 
 <p align="center">
   <img src="https://img.shields.io/github/actions/workflow/status/carmen-buendia/sicilia-soil/ci.yml?branch=main&label=CI&logo=github" alt="CI Status" />
-  <img src="https://img.shields.io/github/license/carmen-buendia/sicilia-soil?color=green" alt="MIT License" />
   <img src="https://img.shields.io/github/last-commit/carmen-buendia/sicilia-soil?color=blue&logo=github" alt="Last Commit" />
   <img src="https://img.shields.io/badge/Status-Active%20Development-yellow?logo=progress" alt="Status" />
   <img src="https://img.shields.io/github/repo-size/carmen-buendia/sicilia-soil?color=purple" alt="Repo Size" />
