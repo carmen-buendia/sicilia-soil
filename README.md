@@ -314,3 +314,6 @@ Como dice la .NET Foundation: "El licenciamiento dual es una práctica aceptada 
 </p>
 
 ---
+
+## 🧪 Prueba de flujo de trabajo
+Este es un cambio de prueba para verificar el sistema de Pull Requests.
