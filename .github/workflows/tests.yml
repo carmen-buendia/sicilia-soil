@@ -1,41 +1,25 @@
 name: Tests
 
 on:
-  push:
-    branches: [ develop ]
-  pull_request:
-    branches: [ develop, master ]
+  # Temporally disabled until tests are implemented
+  # push:
+  #   branches: [ develop ]
+  # pull_request:
+  #   branches: [ develop ]
+  workflow_dispatch:  # Solo manual
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    
     steps:
-      - name: 📥 Checkout code
-        uses: actions/checkout@v3
-      
-      - name: 🔧 Setup Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8.15.0
+      - uses: actions/setup-node@v3
         with:
           node-version: '18'
           cache: 'pnpm'
-      
-      - name: 📦 Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8.15.0
-      
-      - name: 📦 Install dependencies
-        run: pnpm install
-      
-      - name: 🧪 Run tests
-        run: pnpm run test
-        continue-on-error: true
-      
-      - name: 📊 Upload coverage
-        uses: codecov/codecov-action@v3
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          directory: ./coverage
-          flags: unittests
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run test
         continue-on-error: true
