@@ -1,4 +1,3 @@
 {
-  "extends": ["next/core-web-vitals"],
-  "ignorePatterns": ["apps/webrtc-server/**/*"]
+  "extends": "next/core-web-vitals"
 }
