@@ -1,58 +1,60 @@
-# 🌱 Sicilia Soil
+---
+
+## 🌱 Sicilia Soil (Work in Progress 🚧)
 
 <p align="center">
+  <img src="https://img.shields.io/badge/STATUS-WORK%20IN%20PROGRESS-orange?style=for-the-badge&logo=githubactions&logoColor=white" alt="Work in Progress" />
   <img src="https://img.shields.io/github/actions/workflow/status/carmen-buendia/sicilia-soil/ci.yml?branch=main&label=CI&logo=github" alt="CI Status" />
-  <img src="https://img.shields.io/github/license/carmen-buendia/sicilia-soil?color=green" alt="MIT License" />
   <img src="https://img.shields.io/github/last-commit/carmen-buendia/sicilia-soil?color=blue&logo=github" alt="Last Commit" />
   <img src="https://img.shields.io/badge/Status-Active%20Development-yellow?logo=progress" alt="Status" />
   <img src="https://img.shields.io/github/repo-size/carmen-buendia/sicilia-soil?color=purple" alt="Repo Size" />
 </p>
 
 <p align="center">
-  <strong>🌾 Permacultura Sintrópica · 🍄 Micología · 🌿 Esparto · 🤖 IoT</strong>
+  <strong>🌾 Syntropic Permaculture · 🍄 Mycology · 🌿 Esparto · 🤖 IoT</strong>
 </p>
 
 ---
 
-## ✨ Sobre el Proyecto
+## ✨ About the Project
 
-**Sicilia Soil** es un sistema de monitoreo en tiempo real para un huerto de **permacultura sintrópica micológica** en Sicilia — un enfoque pionero que integra:
+**Sicilia Soil** is a real-time monitoring system for a **syntropic mycology permaculture** garden in Sicily — a pioneering approach that integrates:
 
-- 🌱 **Agricultura sintrópica**: Diseño de ecosistemas autosuficientes basados en la sucesión natural
-- 🍄 **Micología aplicada**: Cultivo de setas que aceleran la regeneración del suelo
-- 🌿 **Sabiduría tradicional**: Técnicas ancestrales de cultivo de esparto siciliano
-- 🤖 **Tecnología IoT**: Sensores que monitorizan y optimizan las condiciones
+- 🌱 **Syntropic Agriculture**: Self-sufficient ecosystem design based on natural succession
+- 🍄 **Applied Mycology**: Mushroom cultivation that accelerates soil regeneration
+- 🌿 **Traditional Wisdom**: Ancestral techniques for cultivating Sicilian esparto grass
+- 🤖 **IoT Technology**: Sensors that monitor and optimize growing conditions
 
-> "No es solo un huerto, es un ecosistema que se diseña a sí mismo con la ayuda de hongos y tecnología"
+> "It's not just a garden, it's an ecosystem that designs itself with the help of fungi and technology"
 
 ---
 
-## 🍄 ¿Qué es la Permacultura Sintrópica Micológica?
+## 🍄 What is Syntropic Mycology Permaculture?
 
-La **sintropía** es el principio opuesto a la entropía: sistemas que **ganan complejidad y abundancia con el tiempo**. Aplicada a la permacultura y combinada con micología, crea:
+**Syntropy** is the principle opposite to entropy: systems that **gain complexity and abundance over time**. Applied to permaculture and combined with mycology, it creates:
 
 ```
-🌱 Estrategia de diseño:
-├── 🌳 Estrato alto (olivos, algarrobos)
-├── 🌿 Estrato medio (esparto, hierbas)
-├── 🍄 Estrato fúngico (setas, micorrizas)
-└── 🌱 Estrato bajo (cobertura vegetal)
+🌱 Design strategy:
+├── 🌳 Canopy layer (olives, carob trees)
+├── 🌿 Understory layer (esparto, herbs)
+├── 🍄 Fungal layer (mushrooms, mycorrhizae)
+└── 🌱 Ground cover (clover, legumes)
 ```
 
-### Beneficios de este enfoque:
+### Benefits of this approach:
 
-| Capa | Función | Especies |
+| Layer | Function | Species |
 |:---|:---|:---|
-| **Árboles** | Sombra, estructura, alimento | Olivos, algarrobos |
-| **Arbustos** | Protección, biomasa | Esparto, romero, tomillo |
-| **Hongos** | Conexión, regeneración | Seta ostra, shiitake, maitake |
-| **Cobertura** | Protección suelo, humedad | Trébol, habas |
+| **Trees** | Shade, structure, food | Olive, carob |
+| **Shrubs** | Protection, biomass | Esparto, rosemary, thyme |
+| **Fungi** | Connection, regeneration | Oyster, shiitake, maitake |
+| **Cover** | Soil protection, moisture | Clover, fava beans |
 
-**El resultado:** Un ecosistema donde cada elemento beneficia a los demás, con los hongos actuando como "internet del suelo" conectando raíces y compartiendo nutrientes.
+**The result:** An ecosystem where every element benefits the others, with fungi acting as the "internet of the soil," connecting roots and sharing nutrients.
 
 ---
 
-## 👩‍💻 Autora
+## 👩‍💻 Author
 
 <table>
   <tr>
@@ -61,7 +63,7 @@ La **sintropía** es el principio opuesto a la entropía: sistemas que **ganan c
     </td>
     <td>
       <strong>Carmen Buendía</strong><br />
-      🎵 Productora musical · 🏗️ Arquitecta Frontend · 🌱 Diseñadora de sistemas sintrópicos<br />
+      🎵 Music Producer · 🏗️ Frontend Architect · 🌱 Syntropic Systems Designer<br />
       <br />
       <a href="https://github.com/carmen-buendia">
         <img src="https://img.shields.io/badge/GitHub-100000?style=flat&logo=github" />
@@ -78,95 +80,95 @@ La **sintropía** es el principio opuesto a la entropía: sistemas que **ganan c
 
 ---
 
-## 📊 Estado del Proyecto
+## 📊 Project Status
 
-| Componente | Estado | Próximos Pasos |
+| Component | Status | Next Steps |
 |:---|:---:|:---|
-| **Frontend (Next.js)** | ✅ Funcional | Añadir tests unitarios |
-| **Backend (WebSocket)** | ✅ Funcional | Integración con sensores reales |
-| **Dashboard sintrópico** | ✅ Operativo | Visualización de relaciones entre capas |
-| **Módulo de micología** | ✅ Operativo | Seguimiento de ciclos fúngicos |
-| **Calendario esparto** | ✅ Operativo | Tareas tradicionales |
-| **Visualización de datos** | ⏳ En progreso | HighCharts/AG-Grid |
-| **Testing** | ⏳ Pendiente | Jest + React Testing Library |
-| **CI/CD** | ✅ Configurado | GitHub Actions activo |
+| **Frontend (Next.js)** | ✅ Functional | Add unit tests |
+| **Backend (WebSocket)** | ✅ Functional | Integrate real sensors |
+| **Syntropic Dashboard** | ✅ Operational | Visualize layer relationships |
+| **Mycology Module** | ✅ Operational | Track fungal cycles |
+| **Esparto Calendar** | ✅ Operational | Traditional tasks |
+| **Data Visualization** | ⏳ In Progress | HighCharts/AG-Grid |
+| **Testing** | ⏳ Pending | Jest + React Testing Library |
+| **CI/CD** | ✅ Configured | GitHub Actions active |
 
 ---
 
-## 🏗️ Arquitectura del Monorepo
+## 🏗️ Monorepo Architecture
 
 ```
 📦 sicilia-soil/
 ├── 📂 apps/
-│   ├── 📂 web/                    # Frontend Next.js
+│   ├── 📂 web/                    # Next.js frontend
 │   │   ├── 📂 app/                 # App Router
-│   │   ├── 📂 components/           # Componentes React
-│   │   ├── 📂 lib/                  # Utilidades y clientes
+│   │   ├── 📂 components/           # React components
+│   │   ├── 📂 lib/                  # Utilities & client
 │   │   └── 📄 package.json
 │   │
-│   └── 📂 webrtc-server/            # Backend Node.js
-│       ├── 📂 src/                   # Código del servidor
+│   └── 📂 webrtc-server/            # Node.js backend
+│       ├── 📂 src/                   # Server code
 │       └── 📄 package.json
 │
-├── 📂 packages/                     # Código compartido (futuro)
+├── 📂 packages/                     # Shared code (future)
 ├── 📂 .github/                       # GitHub Actions
 │   └── 📂 workflows/
 │       └── 📄 ci.yml                  # CI pipeline
 │
-├── 📄 package.json                    # Dependencias del monorepo
-├── 📄 pnpm-workspace.yaml              # Configuración PNPM
-├── 📄 README.md                        # Este archivo
+├── 📄 package.json                    # Monorepo dependencies
+├── 📄 pnpm-workspace.yaml              # PNPM workspace config
+├── 📄 README.md                        # This file
 └── 📄 LICENSE                          # MIT License
 ```
 
 ---
 
-## 🌱 Diseño Sintrópico en el Dashboard
+## 🌱 Syntropic Design in the Dashboard
 
-El dashboard refleja los principios de la sintropía:
+The dashboard reflects the principles of syntropy:
 
-### 📍 Mapa de Capas
-Visualización de las diferentes alturas y estratos del ecosistema:
-- Canopia (olivos)
-- Sotobosque (esparto)
-- Capa fúngica (setas)
-- Cobertura vegetal
+### 📍 Layer Map
+Visualization of different heights and strata:
+- Canopy (olives)
+- Understory (esparto)
+- Fungal layer (mushrooms)
+- Ground cover
 
-### 🔗 Relaciones Simbióticas
-Cada zona muestra cómo sus elementos se benefician mutuamente:
-- Micorrizas conectando raíces
-- Hongos descomponiendo materia
-- Plantas fijadoras de nitrógeno
+### 🔗 Symbiotic Relationships
+Each zone shows how elements benefit each other:
+- Mycorrhizae connecting roots
+- Fungi decomposing matter
+- Nitrogen-fixing plants
 
-### ⏱️ Sucesión Temporal
-Calendario que muestra la evolución natural del sistema:
-- Fase pionera (primeros años)
-- Fase de acumulación
-- Fase de clímax (madurez)
+### ⏱️ Temporal Succession
+Calendar showing natural system evolution:
+- Pioneer phase
+- Accumulation phase
+- Climax phase (maturity)
 
 ---
 
-## 🚀 Cómo Empezar
+## 🚀 Getting Started
 
-### Prerrequisitos
+### Prerequisites
 - Node.js 18+
 - pnpm 8+ (`npm install -g pnpm`)
-- (Opcional) Sensores Arduino para datos reales
+- (Optional) Arduino sensors for real data
 
-### Instalación
+### Installation
 
 ```bash
-# Clonar el repositorio
+# Clone the repository
 git clone https://github.com/carmen-buendia/sicilia-soil.git
 cd sicilia-soil
 
-# Instalar dependencias
+# Install dependencies
 pnpm install
 
-# Ejecutar frontend (http://localhost:3000)
+# Run frontend (http://localhost:3000)
 pnpm run dev --filter=web
 
-# En otra terminal, ejecutar backend (http://localhost:3001)
+# In another terminal, run backend (http://localhost:3001)
 pnpm run dev --filter=webrtc-server
 ```
 
@@ -174,75 +176,75 @@ pnpm run dev --filter=webrtc-server
 
 ## 🤖 CI/CD Pipeline
 
-Este proyecto utiliza **GitHub Actions** para mantener la calidad del código:
+This project uses **GitHub Actions** to maintain code quality:
 
 ```yaml
-✅ Linting automático (ESLint)
+✅ Automatic linting (ESLint)
 ✅ Type checking (TypeScript)
-✅ Build de todas las aplicaciones
-🔜 Tests unitarios y de integración
-🔜 Despliegue automático en Vercel
-🔜 Análisis de cobertura de código
+✅ Build all apps
+🔜 Unit and integration tests
+🔜 Automatic deployment to Vercel
+🔜 Code coverage analysis
 ```
 
 [![CI Status](https://github.com/carmen-buendia/sicilia-soil/actions/workflows/ci.yml/badge.svg)](https://github.com/carmen-buendia/sicilia-soil/actions/workflows/ci.yml)
 
 ---
 
-## 🧪 Testing (Hoja de Ruta)
+## 🧪 Testing (Roadmap)
 
-| Fase | Estado | Descripción |
+| Phase | Status | Description |
 |:---|:---:|:---|
-| **Unit tests** | ⏳ Pendiente | Jest + React Testing Library |
-| **Integration tests** | ⏳ Pendiente | Pruebas de flujos completos |
-| **E2E tests** | ⏳ Pendiente | Cypress / Playwright |
-| **Coverage** | ⏳ Pendiente | Mínimo 80% |
+| **Unit tests** | ⏳ Pending | Jest + React Testing Library |
+| **Integration tests** | ⏳ Pending | End-to-end flow testing |
+| **E2E tests** | ⏳ Pending | Cypress / Playwright |
+| **Coverage** | ⏳ Pending | Minimum 80% |
 
 ---
 
-## 🗺️ Roadmap Sintrópico
+## 🗺️ Syntropic Roadmap
 
-### ✅ v1.0.0 - Fundación (Actual)
-- [x] Dashboard básico con datos simulados
-- [x] Visualización por estratos (alturas)
-- [x] Cultivo de esparto con calendario tradicional
-- [x] Micología con 4 tipos de setas
-- [x] CI/CD configurado
+### ✅ v1.0.0 - Foundation (Current)
+- [x] Basic dashboard with simulated data
+- [x] Layer visualization (heights)
+- [x] Esparto cultivation with traditional calendar
+- [x] Mycology with 4 mushroom types
+- [x] CI/CD configured
 
-### 🚧 v1.1.0 - Conexiones (Próximo)
-- [ ] Visualización de relaciones simbióticas
-- [ ] Tests unitarios (Jest)
-- [ ] Documentación de principios sintrópicos
-- [ ] Mejora de tipos TypeScript
+### 🚧 v1.1.0 - Connections (Next)
+- [ ] Symbiotic relationship visualization
+- [ ] Unit tests (Jest)
+- [ ] Syntropic principles documentation
+- [ ] TypeScript improvements
 
-### 🔜 v1.2.0 - Visualización Avanzada
-- [ ] HighCharts/AG-Grid para gráficos de sucesión
-- [ ] Datos históricos interactivos
-- [ ] Mapas de nutrientes del suelo
-- [ ] Comparativas entre estratos
+### 🔜 v1.2.0 - Advanced Visualization
+- [ ] HighCharts/AG-Grid for succession graphs
+- [ ] Interactive historical data
+- [ ] Soil nutrient maps
+- [ ] Layer comparisons
 
-### 🔮 v2.0.0 - IoT Sintrópico
-- [ ] Conexión con sensores Arduino reales
-- [ ] Base de datos persistente
-- [ ] Alertas de desequilibrios ecológicos
-- [ ] Modelo predictivo de sucesión
-
----
-
-## 🤝 Contribuciones Sintrópicas
-
-¿Quieres contribuir a este ecosistema digital? ¡Toda ayuda es bienvenida!
-
-1. 🍴 **Fork** el proyecto (como una semilla)
-2. 🌿 **Crea tu rama** (`git checkout -b feature/AmazingFeature`)
-3. 🌱 **Añade tu código** (que beneficie al conjunto)
-4. 💾 **Commit** tus cambios (`git commit -m 'Add some AmazingFeature'`)
-5. 📤 **Push** a la rama (`git push origin feature/AmazingFeature`)
-6. 🔍 **Abre un Pull Request** (como una nueva capa en el sistema)
+### 🔮 v2.0.0 - Syntropic IoT
+- [ ] Real Arduino sensors connection
+- [ ] Persistent database
+- [ ] Ecological imbalance alerts
+- [ ] Predictive succession model
 
 ---
 
-## 📊 Métricas del Ecosistema
+## 🤝 Syntropic Contributions
+
+Want to contribute to this digital ecosystem? All help is welcome!
+
+1. 🍴 **Fork** the project (like a seed)
+2. 🌿 **Create your branch** (`git checkout -b feature/AmazingFeature`)
+3. 🌱 **Add your code** (that benefits the whole)
+4. 💾 **Commit** your changes (`git commit -m 'Add some AmazingFeature'`)
+5. 📤 **Push** to the branch (`git push origin feature/AmazingFeature`)
+6. 🔍 **Open a Pull Request** (like a new layer in the system)
+
+---
+
+## 📊 Ecosystem Metrics
 
 <p align="center">
   <img src="https://github-readme-stats.vercel.app/api/pin/?username=carmen-buendia&repo=sicilia-soil&theme=radical" alt="Repo Card" />
@@ -250,55 +252,56 @@ Este proyecto utiliza **GitHub Actions** para mantener la calidad del código:
 </p>
 
 ---
-⚖️ Licencia y Modelo de Negocio
-Sicilia Soil utiliza un modelo de licenciamiento dual para equilibrar el acceso comunitario con la sostenibilidad del proyecto:
 
-🌱 Para la comunidad (Gratuito - NC OSL)
-El código está disponible bajo la licencia NC OSL (Non-Commercial Open Source License) v1.0. Esto significa que puedes usarlo, modificarlo y compartirlo libremente siempre que sea para:
+## ⚖️ License & Business Model
 
-✅ Permitido	❌ No permitido
-• Fines educativos y de investigación	• Uso en productos comerciales
-• Proyectos personales sin ánimo de lucro	• SaaS (Software as a Service) comercial
-• Iniciativas comunitarias y cooperativas	• Herramientas internas de empresas
-• Experimentación y aprendizaje	• Apps de pago o con suscripción
-• Hackathons y talleres	• Cualquier actividad con ánimo de lucro
-• Tesis académicas	• Incorporación en proyectos comerciales
-Condiciones:
+**Sicilia Soil** uses a dual licensing model to balance community access with project sustainability:
 
-✅ Debes mantener el crédito a la autora original (Copyright (c) 2026 Carmen Buendía)
+### 🌱 For the community (Free - NC OSL)
+The code is available under the **NC OSL (Non-Commercial Open Source License) v1.0**. This means you can use, modify, and share it freely for:
 
-✅ Debes compartir las mejoras bajo la misma licencia
+| ✅ Permitted | ❌ Not Permitted |
+|:---|:---|
+| • Educational and research purposes | • Commercial products |
+| • Non-profit personal projects | • Commercial SaaS |
+| • Community initiatives | • Internal corporate tools |
+| • Experimentation and learning | • Paid apps or subscriptions |
+| • Hackathons and workshops | • Any for-profit activity |
+| • Academic theses | • Integration into commercial projects |
 
-✅ Incluir el aviso de licencia en las redistribuciones
+**Conditions:**
+- ✅ Must retain original author credit (`Copyright (c) 2026 Carmen Buendía`)
+- ✅ Must share improvements under the same license
+- ✅ Must include license notice in redistributions
 
-💼 Para uso comercial (Licencia paga)
-¿Eres una empresa, startup o emprendedor y quieres usar Sicilia Soil en tu producto, servicio interno o proyecto comercial? Necesitas adquirir una licencia comercial.
+### 💼 For commercial use (Paid license)
+Are you a company, startup, or entrepreneur wanting to use **Sicilia Soil** in your product, internal service, or commercial project? You need to purchase a commercial license.
 
-🎯 ¿Por qué este modelo?
-Este sistema me permite:
+### 🎯 Why this model?
+This system allows me to:
+- Keep the project alive and dedicate time to improving it
+- Offer free access to those who can't pay (students, researchers, communities)
+- Build a sustainable business that lets me live from my work
+- Ensure large companies contribute if they want to benefit commercially
 
-Mantener el proyecto vivo y dedicar tiempo a mejorarlo
+> "This project was born from my love for permaculture and technology. I want it to be useful to the community, but I also need it to sustain me. Dual licensing is my way of honoring both goals."
+>
+> — Carmen Buendía, creator of Sicilia Soil
 
-Ofrecer acceso gratuito a quienes no pueden pagar (estudiantes, investigadores, comunidades)
+---
 
-Crear un negocio sostenible que me permita vivir de mi trabajo
+## 📬 Commercial Contact
 
-Asegurar que grandes empresas contribuyan si quieren beneficiarse comercialmente
+Interested in a commercial license or have questions?
 
-Como dice la .NET Foundation: "El licenciamiento dual es una práctica aceptada y respetada que permite a los creadores de open source construir negocios sostenibles sin traicionar los valores comunitarios."
-
-📬 Contacto comercial
-¿Interesado en una licencia comercial o tienes dudas?
-
-"Este proyecto nace de mi amor por la permacultura y la tecnología. Quiero que sea útil para la comunidad, pero también necesito que me permita vivir. El licenciamiento dual es mi forma de honrar ambos objetivos."
-
-— Carmen Buendía, creadora de Sicilia Soil
+- **Email:** carmenbuendiafullstack@gmail.com
+- **LinkedIn:** [carmen-buendía](https://linkedin.com/in/carmen-buendía)
 
 ---
 
 <p align="center">
-  <strong>Hecho con ❤️, 🌱, 🍄 y 🌾 en Sicilia</strong><br />
-  <sub>Donde la tecnología y la naturaleza diseñan el futuro juntas</sub>
+  <strong>Made with ❤️, 🌱, 🍄 and 🌾 in Sicily</strong><br />
+  <sub>Where technology and nature design the future together</sub>
 </p>
 
 <p align="center">
@@ -314,6 +317,3 @@ Como dice la .NET Foundation: "El licenciamiento dual es una práctica aceptada 
 </p>
 
 ---
-
-## 📝 Última actualización: 2026-03-20 09:29:02
-Este cambio fue creado para probar el flujo de Pull Requests.
