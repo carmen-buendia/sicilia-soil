@@ -75,7 +75,7 @@ export default function RootLayout({
         <nav className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-md border-b border-red-200 z-50">
           <div className="container mx-auto px-3 sm:px-4">
             <div className="flex items-center justify-between h-14 sm:h-16">
-              {/* Logo - responsive */}
+              {/* Logo */}
               <Link href="/" className="flex items-center space-x-2 sm:space-x-3">
                 <div className="p-1.5 sm:p-2 bg-gradient-to-r from-red-600 to-yellow-500 rounded-lg">
                   <Sprout className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
@@ -87,7 +87,7 @@ export default function RootLayout({
                 </div>
               </Link>
 
-              {/* Desktop Navigation - visible en tablet y escritorio */}
+              {/* Desktop Navigation */}
               <div className="hidden md:flex items-center space-x-0.5 lg:space-x-1">
                 {navItems.map((item) => {
                   const Icon = item.icon;
@@ -109,19 +109,19 @@ export default function RootLayout({
                 })}
               </div>
 
-              {/* User Menu */}
+              {/* User Menu - con nombre visible */}
               <div className="flex items-center space-x-2 sm:space-x-4">
                 <button className="p-1.5 sm:p-2 text-gray-600 hover:bg-red-50 rounded-full relative">
                   <Bell className="w-4 h-4 sm:w-5 sm:h-5" />
                   <span className="absolute top-0 right-0 w-1.5 h-1.5 sm:w-2 sm:h-2 bg-red-500 rounded-full"></span>
                 </button>
 
-                <div className="hidden sm:flex items-center space-x-2 sm:space-x-3 bg-gradient-to-r from-red-50 to-yellow-50 rounded-full pl-1 pr-3 sm:pr-4 py-1 border border-red-100">
+                <div className="flex items-center space-x-2 sm:space-x-3 bg-gradient-to-r from-red-50 to-yellow-50 rounded-full pl-2 sm:pl-3 pr-3 sm:pr-5 py-1 border border-red-100">
                   <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-r from-red-600 to-yellow-500 rounded-full flex items-center justify-center">
                     <User className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
                   </div>
-                  <div className="hidden xs:block">
-                    <p className="text-xs sm:text-sm font-medium text-gray-800">Carmen</p>
+                  <div className="flex flex-col">
+                    <p className="text-xs sm:text-sm font-medium text-gray-800">Carmen Buendía</p>
                     <p className="text-[10px] sm:text-xs text-gray-500">Huerto en Sicilia</p>
                   </div>
                 </div>
@@ -140,7 +140,7 @@ export default function RootLayout({
               </div>
             </div>
 
-            {/* Mobile Menu - mejorado */}
+            {/* Mobile Menu */}
             {isMenuOpen && (
               <div className="md:hidden py-3 border-t border-red-200 max-h-[80vh] overflow-y-auto">
                 <div className="space-y-1">
@@ -168,12 +168,12 @@ export default function RootLayout({
           </div>
         </nav>
 
-        {/* Main Content - con padding responsive */}
+        {/* Main Content */}
         <main className="pt-20 sm:pt-24 pb-8 sm:pb-12 px-3 sm:px-4 container mx-auto">
           {children}
         </main>
 
-        {/* Footer responsive */}
+        {/* Footer */}
         <footer className="bg-gradient-to-r from-red-900 to-yellow-900 text-white py-6 sm:py-8 mt-8 sm:mt-12">
           <div className="container mx-auto px-3 sm:px-4 text-center">
             <div className="flex items-center justify-center gap-2 sm:gap-3 mb-3 sm:mb-4">
@@ -184,8 +184,7 @@ export default function RootLayout({
             </div>
 
             <p className="text-amber-100 text-xs sm:text-sm mb-2">
-              © {new Date().getFullYear()} Sicilia Soil - Permacultura,
-              Micología y Esparto
+              © {new Date().getFullYear()} Sicilia Soil - Permacultura, Micología y Esparto
             </p>
 
             <p className="text-amber-200/70 text-xs sm:text-sm mb-4 sm:mb-6 max-w-2xl mx-auto px-2">
@@ -194,48 +193,13 @@ export default function RootLayout({
             </p>
 
             <div className="flex flex-wrap justify-center gap-3 sm:gap-6 mb-4 sm:mb-6">
-              <Link
-                href="/"
-                className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm"
-              >
-                Dashboard
-              </Link>
-              <Link
-                href="/humedity"
-                className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm"
-              >
-                Humedad
-              </Link>
-              <Link
-                href="/temperature"
-                className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm"
-              >
-                Temperatura
-              </Link>
-              <Link
-                href="/light"
-                className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm"
-              >
-                Luz Solar
-              </Link>
-              <Link
-                href="/analysis"
-                className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm"
-              >
-                Análisis
-              </Link>
-               <Link
-                href="/mycology"
-                className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm"
-              >
-                Micología
-              </Link>
-              <Link
-                href="/configuration"
-                className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm"
-              >
-                Configuración
-              </Link>
+              <Link href="/" className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm">Dashboard</Link>
+              <Link href="/humedity" className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm">Humedad</Link>
+              <Link href="/temperature" className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm">Temperatura</Link>
+              <Link href="/light" className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm">Luz Solar</Link>
+              <Link href="/analysis" className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm">Análisis</Link>
+              <Link href="/mycology" className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm">Micología</Link>
+              <Link href="/configuration" className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm">Configuración</Link>
             </div>
 
             <div className="border-t border-amber-800/50 pt-4 sm:pt-6 mt-4 sm:mt-6">
@@ -245,8 +209,7 @@ export default function RootLayout({
                 <Leaf className="w-3 h-3 sm:w-4 sm:h-4" />
               </p>
               <p className="text-amber-300/40 text-[10px] sm:text-xs mt-2">
-                React • TypeScript • Tailwind • AG-Grid • HighCharts • Micología
-                • Esparto
+                React • TypeScript • Tailwind • AG-Grid • HighCharts • Micología • Esparto
               </p>
             </div>
           </div>
