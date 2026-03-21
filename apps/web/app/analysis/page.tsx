@@ -1,48 +1,39 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   LineChart,
   ArrowLeft,
-  Calendar,
-  Download,
-  TrendingUp,
-  TrendingDown,
-  BarChart3,
-  PieChart,
   DownloadCloud,
   Filter,
   RefreshCw,
+  TrendingUp,
+  TrendingDown,
+  BarChart3,
   FileText,
-  AlertTriangle,
-  Leaf,
+  Download,
   Droplets,
   Thermometer,
   Sun,
 } from "lucide-react";
 import Link from "next/link";
+import { HumidityChart } from "@/components/charts/HumidityChart";
+import { TemperatureChart } from "@/components/charts/TemperatureChart";
+import { LightChart } from "@/components/charts/LightChart";
 
-// Tipos de datos
+// ============================================
+// FUNCIÓN PARA GENERAR DATOS HISTÓRICOS
+// ============================================
 interface DataPoint {
   timestamp: string;
   value: number;
 }
 
-interface ZoneData {
-  id: string;
-  name: string;
-  icon: string;
-  moisture: DataPoint[];
-  temperature: DataPoint[];
-  light: DataPoint[];
-}
-
-// Generar datos históricos simulados
 const generateHistoricalData = (
   days: number,
   baseValue: number,
-  variance: number,
-) => {
+  variance: number
+): DataPoint[] => {
   const data: DataPoint[] = [];
   const now = new Date();
 
@@ -50,9 +41,8 @@ const generateHistoricalData = (
     const date = new Date(now);
     date.setDate(date.getDate() - i);
 
-    // Crear patrón de variación realista
     const randomVar = Math.random() * variance * 2 - variance;
-    const trend = Math.sin((i / 7) * Math.PI) * 5; // Patrón semanal
+    const trend = Math.sin((i / 7) * Math.PI) * 5;
     const value = Math.max(0, Math.min(100, baseValue + randomVar + trend));
 
     data.push({
@@ -64,7 +54,18 @@ const generateHistoricalData = (
   return data;
 };
 
-// Datos de todas las zonas
+// ============================================
+// DATOS DE LAS ZONAS
+// ============================================
+interface ZoneData {
+  id: string;
+  name: string;
+  icon: string;
+  moisture: DataPoint[];
+  temperature: DataPoint[];
+  light: DataPoint[];
+}
+
 const zonesData: ZoneData[] = [
   {
     id: "esparto",
@@ -222,12 +223,20 @@ export default function Analysis() {
     setSelectedZones((prev) =>
       prev.includes(zoneId)
         ? prev.filter((id) => id !== zoneId)
-        : [...prev, zoneId],
+        : [...prev, zoneId]
     );
   };
 
-  // Encontrar la métrica seleccionada
   const currentMetric = metrics.find((m) => m.id === selectedMetric);
+
+  // Obtener datos filtrados por período para los gráficos
+  const getFilteredDataForZone = (zoneId: string, metricType: string) => {
+    const zone = zonesData.find((z) => z.id === zoneId);
+    if (!zone) return [];
+    const data = zone[metricType as keyof ZoneData] as DataPoint[];
+    const periodDays = parseInt(selectedPeriod);
+    return data.slice(-periodDays);
+  };
 
   return (
     <div className="min-h-screen p-4 md:p-8 bg-gradient-to-b from-purple-50/30 to-indigo-50/30">
@@ -477,6 +486,54 @@ export default function Analysis() {
                   </div>
                 );
               })}
+            </div>
+
+            {/* SECCIÓN DE GRÁFICOS CON HIGHCHARTS */}
+            <div className="mb-8">
+              <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <LineChart className="w-5 h-5 text-purple-600" />
+                Visualización detallada
+              </h2>
+              <div className="grid md:grid-cols-2 gap-6">
+                {selectedZones.map((zoneId) => {
+                  const zone = zonesData.find((z) => z.id === zoneId);
+                  if (!zone) return null;
+
+                  const moistureData = getFilteredDataForZone(zoneId, "moisture");
+                  const temperatureData = getFilteredDataForZone(zoneId, "temperature");
+                  const lightData = getFilteredDataForZone(zoneId, "light");
+
+                  return (
+                    <div key={zoneId} className="space-y-6">
+                      {selectedMetric === "moisture" && (
+                        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
+                          <HumidityChart
+                            zoneName={zone.name}
+                            data={moistureData}
+                          />
+                        </div>
+                      )}
+                      {selectedMetric === "temperature" && (
+                        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
+                          <TemperatureChart
+                            zoneName={zone.name}
+                            data={temperatureData}
+                          />
+                        </div>
+                      )}
+                      {selectedMetric === "light" && (
+                        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
+                          <LightChart
+                            zoneName={zone.name}
+                            data={lightData}
+                            height={350}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
 
             {/* Gráfico principal de comparativa */}

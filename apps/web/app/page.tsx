@@ -20,16 +20,10 @@ import {
 const SicilianFlag = () => (
   <div className="relative w-8 h-8">
     <div className="absolute inset-0 bg-gradient-to-r from-red-600 to-yellow-500 rounded-full"></div>
-    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4">
-      <div className="w-0 h-0 border-l-[8px] border-r-[8px] border-b-[14px] border-l-transparent border-r-transparent border-b-white"></div>
-    </div>
-    <div className="absolute top-1 left-1 w-1 h-2 bg-white rounded-full transform rotate-45"></div>
-    <div className="absolute top-1 right-1 w-1 h-2 bg-white rounded-full transform -rotate-45"></div>
-    <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-2 bg-white rounded-full"></div>
   </div>
 );
 
-// Version simple text
+// Simple text version
 const SicilianFlagSimple = () => (
   <span className="font-bold text-yellow-600 bg-red-600 px-2 py-1 rounded text-xs">
     SICILIA SOIL
@@ -58,7 +52,7 @@ export default function HomePage() {
   }, []);
 
   // ============================================
-  // DATA DEL HUERTO
+  // GARDEN ZONES DATA (Spanish)
   // ============================================
   const gardenZones = [
     {
@@ -142,7 +136,7 @@ export default function HomePage() {
   ];
 
   // ============================================
-  // DATOS DE ESPARTO
+  // ESPARTO DATA (Spanish)
   // ============================================
   const espartoData = {
     general: {
@@ -174,120 +168,40 @@ export default function HomePage() {
     },
   };
 
-  // Calendario de trabajo del esparto
+  // Esparto traditional work calendar (Spanish)
   const espartoCalendar = [
-    {
-      month: "Enero",
-      tasks: ["Poda de limpieza", "Preparación de suelo"],
-      intensity: "baja",
-    },
-    {
-      month: "Febrero",
-      tasks: ["Abonado orgánico", "Riego de apoyo"],
-      intensity: "media",
-    },
-    {
-      month: "Marzo",
-      tasks: ["Inicio de crecimiento", "Control de malas hierbas"],
-      intensity: "media",
-    },
-    {
-      month: "Abril",
-      tasks: ["Riego regular", "Observación de brotes"],
-      intensity: "media",
-    },
-    {
-      month: "Mayo",
-      tasks: ["PREPARACIÓN PARA RECOLECCIÓN", "Selección de tallos"],
-      intensity: "alta",
-      highlight: true,
-    },
-    {
-      month: "Junio",
-      tasks: ["RECOLECCIÓN PRINCIPAL", "Secado al sol"],
-      intensity: "muy alta",
-      highlight: true,
-    },
-    {
-      month: "Julio",
-      tasks: ["Recolección tardía", "Clasificación"],
-      intensity: "alta",
-    },
-    {
-      month: "Agosto",
-      tasks: ["Secado continuado", "Almacenamiento"],
-      intensity: "media",
-    },
-    {
-      month: "Septiembre",
-      tasks: ["Limpieza de parcelas", "Preparación para otoño"],
-      intensity: "baja",
-    },
-    {
-      month: "Octubre",
-      tasks: ["Riego de mantenimiento", "Abonado de fondo"],
-      intensity: "baja",
-    },
-    {
-      month: "Noviembre",
-      tasks: ["Reposo vegetativo", "Planificación"],
-      intensity: "baja",
-    },
-    {
-      month: "Diciembre",
-      tasks: ["Mantenimiento de herramientas", "Formación"],
-      intensity: "baja",
-    },
+    { month: "Enero", tasks: ["Poda de limpieza", "Preparación de suelo"], intensity: "baja" },
+    { month: "Febrero", tasks: ["Abonado orgánico", "Riego de apoyo"], intensity: "media" },
+    { month: "Marzo", tasks: ["Inicio de crecimiento", "Control de malas hierbas"], intensity: "media" },
+    { month: "Abril", tasks: ["Riego regular", "Observación de brotes"], intensity: "media" },
+    { month: "Mayo", tasks: ["PREPARACIÓN PARA RECOLECCIÓN", "Selección de tallos"], intensity: "alta", highlight: true },
+    { month: "Junio", tasks: ["RECOLECCIÓN PRINCIPAL", "Secado al sol"], intensity: "muy alta", highlight: true },
+    { month: "Julio", tasks: ["Recolección tardía", "Clasificación"], intensity: "alta" },
+    { month: "Agosto", tasks: ["Secado continuado", "Almacenamiento"], intensity: "media" },
+    { month: "Septiembre", tasks: ["Limpieza de parcelas", "Preparación para otoño"], intensity: "baja" },
+    { month: "Octubre", tasks: ["Riego de mantenimiento", "Abonado de fondo"], intensity: "baja" },
+    { month: "Noviembre", tasks: ["Reposo vegetativo", "Planificación"], intensity: "baja" },
+    { month: "Diciembre", tasks: ["Mantenimiento de herramientas", "Formación"], intensity: "baja" },
   ];
 
-  // Procesos del esparto
+  // Esparto processing stages (Spanish)
   const espartoProcesses = [
-    {
-      name: "Recolección",
-      icon: <Scissors className="w-5 h-5" />,
-      status: "activo",
-      nextDate: "15 junio",
-      completed: 0,
-    },
-    {
-      name: "Secado",
-      icon: <Sun className="w-5 h-5" />,
-      status: "esperando",
-      nextDate: "junio-julio",
-      completed: 0,
-    },
-    {
-      name: "Majado (maceración)",
-      icon: <Droplets className="w-5 h-5" />,
-      status: "preparación",
-      nextDate: "julio",
-      completed: 0,
-    },
-    {
-      name: "Espadillado (abrir fibras)",
-      icon: <Factory className="w-5 h-5" />,
-      status: "planificado",
-      nextDate: "agosto",
-      completed: 0,
-    },
-    {
-      name: "Tejido/elaboración",
-      icon: <Package className="w-5 h-5" />,
-      status: "planificado",
-      nextDate: "septiembre",
-      completed: 0,
-    },
+    { name: "Recolección", icon: <Scissors className="w-5 h-5" />, status: "activo", nextDate: "15 junio" },
+    { name: "Secado", icon: <Sun className="w-5 h-5" />, status: "esperando", nextDate: "junio-julio" },
+    { name: "Majado (maceración)", icon: <Droplets className="w-5 h-5" />, status: "preparación", nextDate: "julio" },
+    { name: "Espadillado (abrir fibras)", icon: <Factory className="w-5 h-5" />, status: "planificado", nextDate: "agosto" },
+    { name: "Tejido/elaboración", icon: <Package className="w-5 h-5" />, status: "planificado", nextDate: "septiembre" },
   ];
 
   // ============================================
-  // DATOS DE MICOLOGÍA (CON EMOJIS)
+  // NATIVE SICILIAN MUSHROOMS DATA (ALL SICILIAN SPECIES)
   // ============================================
   const mushroomZones = [
     {
-      id: "setas-ostra",
-      name: "Seta Ostra",
-      scientificName: "Pleurotus ostreatus",
-      location: "Troncos - Zona Sombreada",
+      id: "cardonchello",
+      name: "Cardonchello",
+      scientificName: "Pleurotus eryngii",
+      location: "Raíces de Ferula communis - Zona Sombreada",
       humidity: 85,
       temperature: 18,
       co2: 450,
@@ -295,12 +209,13 @@ export default function HomePage() {
       harvestIn: "5 días",
       status: "óptimo",
       icon: "🍄",
+      description: "Seta emblemática de Sicilia, crece sobre raíces de cañaheja (Ferula communis)",
     },
     {
-      id: "shiitake",
-      name: "Shiitake",
-      scientificName: "Lentinula edodes",
-      location: "Troncos de Roble",
+      id: "cardoncello-nebrodi",
+      name: "Cardoncello di Nebrodi",
+      scientificName: "Pleurotus nebrodensis",
+      location: "Sustrato de restos de esparto - Cámara Controlada",
       humidity: 80,
       temperature: 20,
       co2: 500,
@@ -308,12 +223,13 @@ export default function HomePage() {
       harvestIn: "2 días",
       status: "excelente",
       icon: "🍄",
+      description: "Endémica de los montes Nebrodi, Sicilia. Muy valorada gastronómicamente",
     },
     {
-      id: "champiñon",
-      name: "Champiñón",
-      scientificName: "Agaricus bisporus",
-      location: "Bandejas - Sótano",
+      id: "prataiolo-siciliano",
+      name: "Prataiolo Siciliano",
+      scientificName: "Agaricus bitorquis",
+      location: "Compost de esparto - Zona de Sombra",
       humidity: 75,
       temperature: 16,
       co2: 600,
@@ -321,54 +237,31 @@ export default function HomePage() {
       harvestIn: "hoy",
       status: "listo",
       icon: "🍄",
+      description: "Variedad autóctona siciliana del champiñón, ideal para regeneración del suelo",
     },
     {
-      id: "maitake",
-      name: "Maitake",
-      scientificName: "Grifola frondosa",
-      location: "Zona Experimental",
+      id: "niccolo",
+      name: "Níccolo",
+      scientificName: "Lactarius sanguifluus",
+      location: "Sotobosque de pinos y encinas - Zona de Micorrizas",
       humidity: 82,
       temperature: 19,
       co2: 480,
-      stage: "crecimiento",
+      stage: "micorriza",
       harvestIn: "12 días",
       status: "bueno",
       icon: "🍄",
+      description: "Hongo micorrícico autóctono, en simbiosis con pinos y encinas sicilianas",
     },
   ];
 
-  // Estadísticas generales (CON EMOJI EN SETAS)
+  // General statistics (Spanish)
   const gardenStats = [
-    {
-      value: "71%",
-      label: "Humedad media",
-      icon: <Droplets className="w-5 h-5" />,
-      color: "blue",
-    },
-    {
-      value: "22°C",
-      label: "Temperatura media",
-      icon: <Thermometer className="w-5 h-5" />,
-      color: "orange",
-    },
-    {
-      value: "56%",
-      label: "Luz solar",
-      icon: <Sun className="w-5 h-5" />,
-      color: "yellow",
-    },
-    {
-      value: "4",
-      label: "Cultivos de setas",
-      icon: <span className="text-xl">🍄</span>,
-      color: "brown",
-    },
-    {
-      value: "92%",
-      label: "Salud del Esparto",
-      icon: <Sprout className="w-5 h-5" />,
-      color: "green",
-    },
+    { value: "71%", label: "Humedad media", icon: <Droplets className="w-5 h-5" />, color: "blue" },
+    { value: "22°C", label: "Temperatura media", icon: <Thermometer className="w-5 h-5" />, color: "orange" },
+    { value: "56%", label: "Luz solar", icon: <Sun className="w-5 h-5" />, color: "yellow" },
+    { value: "4", label: "Setas autóctonas sicilianas", icon: <span className="text-xl">🍄</span>, color: "brown" },
+    { value: "92%", label: "Salud del Esparto", icon: <Sprout className="w-5 h-5" />, color: "green" },
   ];
 
   const getStatusColor = (status: string) => {
@@ -395,7 +288,7 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen p-4 md:p-8 bg-gradient-to-b from-amber-50 to-red-50">
-      {/* Header con bandera siciliana */}
+      {/* Header with Sicilian flag */}
       <header className="max-w-6xl mx-auto mb-12">
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-3">
@@ -456,8 +349,8 @@ export default function HomePage() {
             <p className="text-lg text-gray-600 mb-8">
               Este proyecto monitoriza la humedad, temperatura y luz de mi
               huerto en <strong>Sicilia</strong>, incluyendo{" "}
-              <strong>cultivos de setas y la planta de esparto</strong>, con su
-              calendario de recolección y procesamiento tradicional.
+              <strong>cultivos de setas autóctonas sicilianas</strong> (Cardonchello, Cardoncello di Nebrodi, Prataiolo Siciliano, Níccolo){" "}
+              y la planta de esparto, con su calendario de recolección y procesamiento tradicional.
             </p>
 
             <div className="flex flex-wrap gap-4">
@@ -466,11 +359,7 @@ export default function HomePage() {
                 target="_blank"
                 className="px-8 py-4 bg-gradient-to-r from-red-600 to-yellow-500 text-white rounded-xl font-semibold flex items-center gap-3 hover:shadow-lg transition-all hover:scale-[1.02]"
               >
-                <svg
-                  className="w-5 h-5"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.387.6.113.82-.26.82-.58 0-.287-.01-1.05-.015-2.06-3.338.726-4.042-1.61-4.042-1.61-.546-1.39-1.335-1.76-1.335-1.76-1.09-.746.082-.73.082-.73 1.205.085 1.84 1.237 1.84 1.237 1.07 1.835 2.807 1.305 3.492.998.108-.776.418-1.306.762-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.468-2.38 1.235-3.22-.123-.3-.535-1.52.117-3.16 0 0 1.008-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3 .405 2.29-1.552 3.297-1.23 3.297-1.23.653 1.64.24 2.86.118 3.16.768.84 1.233 1.91 1.233 3.22 0 4.61-2.804 5.62-5.476 5.92.43.37.824 1.102.824 2.22 0 1.602-.015 2.894-.015 3.287 0 .322.216.698.83.58C20.565 21.795 24 17.3 24 12c0-6.63-5.37-12-12-12z" />
                 </svg>
                 Ver en GitHub
@@ -486,9 +375,7 @@ export default function HomePage() {
           <div className="bg-white rounded-2xl p-8 shadow-xl border border-red-200">
             <div className="flex items-center gap-2 mb-6">
               <SicilianFlag />
-              <h3 className="text-2xl font-bold text-gray-900">
-                Estado general
-              </h3>
+              <h3 className="text-2xl font-bold text-gray-900">Estado general</h3>
             </div>
 
             <div className="space-y-6">
@@ -515,7 +402,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* SECCIÓN DE ESPARTO */}
+        {/* ESPARTO SECTION (same as before) */}
         <div className="mb-16">
           <div className="flex items-center justify-between mb-8">
             <div>
@@ -524,8 +411,7 @@ export default function HomePage() {
                 Cultivo de Esparto (Stipa tenacissima)
               </h2>
               <p className="text-gray-600">
-                Planta textil tradicional siciliana - Control y calendario de
-                trabajo
+                Planta textil tradicional siciliana - Control y calendario de trabajo
               </p>
             </div>
             <div className="flex items-center gap-2 text-red-600">
@@ -534,7 +420,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Tarjetas de resumen del esparto */}
+          {/* Esparto summary cards */}
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <div className="bg-white rounded-xl p-6 shadow-lg border border-amber-200">
               <div className="flex items-center gap-3 mb-4">
@@ -586,8 +472,7 @@ export default function HomePage() {
                 {espartoData.soil.type}
               </p>
               <p className="text-sm text-gray-600">
-                pH: {espartoData.soil.ph} • Humedad: {espartoData.soil.moisture}
-                %
+                pH: {espartoData.soil.ph} • Humedad: {espartoData.soil.moisture}%
               </p>
               <p className="text-sm text-green-600 mt-2">
                 Nutrientes: {espartoData.soil.nutrients}
@@ -616,7 +501,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Procesos del esparto */}
+          {/* Esparto processes */}
           <div className="bg-white rounded-xl p-6 shadow-lg border border-amber-200 mb-8">
             <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
               <Factory className="w-5 h-5 text-amber-700" />
@@ -652,7 +537,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Calendario de trabajo del esparto */}
+          {/* Esparto calendar */}
           <div className="bg-white rounded-xl p-6 shadow-lg border border-amber-200">
             <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
               <Calendar className="w-5 h-5 text-amber-700" />
@@ -707,21 +592,21 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* SECCIÓN DE MICOLOGÍA (CON EMOJIS) */}
+        {/* NATIVE SICILIAN MUSHROOMS SECTION */}
         <div className="mb-16">
           <div className="flex items-center justify-between mb-8">
             <div>
               <h2 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
                 <span className="text-3xl">🍄</span>
-                Cultivo de Setas
+                Setas Autóctonas Sicilianas
               </h2>
               <p className="text-gray-600">
-                Monitoreo de condiciones para micología
+                Hongos endémicos que regeneran el suelo y conservan la biodiversidad
               </p>
             </div>
             <div className="flex items-center gap-2 text-red-600">
               <SicilianFlag />
-              <span className="font-medium">Micología siciliana</span>
+              <span className="font-medium">Micología autóctona</span>
             </div>
           </div>
 
@@ -745,8 +630,11 @@ export default function HomePage() {
                 <h3 className="text-lg font-bold text-gray-900 group-hover:text-red-700">
                   {mushroom.name}
                 </h3>
-                <p className="text-xs text-gray-500 italic mb-2">
+                <p className="text-xs text-gray-500 italic mb-1">
                   {mushroom.scientificName}
+                </p>
+                <p className="text-xs text-gray-400 mb-2">
+                  {mushroom.description}
                 </p>
 
                 <p className="text-sm text-gray-600 mb-3 flex items-center gap-1">
@@ -796,13 +684,11 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Sección de zonas del huerto */}
+        {/* Garden Zones Section */}
         <div className="mb-12">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h2 className="text-3xl font-bold text-gray-900">
-                Zonas del huerto
-              </h2>
+              <h2 className="text-3xl font-bold text-gray-900">Zonas del huerto</h2>
               <p className="text-gray-600">
                 Datos actualizados de cada área de cultivo
               </p>
@@ -887,7 +773,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Stack tecnológico */}
+        {/* Tech Stack */}
         <div className="bg-gradient-to-r from-red-600 to-yellow-500 rounded-2xl p-8 mb-12 text-white">
           <div className="flex items-center gap-3 mb-6">
             <SicilianFlag />
@@ -950,7 +836,7 @@ export default function HomePage() {
 
           <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
             El código está disponible en GitHub. Puedes usarlo, modificarlo o
-            inspirarte para tu propio huerto, cultivo de setas o trabajo con
+            inspirarte para tu propio huerto, cultivo de setas autóctonas o trabajo con
             esparto.
           </p>
 
