@@ -6,6 +6,7 @@ import {
   Droplets,
   Thermometer,
   Sun,
+  Layers,
   LineChart,
   Settings,
   Menu,
@@ -50,7 +51,8 @@ export default function RootLayout({
     { id: "/temperature", label: "Temperatura", icon: Thermometer },
     { id: "/light", label: "Luz Solar", icon: Sun },
     { id: "/analysis", label: "Análisis", icon: LineChart },
-    { id: "/mycology", label: "Micología", icon: Leaf },
+    { id: "/mycology", label: "Micología", icon: '🍄' },
+    { id: "/design", label: "Diseño", icon: Layers },
     { id: "/configuration", label: "Configuración", icon: Settings },
   ];
 
@@ -199,6 +201,7 @@ export default function RootLayout({
               <Link href="/light" className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm">Luz Solar</Link>
               <Link href="/analysis" className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm">Análisis</Link>
               <Link href="/mycology" className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm">Micología</Link>
+              <Link href="/design" className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm">Diseño</Link>
               <Link href="/configuration" className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm">Configuración</Link>
             </div>
 
