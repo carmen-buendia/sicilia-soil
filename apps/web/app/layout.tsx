@@ -51,7 +51,7 @@ export default function RootLayout({
     { id: "/temperature", label: "Temperatura", icon: Thermometer },
     { id: "/light", label: "Luz Solar", icon: Sun },
     { id: "/analysis", label: "Análisis", icon: LineChart },
-    { id: "/mycology", label: "Micología", icon: Leaf },
+    { id: "/mycology", label: "Micología", icon: '🍄' },
     { id: "/design", label: "Diseño", icon: Layers },
     { id: "/configuration", label: "Configuración", icon: Settings },
   ];
