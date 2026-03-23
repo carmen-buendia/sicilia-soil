@@ -51,7 +51,8 @@ export default function RootLayout({
     { id: "/luz", label: "Luz Solar", icon: Sun },
     { id: "/design", label: "Diseño Sintrópico", icon: Leaf },
     { id: "/analysis", label: "Análisis", icon: LineChart },
-    { id: "/mycology", label: "Micología", icon: Leaf },
+    { id: "/mycology", label: "Micología", icon: Leaf},
+    { id: "/design", label: "Diseño", icon: Layers },
     { id: "/configuration", label: "Configuración", icon: Settings },
   ];
 
