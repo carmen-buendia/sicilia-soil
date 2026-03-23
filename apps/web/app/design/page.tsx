@@ -1,312 +1,730 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
+import { useState, useEffect } from "react";
 import {
+  LineChart,
   ArrowLeft,
-  TreeDeciduous,
-  Flower2,
-  Leaf,
-  Sprout,
+  DownloadCloud,
+  Filter,
+  RefreshCw,
+  TrendingUp,
+  TrendingDown,
+  BarChart3,
+  FileText,
+  Download,
   Droplets,
   Thermometer,
   Sun,
-  Wind,
-  Calendar,
-  Map,
-  Layers,
-  Link2,
-  Info,
 } from "lucide-react";
+import Link from "next/link";
+import { HumidityChart } from "@/components/charts/HumidityChart";
+import { TemperatureChart } from "@/components/charts/TemperatureChart";
+import { LightChart } from "@/components/charts/LightChart";
 
-// Datos de los estratos del sistema sintrópico
-const layers = [
+// Types
+interface DataPoint {
+  timestamp: string;
+  value: number;
+}
+
+interface ZoneData {
+  id: string;
+  name: string;
+  icon: string;
+  moisture: DataPoint[];
+  temperature: DataPoint[];
+  light: DataPoint[];
+}
+
+// This function will only run on the client
+const generateHistoricalData = (
+  days: number,
+  baseValue: number,
+  variance: number,
+): DataPoint[] => {
+  const data: DataPoint[] = [];
+  const now = new Date();
+
+  for (let i = days; i >= 0; i--) {
+    const date = new Date(now);
+    date.setDate(date.getDate() - i);
+    const randomVar = Math.random() * variance * 2 - variance;
+    const trend = Math.sin((i / 7) * Math.PI) * 5;
+    const value = Math.max(0, Math.min(100, baseValue + randomVar + trend));
+    data.push({
+      timestamp: date.toISOString().split("T")[0],
+      value: Math.round(value * 10) / 10,
+    });
+  }
+  return data;
+};
+
+const metrics = [
+  { id: "moisture", name: "Humedad", icon: Droplets, color: "blue", unit: "%" },
   {
-    id: "canopy",
-    name: "Canopy (Estrato alto)",
-    height: "8-15 m",
-    species: [
-      { name: "Olivo", icon: "🫒", function: "Sombra, aceite, estructura" },
-      { name: "Algarrobo", icon: "🌳", function: "Nitrógeno, sombra, alimento" },
-      { name: "Almendro", icon: "🌰", function: "Frutos secos, floración temprana" },
-    ],
-    icon: <TreeDeciduous className="w-6 h-6" />,
-    color: "from-emerald-800 to-emerald-600",
-    bg: "bg-emerald-50",
+    id: "temperature",
+    name: "Temperatura",
+    icon: Thermometer,
+    color: "orange",
+    unit: "°C",
   },
-  {
-    id: "understory",
-    name: "Sotobosque (Estrato medio)",
-    height: "2-6 m",
-    species: [
-      { name: "Esparto", icon: "🌾", function: "Fibra textil, biomasa" },
-      { name: "Romero", icon: "🌿", function: "Aromática, protección" },
-      { name: "Tomillo", icon: "🌱", function: "Aromática, cobertura" },
-    ],
-    icon: <Flower2 className="w-6 h-6" />,
-    color: "from-green-700 to-green-500",
-    bg: "bg-green-50",
-  },
-  {
-    id: "fungal",
-    name: "Capa fúngica (Micología)",
-    height: "0.1-0.3 m",
-    species: [
-      { name: "Cardonchello", icon: "🍄", function: "Descomposición, alimento" },
-      { name: "Cardoncello di Nebrodi", icon: "🍄", function: "Endémica, gourmet" },
-      { name: "Prataiolo siciliano", icon: "🍄", function: "Humus, regeneración" },
-      { name: "Níccolo", icon: "🍄", function: "Micorriza con encinas" },
-    ],
-    icon: <Leaf className="w-6 h-6" />,
-    color: "from-amber-700 to-amber-500",
-    bg: "bg-amber-50",
-  },
-  {
-    id: "ground",
-    name: "Cobertura vegetal",
-    height: "0-0.5 m",
-    species: [
-      { name: "Trébol", icon: "🍀", function: "Fijador de nitrógeno" },
-      { name: "Habas", icon: "🌱", function: "Nitrógeno, biomasa" },
-      { name: "Alfalfa", icon: "🌿", function: "Cobertura, alimento" },
-    ],
-    icon: <Sprout className="w-6 h-6" />,
-    color: "from-lime-700 to-lime-500",
-    bg: "bg-lime-50",
-  },
+  { id: "light", name: "Luz Solar", icon: Sun, color: "yellow", unit: "%" },
 ];
 
-// Relaciones simbióticas
-const symbiosis = [
-  {
-    from: "Olivo",
-    to: "Cardonchello",
-    description: "Las raíces del olivo airean el suelo, el micelio del cardonchello descompone materia",
-    type: "mutualismo",
-  },
-  {
-    from: "Esparto",
-    to: "Cardoncello di Nebrodi",
-    description: "Los restos de esparto sirven de sustrato para el cultivo de setas",
-    type: "ciclo de nutrientes",
-  },
-  {
-    from: "Algarrobo",
-    to: "Trébol",
-    description: "El algarrobo fija nitrógeno y el trébol protege el suelo",
-    type: "sinergia",
-  },
-  {
-    from: "Micorrizas",
-    to: "Todas las plantas",
-    description: "Conexión subterránea que comparte nutrientes y agua",
-    type: "red simbiótica",
-  },
+const periods = [
+  { id: "7", name: "7 días" },
+  { id: "15", name: "15 días" },
+  { id: "30", name: "30 días" },
+  { id: "90", name: "3 meses" },
 ];
 
-// Calendario de sucesión
-const succession = [
-  { year: "Año 1", phase: "Pionera", tasks: ["Plantación de cobertura", "Establecimiento de setas", "Riego inicial"] },
-  { year: "Años 2-3", phase: "Acumulación", tasks: ["Crecimiento de arbustos", "Primera cosecha de setas", "Acolchado continuo"] },
-  { year: "Años 4-5", phase: "Transición", tasks: ["Primeras cosechas de esparto", "Expansión de micelio", "Reducción de riego"] },
-  { year: "Años 6-10", phase: "Clímax", tasks: ["Cosecha estable de olivos", "Esparto maduro", "Sistema autorregulado"] },
-];
+export default function Analysis() {
+  const [isMounted, setIsMounted] = useState(false);
+  const [selectedZones, setSelectedZones] = useState<string[]>([
+    "tomates",
+    "olivar",
+  ]);
+  const [selectedMetric, setSelectedMetric] = useState("moisture");
+  const [selectedPeriod, setSelectedPeriod] = useState("30");
+  const [isExporting, setIsExporting] = useState(false);
+  const [showComparison, setShowComparison] = useState(true);
+  const [showPredictions, setShowPredictions] = useState(true);
+  const [zonesData, setZonesData] = useState<ZoneData[]>([]);
 
-export default function DesignPage() {
-  const [activeLayer, setActiveLayer] = useState("canopy");
+  // Generate data only on client side
+  useEffect(() => {
+    setIsMounted(true);
+    setZonesData([
+      {
+        id: "esparto",
+        name: "Zona de Esparto",
+        icon: "🌾",
+        moisture: generateHistoricalData(30, 78, 8),
+        temperature: generateHistoricalData(30, 22, 3),
+        light: generateHistoricalData(30, 65, 10),
+      },
+      {
+        id: "tomates",
+        name: "Huerta de Tomates",
+        icon: "🍅",
+        moisture: generateHistoricalData(30, 82, 7),
+        temperature: generateHistoricalData(30, 24, 4),
+        light: generateHistoricalData(30, 78, 12),
+      },
+      {
+        id: "olivar",
+        name: "Olivar",
+        icon: "🫒",
+        moisture: generateHistoricalData(30, 45, 10),
+        temperature: generateHistoricalData(30, 21, 3),
+        light: generateHistoricalData(30, 45, 8),
+      },
+      {
+        id: "compost",
+        name: "Zona Compost",
+        icon: "♻️",
+        moisture: generateHistoricalData(30, 55, 5),
+        temperature: generateHistoricalData(30, 28, 5),
+        light: generateHistoricalData(30, 30, 6),
+      },
+      {
+        id: "hierbas",
+        name: "Jardín de Hierbas",
+        icon: "🌿",
+        moisture: generateHistoricalData(30, 68, 6),
+        temperature: generateHistoricalData(30, 23, 3),
+        light: generateHistoricalData(30, 70, 9),
+      },
+      {
+        id: "agua",
+        name: "Depósito de Agua",
+        icon: "💧",
+        moisture: generateHistoricalData(30, 90, 4),
+        temperature: generateHistoricalData(30, 18, 2),
+        light: generateHistoricalData(30, 40, 5),
+      },
+    ]);
+  }, []);
+
+  const currentMetric = metrics.find((m) => m.id === selectedMetric);
+
+  const getStatistics = () => {
+    const stats: any = {};
+    selectedZones.forEach((zoneId) => {
+      const zone = zonesData.find((z) => z.id === zoneId);
+      if (!zone) return;
+      const metric = selectedMetric as keyof typeof zone;
+      const data = zone[metric] as DataPoint[];
+      if (data && data.length > 0) {
+        const values = data.map((d) => d.value);
+        const avg = values.reduce((a, b) => a + b, 0) / values.length;
+        const max = Math.max(...values);
+        const min = Math.min(...values);
+        const last = values[values.length - 1];
+        const first = values[0];
+        const trend = (((last - first) / first) * 100).toFixed(1);
+        stats[zoneId] = {
+          avg: avg.toFixed(1),
+          max: max.toFixed(1),
+          min: min.toFixed(1),
+          trend: parseFloat(trend),
+          last: last.toFixed(1),
+        };
+      }
+    });
+    return stats;
+  };
+
+  const statistics = getStatistics();
+
+  const toggleZone = (zoneId: string) => {
+    setSelectedZones((prev) =>
+      prev.includes(zoneId)
+        ? prev.filter((id) => id !== zoneId)
+        : [...prev, zoneId],
+    );
+  };
+
+  const exportData = () => {
+    setIsExporting(true);
+    setTimeout(() => {
+      const dataToExport = {
+        generatedAt: new Date().toISOString(),
+        period: `${selectedPeriod} días`,
+        metric: metrics.find((m) => m.id === selectedMetric)?.name,
+        zones: selectedZones.map((zoneId) => {
+          const zone = zonesData.find((z) => z.id === zoneId);
+          return {
+            name: zone?.name,
+            icon: zone?.icon,
+            data: zone?.[selectedMetric as keyof ZoneData],
+          };
+        }),
+      };
+      const blob = new Blob([JSON.stringify(dataToExport, null, 2)], {
+        type: "application/json",
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `sicilia-soil-export-${new Date().toISOString().split("T")[0]}.json`;
+      a.click();
+      setTimeout(() => setIsExporting(false), 1000);
+    }, 1500);
+  };
+
+  const getFilteredDataForZone = (zoneId: string, metricType: string) => {
+    const zone = zonesData.find((z) => z.id === zoneId);
+    if (!zone) return [];
+    const data = zone[metricType as keyof ZoneData] as DataPoint[];
+    const periodDays = parseInt(selectedPeriod);
+    return data.slice(-periodDays);
+  };
+
+  if (!isMounted) {
+    return (
+      <div className="min-h-screen p-4 md:p-8 bg-gradient-to-b from-purple-50/30 to-indigo-50/30 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-gray-600">Cargando datos...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen p-4 md:p-8 bg-[#F5F0E6]">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen p-4 md:p-8 bg-gradient-to-b from-purple-50/30 to-indigo-50/30">
+      <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex items-center gap-4 mb-8">
-          <Link
-            href="/"
-            className="p-2 hover:bg-[#F5D7B3] rounded-xl transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5 text-[#2C2C2C]" />
-          </Link>
-          <div>
-            <h1 className="text-3xl font-bold text-[#2C2C2C] flex items-center gap-2">
-              <Layers className="w-8 h-8 text-[#B43F2B]" />
-              Diseño Sintrópico
-            </h1>
-            <p className="text-[#5F6B3D]">
-              Estrategia de capas, relaciones simbióticas y sucesión temporal
+        <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
+          <div className="flex items-center gap-4">
+            <Link
+              href="/"
+              className="p-2 hover:bg-purple-100 rounded-lg transition-colors"
+            >
+              <ArrowLeft className="w-5 h-5 text-gray-600" />
+            </Link>
+            <div>
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 flex items-center gap-3">
+                <LineChart className="w-8 h-8 text-purple-600" />
+                Análisis de Datos
+              </h1>
+              <p className="text-gray-600">
+                Estadísticas avanzadas y comparativas entre zonas
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={exportData}
+              disabled={isExporting}
+              className={`px-4 py-2 bg-purple-600 text-white rounded-lg flex items-center gap-2 hover:bg-purple-700 transition-colors ${
+                isExporting ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+            >
+              {isExporting ? (
+                <RefreshCw className="w-4 h-4 animate-spin" />
+              ) : (
+                <DownloadCloud className="w-4 h-4" />
+              )}
+              {isExporting ? "Exportando..." : "Exportar datos"}
+            </button>
+          </div>
+        </div>
+
+        {/* Filtros principales */}
+        <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200 mb-8">
+          <div className="grid md:grid-cols-3 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-3">
+                Zonas a comparar
+              </label>
+              <div className="space-y-2 max-h-48 overflow-y-auto pr-2">
+                {zonesData.map((zone) => (
+                  <button
+                    key={zone.id}
+                    onClick={() => toggleZone(zone.id)}
+                    className={`flex items-center justify-between w-full px-3 py-2 rounded-lg transition-colors ${
+                      selectedZones.includes(zone.id)
+                        ? "bg-purple-100 text-purple-800 border border-purple-300"
+                        : "bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200"
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <span>{zone.icon}</span>
+                      <span className="font-medium">{zone.name}</span>
+                    </span>
+                    {selectedZones.includes(zone.id) && (
+                      <span className="text-xs bg-purple-200 px-2 py-0.5 rounded-full">
+                        seleccionada
+                      </span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-3">
+                Métrica a analizar
+              </label>
+              <div className="space-y-2">
+                {metrics.map((metric) => {
+                  const Icon = metric.icon;
+                  return (
+                    <button
+                      key={metric.id}
+                      onClick={() => setSelectedMetric(metric.id)}
+                      className={`flex items-center justify-between w-full px-3 py-2 rounded-lg transition-colors ${
+                        selectedMetric === metric.id
+                          ? `bg-${metric.color}-100 text-${metric.color}-800 border border-${metric.color}-300`
+                          : "bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200"
+                      }`}
+                    >
+                      <span className="flex items-center gap-2">
+                        <Icon className={`w-4 h-4 text-${metric.color}-500`} />
+                        <span className="font-medium">{metric.name}</span>
+                      </span>
+                      <span className="text-xs text-gray-500">
+                        {metric.unit}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-3">
+                Período de tiempo
+              </label>
+              <div className="grid grid-cols-2 gap-2">
+                {periods.map((period) => (
+                  <button
+                    key={period.id}
+                    onClick={() => setSelectedPeriod(period.id)}
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      selectedPeriod === period.id
+                        ? "bg-purple-600 text-white"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
+                  >
+                    {period.name}
+                  </button>
+                ))}
+              </div>
+              <div className="mt-4">
+                <label className="flex items-center gap-2 text-sm text-gray-700">
+                  <input
+                    type="checkbox"
+                    checked={showComparison}
+                    onChange={() => setShowComparison(!showComparison)}
+                    className="rounded text-purple-600"
+                  />
+                  Mostrar comparativa
+                </label>
+                <label className="flex items-center gap-2 text-sm text-gray-700 mt-2">
+                  <input
+                    type="checkbox"
+                    checked={showPredictions}
+                    onChange={() => setShowPredictions(!showPredictions)}
+                    className="rounded text-purple-600"
+                  />
+                  Mostrar predicciones
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {selectedZones.length === 0 ? (
+          <div className="bg-white rounded-xl p-12 shadow-lg border border-gray-200 text-center">
+            <Filter className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-gray-700 mb-2">
+              Selecciona zonas para analizar
+            </h2>
+            <p className="text-gray-500 mb-6">
+              Elige al menos una zona del panel izquierdo para ver los datos
             </p>
           </div>
-        </div>
-
-        {/* Hero con el concepto */}
-        <div className="bg-gradient-to-r from-[#B43F2B]/10 to-[#E6B17E]/10 rounded-2xl p-6 md:p-8 mb-12 border border-[#E6B17E]/30">
-          <h2 className="text-2xl font-bold text-[#2C2C2C] mb-3">
-            🌱 ¿Qué es la Permacultura Sintrópica Micológica?
-          </h2>
-          <p className="text-[#2C2C2C]/80 mb-4">
-            La <strong>sintropía</strong> es el principio opuesto a la entropía: sistemas que <strong>ganan complejidad y abundancia con el tiempo</strong>.
-            Aplicada a la permacultura y combinada con micología, crea un ecosistema donde cada elemento beneficia a los demás.
-          </p>
-          <p className="text-[#2C2C2C]/80 italic">
-            "No es solo un huerto, es un ecosistema que se diseña a sí mismo con la ayuda de hongos y tecnología"
-          </p>
-        </div>
-
-        {/* Mapa de capas - visualización interactiva */}
-        <div className="mb-12">
-          <h2 className="text-2xl font-bold text-[#2C2C2C] mb-6 flex items-center gap-2">
-            <Map className="w-6 h-6 text-[#B43F2B]" />
-            Mapa de Capas
-          </h2>
-          <div className="grid md:grid-cols-4 gap-4 mb-8">
-            {layers.map((layer) => (
-              <button
-                key={layer.id}
-                onClick={() => setActiveLayer(layer.id)}
-                className={`p-4 rounded-xl transition-all text-left ${
-                  activeLayer === layer.id
-                    ? `bg-gradient-to-r ${layer.color} text-white shadow-lg`
-                    : `${layer.bg} text-[#2C2C2C] hover:shadow-md`
-                }`}
-              >
-                <div className="flex items-center gap-2 mb-2">
-                  {layer.icon}
-                  <span className="font-bold">{layer.name}</span>
-                </div>
-                <p className="text-sm opacity-80">{layer.height}</p>
-              </button>
-            ))}
-          </div>
-
-          {/* Contenido de la capa activa */}
-          {layers.map((layer) => (
-            activeLayer === layer.id && (
-              <div key={layer.id} className={`${layer.bg} rounded-2xl p-6 border border-[#E6B17E]/30`}>
-                <h3 className="text-xl font-bold text-[#2C2C2C] mb-4 flex items-center gap-2">
-                  {layer.icon} {layer.name}
-                </h3>
-                <div className="grid md:grid-cols-3 gap-4">
-                  {layer.species.map((species, i) => (
-                    <div key={i} className="bg-white rounded-xl p-4 shadow-sm">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="text-2xl">{species.icon}</span>
-                        <span className="font-bold">{species.name}</span>
+        ) : (
+          <>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              {selectedZones.map((zoneId) => {
+                const zone = zonesData.find((z) => z.id === zoneId);
+                const stats = statistics[zoneId];
+                if (!zone || !stats) return null;
+                const MetricIcon = currentMetric?.icon || Droplets;
+                const trendColor =
+                  stats.trend > 0
+                    ? "text-green-600"
+                    : stats.trend < 0
+                      ? "text-red-600"
+                      : "text-gray-600";
+                return (
+                  <div
+                    key={zoneId}
+                    className="bg-white rounded-xl p-6 shadow-lg border border-gray-200 hover:shadow-xl transition-all"
+                  >
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex items-center gap-2">
+                        <span className="text-2xl">{zone.icon}</span>
+                        <h3 className="text-lg font-bold text-gray-900">
+                          {zone.name}
+                        </h3>
                       </div>
-                      <p className="text-sm text-gray-600">{species.function}</p>
+                      <span
+                        className={`flex items-center gap-1 text-sm ${trendColor}`}
+                      >
+                        {stats.trend > 0 ? (
+                          <TrendingUp className="w-4 h-4" />
+                        ) : (
+                          <TrendingDown className="w-4 h-4" />
+                        )}
+                        {Math.abs(stats.trend)}%
+                      </span>
                     </div>
-                  ))}
-                </div>
-              </div>
-            )
-          ))}
-        </div>
-
-        {/* Relaciones simbióticas */}
-        <div className="mb-12">
-          <h2 className="text-2xl font-bold text-[#2C2C2C] mb-6 flex items-center gap-2">
-            <Link2 className="w-6 h-6 text-[#B43F2B]" />
-            Relaciones Simbióticas
-          </h2>
-          <div className="grid md:grid-cols-2 gap-4">
-            {symbiosis.map((rel, i) => (
-              <div key={i} className="bg-white rounded-xl p-5 shadow-sm border border-[#E6B17E]/20">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xl">{rel.from === "Olivo" ? "🫒" : rel.from === "Esparto" ? "🌾" : rel.from === "Algarrobo" ? "🌳" : "🍄"}</span>
-                    <span className="font-bold">{rel.from}</span>
+                    <div className="grid grid-cols-2 gap-4 mb-4">
+                      <div className="text-center p-3 bg-gray-50 rounded-lg">
+                        <p className="text-sm text-gray-500">Promedio</p>
+                        <p className="text-2xl font-bold text-gray-900">
+                          {stats.avg}
+                          {currentMetric?.unit}
+                        </p>
+                      </div>
+                      <div className="text-center p-3 bg-gray-50 rounded-lg">
+                        <p className="text-sm text-gray-500">Actual</p>
+                        <p className="text-2xl font-bold text-purple-600">
+                          {stats.last}
+                          {currentMetric?.unit}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex justify-between text-sm text-gray-600 mb-2">
+                      <span>
+                        Mín: {stats.min}
+                        {currentMetric?.unit}
+                      </span>
+                      <span>
+                        Máx: {stats.max}
+                        {currentMetric?.unit}
+                      </span>
+                    </div>
+                    <div className="h-16 flex items-end gap-0.5 mt-4">
+                      {zone[selectedMetric as keyof ZoneData] &&
+                        (zone[selectedMetric as keyof ZoneData] as DataPoint[])
+                          .slice(-14)
+                          .map((point, i) => (
+                            <div
+                              key={i}
+                              className="flex-1 bg-purple-500 rounded-t"
+                              style={{
+                                height: `${(point.value / 100) * 100}%`,
+                              }}
+                            />
+                          ))}
+                    </div>
                   </div>
-                  <span className="text-[#B43F2B]">→</span>
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold">{rel.to}</span>
-                    <span className="text-xl">{rel.to === "Cardonchello" ? "🍄" : rel.to === "Cardoncello di Nebrodi" ? "🍄" : rel.to === "Trébol" ? "🍀" : "🌱"}</span>
-                  </div>
-                </div>
-                <p className="text-sm text-gray-600 mb-2">{rel.description}</p>
-                <span className="inline-block px-2 py-1 bg-[#F5D7B3] text-[#5F6B3D] rounded-full text-xs">
-                  {rel.type}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
+                );
+              })}
+            </div>
 
-        {/* Sucesión temporal */}
-        <div className="mb-12">
-          <h2 className="text-2xl font-bold text-[#2C2C2C] mb-6 flex items-center gap-2">
-            <Calendar className="w-6 h-6 text-[#B43F2B]" />
-            Sucesión Temporal
-          </h2>
-          <div className="grid md:grid-cols-4 gap-4">
-            {succession.map((phase, i) => (
-              <div key={i} className="bg-white rounded-xl p-5 shadow-sm border border-[#E6B17E]/20">
-                <h3 className="text-lg font-bold text-[#B43F2B] mb-1">{phase.year}</h3>
-                <p className="font-medium text-[#2C2C2C] mb-3">{phase.phase}</p>
-                <ul className="space-y-1">
-                  {phase.tasks.map((task, j) => (
-                    <li key={j} className="text-sm text-gray-600 flex items-start gap-1">
-                      <span className="text-[#B43F2B]">•</span>
-                      {task}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Condiciones del suelo */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#E6B17E]/20 mb-12">
-          <h2 className="text-xl font-bold text-[#2C2C2C] mb-4 flex items-center gap-2">
-            <Droplets className="w-5 h-5 text-[#3B82F6]" />
-            Estado del Suelo
-          </h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div>
-              <div className="flex justify-between mb-1">
-                <span className="text-sm text-gray-600">Humedad</span>
-                <span className="text-sm font-medium">68%</span>
-              </div>
-              <div className="w-full h-2 bg-gray-200 rounded-full mb-4">
-                <div className="h-full bg-blue-500 rounded-full" style={{ width: "68%" }} />
-              </div>
-              <div className="flex justify-between mb-1">
-                <span className="text-sm text-gray-600">pH</span>
-                <span className="text-sm font-medium">7.2 (ligeramente alcalino)</span>
-              </div>
-              <div className="w-full h-2 bg-gray-200 rounded-full mb-4">
-                <div className="h-full bg-purple-500 rounded-full" style={{ width: "60%" }} />
-              </div>
-              <div className="flex justify-between mb-1">
-                <span className="text-sm text-gray-600">Materia orgánica</span>
-                <span className="text-sm font-medium">4.5% (buena)</span>
-              </div>
-              <div className="w-full h-2 bg-gray-200 rounded-full">
-                <div className="h-full bg-green-500 rounded-full" style={{ width: "75%" }} />
+            <div className="mb-8">
+              <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <LineChart className="w-5 h-5 text-purple-600" />
+                Visualización detallada
+              </h2>
+              <div className="grid md:grid-cols-2 gap-6">
+                {selectedZones.map((zoneId) => {
+                  const zone = zonesData.find((z) => z.id === zoneId);
+                  if (!zone) return null;
+                  const moistureData = getFilteredDataForZone(
+                    zoneId,
+                    "moisture",
+                  );
+                  const temperatureData = getFilteredDataForZone(
+                    zoneId,
+                    "temperature",
+                  );
+                  const lightData = getFilteredDataForZone(zoneId, "light");
+                  return (
+                    <div key={zoneId} className="space-y-6">
+                      {selectedMetric === "moisture" && (
+                        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
+                          <HumidityChart
+                            zoneName={zone.name}
+                            data={moistureData}
+                          />
+                        </div>
+                      )}
+                      {selectedMetric === "temperature" && (
+                        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
+                          <TemperatureChart
+                            zoneName={zone.name}
+                            data={temperatureData}
+                          />
+                        </div>
+                      )}
+                      {selectedMetric === "light" && (
+                        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
+                          <LightChart
+                            zoneName={zone.name}
+                            data={lightData}
+                            height={350}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
-            <div className="bg-[#F5D7B3]/30 rounded-xl p-4">
-              <h3 className="font-bold text-[#2C2C2C] mb-2 flex items-center gap-2">
-                <Info className="w-4 h-4" />
-                Recomendaciones
-              </h3>
-              <ul className="space-y-2 text-sm text-gray-700">
-                <li>✓ El suelo es arcillo-calcáreo, ideal para esparto y olivos</li>
-                <li>✓ Aumentar materia orgánica con compost de esparto y restos de setas</li>
-                <li>✓ Mantener acolchado para retener humedad en verano</li>
-                <li>✓ Inocular micorrizas para mejorar absorción de nutrientes</li>
-              </ul>
+
+            {showComparison && (
+              <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200 mb-8">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                    <BarChart3 className="w-5 h-5 text-purple-600" />
+                    Comparativa entre zonas
+                  </h2>
+                  <span className="text-sm text-gray-500">
+                    Últimos {selectedPeriod} días
+                  </span>
+                </div>
+                <div className="h-80 flex items-end gap-4">
+                  {selectedZones.map((zoneId) => {
+                    const zone = zonesData.find((z) => z.id === zoneId);
+                    if (!zone) return null;
+                    const data = zone[
+                      selectedMetric as keyof ZoneData
+                    ] as DataPoint[];
+                    if (!data) return null;
+                    const avg =
+                      data.reduce((a, b) => a + b.value, 0) / data.length;
+                    return (
+                      <div
+                        key={zoneId}
+                        className="flex-1 flex flex-col items-center"
+                      >
+                        <div className="w-full flex flex-col items-center">
+                          <span className="text-2xl mb-2">{zone.icon}</span>
+                          <div className="relative w-full flex justify-center">
+                            <div
+                              className="w-16 bg-purple-500 rounded-t"
+                              style={{ height: `${(avg / 100) * 200}px` }}
+                            />
+                          </div>
+                          <span className="mt-2 font-bold">
+                            {avg.toFixed(1)}
+                            {currentMetric?.unit}
+                          </span>
+                          <span className="text-sm text-gray-600">
+                            {zone.name}
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {showPredictions && (
+              <div className="bg-gradient-to-r from-purple-600 to-indigo-600 rounded-xl p-6 shadow-lg text-white mb-8">
+                <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+                  <TrendingUp className="w-5 h-5" />
+                  Predicciones para los próximos 7 días
+                </h2>
+                <div className="grid md:grid-cols-3 gap-6">
+                  {selectedZones.slice(0, 3).map((zoneId) => {
+                    const zone = zonesData.find((z) => z.id === zoneId);
+                    if (!zone) return null;
+                    const data = zone[
+                      selectedMetric as keyof ZoneData
+                    ] as DataPoint[];
+                    if (!data) return null;
+                    const lastValue = data[data.length - 1].value;
+                    const prediction = lastValue + (Math.random() * 6 - 3);
+                    const confidence = 70 + Math.random() * 20;
+                    return (
+                      <div
+                        key={zoneId}
+                        className="bg-white/10 rounded-lg p-4 backdrop-blur-sm"
+                      >
+                        <div className="flex items-center gap-2 mb-3">
+                          <span className="text-2xl">{zone.icon}</span>
+                          <span className="font-bold">{zone.name}</span>
+                        </div>
+                        <div className="space-y-2">
+                          <div className="flex justify-between">
+                            <span>Actual:</span>
+                            <span className="font-bold">
+                              {lastValue.toFixed(1)}
+                              {currentMetric?.unit}
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Predicción:</span>
+                            <span className="font-bold text-yellow-300">
+                              {prediction.toFixed(1)}
+                              {currentMetric?.unit}
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Confianza:</span>
+                            <span className="font-bold">
+                              {confidence.toFixed(0)}%
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                  <FileText className="w-5 h-5 text-purple-600" />
+                  Datos históricos detallados
+                </h2>
+                <button className="text-sm text-purple-600 hover:text-purple-800 flex items-center gap-1">
+                  <Download className="w-4 h-4" />
+                  Descargar CSV
+                </button>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-gray-200">
+                      <th className="text-left py-3 px-4">Fecha</th>
+                      {selectedZones.map((zoneId) => {
+                        const zone = zonesData.find((z) => z.id === zoneId);
+                        return (
+                          <th key={zoneId} className="text-left py-3 px-4">
+                            {zone?.icon} {zone?.name}
+                          </th>
+                        );
+                      })}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {zonesData[0]?.[selectedMetric as keyof ZoneData] &&
+                      (
+                        zonesData[0][
+                          selectedMetric as keyof ZoneData
+                        ] as DataPoint[]
+                      )
+                        .slice(-10)
+                        .reverse()
+                        .map((point, index) => (
+                          <tr
+                            key={index}
+                            className="border-b border-gray-100 hover:bg-gray-50"
+                          >
+                            <td className="py-2 px-4">{point.timestamp}</td>
+                            {selectedZones.map((zoneId) => {
+                              const zone = zonesData.find(
+                                (z) => z.id === zoneId,
+                              );
+                              if (!zone) return null;
+                              const data = zone[
+                                selectedMetric as keyof ZoneData
+                              ] as DataPoint[];
+                              const dataPoint = data.find(
+                                (d) => d.timestamp === point.timestamp,
+                              );
+                              return (
+                                <td
+                                  key={zoneId}
+                                  className="py-2 px-4 font-medium"
+                                >
+                                  {dataPoint?.value.toFixed(1)}
+                                  {currentMetric?.unit}
+                                </td>
+                              );
+                            })}
+                          </tr>
+                        ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </>
+        )}
+
+        <footer className="mt-12 pt-8 border-t border-purple-200">
+          <div className="grid md:grid-cols-4 gap-4 text-sm">
+            <div className="bg-purple-50 rounded-lg p-4">
+              <h4 className="font-bold text-purple-900 mb-2">
+                Insights destacados
+              </h4>
+              <p className="text-purple-700">
+                La humedad en el olivar ha bajado un 12% esta semana
+              </p>
+            </div>
+            <div className="bg-blue-50 rounded-lg p-4">
+              <h4 className="font-bold text-blue-900 mb-2">Recomendación</h4>
+              <p className="text-blue-700">
+                Aumentar riego en zonas con tendencia negativa
+              </p>
+            </div>
+            <div className="bg-green-50 rounded-lg p-4">
+              <h4 className="font-bold text-green-900 mb-2">
+                Mejor rendimiento
+              </h4>
+              <p className="text-green-700">
+                Huerta de Tomates: +5% vs promedio
+              </p>
+            </div>
+            <div className="bg-yellow-50 rounded-lg p-4">
+              <h4 className="font-bold text-yellow-900 mb-2">Alerta</h4>
+              <p className="text-yellow-700">Revisar sensor en zona Compost</p>
             </div>
           </div>
-        </div>
-
-        {/* Footer del diseño */}
-        <div className="text-center py-8 border-t border-[#E6B17E]/30">
-          <p className="text-sm text-[#5F6B3D]">
-            🌱 Diseño basado en principios de sintropía de Ernst Götsch y micología aplicada
-          </p>
-          <p className="text-xs text-[#C4A27A] mt-2">
-            Este es el diseño conceptual de mi huerto en Sicilia. Cada capa está pensada para interactuar y regenerar el suelo.
-          </p>
-        </div>
+        </footer>
       </div>
     </div>
   );
