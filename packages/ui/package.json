@@ -1,0 +1,11 @@
+{
+  "name": "@sicilia-soil/ui",
+  "version": "1.0.0",
+  "description": "UI components for Sicilia Soil",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "license": "NC OSL",
+  "peerDependencies": {
+    "react": "^18.3.1"
+  }
+}

@@ -6,7 +6,6 @@ import {
   Droplets,
   Thermometer,
   Sun,
-  Layers,
   LineChart,
   Settings,
   Menu,
@@ -20,7 +19,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import "./globals.css";
 
-// Component sicilian Flag
+// Sicilian Flag component
 const SicilianFlag = ({ size = "small" }) => {
   const sizeClass = size === "small" ? "w-6 h-6" : "w-8 h-8";
   const triangleSize = size === "small" ? "w-3 h-3" : "w-4 h-4";
@@ -47,9 +46,10 @@ export default function RootLayout({
 
   const navItems = [
     { id: "/", label: "Dashboard", icon: Home },
-    { id: "/humedity", label: "Humedad", icon: Droplets },
-    { id: "/temperature", label: "Temperatura", icon: Thermometer },
-    { id: "/light", label: "Luz Solar", icon: Sun },
+    { id: "/humedad", label: "Humedad", icon: Droplets },
+    { id: "/temperatura", label: "Temperatura", icon: Thermometer },
+    { id: "/luz", label: "Luz Solar", icon: Sun },
+    { id: "/design", label: "Diseño Sintrópico", icon: Leaf },
     { id: "/analysis", label: "Análisis", icon: LineChart },
     { id: "/mycology", label: "Micología", icon: Leaf},
     { id: "/design", label: "Diseño", icon: Layers },
@@ -63,6 +63,10 @@ export default function RootLayout({
       <head>
         <title>Sicilia Soil - Permacultura en tiempo real</title>
         <meta
+          name="format-detection"
+          content="telephone=no, date=no, email=no, address=no"
+        />
+        <meta
           name="description"
           content="Monitoreo de huerto de permacultura en Sicilia con sensores inteligentes"
         />
@@ -70,7 +74,10 @@ export default function RootLayout({
           name="keywords"
           content="permacultura, sicilia, huerto, esparto, micología, sensores"
         />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=yes" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=yes"
+        />
       </head>
       <body className="min-h-screen bg-gradient-to-b from-red-50 to-yellow-50">
         {/* Navbar */}
@@ -78,7 +85,10 @@ export default function RootLayout({
           <div className="container mx-auto px-3 sm:px-4">
             <div className="flex items-center justify-between h-14 sm:h-16">
               {/* Logo */}
-              <Link href="/" className="flex items-center space-x-2 sm:space-x-3">
+              <Link
+                href="/"
+                className="flex items-center space-x-2 sm:space-x-3"
+              >
                 <div className="p-1.5 sm:p-2 bg-gradient-to-r from-red-600 to-yellow-500 rounded-lg">
                   <Sprout className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                 </div>
@@ -104,14 +114,18 @@ export default function RootLayout({
                       }`}
                     >
                       <Icon className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
-                      <span className="font-medium hidden lg:inline">{item.label}</span>
-                      <span className="font-medium lg:hidden">{item.label.substring(0, 3)}</span>
+                      <span className="font-medium hidden lg:inline">
+                        {item.label}
+                      </span>
+                      <span className="font-medium lg:hidden">
+                        {item.label.substring(0, 3)}
+                      </span>
                     </Link>
                   );
                 })}
               </div>
 
-              {/* User Menu - con nombre visible */}
+              {/* User Menu */}
               <div className="flex items-center space-x-2 sm:space-x-4">
                 <button className="p-1.5 sm:p-2 text-gray-600 hover:bg-red-50 rounded-full relative">
                   <Bell className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -123,8 +137,12 @@ export default function RootLayout({
                     <User className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
                   </div>
                   <div className="flex flex-col">
-                    <p className="text-xs sm:text-sm font-medium text-gray-800">Carmen Buendía</p>
-                    <p className="text-[10px] sm:text-xs text-gray-500">Huerto en Sicilia</p>
+                    <p className="text-xs sm:text-sm font-medium text-gray-800">
+                      Carmen Buendía
+                    </p>
+                    <p className="text-[10px] sm:text-xs text-gray-500">
+                      Huerto en Sicilia
+                    </p>
                   </div>
                 </div>
 
@@ -184,27 +202,64 @@ export default function RootLayout({
                 Sicilia Soil <span>🌱</span>
               </h3>
             </div>
-
             <p className="text-amber-100 text-xs sm:text-sm mb-2">
-              © {new Date().getFullYear()} Sicilia Soil - Permacultura, Micología y Esparto
+              © {new Date().getFullYear()} Sicilia Soil - Permacultura,
+              Micología y Esparto
             </p>
-
             <p className="text-amber-200/70 text-xs sm:text-sm mb-4 sm:mb-6 max-w-2xl mx-auto px-2">
               Monitoreo de huerto con React, TypeScript y sensores inteligentes.
               Proyecto personal de permacultura y tecnología.
             </p>
-
             <div className="flex flex-wrap justify-center gap-3 sm:gap-6 mb-4 sm:mb-6">
-              <Link href="/" className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm">Dashboard</Link>
-              <Link href="/humedity" className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm">Humedad</Link>
-              <Link href="/temperature" className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm">Temperatura</Link>
-              <Link href="/light" className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm">Luz Solar</Link>
-              <Link href="/analysis" className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm">Análisis</Link>
-              <Link href="/mycology" className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm">Micología</Link>
-              <Link href="/design" className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm">Diseño</Link>
-              <Link href="/configuration" className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm">Configuración</Link>
+              <Link
+                href="/"
+                className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm"
+              >
+                Dashboard
+              </Link>
+              <Link
+                href="/humedad"
+                className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm"
+              >
+                Humedad
+              </Link>
+              <Link
+                href="/temperatura"
+                className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm"
+              >
+                Temperatura
+              </Link>
+              <Link
+                href="/luz"
+                className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm"
+              >
+                Luz Solar
+              </Link>
+              <Link
+                href="/design"
+                className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm"
+              >
+                Diseño
+              </Link>
+              <Link
+                href="/analysis"
+                className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm"
+              >
+                Análisis
+              </Link>
+              <Link
+                href="/mycology"
+                className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm"
+              >
+                Micología
+              </Link>
+              <Link
+                href="/configuration"
+                className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm"
+              >
+                Configuración
+              </Link>
             </div>
-
             <div className="border-t border-amber-800/50 pt-4 sm:pt-6 mt-4 sm:mt-6">
               <p className="text-amber-300/60 text-xs sm:text-sm flex items-center justify-center gap-1 sm:gap-2">
                 <Leaf className="w-3 h-3 sm:w-4 sm:h-4" />
@@ -212,7 +267,8 @@ export default function RootLayout({
                 <Leaf className="w-3 h-3 sm:w-4 sm:h-4" />
               </p>
               <p className="text-amber-300/40 text-[10px] sm:text-xs mt-2">
-                React • TypeScript • Tailwind • AG-Grid • HighCharts • Micología • Esparto
+                React • TypeScript • Tailwind • AG-Grid • HighCharts • Micología
+                • Esparto
               </p>
             </div>
           </div>
