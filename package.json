@@ -1,35 +1,22 @@
 {
-  "name": "sicilia-business-suite",
-  "version": "0.1.0",
+  "name": "sicilia-soil",
+  "version": "1.0.0",
   "private": true,
-  "description": "Suite de gestión con WebRTC para negocios sicilianos",
+  "description": "Permaculture monitoring system",
   "scripts": {
     "dev": "pnpm run --parallel dev",
     "build": "pnpm run --parallel build",
     "build:web": "pnpm --filter web build",
-    "build:server": "pnpm --filter webrtc-server build",
-    "lint": "pnpm run --parallel lint || true",
-    "lint:web": "pnpm --filter web lint",
+    "build:core": "pnpm --filter @sicilia-soil/core build",
+    "build:ui": "pnpm --filter @sicilia-soil/ui build",
+    "build:utils": "pnpm --filter @sicilia-soil/utils build",
+    "lint": "pnpm run --parallel lint",
     "type-check": "pnpm run --parallel type-check",
-    "test": "pnpm run --parallel test",
-    "dev:webrtc": "pnpm --filter webrtc-server dev",
-    "dev:all": "pnpm -r dev",
-    "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
-    "setup": "powershell -File ./scripts/setup.ps1",
-    "create:webrtc": "powershell -File ./scripts/create-webrtc.ps1",
     "clean": "pnpm store prune && rimraf node_modules **/node_modules"
   },
+  "packageManager": "pnpm@8.15.0",
   "devDependencies": {
-    "@types/react": "^19.2.7",
-    "@typescript-eslint/eslint-plugin": "^8.35.1",
-    "@typescript-eslint/parser": "^8.35.1",
-    "eslint": "^9.30.1",
-    "eslint-config-prettier": "^10.1.5",
-    "eslint-plugin-prettier": "^5.5.1",
-    "prettier": "^3.6.2",
     "rimraf": "^5.0.5",
-    "turbo": "^2.5.4",
     "typescript": "^5.8.2"
-  },
-  "packageManager": "pnpm@8.15.0"
+  }
 }

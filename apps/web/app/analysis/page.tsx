@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   LineChart,
   ArrowLeft,
@@ -32,7 +32,7 @@ interface DataPoint {
 const generateHistoricalData = (
   days: number,
   baseValue: number,
-  variance: number
+  variance: number,
 ): DataPoint[] => {
   const data: DataPoint[] = [];
   const now = new Date();
@@ -55,7 +55,7 @@ const generateHistoricalData = (
 };
 
 // ============================================
-// DATOS DE LAS ZONAS
+// DATOS DE LAS ZONAS - SE INICIALIZAN VACÍOS
 // ============================================
 interface ZoneData {
   id: string;
@@ -66,55 +66,14 @@ interface ZoneData {
   light: DataPoint[];
 }
 
-const zonesData: ZoneData[] = [
-  {
-    id: "esparto",
-    name: "Zona de Esparto",
-    icon: "🌾",
-    moisture: generateHistoricalData(30, 78, 8),
-    temperature: generateHistoricalData(30, 22, 3),
-    light: generateHistoricalData(30, 65, 10),
-  },
-  {
-    id: "tomates",
-    name: "Huerta de Tomates",
-    icon: "🍅",
-    moisture: generateHistoricalData(30, 82, 7),
-    temperature: generateHistoricalData(30, 24, 4),
-    light: generateHistoricalData(30, 78, 12),
-  },
-  {
-    id: "olivar",
-    name: "Olivar",
-    icon: "🫒",
-    moisture: generateHistoricalData(30, 45, 10),
-    temperature: generateHistoricalData(30, 21, 3),
-    light: generateHistoricalData(30, 45, 8),
-  },
-  {
-    id: "compost",
-    name: "Zona Compost",
-    icon: "♻️",
-    moisture: generateHistoricalData(30, 55, 5),
-    temperature: generateHistoricalData(30, 28, 5),
-    light: generateHistoricalData(30, 30, 6),
-  },
-  {
-    id: "hierbas",
-    name: "Jardín de Hierbas",
-    icon: "🌿",
-    moisture: generateHistoricalData(30, 68, 6),
-    temperature: generateHistoricalData(30, 23, 3),
-    light: generateHistoricalData(30, 70, 9),
-  },
-  {
-    id: "agua",
-    name: "Depósito de Agua",
-    icon: "💧",
-    moisture: generateHistoricalData(30, 90, 4),
-    temperature: generateHistoricalData(30, 18, 2),
-    light: generateHistoricalData(30, 40, 5),
-  },
+// Datos base (sin generar, solo estructura)
+const baseZones: Omit<ZoneData, "moisture" | "temperature" | "light">[] = [
+  { id: "esparto", name: "Zona de Esparto", icon: "🌾" },
+  { id: "tomates", name: "Huerta de Tomates", icon: "🍅" },
+  { id: "olivar", name: "Olivar", icon: "🫒" },
+  { id: "compost", name: "Zona Compost", icon: "♻️" },
+  { id: "hierbas", name: "Jardín de Hierbas", icon: "🌿" },
+  { id: "agua", name: "Depósito de Agua", icon: "💧" },
 ];
 
 // Métricas disponibles
@@ -139,6 +98,8 @@ const periods = [
 ];
 
 export default function Analysis() {
+  const [isMounted, setIsMounted] = useState(false);
+  const [zonesData, setZonesData] = useState<ZoneData[]>([]);
   const [selectedZones, setSelectedZones] = useState<string[]>([
     "tomates",
     "olivar",
@@ -148,6 +109,63 @@ export default function Analysis() {
   const [isExporting, setIsExporting] = useState(false);
   const [showComparison, setShowComparison] = useState(true);
   const [showPredictions, setShowPredictions] = useState(true);
+
+  // Generar datos SOLO en el cliente
+  useEffect(() => {
+    const generateAllData = () => {
+      return baseZones.map((zone) => ({
+        ...zone,
+        moisture: generateHistoricalData(
+          30,
+          zone.id === "esparto"
+            ? 78
+            : zone.id === "tomates"
+              ? 82
+              : zone.id === "olivar"
+                ? 45
+                : zone.id === "compost"
+                  ? 55
+                  : zone.id === "hierbas"
+                    ? 68
+                    : 90,
+          8,
+        ),
+        temperature: generateHistoricalData(
+          30,
+          zone.id === "esparto"
+            ? 22
+            : zone.id === "tomates"
+              ? 24
+              : zone.id === "olivar"
+                ? 21
+                : zone.id === "compost"
+                  ? 28
+                  : zone.id === "hierbas"
+                    ? 23
+                    : 18,
+          3,
+        ),
+        light: generateHistoricalData(
+          30,
+          zone.id === "esparto"
+            ? 65
+            : zone.id === "tomates"
+              ? 78
+              : zone.id === "olivar"
+                ? 45
+                : zone.id === "compost"
+                  ? 30
+                  : zone.id === "hierbas"
+                    ? 70
+                    : 40,
+          zone.id === "tomates" ? 12 : 8,
+        ),
+      }));
+    };
+
+    setZonesData(generateAllData());
+    setIsMounted(true);
+  }, []);
 
   // Calcular estadísticas
   const getStatistics = () => {
@@ -223,7 +241,7 @@ export default function Analysis() {
     setSelectedZones((prev) =>
       prev.includes(zoneId)
         ? prev.filter((id) => id !== zoneId)
-        : [...prev, zoneId]
+        : [...prev, zoneId],
     );
   };
 
@@ -237,6 +255,18 @@ export default function Analysis() {
     const periodDays = parseInt(selectedPeriod);
     return data.slice(-periodDays);
   };
+
+  // Mostrar loading mientras se generan los datos en el cliente
+  if (!isMounted || zonesData.length === 0) {
+    return (
+      <div className="min-h-screen p-4 md:p-8 bg-gradient-to-b from-purple-50/30 to-indigo-50/30 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-gray-600">Cargando datos de análisis...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen p-4 md:p-8 bg-gradient-to-b from-purple-50/30 to-indigo-50/30">
@@ -499,8 +529,14 @@ export default function Analysis() {
                   const zone = zonesData.find((z) => z.id === zoneId);
                   if (!zone) return null;
 
-                  const moistureData = getFilteredDataForZone(zoneId, "moisture");
-                  const temperatureData = getFilteredDataForZone(zoneId, "temperature");
+                  const moistureData = getFilteredDataForZone(
+                    zoneId,
+                    "moisture",
+                  );
+                  const temperatureData = getFilteredDataForZone(
+                    zoneId,
+                    "temperature",
+                  );
                   const lightData = getFilteredDataForZone(zoneId, "light");
 
                   return (

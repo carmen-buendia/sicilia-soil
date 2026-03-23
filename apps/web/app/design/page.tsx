@@ -27,8 +27,16 @@ const layers = [
     height: "8-15 m",
     species: [
       { name: "Olivo", icon: "🫒", function: "Sombra, aceite, estructura" },
-      { name: "Algarrobo", icon: "🌳", function: "Nitrógeno, sombra, alimento" },
-      { name: "Almendro", icon: "🌰", function: "Frutos secos, floración temprana" },
+      {
+        name: "Algarrobo",
+        icon: "🌳",
+        function: "Nitrógeno, sombra, alimento",
+      },
+      {
+        name: "Almendro",
+        icon: "🌰",
+        function: "Frutos secos, floración temprana",
+      },
     ],
     icon: <TreeDeciduous className="w-6 h-6" />,
     color: "from-emerald-800 to-emerald-600",
@@ -52,9 +60,21 @@ const layers = [
     name: "Capa fúngica (Micología)",
     height: "0.1-0.3 m",
     species: [
-      { name: "Cardonchello", icon: "🍄", function: "Descomposición, alimento" },
-      { name: "Cardoncello di Nebrodi", icon: "🍄", function: "Endémica, gourmet" },
-      { name: "Prataiolo siciliano", icon: "🍄", function: "Humus, regeneración" },
+      {
+        name: "Cardonchello",
+        icon: "🍄",
+        function: "Descomposición, alimento",
+      },
+      {
+        name: "Cardoncello di Nebrodi",
+        icon: "🍄",
+        function: "Endémica, gourmet",
+      },
+      {
+        name: "Prataiolo siciliano",
+        icon: "🍄",
+        function: "Humus, regeneración",
+      },
       { name: "Níccolo", icon: "🍄", function: "Micorriza con encinas" },
     ],
     icon: <Leaf className="w-6 h-6" />,
@@ -81,13 +101,15 @@ const symbiosis = [
   {
     from: "Olivo",
     to: "Cardonchello",
-    description: "Las raíces del olivo airean el suelo, el micelio del cardonchello descompone materia",
+    description:
+      "Las raíces del olivo airean el suelo, el micelio del cardonchello descompone materia",
     type: "mutualismo",
   },
   {
     from: "Esparto",
     to: "Cardoncello di Nebrodi",
-    description: "Los restos de esparto sirven de sustrato para el cultivo de setas",
+    description:
+      "Los restos de esparto sirven de sustrato para el cultivo de setas",
     type: "ciclo de nutrientes",
   },
   {
@@ -106,10 +128,42 @@ const symbiosis = [
 
 // Calendario de sucesión
 const succession = [
-  { year: "Año 1", phase: "Pionera", tasks: ["Plantación de cobertura", "Establecimiento de setas", "Riego inicial"] },
-  { year: "Años 2-3", phase: "Acumulación", tasks: ["Crecimiento de arbustos", "Primera cosecha de setas", "Acolchado continuo"] },
-  { year: "Años 4-5", phase: "Transición", tasks: ["Primeras cosechas de esparto", "Expansión de micelio", "Reducción de riego"] },
-  { year: "Años 6-10", phase: "Clímax", tasks: ["Cosecha estable de olivos", "Esparto maduro", "Sistema autorregulado"] },
+  {
+    year: "Año 1",
+    phase: "Pionera",
+    tasks: [
+      "Plantación de cobertura",
+      "Establecimiento de setas",
+      "Riego inicial",
+    ],
+  },
+  {
+    year: "Años 2-3",
+    phase: "Acumulación",
+    tasks: [
+      "Crecimiento de arbustos",
+      "Primera cosecha de setas",
+      "Acolchado continuo",
+    ],
+  },
+  {
+    year: "Años 4-5",
+    phase: "Transición",
+    tasks: [
+      "Primeras cosechas de esparto",
+      "Expansión de micelio",
+      "Reducción de riego",
+    ],
+  },
+  {
+    year: "Años 6-10",
+    phase: "Clímax",
+    tasks: [
+      "Cosecha estable de olivos",
+      "Esparto maduro",
+      "Sistema autorregulado",
+    ],
+  },
 ];
 
 export default function DesignPage() {
@@ -143,11 +197,15 @@ export default function DesignPage() {
             🌱 ¿Qué es la Permacultura Sintrópica Micológica?
           </h2>
           <p className="text-[#2C2C2C]/80 mb-4">
-            La <strong>sintropía</strong> es el principio opuesto a la entropía: sistemas que <strong>ganan complejidad y abundancia con el tiempo</strong>.
-            Aplicada a la permacultura y combinada con micología, crea un ecosistema donde cada elemento beneficia a los demás.
+            La <strong>sintropía</strong> es el principio opuesto a la entropía:
+            sistemas que{" "}
+            <strong>ganan complejidad y abundancia con el tiempo</strong>.
+            Aplicada a la permacultura y combinada con micología, crea un
+            ecosistema donde cada elemento beneficia a los demás.
           </p>
           <p className="text-[#2C2C2C]/80 italic">
-            "No es solo un huerto, es un ecosistema que se diseña a sí mismo con la ayuda de hongos y tecnología"
+            "No es solo un huerto, es un ecosistema que se diseña a sí mismo con
+            la ayuda de hongos y tecnología"
           </p>
         </div>
 
@@ -178,26 +236,35 @@ export default function DesignPage() {
           </div>
 
           {/* Contenido de la capa activa */}
-          {layers.map((layer) => (
-            activeLayer === layer.id && (
-              <div key={layer.id} className={`${layer.bg} rounded-2xl p-6 border border-[#E6B17E]/30`}>
-                <h3 className="text-xl font-bold text-[#2C2C2C] mb-4 flex items-center gap-2">
-                  {layer.icon} {layer.name}
-                </h3>
-                <div className="grid md:grid-cols-3 gap-4">
-                  {layer.species.map((species, i) => (
-                    <div key={i} className="bg-white rounded-xl p-4 shadow-sm">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="text-2xl">{species.icon}</span>
-                        <span className="font-bold">{species.name}</span>
+          {layers.map(
+            (layer) =>
+              activeLayer === layer.id && (
+                <div
+                  key={layer.id}
+                  className={`${layer.bg} rounded-2xl p-6 border border-[#E6B17E]/30`}
+                >
+                  <h3 className="text-xl font-bold text-[#2C2C2C] mb-4 flex items-center gap-2">
+                    {layer.icon} {layer.name}
+                  </h3>
+                  <div className="grid md:grid-cols-3 gap-4">
+                    {layer.species.map((species, i) => (
+                      <div
+                        key={i}
+                        className="bg-white rounded-xl p-4 shadow-sm"
+                      >
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="text-2xl">{species.icon}</span>
+                          <span className="font-bold">{species.name}</span>
+                        </div>
+                        <p className="text-sm text-gray-600">
+                          {species.function}
+                        </p>
                       </div>
-                      <p className="text-sm text-gray-600">{species.function}</p>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )
-          ))}
+              ),
+          )}
         </div>
 
         {/* Relaciones simbióticas */}
@@ -208,16 +275,35 @@ export default function DesignPage() {
           </h2>
           <div className="grid md:grid-cols-2 gap-4">
             {symbiosis.map((rel, i) => (
-              <div key={i} className="bg-white rounded-xl p-5 shadow-sm border border-[#E6B17E]/20">
+              <div
+                key={i}
+                className="bg-white rounded-xl p-5 shadow-sm border border-[#E6B17E]/20"
+              >
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
-                    <span className="text-xl">{rel.from === "Olivo" ? "🫒" : rel.from === "Esparto" ? "🌾" : rel.from === "Algarrobo" ? "🌳" : "🍄"}</span>
+                    <span className="text-xl">
+                      {rel.from === "Olivo"
+                        ? "🫒"
+                        : rel.from === "Esparto"
+                          ? "🌾"
+                          : rel.from === "Algarrobo"
+                            ? "🌳"
+                            : "🍄"}
+                    </span>
                     <span className="font-bold">{rel.from}</span>
                   </div>
                   <span className="text-[#B43F2B]">→</span>
                   <div className="flex items-center gap-2">
                     <span className="font-bold">{rel.to}</span>
-                    <span className="text-xl">{rel.to === "Cardonchello" ? "🍄" : rel.to === "Cardoncello di Nebrodi" ? "🍄" : rel.to === "Trébol" ? "🍀" : "🌱"}</span>
+                    <span className="text-xl">
+                      {rel.to === "Cardonchello"
+                        ? "🍄"
+                        : rel.to === "Cardoncello di Nebrodi"
+                          ? "🍄"
+                          : rel.to === "Trébol"
+                            ? "🍀"
+                            : "🌱"}
+                    </span>
                   </div>
                 </div>
                 <p className="text-sm text-gray-600 mb-2">{rel.description}</p>
@@ -237,12 +323,20 @@ export default function DesignPage() {
           </h2>
           <div className="grid md:grid-cols-4 gap-4">
             {succession.map((phase, i) => (
-              <div key={i} className="bg-white rounded-xl p-5 shadow-sm border border-[#E6B17E]/20">
-                <h3 className="text-lg font-bold text-[#B43F2B] mb-1">{phase.year}</h3>
+              <div
+                key={i}
+                className="bg-white rounded-xl p-5 shadow-sm border border-[#E6B17E]/20"
+              >
+                <h3 className="text-lg font-bold text-[#B43F2B] mb-1">
+                  {phase.year}
+                </h3>
                 <p className="font-medium text-[#2C2C2C] mb-3">{phase.phase}</p>
                 <ul className="space-y-1">
                   {phase.tasks.map((task, j) => (
-                    <li key={j} className="text-sm text-gray-600 flex items-start gap-1">
+                    <li
+                      key={j}
+                      className="text-sm text-gray-600 flex items-start gap-1"
+                    >
                       <span className="text-[#B43F2B]">•</span>
                       {task}
                     </li>
@@ -266,21 +360,32 @@ export default function DesignPage() {
                 <span className="text-sm font-medium">68%</span>
               </div>
               <div className="w-full h-2 bg-gray-200 rounded-full mb-4">
-                <div className="h-full bg-blue-500 rounded-full" style={{ width: "68%" }} />
+                <div
+                  className="h-full bg-blue-500 rounded-full"
+                  style={{ width: "68%" }}
+                />
               </div>
               <div className="flex justify-between mb-1">
                 <span className="text-sm text-gray-600">pH</span>
-                <span className="text-sm font-medium">7.2 (ligeramente alcalino)</span>
+                <span className="text-sm font-medium">
+                  7.2 (ligeramente alcalino)
+                </span>
               </div>
               <div className="w-full h-2 bg-gray-200 rounded-full mb-4">
-                <div className="h-full bg-purple-500 rounded-full" style={{ width: "60%" }} />
+                <div
+                  className="h-full bg-purple-500 rounded-full"
+                  style={{ width: "60%" }}
+                />
               </div>
               <div className="flex justify-between mb-1">
                 <span className="text-sm text-gray-600">Materia orgánica</span>
                 <span className="text-sm font-medium">4.5% (buena)</span>
               </div>
               <div className="w-full h-2 bg-gray-200 rounded-full">
-                <div className="h-full bg-green-500 rounded-full" style={{ width: "75%" }} />
+                <div
+                  className="h-full bg-green-500 rounded-full"
+                  style={{ width: "75%" }}
+                />
               </div>
             </div>
             <div className="bg-[#F5D7B3]/30 rounded-xl p-4">
@@ -289,10 +394,17 @@ export default function DesignPage() {
                 Recomendaciones
               </h3>
               <ul className="space-y-2 text-sm text-gray-700">
-                <li>✓ El suelo es arcillo-calcáreo, ideal para esparto y olivos</li>
-                <li>✓ Aumentar materia orgánica con compost de esparto y restos de setas</li>
+                <li>
+                  ✓ El suelo es arcillo-calcáreo, ideal para esparto y olivos
+                </li>
+                <li>
+                  ✓ Aumentar materia orgánica con compost de esparto y restos de
+                  setas
+                </li>
                 <li>✓ Mantener acolchado para retener humedad en verano</li>
-                <li>✓ Inocular micorrizas para mejorar absorción de nutrientes</li>
+                <li>
+                  ✓ Inocular micorrizas para mejorar absorción de nutrientes
+                </li>
               </ul>
             </div>
           </div>
@@ -301,10 +413,12 @@ export default function DesignPage() {
         {/* Footer del diseño */}
         <div className="text-center py-8 border-t border-[#E6B17E]/30">
           <p className="text-sm text-[#5F6B3D]">
-            🌱 Diseño basado en principios de sintropía de Ernst Götsch y micología aplicada
+            🌱 Diseño basado en principios de sintropía de Ernst Götsch y
+            micología aplicada
           </p>
           <p className="text-xs text-[#C4A27A] mt-2">
-            Este es el diseño conceptual de mi huerto en Sicilia. Cada capa está pensada para interactuar y regenerar el suelo.
+            Este es el diseño conceptual de mi huerto en Sicilia. Cada capa está
+            pensada para interactuar y regenerar el suelo.
           </p>
         </div>
       </div>
