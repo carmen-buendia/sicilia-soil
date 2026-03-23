@@ -62,6 +62,10 @@ export default function RootLayout({
       <head>
         <title>Sicilia Soil - Permacultura en tiempo real</title>
         <meta
+          name="format-detection"
+          content="telephone=no, date=no, email=no, address=no"
+        />
+        <meta
           name="description"
           content="Monitoreo de huerto de permacultura en Sicilia con sensores inteligentes"
         />
