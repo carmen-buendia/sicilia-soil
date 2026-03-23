@@ -14,6 +14,7 @@ import {
   User,
   Sprout,
   Leaf,
+  Layers,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -51,7 +52,7 @@ export default function RootLayout({
     { id: "/luz", label: "Luz Solar", icon: Sun },
     { id: "/design", label: "Diseño Sintrópico", icon: Leaf },
     { id: "/analysis", label: "Análisis", icon: LineChart },
-    { id: "/mycology", label: "Micología", icon: Leaf},
+    { id: "/mycology", label: "Micología", icon: Leaf },
     { id: "/design", label: "Diseño", icon: Layers },
     { id: "/configuration", label: "Configuración", icon: Settings },
   ];
@@ -218,19 +219,19 @@ export default function RootLayout({
                 Dashboard
               </Link>
               <Link
-                href="/humedad"
+                href="/humedity"
                 className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm"
               >
                 Humedad
               </Link>
               <Link
-                href="/temperatura"
+                href="/temperature"
                 className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm"
               >
                 Temperatura
               </Link>
               <Link
-                href="/luz"
+                href="/light"
                 className="text-amber-300 hover:text-white transition-colors text-xs sm:text-sm"
               >
                 Luz Solar
