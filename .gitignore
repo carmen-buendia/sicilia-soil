@@ -88,3 +88,5 @@ Thumbs.db
 
 # Enterprise features (comercial)
 apps/web/enterprise/
+.vercel
+.env*.local
