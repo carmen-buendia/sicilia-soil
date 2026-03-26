@@ -17,15 +17,6 @@ importers:
 
   apps/web:
     dependencies:
-      '@sicilia-soil/core':
-        specifier: workspace:*
-        version: link:../../packages/core
-      '@sicilia-soil/ui':
-        specifier: workspace:*
-        version: link:../../packages/ui
-      '@sicilia-soil/utils':
-        specifier: workspace:*
-        version: link:../../packages/utils
       date-fns:
         specifier: 3.3.1
         version: 3.3.1
