@@ -2,47 +2,46 @@ name: CI
 
 on:
   push:
-    branches: [ develop ]
+    branches: [develop, master]
   pull_request:
-    branches: [ develop ]
+    branches: [develop, master]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      
+      - uses: actions/checkout@v3
+
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 8.15.0
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
-          cache: 'pnpm'
-      
+          node-version: "18"
+          cache: "pnpm"
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      
+
       - name: Build web app
         run: pnpm run build:web
         env:
           NEXT_TELEMETRY_DISABLED: 1
-      
-      - name: Build server
-        run: pnpm run build:server
-        env:
-          NEXT_TELEMETRY_DISABLED: 1
-      
-      # Comentado temporalmente hasta arreglar ESLint
-      # - name: Lint
-      #   run: pnpm run lint
-      #   continue-on-error: true
-      
+
+      # El servidor webrtc no tiene build o está vacío, lo omitimos
+      # - name: Build server
+      #   run: pnpm run build:server
+      #   env:
+      #     NEXT_TELEMETRY_DISABLED: 1
+
+      - name: Lint
+        run: pnpm run lint
+        continue-on-error: true
+
       - name: Type check
         run: pnpm run type-check
         continue-on-error: true
