@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 
 // Import from packages
-import { Badge, Button, LoadingSpinner } from "@sicilia-soil/ui";
+import { Badge, Button, LoadingSpinner } from "@/lib/packages/ui";
 import {
   formatRelativeTime,
   getStatusColor,
@@ -25,8 +25,8 @@ import {
   getStatusText,
   formatWithUnit,
   generateHistoricalData,
-} from "@sicilia-soil/utils";
-import type { GardenZone, SensorData } from "@sicilia-soil/core";
+} from "@/lib/packages/utils";
+import type { GardenZone, SensorData } from "@/lib/packages/core";
 
 // Sicilian Flag component
 const SicilianFlag = () => (

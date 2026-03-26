@@ -10,9 +10,6 @@
     "clean": "rmdir /s /q node_modules .next 2>nul || true"
   },
   "dependencies": {
-    "@sicilia-soil/core": "workspace:*",
-    "@sicilia-soil/ui": "workspace:*",
-    "@sicilia-soil/utils": "workspace:*",
     "date-fns": "3.3.1",
     "highcharts": "^12.5.0",
     "highcharts-react-official": "^3.2.3",
