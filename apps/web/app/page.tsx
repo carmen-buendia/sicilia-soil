@@ -17,16 +17,11 @@ import {
 } from "lucide-react";
 
 // Import from packages
-import { Badge, Button, LoadingSpinner } from "@sicilia-soil/ui";
-import {
-  formatRelativeTime,
-  getStatusColor,
-  getStatusVariant,
-  getStatusText,
-  formatWithUnit,
-  generateHistoricalData,
-} from "@sicilia-soil/utils";
-import type { GardenZone, SensorData } from "@sicilia-soil/core";
+import { Badge } from "@/components/common/Badge";
+import { Button } from "@/components/common/Button";
+import { formatRelativeTime } from "@/lib/utils/helpers";
+
+import type { GardenZone } from "@/lib/types";
 
 // Sicilian Flag component
 const SicilianFlag = () => (
