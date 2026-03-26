@@ -47,10 +47,9 @@ export default function RootLayout({
 
   const navItems = [
     { id: "/", label: "Dashboard", icon: Home },
-    { id: "/humedad", label: "Humedad", icon: Droplets },
-    { id: "/temperatura", label: "Temperatura", icon: Thermometer },
-    { id: "/luz", label: "Luz Solar", icon: Sun },
-    { id: "/design", label: "Diseño Sintrópico", icon: Leaf },
+    { id: "/humedity", label: "Humedad", icon: Droplets },
+    { id: "/temperature", label: "Temperatura", icon: Thermometer },
+    { id: "/light", label: "Luz Solar", icon: Sun },
     { id: "/analysis", label: "Análisis", icon: LineChart },
     { id: "/mycology", label: "Micología", icon: Leaf },
     { id: "/design", label: "Diseño", icon: Layers },
