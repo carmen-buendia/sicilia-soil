@@ -469,9 +469,9 @@ The code is available under the **NC OSL (Non-Commercial Open Source License) v1
 
 **Conditions:**
 
-- ✅ Must retain original author credit (`Copyright (c) 2026 Carmen Buendía`)
-- ✅ Must share improvements under the same license
-- ✅ Must include license notice in redistributions
+- ✅ Must retain original author credit (`Copyright (c) 2026 Carmen Buendía`).
+- ✅ Must share improvements under the same license.
+- ✅ Must include license notice in redistributions.
 
 ### 💼 For commercial use (Paid license)
 
@@ -479,26 +479,20 @@ Are you a company, startup, or entrepreneur wanting to use **Sicilia Soil** in y
 
 **Commercial license includes:**
 
-- ✅ Unlimited commercial use
-- ✅ Full source code access
-- ✅ Priority technical support
-- ✅ Guaranteed updates
-- ✅ IP indemnification
-
-| License Type   | Annual Price | Best for                  |
-| :------------- | :----------- | :------------------------ |
-| **Startup**    | 500€         | Companies < 10 employees  |
-| **SME**        | 2.000€       | Companies 10-50 employees |
-| **Enterprise** | 5.000€       | Unlimited, SLA included   |
+- ✅ Unlimited commercial use.
+- ✅ Full source code access.
+- ✅ Priority technical support.
+- ✅ Guaranteed updates.
+- ✅ IP indemnification.
 
 ### 🎯 Why this model?
 
 This system allows me to:
 
-- Keep the project alive and dedicate time to improving it
-- Offer free access to those who can't pay (students, researchers, communities)
-- Build a sustainable business that lets me live from my work
-- Ensure large companies contribute if they want to benefit commercially
+- Keep the project alive and dedicate time to improving it.
+- Offer free access to those who can't pay (students, researchers, communities).
+- Build a sustainable business that lets me live from my work.
+- Ensure large companies contribute if they want to benefit commercially.
 
 > "This project was born from my love for permaculture and technology. I want it to be useful to the community, but I also need it to sustain me. Dual licensing is my way of honoring both goals."
 >
