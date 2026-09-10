@@ -2,45 +2,44 @@ name: Deploy
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v3
-      
-      - name: 🔧 Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-      
+        uses: actions/checkout@v4
+
       - name: 📦 Install pnpm
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          version: 8.15.0
-      
+          node-version: "20"
+          cache: "pnpm"
+
       - name: 📦 Install dependencies
-        run: pnpm install
-      
+        run: pnpm install --frozen-lockfile
+
       - name: 🔨 Build for production
-        run: pnpm run build
-      
+        run: pnpm --filter web build
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+
       - name: 📝 Create release notes
         run: |
           echo "## 🚀 Despliegue automático" > release-notes.md
           echo "" >> release-notes.md
           echo "**Fecha:** $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> release-notes.md
           echo "**Commit:** ${{ github.sha }}" >> release-notes.md
-      
+
       - name: 📦 Upload build artifacts
-        uses: actions/upload-artifact@v4  
+        uses: actions/upload-artifact@v4
         with:
           name: build-output
-          path: |
-            apps/web/.next
-            apps/webrtc-server/dist
+          path: apps/web/.next
           retention-days: 7
