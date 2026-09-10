@@ -2,6 +2,7 @@
 
 import { Download } from "lucide-react";
 import { DataPoint } from "@sicilia-soil/core";
+import { Button } from "@sicilia-soil/ui";
 
 interface DataTableProps {
   zones: Array<{
@@ -47,13 +48,13 @@ export function DataTable({ zones, unit }: DataTableProps) {
         <h2 className="text-xl font-bold text-charcoalGray flex items-center gap-2">
           Datos históricos detallados
         </h2>
-        <button
+        <Button
           onClick={exportToCSV}
           className="text-sm text-oliveGreen hover:text-oliveGreen/80 flex items-center gap-1 transition-colors"
         >
           <Download className="w-4 h-4" />
           Descargar CSV
-        </button>
+        </Button>
       </div>
 
       <div className="overflow-x-auto">

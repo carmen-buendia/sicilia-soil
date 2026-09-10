@@ -25,6 +25,7 @@ import {
   Lock,
   Settings,
 } from "lucide-react";
+import { Button } from "@sicilia-soil/ui";
 
 export default function ConfigurationPage() {
   const [activeTab, setActiveTab] = useState<
@@ -66,12 +67,13 @@ export default function ConfigurationPage() {
         {/* Tabs */}
         <div className="flex flex-wrap gap-2 mb-8 border-b border-oliveGreen/15 pb-2">
           {[
-            { id: "general", label: "⚙️ General", icon: Settings },
-            { id: "alerts", label: "🔔 Alertas", icon: Bell },
-            { id: "sensors", label: "📡 Sensores", icon: Wifi },
-            { id: "account", label: "👤 Cuenta", icon: User },
+            { id: "general", label: "General", icon: Settings },
+            { id: "alerts", label: "Alertas", icon: Bell },
+            { id: "sensors", label: "Sensores", icon: Wifi },
+            { id: "account", label: "Cuenta", icon: User },
           ].map((tab) => (
-            <button
+            <Button
+              variant={activeTab === tab.id ? "primary" : "ghost"}
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
               className={`px-4 py-2 rounded-lg transition-all flex items-center gap-2 ${
@@ -82,7 +84,7 @@ export default function ConfigurationPage() {
             >
               <tab.icon className="w-4 h-4" />
               {tab.label}
-            </button>
+            </Button>
           ))}
         </div>
 
@@ -102,7 +104,8 @@ export default function ConfigurationPage() {
                       Alternar entre tema claro y oscuro
                     </p>
                   </div>
-                  <button
+                  <Button
+                    variant="ghost"
                     onClick={() => setDarkMode(!darkMode)}
                     className={`relative w-12 h-6 rounded-full transition-colors ${
                       darkMode ? "bg-oliveGreen" : "bg-gray-300"
@@ -113,7 +116,7 @@ export default function ConfigurationPage() {
                         darkMode ? "translate-x-6" : ""
                       }`}
                     />
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>
@@ -133,7 +136,7 @@ export default function ConfigurationPage() {
                       Actualizar datos automáticamente
                     </p>
                   </div>
-                  <button
+                  <Button
                     onClick={() => setAutoRefresh(!autoRefresh)}
                     className={`relative w-12 h-6 rounded-full transition-colors ${
                       autoRefresh ? "bg-oliveGreen" : "bg-gray-300"
@@ -144,7 +147,7 @@ export default function ConfigurationPage() {
                         autoRefresh ? "translate-x-6" : ""
                       }`}
                     />
-                  </button>
+                  </Button>
                 </div>
 
                 {autoRefresh && (
@@ -179,10 +182,10 @@ export default function ConfigurationPage() {
               </select>
             </div>
 
-            <button className="w-full px-4 py-3 bg-gradient-to-r from-oliveGreen to-wheatGold text-white rounded-xl font-medium hover:shadow-lg transition-all flex items-center justify-center gap-2">
+            <Button className="w-full px-4 py-3 bg-gradient-to-r from-oliveGreen to-wheatGold text-white rounded-xl font-medium hover:shadow-lg transition-all flex items-center justify-center gap-2">
               <Save className="w-4 h-4" />
               Guardar cambios
-            </button>
+            </Button>
           </div>
         )}
 
@@ -204,7 +207,7 @@ export default function ConfigurationPage() {
                       Recibir alertas en el navegador
                     </p>
                   </div>
-                  <button
+                  <Button
                     onClick={() => setPushAlerts(!pushAlerts)}
                     className={`relative w-12 h-6 rounded-full transition-colors ${
                       pushAlerts ? "bg-oliveGreen" : "bg-gray-300"
@@ -215,7 +218,7 @@ export default function ConfigurationPage() {
                         pushAlerts ? "translate-x-6" : ""
                       }`}
                     />
-                  </button>
+                  </Button>
                 </div>
 
                 <div className="flex items-center justify-between">
@@ -227,7 +230,7 @@ export default function ConfigurationPage() {
                       Recibir alertas en tu correo
                     </p>
                   </div>
-                  <button
+                  <Button
                     onClick={() => setEmailAlerts(!emailAlerts)}
                     className={`relative w-12 h-6 rounded-full transition-colors ${
                       emailAlerts ? "bg-oliveGreen" : "bg-gray-300"
@@ -238,7 +241,7 @@ export default function ConfigurationPage() {
                         emailAlerts ? "translate-x-6" : ""
                       }`}
                     />
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>
@@ -305,10 +308,10 @@ export default function ConfigurationPage() {
               </div>
             </div>
 
-            <button className="w-full px-4 py-3 bg-gradient-to-r from-oliveGreen to-wheatGold text-white rounded-xl font-medium hover:shadow-lg transition-all flex items-center justify-center gap-2">
+            <Button className="w-full px-4 py-3 bg-gradient-to-r from-oliveGreen to-wheatGold text-white rounded-xl font-medium hover:shadow-lg transition-all flex items-center justify-center gap-2">
               <Save className="w-4 h-4" />
               Guardar umbrales
-            </button>
+            </Button>
           </div>
         )}
 
@@ -371,10 +374,10 @@ export default function ConfigurationPage() {
               </div>
             </div>
 
-            <button className="w-full px-4 py-3 bg-gradient-to-r from-oliveGreen to-wheatGold text-white rounded-xl font-medium hover:shadow-lg transition-all flex items-center justify-center gap-2">
+            <Button className="w-full px-4 py-3 bg-gradient-to-r from-oliveGreen to-wheatGold text-white rounded-xl font-medium hover:shadow-lg transition-all flex items-center justify-center gap-2">
               <RefreshCw className="w-4 h-4" />
               Reintentar conexión
-            </button>
+            </Button>
           </div>
         )}
 
@@ -435,15 +438,15 @@ export default function ConfigurationPage() {
                 <Lock className="w-5 h-5 text-oliveGreen" />
                 Seguridad
               </h3>
-              <button className="w-full px-4 py-2 border border-oliveGreen/30 text-oliveGreen rounded-lg hover:bg-oliveGreen/5 transition-colors">
+              <Button className="w-full px-4 py-2 border border-oliveGreen/30 text-oliveGreen rounded-lg hover:bg-oliveGreen/5 transition-colors">
                 Cambiar contraseña
-              </button>
+              </Button>
             </div>
 
-            <button className="w-full px-4 py-3 bg-gradient-to-r from-oliveGreen to-wheatGold text-white rounded-xl font-medium hover:shadow-lg transition-all flex items-center justify-center gap-2">
+            <Button className="w-full px-4 py-3 bg-gradient-to-r from-oliveGreen to-wheatGold text-white rounded-xl font-medium hover:shadow-lg transition-all flex items-center justify-center gap-2">
               <Save className="w-4 h-4" />
               Guardar cambios
-            </button>
+            </Button>
           </div>
         )}
       </div>

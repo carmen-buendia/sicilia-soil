@@ -217,7 +217,7 @@ export default function DesignPage() {
           </h2>
           <div className="grid md:grid-cols-4 gap-4 mb-8">
             {layers.map((layer) => (
-              <button
+              <Button
                 key={layer.id}
                 onClick={() => setActiveLayer(layer.id)}
                 className={`p-4 rounded-xl transition-all text-left ${
@@ -231,7 +231,7 @@ export default function DesignPage() {
                   <span className="font-bold">{layer.name}</span>
                 </div>
                 <p className="text-sm opacity-80">{layer.height}</p>
-              </button>
+              </Button>
             ))}
           </div>
 

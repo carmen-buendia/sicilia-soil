@@ -12,7 +12,7 @@ import {
   Leaf,
   Info,
 } from "lucide-react";
-import { MycologyChart } from "@sicilia-soil/ui";
+import { Button, MycologyChart } from "@sicilia-soil/ui";
 
 // Datos simulados para setas autóctonas
 const generateMushroomData = (
@@ -189,7 +189,8 @@ export default function MycologyPage() {
         {/* Selector de setas */}
         <div className="flex flex-wrap gap-3 mb-8">
           {mushrooms.map((m) => (
-            <button
+            <Button
+              variant="secondary"
               key={m.id}
               onClick={() => setSelectedMushroom(m.id)}
               className={`px-4 py-3 rounded-xl transition-all flex items-center gap-3 ${
@@ -214,7 +215,7 @@ export default function MycologyPage() {
                   Endémica
                 </span>
               )}
-            </button>
+            </Button>
           ))}
         </div>
 
