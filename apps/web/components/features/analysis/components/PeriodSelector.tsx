@@ -1,6 +1,7 @@
 "use client";
 
 import { periods } from "@/lib/config/site.config";
+import { Button } from "@sicilia-soil/ui";
 
 interface PeriodSelectorProps {
   selectedPeriod: string;
@@ -22,7 +23,8 @@ export function PeriodSelector({
       </label>
       <div className="grid grid-cols-2 gap-2">
         {periods.map((period) => (
-          <button
+          <Button
+            variant="ghost"
             key={period.id}
             onClick={() => onPeriodChange(period.id)}
             className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
@@ -32,7 +34,7 @@ export function PeriodSelector({
             }`}
           >
             {period.name}
-          </button>
+          </Button>
         ))}
       </div>
       {onTogglePredictions && (

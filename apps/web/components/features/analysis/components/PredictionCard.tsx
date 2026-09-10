@@ -2,6 +2,7 @@
 
 import { TrendingUp, X } from "lucide-react";
 import type { DataPoint } from "@sicilia-soil/core";
+import { Button } from "@sicilia-soil/ui";
 
 interface PredictionCardProps {
   zones: Array<{
@@ -51,12 +52,13 @@ export function PredictionCard({
           <TrendingUp className="w-5 h-5" />
           Predicciones para los próximos 7 días
         </h2>
-        <button
+        <Button
+          variant="ghost"
           onClick={onClose}
           className="p-1 hover:bg-offWhite/20 rounded-lg transition-colors"
         >
           <X className="w-5 h-5" />
-        </button>
+        </Button>
       </div>
 
       <div className="grid md:grid-cols-3 gap-6">

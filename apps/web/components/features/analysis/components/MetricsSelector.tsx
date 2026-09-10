@@ -2,6 +2,7 @@
 
 import { metrics } from "@/lib/config/site.config";
 import { getMetricBgColor } from "../utils";
+import { Button } from "@sicilia-soil/ui";
 
 interface MetricsSelectorProps {
   selectedMetric: string;
@@ -19,7 +20,8 @@ export function MetricsSelector({
       </label>
       <div className="space-y-2">
         {metrics.map((metric) => (
-          <button
+          <Button
+            variant="ghost"
             key={metric.id}
             onClick={() => onMetricChange(metric.id)}
             className={`flex items-center justify-between w-full px-3 py-2 rounded-lg transition-colors ${
@@ -33,7 +35,7 @@ export function MetricsSelector({
               <span className="font-medium">{metric.name}</span>
             </span>
             <span className="text-xs text-oliveGreen/50">{metric.unit}</span>
-          </button>
+          </Button>
         ))}
       </div>
     </div>

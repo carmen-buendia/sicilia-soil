@@ -20,6 +20,7 @@ import {
   Activity,
 } from "lucide-react";
 import { SicilianFlag } from "./SicilianFlag";
+import { Button } from "@sicilia-soil/ui";
 
 const navItems = [
   { id: "/", label: "Dashboard", icon: Home },
@@ -108,10 +109,13 @@ export function Navbar() {
 
           {/* User Menu - Versión corregida */}
           <div className="flex items-center gap-2 sm:gap-3">
-            <button className="relative p-1.5 sm:p-2 rounded-full text-oliveGreen/60 hover:text-sicilian-red transition-all duration-300 hover:bg-oliveGreen/10">
+            <Button
+              variant="secondary"
+              className="relative p-1.5 sm:p-2 rounded-full text-oliveGreen/60 hover:text-sicilian-red transition-all duration-300 hover:bg-oliveGreen/10"
+            >
               <Bell className="w-4 h-4 sm:w-5 sm:h-5" />
               <span className="absolute top-0.5 right-0.5 w-1.5 h-1.5 sm:w-2 sm:h-2 bg-wheatGold rounded-full ring-2 ring-offWhite animate-pulse" />
-            </button>
+            </Button>
 
             <div className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-oliveGreen/10 to-wheatGold/10 rounded-full pl-2 pr-4 py-1 border border-oliveGreen/20">
               <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-oliveGreen to-wheatGold rounded-full flex items-center justify-center flex-shrink-0">
@@ -122,7 +126,8 @@ export function Navbar() {
               </p>
             </div>
 
-            <button
+            <Button
+              variant="ghost"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="md:hidden p-1.5 sm:p-2 rounded-xl text-oliveGreen hover:text-wheatGold transition-all duration-300 hover:bg-oliveGreen/10"
             >
@@ -131,7 +136,7 @@ export function Navbar() {
               ) : (
                 <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
               )}
-            </button>
+            </Button>
           </div>
         </div>
 
