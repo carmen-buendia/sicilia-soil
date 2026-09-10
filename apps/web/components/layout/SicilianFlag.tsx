@@ -1,26 +1,10 @@
-/**
- * Sicilian flag component (Trinacria)
- * Displays the traditional Sicilian symbol with red and yellow colors
- *
- * @example
- * <SicilianFlag size="small" />
- * <SicilianFlag size="large" className="mx-2" />
- */
-interface SicilianFlagProps {
-  size?: "small" | "large";
-  className?: string;
-}
-
-export const SicilianFlag = ({
-  size = "small",
-  className = "",
-}: SicilianFlagProps) => {
+export const SicilianFlag = ({ size = "small", className = "" }) => {
   const sizeClass = size === "small" ? "w-6 h-6" : "w-8 h-8";
   const triangleSize = size === "small" ? "w-3 h-3" : "w-4 h-4";
 
   return (
     <div className={`relative ${sizeClass} ${className}`}>
-      <div className="absolute inset-0 bg-gradient-to-r from-red-600 to-yellow-500 rounded-full"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-[#3A5F2E] to-[#8B9D6B] rounded-full"></div>
       <div
         className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ${triangleSize}`}
       >
@@ -30,12 +14,8 @@ export const SicilianFlag = ({
   );
 };
 
-/**
- * Simple text version of the Sicilian flag badge
- * Used in compact spaces like navbar
- */
 export const SicilianFlagSimple = () => (
-  <span className="font-bold text-yellow-600 bg-red-600 px-2 py-1 rounded text-xs">
+  <span className="font-bold text-[#8B9D6B] bg-[#3A5F2E] px-2 py-1 rounded text-xs">
     SICILIA SOIL
   </span>
 );
