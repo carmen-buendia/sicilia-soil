@@ -1,25 +1,19 @@
 name: Tests
 
 on:
-  # Temporally disabled until tests are implemented
-  # push:
-  #   branches: [ develop ]
-  # pull_request:
-  #   branches: [ develop ]
-  workflow_dispatch:  # Solo manual
+  # Temporalmente deshabilitado hasta que haya tests
+  workflow_dispatch:
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
         with:
-          version: 8.15.0
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-          cache: 'pnpm'
+          node-version: "20"
+          cache: "pnpm"
       - run: pnpm install --frozen-lockfile
-      - run: pnpm run test
+      - run: pnpm test
         continue-on-error: true
