@@ -18,6 +18,7 @@ import {
   Link2,
   Info,
 } from "lucide-react";
+import { Button } from "@sicilia-soil/ui";
 
 // Datos de los estratos del sistema sintrópico
 const layers = [
