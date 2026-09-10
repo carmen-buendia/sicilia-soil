@@ -40,3 +40,6 @@ Thumbs.db
 
 # Generated CSS (Tailwind CLI output)
 output.css
+
+# Backups locales
+backup-*/

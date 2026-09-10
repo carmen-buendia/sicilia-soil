@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "paths": {
+      "@sicilia-soil/core": ["./../core/src"],
+      "@sicilia-soil/core/*": ["./../core/src/*"],
+      "@sicilia-soil/utils": ["./../utils/src"],
+      "@sicilia-soil/utils/*": ["./../utils/src/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["node_modules", "dist"]
+}

@@ -1,7 +1,7 @@
 "use client";
 
 import { TrendingUp, TrendingDown } from "lucide-react";
-import type { Statistics } from "@sicilia-soil/core/types/monitoring.types";
+import type { Statistics } from "@sicilia-soil/core";
 
 interface StatsGridProps {
   zones: Array<{

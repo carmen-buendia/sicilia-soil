@@ -1,5 +1,5 @@
-import type { SensorData } from "@sicilia-soil/core/types/monitoring.types";
-import { Alert } from "@sicilia-soil/core/types/common.types";
+import type { SensorData } from "@sicilia-soil/core";
+import { Alert } from "@sicilia-soil/core";
 
 export const mockSensorData: SensorData[] = [
   {
