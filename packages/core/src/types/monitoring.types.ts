@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 // ============================================
 // TIPOS BASE PARA ZONAS
 // ============================================
@@ -149,7 +151,7 @@ export interface Statistics {
 export interface StatsCardData {
   value: string;
   label: string;
-  icon: React.ReactNode;
+  icon: ReactNode;
   subtext?: string;
 }
 
@@ -229,4 +231,31 @@ export interface EspartoData {
     currentStock: string;
     quality: string;
   };
+}
+
+// ============================================
+// TIPOS AUXILIARES
+// ============================================
+
+export interface DataPoint {
+  timestamp: string;
+  value: number;
+}
+
+export type PeriodType = "7" | "15" | "30" | "90";
+
+// ============================================
+// ZONE CONFIG (versión para site.config.ts)
+// Config de zona (legacy site.config)
+// (evita colisión con Zone de sensores)
+// ============================================
+
+export interface ZoneConfig {
+  id: string;
+  name: string;
+  icon: string;
+  location?: string;
+  optimalHumidity?: number;
+  optimalTemperature?: number;
+  optimalLight?: number;
 }

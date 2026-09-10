@@ -1,7 +1,7 @@
 "use client";
 
 import { Download } from "lucide-react";
-import { DataPoint } from "@sicilia-soil/core/types/common.types";
+import { DataPoint } from "@sicilia-soil/core";
 
 interface DataTableProps {
   zones: Array<{

@@ -1,4 +1,10 @@
-import { Recommendation } from "@sicilia-soil/core/types/monitoring.types";
+export interface Recommendation {
+  text: string;
+  action: string;
+  color: string;
+  bg: string;
+  border: string;
+}
 
 export const getLightRecommendations = (light: number): Recommendation => {
   if (light < 30) {

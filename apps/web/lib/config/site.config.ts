@@ -1,4 +1,4 @@
-import { Zone } from "@sicilia-soil/core/types/common.types";
+import { ZoneConfig } from "@sicilia-soil/core";
 
 export const siteConfig = {
   name: "Sicilia Soil",
@@ -23,7 +23,7 @@ export const apiConfig = {
   retries: 3,
 };
 
-export const monitoringZones: Zone[] = [
+export const monitoringZones: ZoneConfig[] = [
   {
     id: "esparto",
     name: "Zona de Esparto",

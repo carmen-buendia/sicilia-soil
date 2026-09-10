@@ -1,7 +1,7 @@
 "use client";
 
 import { TrendingUp, X } from "lucide-react";
-import type { DataPoint } from "@sicilia-soil/core/types/common.types";
+import type { DataPoint } from "@sicilia-soil/core";
 
 interface PredictionCardProps {
   zones: Array<{

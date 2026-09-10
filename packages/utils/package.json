@@ -1,12 +1,27 @@
 {
   "name": "@sicilia-soil/utils",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Utility functions for Sicilia Soil",
-  "main": "src/index.ts",
-  "types": "src/index.ts",
-  "license": "NC OSL",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "types": "./src/*.ts",
+      "default": "./src/*.ts"
+    }
+  },
+  "dependencies": {
+    "@sicilia-soil/core": "workspace:*"
+  },
   "peerDependencies": {
     "typescript": "^5.3.3"
   },
-  "private": true
+  "scripts": {
+    "type-check": "tsc --noEmit"
+  }
 }
