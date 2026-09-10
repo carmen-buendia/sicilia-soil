@@ -20,6 +20,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@sicilia-soil/core": "workspace:*",
+    "@sicilia-soil/ui": "workspace:*",
+    "@sicilia-soil/utils": "workspace:*",
     "highcharts": "^12.5.0",
     "highcharts-react-official": "^3.2.3",
     "lucide-react": "^0.309.0",

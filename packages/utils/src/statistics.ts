@@ -1,5 +1,5 @@
 import { Statistics } from "@sicilia-soil/core";
-import { DataPoint } from "@sicilia-soil/core/types/common.types";
+import { DataPoint } from "@sicilia-soil/core";
 
 export const calculateStatistics = (data: DataPoint[]): Statistics => {
   if (!data.length) {
