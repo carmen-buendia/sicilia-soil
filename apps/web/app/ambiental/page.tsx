@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { HelpCircle } from "lucide-react";
 import { EnvironmentalDashboard } from "@/components/features/environmental/EnvironmentalDashboard";
+import { Button } from "@sicilia-soil/ui";
 
 // Onboarding (simplificado)
 const Onboarding = ({ onClose }: { onClose: () => void }) => {
@@ -29,9 +30,9 @@ const Onboarding = ({ onClose }: { onClose: () => void }) => {
           <h3 className="text-lg font-bold text-charcoalGray">
             {steps[step].title}
           </h3>
-          <button onClick={onClose} className="p-1 hover:bg-gray-100 rounded">
+          <Button onClick={onClose} className="p-1 hover:bg-gray-100 rounded">
             <span className="text-xl">✕</span>
-          </button>
+          </Button>
         </div>
         <p className="text-charcoalGray/80 mb-6">{steps[step].desc}</p>
         <div className="flex justify-between items-center">
@@ -40,14 +41,15 @@ const Onboarding = ({ onClose }: { onClose: () => void }) => {
           </span>
           <div className="flex gap-2">
             {step > 0 && (
-              <button
+              <Button
+                variant="secondary"
                 onClick={() => setStep(step - 1)}
                 className="px-4 py-2 rounded-lg border border-oliveGreen/20 text-oliveGreen hover:bg-oliveGreen/5"
               >
                 Anterior
-              </button>
+              </Button>
             )}
-            <button
+            <Button
               onClick={() => {
                 if (step < steps.length - 1) setStep(step + 1);
                 else onClose();
@@ -55,7 +57,7 @@ const Onboarding = ({ onClose }: { onClose: () => void }) => {
               className="px-4 py-2 rounded-lg bg-oliveGreen text-white hover:bg-oliveGreen/90"
             >
               {step === steps.length - 1 ? "¡Empezar!" : "Siguiente"}
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -92,12 +94,13 @@ export default function AmbientPage() {
               v2.0
             </span>
           </div>
-          <button
+          <Button
+            variant="ghost"
             onClick={() => setShowOnboarding(true)}
             className="p-2 rounded-lg hover:bg-oliveGreen/10 transition-colors"
           >
             <HelpCircle className="w-5 h-5 text-oliveGreen" />
-          </button>
+          </Button>
         </div>
       </header>
 

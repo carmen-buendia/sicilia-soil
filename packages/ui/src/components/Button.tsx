@@ -8,7 +8,8 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variants = {
-  primary: "bg-gradient-to-r from-red-600 to-yellow-500 text-white hover:shadow-lg",
+  primary:
+    "bg-gradient-to-r from-red-600 to-yellow-500 text-white hover:shadow-lg",
   secondary: "bg-gray-100 text-gray-700 hover:bg-gray-200",
   outline: "border-2 border-red-200 text-gray-700 hover:bg-red-50",
   ghost: "text-gray-600 hover:bg-gray-100",
@@ -32,7 +33,9 @@ export const Button = ({
   return (
     <button
       className={`rounded-xl font-semibold transition-all duration-200 ${variants[variant]} ${sizes[size]} ${
-        disabled || isLoading ? "opacity-50 cursor-not-allowed" : "hover:scale-[1.02]"
+        disabled || isLoading
+          ? "opacity-50 cursor-not-allowed"
+          : "hover:scale-[1.02]"
       } ${className}`}
       disabled={disabled || isLoading}
       {...props}

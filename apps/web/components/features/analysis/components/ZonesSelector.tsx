@@ -1,6 +1,7 @@
 "use client";
 
 import { monitoringZones } from "@/lib/config/site.config";
+import { Button } from "@sicilia-soil/ui";
 
 interface ZoneSelectorProps {
   selectedZones: string[];
@@ -18,7 +19,8 @@ export function ZoneSelector({
       </label>
       <div className="space-y-2 max-h-48 overflow-y-auto pr-2">
         {monitoringZones.map((zone) => (
-          <button
+          <Button
+            variant="ghost"
             key={zone.id}
             onClick={() => onZoneToggle(zone.id)}
             className={`flex items-center justify-between w-full px-3 py-2 rounded-lg transition-colors ${
@@ -36,7 +38,7 @@ export function ZoneSelector({
                 seleccionada
               </span>
             )}
-          </button>
+          </Button>
         ))}
       </div>
     </div>

@@ -44,6 +44,7 @@ import {
   type WaterQuality,
   type SoilQuality,
 } from "@/lib/data/ambientalData";
+import { Button } from "@sicilia-soil/ui";
 
 // ===== COMPONENTES AMBIENTALES (reutilizados) =====
 const MetricCard = ({
@@ -327,18 +328,20 @@ export default function AnalysisPage() {
             </div>
           </div>
 
-          <button
+          <Button
+            variant="primary"
             onClick={handleExport}
             className="px-4 py-2 bg-oliveGreen text-offWhite rounded-lg flex items-center gap-2 hover:bg-oliveGreen/90 transition-all hover:scale-[1.02]"
           >
             <DownloadCloud className="w-4 h-4" />
             Exportar datos
-          </button>
+          </Button>
         </div>
 
         {/* Pestañas */}
         <div className="flex gap-2 mb-6 bg-white rounded-xl p-1 border border-oliveGreen/15 shadow-sm">
-          <button
+          <Button
+            variant={activeTab === "agronomico" ? "primary" : "secondary"}
             onClick={() => setActiveTab("agronomico")}
             className={`flex-1 py-2 px-4 rounded-lg transition-all ${
               activeTab === "agronomico"
@@ -350,8 +353,9 @@ export default function AnalysisPage() {
               <Droplets className="w-4 h-4" />
               Agronómico
             </span>
-          </button>
-          <button
+          </Button>
+          <Button
+            variant={activeTab === "ambiental" ? "primary" : "secondary"}
             onClick={() => setActiveTab("ambiental")}
             className={`flex-1 py-2 px-4 rounded-lg transition-all ${
               activeTab === "ambiental"
@@ -363,7 +367,7 @@ export default function AnalysisPage() {
               <Activity className="w-4 h-4" />
               Ambiental
             </span>
-          </button>
+          </Button>
         </div>
 
         {/* ===== PESTAÑA AGRONÓMICO ===== */}

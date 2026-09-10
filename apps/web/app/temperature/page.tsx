@@ -13,6 +13,7 @@ import {
   Sun,
 } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@sicilia-soil/ui";
 
 // Datos simulados de temperatura
 const temperatureData = [
@@ -150,14 +151,14 @@ export default function TemperaturePage() {
           </div>
 
           <div className="flex gap-2">
-            <button className="px-4 py-2 bg-white/50 backdrop-blur-sm rounded-xl border border-red-200 text-sm flex items-center gap-2 hover:bg-white transition-colors">
+            <Button className="px-4 py-2 bg-white/50 backdrop-blur-sm rounded-xl border border-red-200 text-sm flex items-center gap-2 hover:bg-white transition-colors">
               <Calendar className="w-4 h-4" />
               Última semana
-            </button>
-            <button className="px-4 py-2 bg-white/50 backdrop-blur-sm rounded-xl border border-red-200 text-sm flex items-center gap-2 hover:bg-white transition-colors">
+            </Button>
+            <Button className="px-4 py-2 bg-white/50 backdrop-blur-sm rounded-xl border border-red-200 text-sm flex items-center gap-2 hover:bg-white transition-colors">
               <Download className="w-4 h-4" />
               Exportar datos
-            </button>
+            </Button>
           </div>
         </div>
 

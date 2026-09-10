@@ -18,6 +18,7 @@ import {
   Clock,
   Award,
 } from "lucide-react";
+import { Button } from "@sicilia-soil/ui";
 
 // Datos del cultivo de esparto
 const espartoData = {
@@ -225,7 +226,8 @@ export default function EspartoPage() {
             { id: "harvest", label: "Calendario", icon: "📅" },
             { id: "symbiosis", label: "Simbiosis", icon: "🔗" },
           ].map((tab) => (
-            <button
+            <Button
+              variant="secondary"
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
               className={`px-4 py-2 rounded-lg transition-all flex items-center gap-2 ${
@@ -236,7 +238,7 @@ export default function EspartoPage() {
             >
               <span>{tab.icon}</span>
               {tab.label}
-            </button>
+            </Button>
           ))}
         </div>
 
