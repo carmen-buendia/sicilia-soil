@@ -4,3 +4,4 @@ export { Button } from "./components/Button";
 export type { ButtonProps } from "./components/Button";
 export { LoadingSpinner } from "./components/LoadingSpinner";
 export type { LoadingSpinnerProps } from "./components/LoadingSpinner";
+export * from "./components/Charts";
