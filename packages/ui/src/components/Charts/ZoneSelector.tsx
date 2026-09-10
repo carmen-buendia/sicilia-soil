@@ -1,3 +1,5 @@
+import { Button } from "../Button";
+
 interface ZoneSelectorProps {
   zones: { id: string; name: string; icon: string }[];
   selectedZone: string;
