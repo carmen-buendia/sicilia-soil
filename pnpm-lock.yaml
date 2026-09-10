@@ -17,6 +17,15 @@ importers:
 
   apps/web:
     dependencies:
+      '@sicilia-soil/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@sicilia-soil/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+      '@sicilia-soil/utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
       highcharts:
         specifier: ^12.5.0
         version: 12.6.0
@@ -107,11 +116,17 @@ importers:
   packages/ui:
     dependencies:
       react:
-        specifier: ^18.3.1
+        specifier: ^18.2.0
         version: 18.3.1
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.3.1(react@18.3.1)
 
   packages/utils:
     dependencies:
+      '@sicilia-soil/core':
+        specifier: workspace:*
+        version: link:../core
       typescript:
         specifier: ^5.3.3
         version: 5.9.3

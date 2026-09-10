@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "ignoreDeprecations": "6.0",
     "target": "ES2022",
     "module": "ESNext",
     "moduleResolution": "bundler",
@@ -10,14 +9,13 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "baseUrl": ".",
     "paths": {
-      "@sicilia-soil/core": ["packages/core/src"],
-      "@sicilia-soil/core/*": ["packages/core/src/*"],
-      "@sicilia-soil/ui": ["packages/ui/src"],
-      "@sicilia-soil/ui/*": ["packages/ui/src/*"],
-      "@sicilia-soil/utils": ["packages/utils/src"],
-      "@sicilia-soil/utils/*": ["packages/utils/src/*"]
+      "@sicilia-soil/core": ["./packages/core/src"],
+      "@sicilia-soil/core/*": ["./packages/core/src/*"],
+      "@sicilia-soil/ui": ["./packages/ui/src"],
+      "@sicilia-soil/ui/*": ["./packages/ui/src/*"],
+      "@sicilia-soil/utils": ["./packages/utils/src"],
+      "@sicilia-soil/utils/*": ["./packages/utils/src/*"]
     }
   },
   "exclude": ["node_modules", "apps/*/node_modules", "packages/*/node_modules"]
