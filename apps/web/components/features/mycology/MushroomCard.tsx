@@ -1,4 +1,4 @@
-import { Badge } from "@sicilia-soil/ui";
+import { Badge, Button } from "@sicilia-soil/ui";
 
 /**
  * Mushroom cultivation card component
@@ -130,12 +130,12 @@ export const MushroomCard = ({
       </div>
 
       {/* Action Button */}
-      <button
+      <Button
         onClick={() => onViewDetails?.(mushroom.id)}
         className="w-full mt-4 px-3 py-2 bg-amber-50 text-amber-700 rounded-lg text-sm font-medium hover:bg-amber-100 transition-colors"
       >
         View Details
-      </button>
+      </Button>
     </div>
   );
 };

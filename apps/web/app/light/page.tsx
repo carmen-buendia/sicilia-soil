@@ -21,6 +21,7 @@ import {
   getLightProgressColor,
   getRecommendedPlants,
 } from "@sicilia-soil/utils";
+import { Button } from "@sicilia-soil/ui";
 
 // Datos de las zonas de luz
 const lightZones = [
@@ -205,7 +206,8 @@ export default function LightPage() {
               </span>
             </div>
 
-            <button
+            <Button
+              variant={isLive ? "secondary" : "ghost"}
               onClick={() => setIsLive(!isLive)}
               className={`px-4 py-2 rounded-xl flex items-center gap-2 transition-all ${
                 isLive
@@ -219,15 +221,15 @@ export default function LightPage() {
                 }`}
               />
               {isLive ? "Tiempo real" : "Pausado"}
-            </button>
+            </Button>
 
-            <button className="p-2 bg-white/50 backdrop-blur-sm rounded-xl border border-yellow-200 hover:bg-yellow-50 transition-all">
+            <Button className="p-2 bg-white/50 backdrop-blur-sm rounded-xl border border-yellow-200 hover:bg-yellow-50 transition-all">
               <Calendar className="w-5 h-5 text-yellow-600" />
-            </button>
+            </Button>
 
-            <button className="p-2 bg-white/50 backdrop-blur-sm rounded-xl border border-yellow-200 hover:bg-yellow-50 transition-all">
+            <Button className="p-2 bg-white/50 backdrop-blur-sm rounded-xl border border-yellow-200 hover:bg-yellow-50 transition-all">
               <Download className="w-5 h-5 text-yellow-600" />
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -295,7 +297,8 @@ export default function LightPage() {
         {/* Selector de zonas */}
         <div className="flex overflow-x-auto gap-2 mb-8 pb-2">
           {lightZones.map((zone) => (
-            <button
+            <Button
+              variant="secondary"
               key={zone.id}
               onClick={() => setSelectedZone(zone)}
               className={`px-4 py-2 rounded-xl whitespace-nowrap transition-all flex items-center gap-2 ${
@@ -315,7 +318,7 @@ export default function LightPage() {
               >
                 {zone.current}%
               </span>
-            </button>
+            </Button>
           ))}
         </div>
 
@@ -556,7 +559,7 @@ export default function LightPage() {
                 <div>
                   <label className="flex items-center justify-between mb-2">
                     <span className="text-charcoalGray">Notificaciones</span>
-                    <button
+                    <Button
                       onClick={() => setNotifications(!notifications)}
                       className={`relative w-12 h-6 rounded-full transition-colors ${
                         notifications ? "bg-yellow-500" : "bg-gray-300"
@@ -567,7 +570,7 @@ export default function LightPage() {
                           notifications ? "translate-x-6" : ""
                         }`}
                       />
-                    </button>
+                    </Button>
                   </label>
                   <p className="text-xs text-oliveGreen/60">
                     Alertas cuando la luz sea baja
@@ -605,9 +608,9 @@ export default function LightPage() {
                   </div>
                 </div>
 
-                <button className="w-full px-4 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-xl font-medium hover:shadow-lg transition-all">
+                <Button className="w-full px-4 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-xl font-medium hover:shadow-lg transition-all">
                   Guardar configuración
-                </button>
+                </Button>
               </div>
             </div>
 
