@@ -1,11 +1,10 @@
-## 🌱 Sicilia Soil
+# 🌱 Sicilia Soil
 
 <p align="center">
   <img src="https://img.shields.io/badge/STATUS-WORK%20IN%20PROGRESS-orange?style=for-the-badge&logo=githubactions&logoColor=white" alt="Work in Progress" />
-  <img src="https://img.shields.io/github/actions/workflow/status/carmen-buendia/sicilia-soil/ci.yml?branch=main&label=CI&logo=github" alt="CI Status" />
-  <img src="https://img.shields.io/github/last-commit/carmen-buendia/sicilia-soil?color=blue&logo=github" alt="Last Commit" />
   <img src="https://img.shields.io/badge/License-NC%20OSL-blue?style=flat-square" alt="License" />
-  <img src="https://img.shields.io/github/repo-size/carmen-buendia/sicilia-soil?color=purple" alt="Repo Size" />
+  <img src="https://img.shields.io/badge/pnpm-9.x-blue?style=flat-square&logo=pnpm" alt="pnpm" />
+  <img src="https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=nextdotjs" alt="Next.js" />
 </p>
 
 <p align="center">
@@ -74,6 +73,131 @@ _"De la tierra siciliana, para el mundo."_
 
 ---
 
+## 🏗️ Monorepo Architecture
+
+This is a **pnpm workspace** monorepo with a modular, feature-based architecture.
+
+```
+📦 sicilia-soil/
+│
+├── 📂 apps/
+│   │
+│   ├── 📂 web/                            # Next.js frontend (App Router)
+│   │   ├── 📂 app/                         # Routes (grouped by feature)
+│   │   │   ├── 📂 (dashboard)/              # Main dashboard → /
+│   │   │   ├── 📂 (analysis)/               # Analysis → /analysis
+│   │   │   ├── 📂 (environmental)/          # Environmental → /ambiental
+│   │   │   ├── 📂 (metrics)/                # Metrics → /humidity, /temperature, /light
+│   │   │   ├── 📂 (mycology)/               # Mycology → /mycology
+│   │   │   ├── 📂 (esparto)/                # Esparto → /esparto
+│   │   │   ├── 📂 (configuration)/          # Settings → /configuration
+│   │   │   ├── 📄 layout.tsx                # Root layout
+│   │   │   └── 📄 globals.css               # Global styles
+│   │   │
+│   │   ├── 📂 components/
+│   │   │   ├── 📂 features/                 # Feature-specific components
+│   │   │   │   ├── 📂 dashboard/             # StatsCard, ZoneCard, ServerStatus
+│   │   │   │   ├── 📂 analysis/              # DataTable, PredictionCard, etc.
+│   │   │   │   ├── 📂 environmental/         # EnvironmentalDashboard, CarbonSection
+│   │   │   │   ├── 📂 mycology/              # MushroomCard
+│   │   │   │   └── 📂 esparto/               # EspartoSummary
+│   │   │   └── 📂 layout/                    # Navbar, SicilianFlag
+│   │   │
+│   │   ├── 📂 lib/                          # App-specific config and data
+│   │   │   ├── 📂 config/                    # Site configuration
+│   │   │   ├── 📂 data/                      # Mock data and constants
+│   │   │   ├── 📂 hooks/                     # App-specific hooks
+│   │   │   ├── 📂 client/                    # WebSocket client
+│   │   │   └── 📄 api.ts                     # API client
+│   │   │
+│   │   ├── 📂 public/                       # Static assets
+│   │   ├── 📄 next.config.js                # Next.js config with turbopack.root
+│   │   ├── 📄 tailwind.config.js            # Tailwind config
+│   │   ├── 📄 tsconfig.json                 # App-level tsconfig
+│   │   ├── 📄 vercel.json                   # Vercel deployment config
+│   │   └── 📄 package.json
+│   │
+│   └── 📂 webrtc-server/                    # Node.js backend (WebSocket + Express)
+│       └── 📄 package.json
+│
+├── 📂 packages/                             # Shared packages
+│   │
+│   ├── 📂 core/                             # Shared types and interfaces
+│   │   └── 📂 src/
+│   │       ├── 📂 types/
+│   │       │   ├── 📄 garden.types.ts         # GardenZone, SensorData
+│   │       │   ├── 📄 monitoring.types.ts     # MonitoringState, MonitoringFilters
+│   │       │   └── 📄 common.types.ts         # Common shared types
+│   │       └── 📄 index.ts                    # Barrel export
+│   │
+│   ├── 📂 ui/                               # Reusable UI components
+│   │   └── 📂 src/
+│   │       ├── 📂 components/
+│   │       │   ├── 📂 Button/
+│   │       │   ├── 📂 Badge/
+│   │       │   ├── 📂 LoadingSpinner/
+│   │       │   └── 📂 Charts/                 # Highcharts wrappers
+│   │       └── 📄 index.ts                    # Barrel export
+│   │
+│   └── 📂 utils/                            # Shared utility functions
+│       └── 📂 src/
+│           ├── 📄 formatters.ts                # formatRelativeTime, formatDate
+│           ├── 📄 dateUtils.ts
+│           ├── 📄 numberUtils.ts
+│           ├── 📄 lightUtils.ts
+│           ├── 📄 temperatureUtils.ts
+│           ├── 📄 humidityUtils.ts
+│           ├── 📄 trendUtils.ts
+│           └── 📄 index.ts                     # Barrel export
+│
+├── 📂 .github/                               # GitHub Actions
+│   └── 📂 workflows/
+│       ├── 📄 ci.yml
+│       └── 📄 license-check.yml
+│
+├── 📄 pnpm-workspace.yaml                    # Workspace definition
+├── 📄 tsconfig.json                          # Root TypeScript config with aliases
+├── 📄 package.json                           # Root scripts and dev dependencies
+├── 📄 LICENSE                                # NC OSL License
+└── 📄 README.md                              # This file
+```
+
+---
+
+## 🔗 Shared Aliases
+
+The monorepo uses **workspace aliases** so any app can import from shared packages:
+
+| Alias                 | Resolves to          |
+| --------------------- | -------------------- |
+| `@sicilia-soil/core`  | `packages/core/src`  |
+| `@sicilia-soil/ui`    | `packages/ui/src`    |
+| `@sicilia-soil/utils` | `packages/utils/src` |
+
+Example usage:
+
+```tsx
+import { GardenZone } from "@sicilia-soil/core";
+import { Button, Badge, HumidityChart } from "@sicilia-soil/ui";
+import { formatRelativeTime } from "@sicilia-soil/utils";
+```
+
+---
+
+## 🧩 Features
+
+| Feature           | Route                                 | Description                                                    |
+| ----------------- | ------------------------------------- | -------------------------------------------------------------- |
+| **Dashboard**     | `/`                                   | Overview of garden zones, environmental metrics, sensor status |
+| **Analysis**      | `/analysis`                           | Comparative charts, statistics, and predictions                |
+| **Environmental** | `/ambiental`                          | Heavy metals, air quality, water quality, CO₂ sequestration    |
+| **Metrics**       | `/humidity`, `/temperature`, `/light` | Detailed per-zone metric monitoring                            |
+| **Mycology**      | `/mycology`                           | Native Sicilian mushroom tracking                              |
+| **Esparto**       | `/esparto`                            | Esparto cultivation and traditional calendar                   |
+| **Configuration** | `/configuration`                      | System settings                                                |
+
+---
+
 ## 🍄 What is Syntropic Mycology Permaculture?
 
 **Syntropy** is the principle opposite to entropy: systems that **gain complexity and abundance over time**. Applied to permaculture and combined with mycology, it creates:
@@ -86,7 +210,7 @@ _"De la tierra siciliana, para el mundo."_
 └── 🌱 Ground cover (clover, legumes)
 ```
 
-### Benefits of this approach:
+### Benefits of this approach
 
 | Layer      | Function                  | Species                                                   |
 | :--------- | :------------------------ | :-------------------------------------------------------- |
@@ -96,33 +220,6 @@ _"De la tierra siciliana, para el mundo."_
 | **Cover**  | Soil protection, moisture | Clover, fava beans                                        |
 
 **The result:** An ecosystem where every element benefits the others, with fungi acting as the "internet of the soil," connecting roots and sharing nutrients.
-
----
-
-## 🎨 Syntropic Design: The Garden Layers
-
-The project is built on a **stratified ecosystem** that mimics natural succession:
-
-### 📍 Layer Map
-
-- **Canopy (8-15m)**: Olive trees, carob trees — provide shade, structure, and food
-- **Understory (2-6m)**: Esparto grass, rosemary, thyme — protection, biomass, aromatics
-- **Fungal Layer (0-0.3m)**: Cardonchello, Cardoncello di Nebrodi — decomposition, nutrient cycling
-- **Ground Cover (0-0.5m)**: Clover, fava beans — soil protection, nitrogen fixation
-
-### 🔗 Symbiotic Relationships
-
-- **Olive + Cardonchello**: Olive roots aerate soil, mushroom mycelium decomposes matter
-- **Esparto + Cardoncello di Nebrodi**: Esparto waste becomes substrate for mushrooms
-- **Carob + Clover**: Nitrogen fixation and soil protection
-- **Mycorrhizae + All Plants**: Underground network sharing nutrients and water
-
-### ⏱️ Temporal Succession
-
-- **Year 1 (Pioneer)**: Cover crops, mushroom establishment, initial irrigation
-- **Years 2-3 (Accumulation)**: Shrub growth, first mushroom harvests, continuous mulching
-- **Years 4-5 (Transition)**: First esparto harvests, mycelium expansion, reduced irrigation
-- **Years 6-10 (Climax)**: Stable olive harvests, mature esparto, self-regulated system
 
 ---
 
@@ -171,188 +268,14 @@ At Sicilia Soil, we're not just monitoring data. We're building a **circular eco
 
 > 🔍 *Note: **Cardonchello (Pleurotus eryngii)** is Sicily's most emblematic mushroom. It grows naturally on the roots of *Ferula communis* (giant fennel), a plant that shares habitat with esparto. This natural symbiosis is the foundation of our cycle.*
 
-### 🔄 How the cycle works with native mushrooms
-
-#### 1. **Esparto** (Stipa tenacissima)
-
-- Traditional Sicilian fiber plant
-- Produces long fibers for crafts
-- Generates pruning waste and dry leaves
-- **Shares natural habitat with _Ferula communis_**, the host plant of cardonchello
-
-#### 2. **Esparto waste → Substrate for native mushrooms**
-
-- Short fibers and leaves are shredded
-- Mixed with _Ferula communis_ roots (for cardonchello)
-- Gypsum and straw added to create ideal substrate
-
-#### 3. **Native mushrooms → Soil regeneration**
-
-- Cardonchello mycelium breaks down esparto lignin
-- Transforms tough fibers into **high-quality humus**
-- Releases nutrients that specifically benefit esparto
-- **Native mushrooms are adapted to Sicilian climate**: drought and heat resistant
-
-#### 4. **Mulching with waste**
-
-- Longer fibers used as **mulch**
-- Protect soil from erosion
-- Retain moisture during Sicilian summers
-- Feed native microbial life
-
-#### 5. **Living soil → Stronger esparto**
-
-- Soil regenerated by native fungi produces more vigorous esparto
-- Greater drought resistance (crucial in Sicily)
-- Higher quality fibers for crafts
-
-### 🌱 Advantages of using Sicilian native mushrooms
-
-| Advantage                     | Explanation                                                        |
-| :---------------------------- | :----------------------------------------------------------------- |
-| **Climate adaptation**        | Resistant to Sicilian drought and high temperatures                |
-| **Natural symbiosis**         | Co-evolved with native plants like _Ferula communis_               |
-| **Low water consumption**     | Adapted to Mediterranean water scarcity                            |
-| **High market demand**        | _Cardonchello_ and _Cardoncello di Nebrodi_ are gourmet delicacies |
-| **Biodiversity conservation** | Helps preserve endangered endemic species                          |
-
-### 📊 Regeneration metrics with native species
-
-| Indicator                             | Goal (1 year) | Goal (3 years)  |
-| :------------------------------------ | :------------ | :-------------- |
-| **Soil organic matter**               | +15%          | +40%            |
-| **Water retention capacity**          | +20%          | +50%            |
-| **Esparto production**                | +10%          | +25%            |
-| **Cardonchello production**           | 3 kg/month    | 10 kg/month     |
-| **Cardoncello di Nebrodi production** | 1 kg/month    | 5 kg/month      |
-| **Organic waste**                     | Zero          | Zero (circular) |
-
-### 🌍 Why this is Sicilian syntropy
-
-**Syntropy** is the opposite of entropy:
-
-- **Entropy**: systems that lose energy and degrade
-- **Syntropy**: systems that **gain complexity and abundance** over time
-
-Our cycle is syntropic because:
-
-1. **Zero waste** — everything is transformed
-2. **Increases biodiversity** with native species
-3. **Improves soil** year after year
-4. **Creates multiple products** (gourmet mushrooms, esparto, compost)
-5. **Connects tradition, biodiversity, and technology**
-6. **Preserves endangered endemic** Sicilian varieties
-
-### 🔜 Next steps in the dashboard
-
-- [ ] **Cycle tracking module** — Visualize material flow
-- [ ] **Substrate humidity sensor** — Optimal conditions for cardonchello
-- [ ] **Mushroom sowing calendar** — Coordinated with esparto pruning
-- [ ] **Circularity calculator** — How much waste becomes food
-- [ ] **Native mushroom database** — Growth cycles, optimal conditions
-
-### 🎯 The dream: living soil and restored biodiversity
-
-> _"We don't just want to cultivate. We want the land to become more fertile every year. For our waste not to be garbage, but food for new cycles. For esparto and cardonchello to dance together in an underground embrace, as they have for millennia on this land."_
-
-> _"Restoring Sicilian biodiversity, mushroom by mushroom, fiber by fiber."_
-
-This is the heart of **Sicilia Soil**: a system where **every element feeds the next**, where **native species** are the protagonists, and technology helps us see and understand these invisible processes.
-
----
-
-## 👩‍💻 Author
-
-| <img src="https://github.com/carmen-buendia.png" width="100px" style="border-radius: 50%;" alt="Carmen Buendía"/> | **Carmen Buendía**<br />🎵 Music Producer · 🏗️ Frontend Architect · 🌱 Syntropic Systems Designer<br /><br /><a href="https://github.com/carmen-buendia"><img src="https://img.shields.io/badge/GitHub-100000?style=flat&logo=github" /></a> <a href="https://linkedin.com/in/carmen-buendía"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin" /></a> <a href="mailto:carmenbuendiafullstack@gmail.com"><img src="https://img.shields.io/badge/Email-D14836?style=flat&logo=gmail&logoColor=white" /></a> |
-| :---------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-
----
-
-## 📊 Project Status
-
-| Component                 |     Status     | Next Steps                    |
-| :------------------------ | :------------: | :---------------------------- |
-| **Frontend (Next.js)**    | ✅ Functional  | Add unit tests                |
-| **Backend (WebSocket)**   | ✅ Functional  | Integrate real sensors        |
-| **Syntropic Dashboard**   | ✅ Operational | Visualize layer relationships |
-| **Mycology Module**       | ✅ Operational | Track fungal cycles           |
-| **Esparto Calendar**      | ✅ Operational | Traditional tasks             |
-| **Syntropic Design Page** | ✅ Operational | Add interactive layer map     |
-| **Data Visualization**    | ⏳ In Progress | HighCharts/AG-Grid            |
-| **Testing**               |   ⏳ Pending   | Jest + React Testing Library  |
-| **CI/CD**                 | ✅ Configured  | GitHub Actions active         |
-
----
-
-## 🏗️ Monorepo Architecture
-
-```
-📦 sicilia-soil/
-├── 📂 apps/
-│   ├── 📂 web/                    # Next.js frontend
-│   │   ├── 📂 app/                 # App Router
-│   │   │   ├── 📂 design/          # Syntropic design page
-│   │   │   ├── 📂 analysis/        # Data analysis page
-│   │   │   └── 📂 mycology/        # Mycology tracking page
-│   │   ├── 📂 components/           # React components
-│   │   └── 📂 lib/                  # Utilities & client
-│   │
-│   └── 📂 webrtc-server/            # Node.js backend
-│
-├── 📂 packages/                     # Shared packages
-│   ├── 📂 core/                     # Core types and interfaces
-│   ├── 📂 ui/                       # Reusable UI components
-│   └── 📂 utils/                    # Utility functions
-│
-├── 📂 .github/                       # GitHub Actions
-│   └── 📂 workflows/
-│       ├── 📄 ci.yml                  # CI pipeline
-│       └── 📄 license-check.yml       # License verification
-│
-├── 📄 LICENSE                         # NC OSL License
-├── 📄 README.md                       # This file
-└── 📄 package.json                    # Monorepo dependencies
-```
-
----
-
-## 🌱 Syntropic Design in the Dashboard
-
-The dashboard reflects the principles of syntropy:
-
-### 📍 Layer Map
-
-Visualization of different heights and strata:
-
-- Canopy (olives)
-- Understory (esparto)
-- Fungal layer (mushrooms)
-- Ground cover
-
-### 🔗 Symbiotic Relationships
-
-Each zone shows how elements benefit each other:
-
-- Mycorrhizae connecting roots
-- Fungi decomposing matter
-- Nitrogen-fixing plants
-
-### ⏱️ Temporal Succession
-
-Calendar showing natural system evolution:
-
-- Pioneer phase
-- Accumulation phase
-- Climax phase (maturity)
-
 ---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
-- Node.js 18+
-- pnpm 8+ (`npm install -g pnpm`)
+- **Node.js** 20+
+- **pnpm** 9+ (`npm install -g pnpm`)
 - (Optional) Arduino sensors for real data
 
 ### Installation
@@ -362,15 +285,66 @@ Calendar showing natural system evolution:
 git clone https://github.com/carmen-buendia/sicilia-soil.git
 cd sicilia-soil
 
-# Install dependencies
+# Install all workspace dependencies
 pnpm install
-
-# Run frontend (http://localhost:3000)
-pnpm run dev --filter=web
-
-# In another terminal, run backend (http://localhost:3001)
-pnpm run dev --filter=webrtc-server
 ```
+
+### Development
+
+```bash
+# Run only the web frontend (recommended for UI work)
+pnpm --filter=web dev
+
+# Run only the WebSocket backend
+pnpm --filter=webrtc-server dev
+
+# Run all apps in parallel
+pnpm dev
+```
+
+The frontend will be available at **http://localhost:3000**.
+The WebSocket backend will be available at **http://localhost:3001**.
+
+### Production Build
+
+```bash
+pnpm --filter=web build
+pnpm --filter=web start
+```
+
+---
+
+## 🌐 Deploying to Vercel
+
+This monorepo is configured to deploy the frontend app to Vercel.
+
+### 1. Import the repository
+
+Go to [vercel.com/new](https://vercel.com/new) and select `sicilia-soil`.
+
+### 2. Configure the project
+
+| Setting              | Value                                 |
+| -------------------- | ------------------------------------- |
+| **Framework Preset** | Next.js                               |
+| **Root Directory**   | `apps/web`                            |
+| **Install Command**  | `cd ../.. && pnpm install`            |
+| **Build Command**    | `cd ../.. && pnpm --filter=web build` |
+| **Output Directory** | `.next`                               |
+
+### 3. Environment Variables
+
+Add these in **Settings → Environment Variables**:
+
+| Variable                       | Value                                       |
+| ------------------------------ | ------------------------------------------- |
+| `NEXT_PUBLIC_API_URL`          | `https://sicilia-soil-backend.onrender.com` |
+| `NEXT_PUBLIC_WS_URL`           | `wss://sicilia-soil-backend.onrender.com`   |
+| `NEXT_PUBLIC_ENABLE_MOCK_DATA` | `true`                                      |
+
+### 4. Production Branch
+
+Set **Settings → Git → Production Branch** to `develop` (or `main`).
 
 ---
 
@@ -387,57 +361,59 @@ This project uses **GitHub Actions** to maintain code quality and license compli
 🔜 Automatic deployment to Vercel
 ```
 
-[![CI Status](https://github.com/carmen-buendia/sicilia-soil/actions/workflows/ci.yml/badge.svg)](https://github.com/carmen-buendia/sicilia-soil/actions/workflows/ci.yml)
+---
+
+## 🛠️ Technologies
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=nextdotjs" alt="Next.js" />
+  <img src="https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React" />
+  <img src="https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Tailwind-3-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS" />
+  <img src="https://img.shields.io/badge/Highcharts-12-0081CB?style=for-the-badge&logo=highcharts&logoColor=white" alt="Highcharts" />
+  <img src="https://img.shields.io/badge/pnpm-9-F69220?style=for-the-badge&logo=pnpm&logoColor=white" alt="pnpm" />
+</p>
 
 ---
 
-## 🧪 Testing (Roadmap)
+## 🗺️ Roadmap
 
-| Phase                 |   Status   | Description                  |
-| :-------------------- | :--------: | :--------------------------- |
-| **Unit tests**        | ⏳ Pending | Jest + React Testing Library |
-| **Integration tests** | ⏳ Pending | End-to-end flow testing      |
-| **E2E tests**         | ⏳ Pending | Cypress / Playwright         |
-| **Coverage**          | ⏳ Pending | Minimum 80%                  |
-
----
-
-## 🗺️ Syntropic Roadmap
-
-### ✅ v1.0.0 - Foundation (Current)
+### ✅ v1.0.0 – Foundation
 
 - [x] Basic dashboard with simulated data
-- [x] Layer visualization (heights)
-- [x] Esparto cultivation with traditional calendar
+- [x] Syntropic layer visualization
+- [x] Esparto cultivation calendar
 - [x] Mycology with native Sicilian mushrooms
-- [x] Syntropic design page
+- [x] Environmental monitoring dashboard
+- [x] Monorepo architecture with shared packages
 - [x] CI/CD configured
 - [x] Dual licensing structure
 
-### 🚧 v1.1.0 - Connections (Next)
+### 🚧 v1.1.0 – Connections
 
+- [ ] Real IoT sensor integration
+- [ ] Persistent database (PostgreSQL + Prisma)
+- [ ] Unit tests (Jest + React Testing Library)
+- [ ] Storybook for `packages/ui`
 - [ ] Symbiotic relationship visualization
-- [ ] Unit tests (Jest)
-- [ ] Syntropic principles documentation
-- [ ] TypeScript improvements
 
-### 🔜 v1.2.0 - Advanced Visualization
+### 🔜 v1.2.0 – Advanced Visualization
 
 - [ ] HighCharts/AG-Grid for succession graphs
 - [ ] Interactive historical data
 - [ ] Soil nutrient maps
 - [ ] Layer comparisons
 
-### 🔮 v2.0.0 - Syntropic IoT
+### 🔮 v2.0.0 – Syntropic IoT
 
-- [ ] Real Arduino sensors connection
-- [ ] Persistent database
 - [ ] Ecological imbalance alerts
 - [ ] Predictive succession model
+- [ ] Native mushroom database
+- [ ] Mobile companion app
 
 ---
 
-## 🤝 Syntropic Contributions
+## 🤝 Contributing
 
 Want to contribute to this digital ecosystem? All help is welcome!
 
@@ -452,11 +428,11 @@ Want to contribute to this digital ecosystem? All help is welcome!
 
 ## ⚖️ License & Business Model
 
-**Sicilia Soil** uses a dual licensing model to balance community access with project sustainability:
+**Sicilia Soil** uses a dual licensing model to balance community access with project sustainability.
 
-### 🌱 For the community (Free - NC OSL)
+### 🌱 For the community (Free – NC OSL)
 
-The code is available under the **NC OSL (Non-Commercial Open Source License) v1.0**. This means you can use, modify, and share it freely for:
+The code is available under the **NC OSL (Non-Commercial Open Source License) v1.0**. You can use, modify, and share it freely for:
 
 | ✅ Permitted                        | ❌ Not Permitted                       |
 | :---------------------------------- | :------------------------------------- |
@@ -469,9 +445,9 @@ The code is available under the **NC OSL (Non-Commercial Open Source License) v1
 
 **Conditions:**
 
-- ✅ Must retain original author credit (`Copyright (c) 2026 Carmen Buendía`).
-- ✅ Must share improvements under the same license.
-- ✅ Must include license notice in redistributions.
+- ✅ Must retain original author credit (`Copyright (c) 2026 Carmen Buendía`)
+- ✅ Must share improvements under the same license
+- ✅ Must include license notice in redistributions
 
 ### 💼 For commercial use (Paid license)
 
@@ -479,20 +455,26 @@ Are you a company, startup, or entrepreneur wanting to use **Sicilia Soil** in y
 
 **Commercial license includes:**
 
-- ✅ Unlimited commercial use.
-- ✅ Full source code access.
-- ✅ Priority technical support.
-- ✅ Guaranteed updates.
-- ✅ IP indemnification.
+- ✅ Unlimited commercial use
+- ✅ Full source code access
+- ✅ Priority technical support
+- ✅ Guaranteed updates
+- ✅ IP indemnification
+
+| License Type   | Annual Price | Best for                  |
+| :------------- | :----------- | :------------------------ |
+| **Startup**    | 500€         | Companies < 10 employees  |
+| **SME**        | 2.000€       | Companies 10-50 employees |
+| **Enterprise** | 5.000€       | Unlimited, SLA included   |
 
 ### 🎯 Why this model?
 
 This system allows me to:
 
-- Keep the project alive and dedicate time to improving it.
-- Offer free access to those who can't pay (students, researchers, communities).
-- Build a sustainable business that lets me live from my work.
-- Ensure large companies contribute if they want to benefit commercially.
+- Keep the project alive and dedicate time to improving it
+- Offer free access to those who can't pay (students, researchers, communities)
+- Build a sustainable business that lets me live from my work
+- Ensure large companies contribute if they want to benefit commercially
 
 > "This project was born from my love for permaculture and technology. I want it to be useful to the community, but I also need it to sustain me. Dual licensing is my way of honoring both goals."
 >
@@ -506,6 +488,25 @@ Interested in a commercial license or have questions?
 
 - **Email:** carmenbuendiafullstack@gmail.com
 - **LinkedIn:** [carmen-buendía](https://linkedin.com/in/carmen-buendía)
+
+---
+
+## 👩‍💻 Author
+
+<p align="center">
+  <img src="https://github.com/carmen-buendia.png" width="100px" style="border-radius: 50%;" alt="Carmen Buendía"/>
+</p>
+
+<p align="center">
+  <strong>Carmen Buendía</strong><br />
+  🎵 Music Producer · 🏗️ Frontend Architect · 🌱 Syntropic Systems Designer
+</p>
+
+<p align="center">
+  <a href="https://github.com/carmen-buendia"><img src="https://img.shields.io/badge/GitHub-100000?style=flat&logo=github" /></a>
+  <a href="https://linkedin.com/in/carmen-buendía"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin" /></a>
+  <a href="mailto:carmenbuendiafullstack@gmail.com"><img src="https://img.shields.io/badge/Email-D14836?style=flat&logo=gmail&logoColor=white" /></a>
+</p>
 
 ---
 
@@ -525,4 +526,3 @@ Interested in a commercial license or have questions?
     <img src="https://img.shields.io/github/watchers/carmen-buendia/sicilia-soil?style=social" alt="Watchers" />
   </a>
 </p>
-```
