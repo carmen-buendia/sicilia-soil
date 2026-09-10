@@ -10,6 +10,12 @@ const nextConfig = {
   turbopack: {
     root: path.join(__dirname, "../.."),
   },
+  // Transpila los paquetes internos que exportan TS crudo
+  transpilePackages: [
+    "@sicilia-soil/core",
+    "@sicilia-soil/ui",
+    "@sicilia-soil/utils",
+  ],
 };
 
 module.exports = nextConfig;

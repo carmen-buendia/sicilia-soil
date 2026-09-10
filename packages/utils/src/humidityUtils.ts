@@ -1,4 +1,4 @@
-import { Recommendation } from "@sicilia-soil/core/types/index";
+import { Recommendation } from "@sicilia-soil/core/types/monitoring.types";
 
 export const getHumidityRecommendations = (
   humidity: number,

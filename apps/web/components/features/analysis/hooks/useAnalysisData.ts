@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import type {
   DataPoint,
   Statistics,
-} from "@sicilia-soil/core/types/common.types";
+} from "@sicilia-soil/core";
 import { monitoringZones } from "@/lib/config/site.config";
 
 interface ZoneData {
