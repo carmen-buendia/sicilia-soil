@@ -139,15 +139,15 @@ export default function HumedadPage() {
 
           <div className="flex gap-2">
             <Button
-              variant="glass"
-              size="sm"
+              variant="glass-red"
+              size="md"
               icon={<Calendar className="w-4 h-4" />}
             >
               Última semana
             </Button>
             <Button
-              variant="glass"
-              size="sm"
+              variant="glass-red"
+              size="md"
               icon={<Download className="w-4 h-4" />}
             >
               Exportar datos
@@ -380,11 +380,7 @@ export default function HumedadPage() {
                         </p>
                       </div>
                     </div>
-                    <Button
-                      variant="blue"
-                      size="sm"
-                      className="w-full mt-3"
-                    >
+                    <Button variant="blue" size="sm" className="w-full mt-3">
                       💧 Riego manual ahora
                     </Button>
                   </div>
@@ -455,11 +451,7 @@ export default function HumedadPage() {
               <Button variant="outline-blue" className="w-full">
                 📅 Programar riego
               </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="w-full mt-2"
-              >
+              <Button variant="ghost" size="sm" className="w-full mt-2">
                 ⚙️ Configuración avanzada
               </Button>
             </div>
