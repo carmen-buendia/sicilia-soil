@@ -132,7 +132,7 @@ export const MushroomCard = ({
       {/* Action Button */}
       <Button
         onClick={() => onViewDetails?.(mushroom.id)}
-        className="w-full mt-4 px-3 py-2 bg-amber-50 text-amber-700 rounded-lg text-sm font-medium hover:bg-amber-100 transition-colors"
+        className="w-full mt-4 px-3 py-2 !bg-amber-50 !text-amber-700 rounded-lg text-sm font-medium hover:bg-amber-100 transition-colors"
       >
         View Details
       </Button>

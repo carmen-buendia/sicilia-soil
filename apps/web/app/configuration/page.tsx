@@ -6,24 +6,14 @@ import {
   ArrowLeft,
   Bell,
   Droplets,
-  Thermometer,
-  Sun,
-  Wind,
-  Save,
   RefreshCw,
-  Shield,
-  Database,
+  Settings,
   Wifi,
-  Moon,
-  Sun as SunIcon,
-  Monitor,
   Globe,
-  Mail,
-  Phone,
-  MapPin,
   User,
   Lock,
-  Settings,
+  Monitor,
+  Save,
 } from "lucide-react";
 import { Button } from "@sicilia-soil/ui";
 
@@ -37,6 +27,13 @@ export default function ConfigurationPage() {
   const [darkMode, setDarkMode] = useState(false);
   const [autoRefresh, setAutoRefresh] = useState(true);
   const [refreshInterval, setRefreshInterval] = useState("30");
+
+  const tabs = [
+    { id: "general", label: "General", icon: Settings },
+    { id: "alerts", label: "Alertas", icon: Bell },
+    { id: "sensors", label: "Sensores", icon: Wifi },
+    { id: "account", label: "Cuenta", icon: User },
+  ] as const;
 
   return (
     <div className="min-h-screen p-4 md:p-8 pt-24 bg-offWhite">
@@ -66,23 +63,14 @@ export default function ConfigurationPage() {
 
         {/* Tabs */}
         <div className="flex flex-wrap gap-2 mb-8 border-b border-oliveGreen/15 pb-2">
-          {[
-            { id: "general", label: "General", icon: Settings },
-            { id: "alerts", label: "Alertas", icon: Bell },
-            { id: "sensors", label: "Sensores", icon: Wifi },
-            { id: "account", label: "Cuenta", icon: User },
-          ].map((tab) => (
+          {tabs.map((tab) => (
             <Button
-              variant={activeTab === tab.id ? "primary" : "ghost"}
               key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
-              className={`px-4 py-2 rounded-lg transition-all flex items-center gap-2 ${
-                activeTab === tab.id
-                  ? "bg-oliveGreen text-white shadow-md"
-                  : "text-oliveGreen/70 hover:bg-oliveGreen/10"
-              }`}
+              variant="tab"
+              active={activeTab === tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              icon={<tab.icon className="w-4 h-4" />}
             >
-              <tab.icon className="w-4 h-4" />
               {tab.label}
             </Button>
           ))}
@@ -104,19 +92,20 @@ export default function ConfigurationPage() {
                       Alternar entre tema claro y oscuro
                     </p>
                   </div>
-                  <Button
-                    variant="ghost"
+                  {/* Switch nativo — no es un Button */}
+                  <button
                     onClick={() => setDarkMode(!darkMode)}
                     className={`relative w-12 h-6 rounded-full transition-colors ${
                       darkMode ? "bg-oliveGreen" : "bg-gray-300"
                     }`}
+                    aria-label="Modo oscuro"
                   >
                     <span
                       className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${
                         darkMode ? "translate-x-6" : ""
                       }`}
                     />
-                  </Button>
+                  </button>
                 </div>
               </div>
             </div>
@@ -136,18 +125,20 @@ export default function ConfigurationPage() {
                       Actualizar datos automáticamente
                     </p>
                   </div>
-                  <Button
+                  {/* Switch nativo */}
+                  <button
                     onClick={() => setAutoRefresh(!autoRefresh)}
                     className={`relative w-12 h-6 rounded-full transition-colors ${
                       autoRefresh ? "bg-oliveGreen" : "bg-gray-300"
                     }`}
+                    aria-label="Auto-refresco"
                   >
                     <span
                       className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${
                         autoRefresh ? "translate-x-6" : ""
                       }`}
                     />
-                  </Button>
+                  </button>
                 </div>
 
                 {autoRefresh && (
@@ -182,8 +173,11 @@ export default function ConfigurationPage() {
               </select>
             </div>
 
-            <Button className="w-full px-4 py-3 bg-gradient-to-r from-oliveGreen to-wheatGold text-white rounded-xl font-medium hover:shadow-lg transition-all flex items-center justify-center gap-2">
-              <Save className="w-4 h-4" />
+            <Button
+              variant="gradient"
+              className="w-full"
+              icon={<Save className="w-4 h-4" />}
+            >
               Guardar cambios
             </Button>
           </div>
@@ -207,18 +201,20 @@ export default function ConfigurationPage() {
                       Recibir alertas en el navegador
                     </p>
                   </div>
-                  <Button
+                  {/* Switch nativo */}
+                  <button
                     onClick={() => setPushAlerts(!pushAlerts)}
                     className={`relative w-12 h-6 rounded-full transition-colors ${
                       pushAlerts ? "bg-oliveGreen" : "bg-gray-300"
                     }`}
+                    aria-label="Notificaciones push"
                   >
                     <span
                       className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${
                         pushAlerts ? "translate-x-6" : ""
                       }`}
                     />
-                  </Button>
+                  </button>
                 </div>
 
                 <div className="flex items-center justify-between">
@@ -230,18 +226,20 @@ export default function ConfigurationPage() {
                       Recibir alertas en tu correo
                     </p>
                   </div>
-                  <Button
+                  {/* Switch nativo */}
+                  <button
                     onClick={() => setEmailAlerts(!emailAlerts)}
                     className={`relative w-12 h-6 rounded-full transition-colors ${
                       emailAlerts ? "bg-oliveGreen" : "bg-gray-300"
                     }`}
+                    aria-label="Alertas por email"
                   >
                     <span
                       className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${
                         emailAlerts ? "translate-x-6" : ""
                       }`}
                     />
-                  </Button>
+                  </button>
                 </div>
               </div>
             </div>
@@ -308,8 +306,11 @@ export default function ConfigurationPage() {
               </div>
             </div>
 
-            <Button className="w-full px-4 py-3 bg-gradient-to-r from-oliveGreen to-wheatGold text-white rounded-xl font-medium hover:shadow-lg transition-all flex items-center justify-center gap-2">
-              <Save className="w-4 h-4" />
+            <Button
+              variant="gradient"
+              className="w-full"
+              icon={<Save className="w-4 h-4" />}
+            >
               Guardar umbrales
             </Button>
           </div>
@@ -374,8 +375,11 @@ export default function ConfigurationPage() {
               </div>
             </div>
 
-            <Button className="w-full px-4 py-3 bg-gradient-to-r from-oliveGreen to-wheatGold text-white rounded-xl font-medium hover:shadow-lg transition-all flex items-center justify-center gap-2">
-              <RefreshCw className="w-4 h-4" />
+            <Button
+              variant="gradient"
+              className="w-full"
+              icon={<RefreshCw className="w-4 h-4" />}
+            >
               Reintentar conexión
             </Button>
           </div>
@@ -438,13 +442,16 @@ export default function ConfigurationPage() {
                 <Lock className="w-5 h-5 text-oliveGreen" />
                 Seguridad
               </h3>
-              <Button className="w-full px-4 py-2 border border-oliveGreen/30 text-oliveGreen rounded-lg hover:bg-oliveGreen/5 transition-colors">
+              <Button variant="outline-olive" className="w-full">
                 Cambiar contraseña
               </Button>
             </div>
 
-            <Button className="w-full px-4 py-3 bg-gradient-to-r from-oliveGreen to-wheatGold text-white rounded-xl font-medium hover:shadow-lg transition-all flex items-center justify-center gap-2">
-              <Save className="w-4 h-4" />
+            <Button
+              variant="gradient"
+              className="w-full"
+              icon={<Save className="w-4 h-4" />}
+            >
               Guardar cambios
             </Button>
           </div>

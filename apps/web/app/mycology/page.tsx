@@ -12,7 +12,9 @@ import {
   Leaf,
   Info,
 } from "lucide-react";
-import { Button, MycologyChart } from "@sicilia-soil/ui";
+import { MycologyChart } from "@sicilia-soil/ui";
+import { MushroomChip } from "./components/MushroomChip";
+import { MushroomCard } from "@/components/features/mycology";
 
 // Datos simulados para setas autóctonas
 const generateMushroomData = (
@@ -107,31 +109,52 @@ const mushrooms = [
   },
 ];
 
+// Zonas de cultivo activas (datos de sensores)
+const cultivationZones = [
+  {
+    id: "zone-cardonchello",
+    name: "Cardonchello",
+    scientificName: "Pleurotus eryngii",
+    icon: "🍄",
+    location: "Invernadero Norte",
+    humidity: 82,
+    temperature: 19,
+    co2: 480,
+    stage: "fruiting" as const,
+    harvestIn: "5 días",
+    status: "optimal" as const,
+  },
+  {
+    id: "zone-nebrodi",
+    name: "Cardoncello di Nebrodi",
+    scientificName: "Pleurotus nebrodensis",
+    icon: "🍄",
+    location: "Cámara climática",
+    humidity: 78,
+    temperature: 21,
+    co2: 520,
+    stage: "growth" as const,
+    harvestIn: "12 días",
+    status: "excellent" as const,
+  },
+  {
+    id: "zone-prataiolo",
+    name: "Prataiolo Siciliano",
+    scientificName: "Agaricus bitorquis",
+    icon: "🍄",
+    location: "Bandeja de compost",
+    humidity: 74,
+    temperature: 17,
+    co2: 580,
+    stage: "harvest" as const,
+    harvestIn: "Listo hoy",
+    status: "ready" as const,
+  },
+];
+
 export default function MycologyPage() {
   const [selectedMushroom, setSelectedMushroom] = useState("cardonchello");
   const current = mushrooms.find((m) => m.id === selectedMushroom)!;
-
-  const getMetricIcon = (metric: string) => {
-    switch (metric) {
-      case "humidity":
-        return <Droplets className="w-4 h-4" />;
-      case "temperature":
-        return <Thermometer className="w-4 h-4" />;
-      default:
-        return <Wind className="w-4 h-4" />;
-    }
-  };
-
-  const getMetricColor = (metric: string) => {
-    switch (metric) {
-      case "humidity":
-        return "text-oliveGreen";
-      case "temperature":
-        return "text-sicilian-red";
-      default:
-        return "text-wheatGold";
-    }
-  };
 
   return (
     <div className="min-h-screen p-4 md:p-8 pt-24 bg-offWhite">
@@ -186,36 +209,31 @@ export default function MycologyPage() {
           </div>
         </div>
 
+        {/* Zonas de cultivo activas */}
+        <section className="mb-12">
+          <h2 className="text-xl font-bold text-charcoalGray mb-4 flex items-center gap-2">
+            🌱 Zonas de cultivo activas
+          </h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            {cultivationZones.map((zone) => (
+              <MushroomCard
+                key={zone.id}
+                mushroom={zone}
+                onViewDetails={(id: any) => console.log("Ver detalles:", id)}
+              />
+            ))}
+          </div>
+        </section>
+
         {/* Selector de setas */}
         <div className="flex flex-wrap gap-3 mb-8">
           {mushrooms.map((m) => (
-            <Button
-              variant="secondary"
+            <MushroomChip
               key={m.id}
+              mushroom={m}
+              active={selectedMushroom === m.id}
               onClick={() => setSelectedMushroom(m.id)}
-              className={`px-4 py-3 rounded-xl transition-all flex items-center gap-3 ${
-                selectedMushroom === m.id
-                  ? "bg-gradient-to-r from-oliveGreen to-wheatGold text-white shadow-lg scale-102"
-                  : "bg-white text-charcoalGray hover:bg-oliveGreen/5 border border-oliveGreen/20"
-              }`}
-            >
-              <span className="text-2xl">{m.icon}</span>
-              <div className="text-left">
-                <p className="font-medium">{m.name}</p>
-                <p className="text-xs opacity-80">{m.scientificName}</p>
-              </div>
-              {m.isEndemic && (
-                <span
-                  className={`text-xs px-2 py-0.5 rounded-full ${
-                    selectedMushroom === m.id
-                      ? "bg-white/20 text-white"
-                      : "bg-wheatGold/20 text-wheatGold"
-                  }`}
-                >
-                  Endémica
-                </span>
-              )}
-            </Button>
+            />
           ))}
         </div>
 

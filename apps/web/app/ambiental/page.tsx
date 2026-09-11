@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { HelpCircle } from "lucide-react";
-import { EnvironmentalDashboard } from "@/components/features/environmental/EnvironmentalDashboard";
 import { Button } from "@sicilia-soil/ui";
+import { EnvironmentalDashboard } from "@/components/features/environmental/EnvironmentalDashboard";
 
 // Onboarding (simplificado)
 const Onboarding = ({ onClose }: { onClose: () => void }) => {
@@ -30,7 +30,13 @@ const Onboarding = ({ onClose }: { onClose: () => void }) => {
           <h3 className="text-lg font-bold text-charcoalGray">
             {steps[step].title}
           </h3>
-          <Button onClick={onClose} className="p-1 hover:bg-gray-100 rounded">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onClose}
+            aria-label="Cerrar"
+            className="!p-1 !rounded"
+          >
             <span className="text-xl">✕</span>
           </Button>
         </div>
@@ -42,19 +48,18 @@ const Onboarding = ({ onClose }: { onClose: () => void }) => {
           <div className="flex gap-2">
             {step > 0 && (
               <Button
-                variant="secondary"
+                variant="outline-olive"
                 onClick={() => setStep(step - 1)}
-                className="px-4 py-2 rounded-lg border border-oliveGreen/20 text-oliveGreen hover:bg-oliveGreen/5"
               >
                 Anterior
               </Button>
             )}
             <Button
+              variant="olive"
               onClick={() => {
                 if (step < steps.length - 1) setStep(step + 1);
                 else onClose();
               }}
-              className="px-4 py-2 rounded-lg bg-oliveGreen text-white hover:bg-oliveGreen/90"
             >
               {step === steps.length - 1 ? "¡Empezar!" : "Siguiente"}
             </Button>
@@ -95,11 +100,12 @@ export default function AmbientPage() {
             </span>
           </div>
           <Button
-            variant="ghost"
+            variant="icon"
+            size="sm"
             onClick={() => setShowOnboarding(true)}
-            className="p-2 rounded-lg hover:bg-oliveGreen/10 transition-colors"
+            aria-label="Ayuda"
           >
-            <HelpCircle className="w-5 h-5 text-oliveGreen" />
+            <HelpCircle className="w-5 h-5" />
           </Button>
         </div>
       </header>

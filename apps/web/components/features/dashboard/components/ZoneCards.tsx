@@ -122,10 +122,10 @@ export function ZoneCard({ zone, onViewHistory }: ZoneCardProps) {
           </span>
         </div>
         <Button
-          variant="secondary"
-          size="sm"
+          type="button"
+          variant="link"
           onClick={() => onViewHistory(zone.id)}
-          className="text-xs text-oliveGreen hover:text-sicilian-red transition-colors"
+          className="!text-xs !p-0 hover:!text-sicilian-red hover:!scale-100"
         >
           Ver histórico →
         </Button>

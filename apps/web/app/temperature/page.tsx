@@ -151,12 +151,18 @@ export default function TemperaturePage() {
           </div>
 
           <div className="flex gap-2">
-            <Button className="px-4 py-2 bg-white/50 backdrop-blur-sm rounded-xl border border-red-200 text-sm flex items-center gap-2 hover:bg-white transition-colors">
-              <Calendar className="w-4 h-4" />
+            <Button
+              variant="glass-red"
+              size="md"
+              icon={<Calendar className="w-4 h-4" />}
+            >
               Última semana
             </Button>
-            <Button className="px-4 py-2 bg-white/50 backdrop-blur-sm rounded-xl border border-red-200 text-sm flex items-center gap-2 hover:bg-white transition-colors">
-              <Download className="w-4 h-4" />
+            <Button
+              variant="glass-red"
+              size="md"
+              icon={<Download className="w-4 h-4" />}
+            >
               Exportar datos
             </Button>
           </div>

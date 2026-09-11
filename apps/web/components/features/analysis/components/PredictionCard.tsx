@@ -53,9 +53,11 @@ export function PredictionCard({
           Predicciones para los próximos 7 días
         </h2>
         <Button
-          variant="ghost"
+          type="button"
+          variant="bare"
           onClick={onClose}
-          className="p-1 hover:bg-offWhite/20 rounded-lg transition-colors"
+          aria-label="Cerrar predicciones"
+          className="!p-1 !rounded-lg !transition-colors hover:!scale-100 hover:bg-offWhite/20 text-offWhite"
         >
           <X className="w-5 h-5" />
         </Button>
