@@ -13,6 +13,7 @@ import {
   Trees,
   Activity,
 } from "lucide-react";
+import { Button } from "@sicilia-soil/ui";
 
 import { metrics } from "@/lib/config/site.config";
 import {
@@ -109,7 +110,6 @@ const MetricCard = ({
 
 // ===== COMPONENTE PRINCIPAL =====
 export default function AnalysisPage() {
-  // Estados para análisis agronómico
   const [selectedZones, setSelectedZones] = useState<string[]>([
     "tomates",
     "olivar",
@@ -118,7 +118,6 @@ export default function AnalysisPage() {
   const [selectedPeriod, setSelectedPeriod] = useState("30");
   const [showPredictions, setShowPredictions] = useState(true);
 
-  // Estados para análisis ambiental
   const [activeTab, setActiveTab] = useState<"agronomico" | "ambiental">(
     "agronomico",
   );
@@ -134,7 +133,6 @@ export default function AnalysisPage() {
     soilQuality,
   });
 
-  // Actualizar datos ambientales cada 5 segundos
   useEffect(() => {
     const interval = setInterval(() => {
       updateEnvironmentalData();
@@ -180,7 +178,6 @@ export default function AnalysisPage() {
       data: zone[selectedMetric as keyof typeof zone] as any[],
     }));
 
-  // ===== GRÁFICOS AMBIENTALES =====
   const createEnvChart = (
     title: string,
     data: { name: string; value: number; threshold: number }[],
@@ -218,7 +215,6 @@ export default function AnalysisPage() {
     credits: { enabled: false },
   });
 
-  // Ahora usando tipos explícitos en los map
   const heavyMetalsChart = createEnvChart(
     "Metales pesados vs umbrales",
     ambientalData.heavyMetals.map((m: HeavyMetal) => ({
@@ -263,7 +259,6 @@ export default function AnalysisPage() {
     "#f39c12",
   );
 
-  // ===== EXPORTAR DATOS (agronómicos + ambientales) =====
   const handleExport = () => {
     const exportData = {
       generatedAt: new Date().toISOString(),
@@ -327,49 +322,40 @@ export default function AnalysisPage() {
             </div>
           </div>
 
-          <button
+          <Button
+            variant="olive"
             onClick={handleExport}
-            className="px-4 py-2 bg-oliveGreen text-offWhite rounded-lg flex items-center gap-2 hover:bg-oliveGreen/90 transition-all hover:scale-[1.02]"
+            icon={<DownloadCloud className="w-4 h-4" />}
           >
-            <DownloadCloud className="w-4 h-4" />
             Exportar datos
-          </button>
+          </Button>
         </div>
 
         {/* Pestañas */}
         <div className="flex gap-2 mb-6 bg-white rounded-xl p-1 border border-oliveGreen/15 shadow-sm">
-          <button
+          <Button
+            variant="tab"
+            active={activeTab === "agronomico"}
             onClick={() => setActiveTab("agronomico")}
-            className={`flex-1 py-2 px-4 rounded-lg transition-all ${
-              activeTab === "agronomico"
-                ? "bg-oliveGreen text-white shadow-md"
-                : "text-charcoalGray/60 hover:bg-oliveGreen/10"
-            }`}
+            icon={<Droplets className="w-4 h-4" />}
+            className="flex-1"
           >
-            <span className="flex items-center justify-center gap-2">
-              <Droplets className="w-4 h-4" />
-              Agronómico
-            </span>
-          </button>
-          <button
+            Agronómico
+          </Button>
+          <Button
+            variant="tab"
+            active={activeTab === "ambiental"}
             onClick={() => setActiveTab("ambiental")}
-            className={`flex-1 py-2 px-4 rounded-lg transition-all ${
-              activeTab === "ambiental"
-                ? "bg-oliveGreen text-white shadow-md"
-                : "text-charcoalGray/60 hover:bg-oliveGreen/10"
-            }`}
+            icon={<Activity className="w-4 h-4" />}
+            className="flex-1"
           >
-            <span className="flex items-center justify-center gap-2">
-              <Activity className="w-4 h-4" />
-              Ambiental
-            </span>
-          </button>
+            Ambiental
+          </Button>
         </div>
 
         {/* ===== PESTAÑA AGRONÓMICO ===== */}
         {activeTab === "agronomico" && (
           <>
-            {/* Filtros */}
             <div className="bg-white rounded-xl p-6 shadow-lg border border-oliveGreen/15 mb-8">
               <div className="grid md:grid-cols-3 gap-6">
                 <ZoneSelector
@@ -430,7 +416,6 @@ export default function AnalysisPage() {
         {/* ===== PESTAÑA AMBIENTAL ===== */}
         {activeTab === "ambiental" && (
           <div className="space-y-6">
-            {/* Tarjetas de resumen ambiental */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="bg-white rounded-xl p-4 shadow-sm border border-oliveGreen/10">
                 <p className="text-xs text-oliveGreen/60 uppercase tracking-wider">
@@ -558,7 +543,6 @@ export default function AnalysisPage() {
               </div>
             </div>
 
-            {/* Gráficos ambientales */}
             <div className="grid md:grid-cols-2 gap-6">
               <div className="bg-white rounded-xl p-4 shadow-sm border border-oliveGreen/10">
                 <HighchartsReact
@@ -586,7 +570,6 @@ export default function AnalysisPage() {
               </div>
             </div>
 
-            {/* Tabla detalle ambiental */}
             <div className="bg-white rounded-xl p-4 shadow-sm border border-oliveGreen/10 overflow-x-auto">
               <h3 className="font-bold text-charcoalGray mb-3 flex items-center gap-2">
                 <AlertTriangle className="w-4 h-4 text-oliveGreen" />
@@ -613,7 +596,6 @@ export default function AnalysisPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {/* Metales pesados */}
                   {ambientalData.heavyMetals.map((m: HeavyMetal) => (
                     <tr
                       key={m.id}
@@ -640,7 +622,6 @@ export default function AnalysisPage() {
                       </td>
                     </tr>
                   ))}
-                  {/* Aire */}
                   {ambientalData.airQuality.map((a: AirQuality) => (
                     <tr
                       key={a.id}
@@ -665,7 +646,6 @@ export default function AnalysisPage() {
                       </td>
                     </tr>
                   ))}
-                  {/* Agua */}
                   {ambientalData.waterQuality.map((w: WaterQuality) => (
                     <tr
                       key={w.id}
@@ -690,7 +670,6 @@ export default function AnalysisPage() {
                       </td>
                     </tr>
                   ))}
-                  {/* Suelo */}
                   {ambientalData.soilQuality.map((s: SoilQuality) => (
                     <tr
                       key={s.id}
@@ -719,7 +698,6 @@ export default function AnalysisPage() {
               </table>
             </div>
 
-            {/* Leyenda de riesgos */}
             <div className="bg-gradient-to-r from-red-50 via-yellow-50 to-green-50 rounded-xl p-4 border border-oliveGreen/10 flex flex-wrap items-center gap-4 text-xs">
               <span className="font-medium text-charcoalGray">
                 Niveles de riesgo:
