@@ -13,6 +13,7 @@ import {
   Sun,
 } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@sicilia-soil/ui";
 
 // Datos simulados de humedad
 const humidityData = [
@@ -137,14 +138,20 @@ export default function HumedadPage() {
           </div>
 
           <div className="flex gap-2">
-            <button className="px-4 py-2 bg-white/50 backdrop-blur-sm rounded-xl border border-blue-200 text-sm flex items-center gap-2 hover:bg-white transition-colors">
-              <Calendar className="w-4 h-4" />
+            <Button
+              variant="glass"
+              size="sm"
+              icon={<Calendar className="w-4 h-4" />}
+            >
               Última semana
-            </button>
-            <button className="px-4 py-2 bg-white/50 backdrop-blur-sm rounded-xl border border-blue-200 text-sm flex items-center gap-2 hover:bg-white transition-colors">
-              <Download className="w-4 h-4" />
+            </Button>
+            <Button
+              variant="glass"
+              size="sm"
+              icon={<Download className="w-4 h-4" />}
+            >
               Exportar datos
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -373,9 +380,13 @@ export default function HumedadPage() {
                         </p>
                       </div>
                     </div>
-                    <button className="w-full mt-3 px-3 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-colors">
+                    <Button
+                      variant="blue"
+                      size="sm"
+                      className="w-full mt-3"
+                    >
                       💧 Riego manual ahora
-                    </button>
+                    </Button>
                   </div>
                 )}
               </div>
@@ -438,15 +449,19 @@ export default function HumedadPage() {
 
             <div className="bg-white/50 backdrop-blur-sm rounded-xl p-6 border border-blue-100">
               <h3 className="font-bold text-lg mb-4">Acciones rápidas</h3>
-              <button className="w-full px-4 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all mb-2 shadow-md">
+              <Button variant="gradient-blue" className="w-full mb-2">
                 💧 Riego manual ahora
-              </button>
-              <button className="w-full px-4 py-2.5 border-2 border-blue-300 text-blue-700 rounded-xl hover:bg-blue-50 transition-all">
+              </Button>
+              <Button variant="outline-blue" className="w-full">
                 📅 Programar riego
-              </button>
-              <button className="w-full px-4 py-2.5 text-oliveGreen/70 rounded-xl text-sm mt-2 hover:text-blue-600 transition-colors">
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="w-full mt-2"
+              >
                 ⚙️ Configuración avanzada
-              </button>
+              </Button>
             </div>
           </div>
 

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { HelpCircle } from "lucide-react";
+import { Button } from "@sicilia-soil/ui";
 import { EnvironmentalDashboard } from "@/components/features/environmental/EnvironmentalDashboard";
 
 // Onboarding (simplificado)
@@ -29,9 +30,15 @@ const Onboarding = ({ onClose }: { onClose: () => void }) => {
           <h3 className="text-lg font-bold text-charcoalGray">
             {steps[step].title}
           </h3>
-          <button onClick={onClose} className="p-1 hover:bg-gray-100 rounded">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onClose}
+            aria-label="Cerrar"
+            className="!p-1 !rounded"
+          >
             <span className="text-xl">✕</span>
-          </button>
+          </Button>
         </div>
         <p className="text-charcoalGray/80 mb-6">{steps[step].desc}</p>
         <div className="flex justify-between items-center">
@@ -40,22 +47,22 @@ const Onboarding = ({ onClose }: { onClose: () => void }) => {
           </span>
           <div className="flex gap-2">
             {step > 0 && (
-              <button
+              <Button
+                variant="outline-olive"
                 onClick={() => setStep(step - 1)}
-                className="px-4 py-2 rounded-lg border border-oliveGreen/20 text-oliveGreen hover:bg-oliveGreen/5"
               >
                 Anterior
-              </button>
+              </Button>
             )}
-            <button
+            <Button
+              variant="olive"
               onClick={() => {
                 if (step < steps.length - 1) setStep(step + 1);
                 else onClose();
               }}
-              className="px-4 py-2 rounded-lg bg-oliveGreen text-white hover:bg-oliveGreen/90"
             >
               {step === steps.length - 1 ? "¡Empezar!" : "Siguiente"}
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -92,12 +99,14 @@ export default function AmbientPage() {
               v2.0
             </span>
           </div>
-          <button
+          <Button
+            variant="icon"
+            size="sm"
             onClick={() => setShowOnboarding(true)}
-            className="p-2 rounded-lg hover:bg-oliveGreen/10 transition-colors"
+            aria-label="Ayuda"
           >
-            <HelpCircle className="w-5 h-5 text-oliveGreen" />
-          </button>
+            <HelpCircle className="w-5 h-5" />
+          </Button>
         </div>
       </header>
 
