@@ -75,7 +75,7 @@ export function Navbar() {
                 <span className="text-charcoalGray">Sicilia</span>
                 <span className="text-sicilian-red ml-1">Soil</span>
               </h1>
-              <div className="flex items-center gap-1 text-xs text-oliveGreen/70 whitespace-nowrap">
+              <div className="flex items-center gap-2 mr-2 text-xs text-oliveGreen/70 whitespace-nowrap">
                 <SicilianFlag size="small" className="flex-shrink-0" />
                 <span className="whitespace-nowrap">
                   Permacultura Sintrópica
@@ -109,10 +109,7 @@ export function Navbar() {
 
           {/* User Menu - Versión corregida */}
           <div className="flex items-center gap-2 sm:gap-3">
-            <Button
-              variant="secondary"
-              className="relative p-1.5 sm:p-2 rounded-full text-oliveGreen/60 hover:text-sicilian-red transition-all duration-300 hover:bg-oliveGreen/10"
-            >
+            <Button className="relative p-1.5 ml-3 sm:p-2 rounded-full !text-oliveGreen/60 hover:text-sicilian-red transition-all duration-300 hover:bg-oliveGreen/10">
               <Bell className="w-4 h-4 sm:w-5 sm:h-5" />
               <span className="absolute top-0.5 right-0.5 w-1.5 h-1.5 sm:w-2 sm:h-2 bg-wheatGold rounded-full ring-2 ring-offWhite animate-pulse" />
             </Button>
@@ -127,7 +124,6 @@ export function Navbar() {
             </div>
 
             <Button
-              variant="ghost"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="md:hidden p-1.5 sm:p-2 rounded-xl text-oliveGreen hover:text-wheatGold transition-all duration-300 hover:bg-oliveGreen/10"
             >

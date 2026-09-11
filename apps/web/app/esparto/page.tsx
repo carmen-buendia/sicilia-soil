@@ -8,14 +8,11 @@ import {
   Thermometer,
   Sun,
   Wind,
-  Calendar,
-  MapPin,
   Leaf,
   Sprout,
   Scissors,
   Package,
   TrendingUp,
-  Clock,
   Award,
 } from "lucide-react";
 import { Button } from "@sicilia-soil/ui";
@@ -101,16 +98,17 @@ const mycorrhizalSymbiosis = [
   },
 ];
 
+const tabs = [
+  { id: "info", label: "Información", icon: "📖" },
+  { id: "monitoring", label: "Monitoreo", icon: "📊" },
+  { id: "harvest", label: "Calendario", icon: "📅" },
+  { id: "symbiosis", label: "Simbiosis", icon: "🔗" },
+] as const;
+
 export default function EspartoPage() {
   const [activeTab, setActiveTab] = useState<
     "info" | "monitoring" | "harvest" | "symbiosis"
   >("info");
-
-  const getMoistureColor = (value: number) => {
-    if (value >= 70) return "text-green-600";
-    if (value >= 50) return "text-yellow-600";
-    return "text-red-600";
-  };
 
   const getHealthStatus = () => {
     const avgMoisture =
@@ -220,23 +218,14 @@ export default function EspartoPage() {
 
         {/* Tabs */}
         <div className="flex flex-wrap gap-2 mb-8 border-b border-oliveGreen/15 pb-2">
-          {[
-            { id: "info", label: "Información", icon: "📖" },
-            { id: "monitoring", label: "Monitoreo", icon: "📊" },
-            { id: "harvest", label: "Calendario", icon: "📅" },
-            { id: "symbiosis", label: "Simbiosis", icon: "🔗" },
-          ].map((tab) => (
+          {tabs.map((tab) => (
             <Button
-              variant="secondary"
               key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
-              className={`px-4 py-2 rounded-lg transition-all flex items-center gap-2 ${
-                activeTab === tab.id
-                  ? "bg-oliveGreen text-white shadow-md"
-                  : "text-oliveGreen/70 hover:bg-oliveGreen/10"
-              }`}
+              variant="tab"
+              active={activeTab === tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              icon={<span>{tab.icon}</span>}
             >
-              <span>{tab.icon}</span>
               {tab.label}
             </Button>
           ))}
@@ -342,7 +331,6 @@ export default function EspartoPage() {
               </div>
             </div>
 
-            {/* Gráfico simplificado */}
             <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-oliveGreen/15">
               <h3 className="text-lg font-bold text-charcoalGray mb-4">
                 Evolución de condiciones (últimos 14 días)
@@ -406,7 +394,6 @@ export default function EspartoPage() {
               </div>
             </div>
 
-            {/* Recomendaciones */}
             <div className="bg-gradient-to-r from-oliveGreen/5 to-emerald-500/5 rounded-2xl p-6 border border-oliveGreen/15">
               <h3 className="text-lg font-bold text-charcoalGray mb-3 flex items-center gap-2">
                 <TrendingUp className="w-5 h-5 text-oliveGreen" />
