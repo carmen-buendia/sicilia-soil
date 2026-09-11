@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Droplets, Thermometer, Sun, Wind } from "lucide-react";
 import { formatRelativeTime } from "@sicilia-soil/utils";
+import { Button } from "@sicilia-soil/ui";
 
 interface GardenZone {
   id: string;
@@ -120,12 +121,14 @@ export function ZoneCard({ zone, onViewHistory }: ZoneCardProps) {
             Actualizado: {formatRelativeTime(zone.lastUpdate)}
           </span>
         </div>
-        <button
+        <Button
+          type="button"
+          variant="link"
           onClick={() => onViewHistory(zone.id)}
-          className="text-xs text-oliveGreen hover:text-sicilian-red transition-colors"
+          className="!text-xs !p-0 hover:!text-sicilian-red hover:!scale-100"
         >
           Ver histórico →
-        </button>
+        </Button>
       </div>
     </div>
   );

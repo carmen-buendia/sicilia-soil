@@ -11,10 +11,10 @@ import {
   TrendingDown,
   Clock,
   Droplets,
-  Wind,
   Thermometer,
 } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@sicilia-soil/ui";
 import {
   getLightRecommendations,
   getLightStatusColor,
@@ -205,29 +205,36 @@ export default function LightPage() {
               </span>
             </div>
 
-            <button
+            <Button
+              variant="toggle-live"
+              active={isLive}
               onClick={() => setIsLive(!isLive)}
-              className={`px-4 py-2 rounded-xl flex items-center gap-2 transition-all ${
-                isLive
-                  ? "bg-green-100 text-green-700 border border-green-300"
-                  : "bg-gray-100 text-gray-600 border border-gray-200"
-              }`}
+              icon={
+                <span
+                  className={`w-2 h-2 rounded-full ${
+                    isLive ? "bg-green-500 animate-pulse" : "bg-gray-500"
+                  }`}
+                />
+              }
             >
-              <span
-                className={`w-2 h-2 rounded-full ${
-                  isLive ? "bg-green-500 animate-pulse" : "bg-gray-500"
-                }`}
-              />
               {isLive ? "Tiempo real" : "Pausado"}
-            </button>
+            </Button>
 
-            <button className="p-2 bg-white/50 backdrop-blur-sm rounded-xl border border-yellow-200 hover:bg-yellow-50 transition-all">
-              <Calendar className="w-5 h-5 text-yellow-600" />
-            </button>
+            <Button
+              variant="icon-glass-yellow"
+              onClick={() => {}}
+              aria-label="Calendario"
+            >
+              <Calendar className="w-5 h-5" />
+            </Button>
 
-            <button className="p-2 bg-white/50 backdrop-blur-sm rounded-xl border border-yellow-200 hover:bg-yellow-50 transition-all">
-              <Download className="w-5 h-5 text-yellow-600" />
-            </button>
+            <Button
+              variant="icon-glass-yellow"
+              onClick={() => {}}
+              aria-label="Descargar"
+            >
+              <Download className="w-5 h-5" />
+            </Button>
           </div>
         </div>
 
@@ -295,16 +302,14 @@ export default function LightPage() {
         {/* Selector de zonas */}
         <div className="flex overflow-x-auto gap-2 mb-8 pb-2">
           {lightZones.map((zone) => (
-            <button
+            <Button
               key={zone.id}
+              variant="chip-yellow"
+              active={selectedZone.id === zone.id}
               onClick={() => setSelectedZone(zone)}
-              className={`px-4 py-2 rounded-xl whitespace-nowrap transition-all flex items-center gap-2 ${
-                selectedZone.id === zone.id
-                  ? "bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-lg hover:scale-102"
-                  : "bg-white/50 backdrop-blur-sm text-charcoalGray hover:bg-yellow-50 border border-yellow-200"
-              }`}
+              icon={<span className="text-xl">{zone.icon}</span>}
+              className="whitespace-nowrap"
             >
-              <span className="text-xl">{zone.icon}</span>
               <span className="font-medium">{zone.zone}</span>
               <span
                 className={`text-xs px-2 py-0.5 rounded-full ${
@@ -315,7 +320,7 @@ export default function LightPage() {
               >
                 {zone.current}%
               </span>
-            </button>
+            </Button>
           ))}
         </div>
 
@@ -556,11 +561,13 @@ export default function LightPage() {
                 <div>
                   <label className="flex items-center justify-between mb-2">
                     <span className="text-charcoalGray">Notificaciones</span>
+                    {/* Switch nativo */}
                     <button
                       onClick={() => setNotifications(!notifications)}
                       className={`relative w-12 h-6 rounded-full transition-colors ${
                         notifications ? "bg-yellow-500" : "bg-gray-300"
                       }`}
+                      aria-label="Notificaciones"
                     >
                       <span
                         className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${
@@ -605,9 +612,9 @@ export default function LightPage() {
                   </div>
                 </div>
 
-                <button className="w-full px-4 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-xl font-medium hover:shadow-lg transition-all">
+                <Button variant="gradient-yellow" className="w-full">
                   Guardar configuración
-                </button>
+                </Button>
               </div>
             </div>
 
