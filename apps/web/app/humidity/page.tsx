@@ -139,17 +139,17 @@ export default function HumedadPage() {
 
           <div className="flex gap-2">
             <Button
-              variant="secondary"
-              className="px-4 py-2 bg-white/50 backdrop-blur-sm rounded-xl border border-blue-200 text-sm flex items-center gap-2 hover:bg-white transition-colors"
+              variant="glass"
+              size="sm"
+              icon={<Calendar className="w-4 h-4" />}
             >
-              <Calendar className="w-4 h-4" />
               Última semana
             </Button>
             <Button
-              variant="secondary"
-              className="px-4 py-2 bg-white/50 backdrop-blur-sm rounded-xl border border-blue-200 text-sm flex items-center gap-2 hover:bg-white transition-colors"
+              variant="glass"
+              size="sm"
+              icon={<Download className="w-4 h-4" />}
             >
-              <Download className="w-4 h-4" />
               Exportar datos
             </Button>
           </div>
@@ -381,8 +381,9 @@ export default function HumedadPage() {
                       </div>
                     </div>
                     <Button
-                      variant="secondary"
-                      className="w-full mt-3 px-3 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-colors"
+                      variant="blue"
+                      size="sm"
+                      className="w-full mt-3"
                     >
                       💧 Riego manual ahora
                     </Button>
@@ -448,21 +449,16 @@ export default function HumedadPage() {
 
             <div className="bg-white/50 backdrop-blur-sm rounded-xl p-6 border border-blue-100">
               <h3 className="font-bold text-lg mb-4">Acciones rápidas</h3>
-              <Button
-                variant="ghost"
-                className="w-full px-4 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all mb-2 shadow-md"
-              >
+              <Button variant="gradient-blue" className="w-full mb-2">
                 💧 Riego manual ahora
               </Button>
-              <Button
-                variant="ghost"
-                className="w-full px-4 py-2.5 border-2 border-blue-300 text-blue-700 rounded-xl hover:bg-blue-50 transition-all"
-              >
+              <Button variant="outline-blue" className="w-full">
                 📅 Programar riego
               </Button>
               <Button
                 variant="ghost"
-                className="w-full px-4 py-2.5 text-oliveGreen/70 rounded-xl text-sm mt-2 hover:text-blue-600 transition-colors"
+                size="sm"
+                className="w-full mt-2"
               >
                 ⚙️ Configuración avanzada
               </Button>

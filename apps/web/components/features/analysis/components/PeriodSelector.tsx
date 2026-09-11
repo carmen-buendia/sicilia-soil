@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@sicilia-soil/ui";
 import { periods } from "@/lib/config/site.config";
 import { Button } from "@sicilia-soil/ui";
 
@@ -24,10 +25,11 @@ export function PeriodSelector({
       <div className="grid grid-cols-2 gap-2">
         {periods.map((period) => (
           <Button
-            variant="ghost"
             key={period.id}
+            type="button"
+            variant="bare"
             onClick={() => onPeriodChange(period.id)}
-            className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+            className={`justify-center !px-3 !py-2 !rounded-lg !text-sm !font-medium !transition-colors !duration-150 hover:!scale-100 ${
               selectedPeriod === period.id
                 ? "bg-oliveGreen text-offWhite"
                 : "bg-offWhite text-charcoalGray/70 hover:bg-oliveGreen/5 border border-oliveGreen/10"
