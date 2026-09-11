@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@sicilia-soil/ui";
 import { metrics } from "@/lib/config/site.config";
 import { getMetricBgColor } from "../utils";
 import { Button } from "@sicilia-soil/ui";
