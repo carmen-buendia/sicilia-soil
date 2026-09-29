@@ -26,6 +26,18 @@
 
 ---
 
+## 📂 Repository Status
+
+This is the **public documentation repository** for Sicilia Soil.
+
+- ✅ **Monorepo architecture** with shared packages (`core`, `ui`, `utils`).
+- ✅ **Frontend**: Next.js app with dashboard, analysis, and monitoring views.
+- ✅ **Backend**: Node.js WebSocket server (currently in private development).
+- ✅ **Simulated data** for development and testing.
+- 🔜 **Real IoT sensor integration** and **Copernicus EO data pipelines** (in development).
+
+---
+
 ## 📜 Sicilia Soil Manifesto
 
 ### Why this project exists
