@@ -1,25 +1,13 @@
-NC OSL (Non-Commercial Open Source License) v1.0
+Copyright 2026 Carmen María Buendía Sánchez (Carmen Buendía)
 
-Copyright (c) 2026 Carmen Buendía
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-This license allows you to use, modify, and distribute this software freely 
-for non-commercial purposes only. Commercial use requires a separate 
-commercial license from the copyright holder.
+    http://www.apache.org/licenses/LICENSE-2.0
 
-NON-COMMERCIAL USE DEFINITION:
-Non-commercial use means use that does not generate revenue, is not intended 
-for commercial advantage, and is not directed by a commercial entity.
-
-COMMERCIAL USE:
-Any use that is not non-commercial as defined above requires a commercial 
-license. This includes but is not limited to:
-- Use in products or services sold for money
-- Internal use by for-profit companies
-- SaaS (Software as a Service) offerings
-
-CONDITIONS FOR NON-COMMERCIAL USE:
-1. You must retain this copyright notice and license in all copies
-2. You must provide attribution to the original author
-3. Modifications must be shared under the same license terms
-
-For commercial licensing inquiries, contact: carmenbuendiafullstack@gmail.com
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
