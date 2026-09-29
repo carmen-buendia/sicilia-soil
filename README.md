@@ -2,13 +2,13 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/STATUS-WORK%20IN%20PROGRESS-orange?style=for-the-badge&logo=githubactions&logoColor=white" alt="Work in Progress" />
-  <img src="https://img.shields.io/badge/License-NC%20OSL-blue?style=flat-square" alt="License" />
+  <img src="https://img.shields.io/badge/License-Apache%202.0-blue?style=flat-square" alt="License" />
   <img src="https://img.shields.io/badge/pnpm-9.x-blue?style=flat-square&logo=pnpm" alt="pnpm" />
   <img src="https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=nextdotjs" alt="Next.js" />
 </p>
 
 <p align="center">
-  <strong>🌾 Syntropic Permaculture · 🍄 Mycology · 🌿 Esparto · 🤖 IoT</strong>
+  <strong>🌫️ Syntropic Permaculture · 🍄 Mycology · 🌿 Esparto · 🤖 IoT</strong>
 </p>
 
 ---
@@ -40,15 +40,15 @@ For too long, technology has been disconnected from the land. Sensors exist, but
 
 🍄 **Fungi as teachers** — The mycelial network shows us how to connect, share, and regenerate. We listen to what mushrooms teach us about collaboration and circularity.
 
-🌾 **Tradition as technology** — The wisdom of esparto harvesters, the rhythms of Sicilian seasons, the knowledge passed down for generations — this is not folklore. It is technology refined over centuries.
+🌫️ **Tradition as technology** — The wisdom of esparto harvesters, the rhythms of Sicilian seasons, the knowledge passed down for generations — this is not folklore. It is technology refined over centuries.
 
 🤖 **Code as craft** — Clean code, honest architecture, open collaboration. Technology should be understandable, hackable, and built to last.
 
-🌍 **Open source, sustainable business** — This code is free for the community. But if you profit from it, you contribute. Dual licensing is not a contradiction. It's how we ensure that this project outlives us.
+🌍 **Open source, open collaboration** — This code is free for everyone to use, modify, and distribute under the Apache License 2.0. We believe in the power of open source to drive innovation and sustainability.
 
 ### Our commitment
 
-- ✅ This code will always be open source for non-commercial use.
+- ✅ This code is open source under the Apache License 2.0.
 - ✅ Every line of code will be documented and readable.
 - ✅ We will prioritize soil health over shareholder value.
 - ✅ We will honor Sicilian traditions while building for the future.
@@ -58,10 +58,10 @@ For too long, technology has been disconnected from the land. Sensors exist, but
 
 You don't need to be a developer. You don't need to live in Sicily. You just need to believe that technology can serve the land, and that the land can teach us how to build better.
 
-- 🍴 **Fork** the code
+- 🍄 **Fork** the code
 - 🌿 **Plant** your own sensors
 - 🍄 **Grow** mushrooms with esparto waste
-- 🌾 **Share** your harvests, digital and physical
+- 🌫️ **Share** your harvests, digital and physical
 
 **Sicilia Soil is not just a project. It's a proposal.**
 
@@ -158,7 +158,7 @@ This is a **pnpm workspace** monorepo with a modular, feature-based architecture
 ├── 📄 pnpm-workspace.yaml                    # Workspace definition
 ├── 📄 tsconfig.json                          # Root TypeScript config with aliases
 ├── 📄 package.json                           # Root scripts and dev dependencies
-├── 📄 LICENSE                                # NC OSL License
+├── 📄 LICENSE                                # Apache License 2.0
 └── 📄 README.md                              # This file
 ```
 
@@ -198,6 +198,22 @@ import { formatRelativeTime } from "@sicilia-soil/utils";
 
 ---
 
+## 🛰️ Designed for Earth Observation & IoT
+
+Sicilia Soil is being developed with a clear technical direction: **connecting in-situ IoT sensors with satellite Earth Observation data** to produce actionable insights for regenerative agriculture.
+
+The platform is being designed to integrate with:
+
+- **Copernicus Earth Observation data** (Sentinel-2, Sentinel-3, Sentinel-1) for vegetation indices, land surface temperature, and soil moisture.
+- **IoT sensor networks** (soil moisture, temperature, humidity, leaf wetness, light) for real-time in-situ monitoring.
+- **Hybrid Edge-to-Cloud architecture** with offline resilience for rural areas with intermittent connectivity.
+
+The goal is to enable **data-driven decision support** for farmers, cooperatives, and advisors — optimizing water use, soil health, and crop resilience.
+
+> Full technical documentation will be published as the project matures.
+
+---
+
 ## 🍄 What is Syntropic Mycology Permaculture?
 
 **Syntropy** is the principle opposite to entropy: systems that **gain complexity and abundance over time**. Applied to permaculture and combined with mycology, it creates:
@@ -223,19 +239,19 @@ import { formatRelativeTime } from "@sicilia-soil/utils";
 
 ---
 
-## 🍄🌾 Syntropic Cycle: Esparto, Mycelium & Sicilian Soil
+## 🍄🌫️ Syntropic Cycle: Esparto, Mycelium & Sicilian Soil
 
 ### Full soil regeneration with native species
 
 At Sicilia Soil, we're not just monitoring data. We're building a **circular ecosystem** where every element feeds the next, using **native Sicilian mushrooms** that have co-evolved with esparto for millennia.
 
 ```
-                    🌾 ESPARTO
+                    🌿 ESPARTO
                     (Stipa tenacissima)
                         │
                         ▼
               ┌─────────────────┐
-              │  Fibers & waste  │
+              │  Fibers & waste │
               └─────────────────┘
                         │
          ┌──────────────┼──────────────┐
@@ -254,7 +270,7 @@ At Sicilia Soil, we're not just monitoring data. We're building a **circular eco
          (regenerated)
                 │
                 ▼
-         🌾 STRONGER ESPARTO
+         🌿 STRONGER ESPARTO
          (new cycle)
 ```
 
@@ -356,7 +372,7 @@ This project uses **GitHub Actions** to maintain code quality and license compli
 ✅ Automatic linting (ESLint)
 ✅ Type checking (TypeScript)
 ✅ Build all apps
-✅ License verification (NC OSL)
+✅ License verification (Apache 2.0)
 🔜 Unit and integration tests
 🔜 Automatic deployment to Vercel
 ```
@@ -387,11 +403,12 @@ This project uses **GitHub Actions** to maintain code quality and license compli
 - [x] Environmental monitoring dashboard
 - [x] Monorepo architecture with shared packages
 - [x] CI/CD configured
-- [x] Dual licensing structure
+- [x] Open source under Apache 2.0
 
 ### 🚧 v1.1.0 – Connections
 
 - [ ] Real IoT sensor integration
+- [ ] Copernicus EO data integration
 - [ ] Persistent database (PostgreSQL + Prisma)
 - [ ] Unit tests (Jest + React Testing Library)
 - [ ] Storybook for `packages/ui`
@@ -417,7 +434,7 @@ This project uses **GitHub Actions** to maintain code quality and license compli
 
 Want to contribute to this digital ecosystem? All help is welcome!
 
-1. 🍴 **Fork** the project (like a seed)
+1. 🍄 **Fork** the project (like a seed)
 2. 🌿 **Create your branch** (`git checkout -b feature/AmazingFeature`)
 3. 🌱 **Add your code** (that benefits the whole)
 4. 💾 **Commit** your changes (`git commit -m 'Add some AmazingFeature'`)
@@ -426,65 +443,32 @@ Want to contribute to this digital ecosystem? All help is welcome!
 
 ---
 
-## ⚖️ License & Business Model
+## ⚖️ License
 
-**Sicilia Soil** uses a dual licensing model to balance community access with project sustainability.
+**Sicilia Soil** is released under the **Apache License 2.0**.
 
-### 🌱 For the community (Free – NC OSL)
+You are free to:
 
-The code is available under the **NC OSL (Non-Commercial Open Source License) v1.0**. You can use, modify, and share it freely for:
+- ✅ Use commercially
+- ✅ Modify
+- ✅ Distribute
+- ✅ Sublicense
+- ✅ Use in private projects
 
-| ✅ Permitted                        | ❌ Not Permitted                       |
-| :---------------------------------- | :------------------------------------- |
-| • Educational and research purposes | • Commercial products                  |
-| • Non-profit personal projects      | • Commercial SaaS                      |
-| • Community initiatives             | • Internal corporate tools             |
-| • Experimentation and learning      | • Paid apps or subscriptions           |
-| • Hackathons and workshops          | • Any for-profit activity              |
-| • Academic theses                   | • Integration into commercial projects |
+Under the conditions that you:
 
-**Conditions:**
+- 📄 Include the original copyright notice
+- 📄 Include a copy of the license
+- 📄 State changes made to the code
+- 📄 Include the NOTICE file if one exists
 
-- ✅ Must retain original author credit (`Copyright (c) 2026 Carmen Buendía`)
-- ✅ Must share improvements under the same license
-- ✅ Must include license notice in redistributions
-
-### 💼 For commercial use (Paid license)
-
-Are you a company, startup, or entrepreneur wanting to use **Sicilia Soil** in your product, internal service, or commercial project? You need to purchase a commercial license.
-
-**Commercial license includes:**
-
-- ✅ Unlimited commercial use
-- ✅ Full source code access
-- ✅ Priority technical support
-- ✅ Guaranteed updates
-- ✅ IP indemnification
-
-| License Type   | Annual Price | Best for                  |
-| :------------- | :----------- | :------------------------ |
-| **Startup**    | 500€         | Companies < 10 employees  |
-| **SME**        | 2.000€       | Companies 10-50 employees |
-| **Enterprise** | 5.000€       | Unlimited, SLA included   |
-
-### 🎯 Why this model?
-
-This system allows me to:
-
-- Keep the project alive and dedicate time to improving it
-- Offer free access to those who can't pay (students, researchers, communities)
-- Build a sustainable business that lets me live from my work
-- Ensure large companies contribute if they want to benefit commercially
-
-> "This project was born from my love for permaculture and technology. I want it to be useful to the community, but I also need it to sustain me. Dual licensing is my way of honoring both goals."
->
-> — Carmen Buendía, creator of Sicilia Soil
+For the full text, see the [LICENSE](LICENSE) file.
 
 ---
 
-## 📬 Commercial Contact
+## 📬 Contact
 
-Interested in a commercial license or have questions?
+For general questions or collaboration:
 
 - **Email:** carmenbuendiafullstack@gmail.com
 - **LinkedIn:** [carmen-buendía](https://linkedin.com/in/carmen-buendía)
@@ -499,7 +483,7 @@ Interested in a commercial license or have questions?
 
 <p align="center">
   <strong>Carmen Buendía</strong><br />
-  🎵 Music Producer · 🏗️ Frontend Architect · 🌱 Syntropic Systems Designer
+  🎧 Music Producer · 🏗️ Frontend Architect · 🌱 Syntropic Systems Designer
 </p>
 
 <p align="center">
@@ -511,7 +495,7 @@ Interested in a commercial license or have questions?
 ---
 
 <p align="center">
-  <strong>Made with ❤️, 🌱, 🍄 and 🌾 in Sicily</strong><br />
+  <strong>Made with ❤️, 🌱, 🍄 and 🌿 in Sicily</strong><br />
   <sub>Where technology and nature design the future together</sub>
 </p>
 
