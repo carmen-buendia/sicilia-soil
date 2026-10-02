@@ -1,6 +1,6 @@
 "use client";
-
 import { useState } from "react";
+
 import {
   Droplets,
   ArrowLeft,
@@ -14,73 +14,23 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@sicilia-soil/ui";
-
-// Datos simulados de humedad
-const humidityData = [
-  {
-    zone: "Zona de Esparto",
-    current: 78,
-    optimal: 70,
-    history: [75, 77, 78, 76, 79, 78, 77],
-    unit: "%",
-    trend: "up",
-    soilType: "Arcilloso",
-    lastWatering: "hace 4h",
-  },
-  {
-    zone: "Huerta de Tomates",
-    current: 82,
-    optimal: 75,
-    history: [80, 81, 82, 81, 83, 82, 81],
-    unit: "%",
-    trend: "up",
-    soilType: "Franco",
-    lastWatering: "hace 2h",
-  },
-  {
-    zone: "Olivar",
-    current: 45,
-    optimal: 60,
-    history: [48, 46, 45, 44, 46, 45, 43],
-    unit: "%",
-    trend: "down",
-    soilType: "Calcáreo",
-    lastWatering: "hace 12h",
-  },
-  {
-    zone: "Zona Compost",
-    current: 55,
-    optimal: 50,
-    history: [53, 54, 55, 56, 55, 54, 55],
-    unit: "%",
-    trend: "up",
-    soilType: "Orgánico",
-    lastWatering: "hace 6h",
-  },
-  {
-    zone: "Jardín de Hierbas",
-    current: 68,
-    optimal: 65,
-    history: [66, 67, 68, 69, 68, 67, 68],
-    unit: "%",
-    trend: "stable",
-    soilType: "Arenoso",
-    lastWatering: "hace 8h",
-  },
-  {
-    zone: "Depósito de Agua",
-    current: 90,
-    optimal: 85,
-    history: [88, 89, 90, 91, 90, 89, 90],
-    unit: "%",
-    trend: "up",
-    soilType: "N/A",
-    lastWatering: "automático",
-  },
-];
+import { CopernicusWidget } from "@/components/features/analysis/components/CopernicusWidget";
+import { CopernicusMap } from "@/components/features/analysis/components/CopernicusMap";
+import {
+  getAverageHumidity,
+  getCriticalZones,
+  getOptimalZones,
+  HUMIDITY_DATA,
+  getZoneStatus,
+  getZoneColor,
+  HumidityZone,
+} from "@sicilia-soil/core";
 
 export default function HumedadPage() {
   const [selectedZone, setSelectedZone] = useState<string | null>(null);
+  const [selectedPlot, setSelectedPlot] = useState<string>(
+    "Sicilia — Food Forest (Assoro)",
+  );
 
   const getTrendIcon = (trend: string) => {
     if (trend === "up")
@@ -90,27 +40,10 @@ export default function HumedadPage() {
     return null;
   };
 
-  const getStatusColor = (current: number, optimal: number) => {
-    if (current >= optimal) return "bg-green-100 text-green-800";
-    if (current >= optimal - 10) return "bg-yellow-100 text-yellow-800";
-    return "bg-red-100 text-red-800";
-  };
-
-  const getStatusText = (current: number, optimal: number) => {
-    if (current >= optimal) return "Óptimo";
-    if (current >= optimal - 10) return "Moderado";
-    return "Crítico - Regar";
-  };
-
-  const averageHumidity = Math.round(
-    humidityData.reduce((acc, z) => acc + z.current, 0) / humidityData.length,
-  );
-  const criticalZones = humidityData.filter(
-    (z) => z.current < z.optimal - 10,
-  ).length;
-  const optimalZones = humidityData.filter(
-    (z) => z.current >= z.optimal,
-  ).length;
+  // Métricas derivadas
+  const averageHumidity = getAverageHumidity();
+  const criticalZones = getCriticalZones().length;
+  const optimalZones = getOptimalZones().length;
 
   return (
     <div className="min-h-screen p-4 md:p-8 pt-24 bg-gradient-to-br from-offWhite to-blue-50">
@@ -169,7 +102,7 @@ export default function HumedadPage() {
             <p className="text-sm text-oliveGreen/60">Zonas óptimas</p>
             <p className="text-3xl font-bold text-green-600">{optimalZones}</p>
             <p className="text-xs text-oliveGreen/60">
-              de {humidityData.length} zonas
+              de {HUMIDITY_DATA.length} zonas
             </p>
           </div>
 
@@ -220,6 +153,21 @@ export default function HumedadPage() {
           </div>
         </div>
 
+        {/* Copernicus Widget */}
+        <div className="mb-8">
+          <CopernicusWidget selectedPlot={selectedPlot} />
+        </div>
+
+        {/* Copernicus Map */}
+        <div className="mb-8">
+          <CopernicusMap
+            initialLayer="satellite"
+            initialCenter={[42.5, 16.5]}
+            initialZoom={5}
+            height="500px"
+          />
+        </div>
+
         {/* Grid de Zonas */}
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-charcoalGray mb-6 flex items-center gap-2">
@@ -230,163 +178,159 @@ export default function HumedadPage() {
           </h2>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {humidityData.map((zone, index) => (
-              <div
-                key={index}
-                className={`group bg-white/50 backdrop-blur-sm rounded-xl p-6 shadow-lg border transition-all duration-300 cursor-pointer hover:shadow-xl hover:scale-102 ${
-                  zone.current < zone.optimal - 10
-                    ? "border-red-200 hover:border-red-300"
-                    : zone.current >= zone.optimal
-                      ? "border-green-200 hover:border-green-300"
-                      : "border-yellow-200 hover:border-yellow-300"
-                }`}
-                onClick={() =>
-                  setSelectedZone(zone.zone === selectedZone ? null : zone.zone)
-                }
-              >
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h3 className="text-lg font-bold text-charcoalGray">
-                      {zone.zone}
-                    </h3>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="text-xs text-oliveGreen/60">
-                        {zone.soilType}
-                      </span>
-                      <span className="text-xs text-oliveGreen/40">•</span>
-                      <span className="text-xs text-oliveGreen/60">
-                        Riego: {zone.lastWatering}
-                      </span>
-                    </div>
-                  </div>
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(zone.current, zone.optimal)}`}
-                  >
-                    {getStatusText(zone.current, zone.optimal)}
-                  </span>
-                </div>
+            {HUMIDITY_DATA.map((zone: HumidityZone, index: number) => {
+              const status = getZoneStatus(zone.current, zone.optimal);
+              const color = getZoneColor(zone.current, zone.optimal);
 
-                {/* Medidor circular */}
-                <div className="flex justify-center mb-4">
-                  <div className="relative w-32 h-32">
-                    <svg className="w-full h-full" viewBox="0 0 100 100">
-                      <circle
-                        cx="50"
-                        cy="50"
-                        r="45"
-                        fill="none"
-                        stroke="#e5e7eb"
-                        strokeWidth="8"
-                      />
-                      <circle
-                        cx="50"
-                        cy="50"
-                        r="45"
-                        fill="none"
-                        stroke={
-                          zone.current >= zone.optimal
-                            ? "#22c55e"
-                            : zone.current >= zone.optimal - 10
-                              ? "#eab308"
-                              : "#ef4444"
-                        }
-                        strokeWidth="8"
-                        strokeDasharray={`${2 * Math.PI * 45}`}
-                        strokeDashoffset={`${2 * Math.PI * 45 * (1 - zone.current / 100)}`}
-                        strokeLinecap="round"
-                        transform="rotate(-90 50 50)"
-                        className="transition-all duration-500"
-                      />
-                      <text
-                        x="50"
-                        y="50"
-                        textAnchor="middle"
-                        dy="0.3em"
-                        className="text-2xl font-bold"
-                        fill={
-                          zone.current >= zone.optimal
-                            ? "#22c55e"
-                            : zone.current >= zone.optimal - 10
-                              ? "#eab308"
-                              : "#ef4444"
-                        }
-                      >
-                        {zone.current}%
-                      </text>
-                    </svg>
-                  </div>
-                </div>
-
-                {/* Indicador de tendencia */}
-                <div className="flex justify-center items-center gap-1 mb-3">
-                  {getTrendIcon(zone.trend)}
-                  <span className="text-xs text-oliveGreen/60">
-                    {zone.trend === "up" && "Aumentando"}
-                    {zone.trend === "down" && "Disminuyendo"}
-                    {zone.trend === "stable" && "Estable"}
-                  </span>
-                </div>
-
-                {/* Gráfico histórico simplificado */}
-                <div className="mt-4">
-                  <p className="text-xs text-oliveGreen/60 mb-2">
-                    Evolución últimas 24h
-                  </p>
-                  <div className="flex items-end justify-between h-16 gap-1">
-                    {zone.history.map((value, i) => (
-                      <div
-                        key={i}
-                        className="flex-1 bg-gradient-to-t from-blue-400 to-blue-500 rounded-t transition-all duration-300 hover:from-blue-500 hover:to-blue-600"
-                        style={{
-                          height: `${value}%`,
-                          opacity: 0.7 + (i / zone.history.length) * 0.3,
-                        }}
-                      />
-                    ))}
-                  </div>
-                </div>
-
-                <div className="mt-4 pt-3 border-t border-blue-100 flex justify-between text-sm">
-                  <span className="text-oliveGreen/60">
-                    Óptimo: {zone.optimal}%
-                  </span>
-                  <span className="font-medium text-charcoalGray">
-                    Actual: {zone.current}%
-                  </span>
-                </div>
-
-                {/* Panel expandido con más detalles */}
-                {selectedZone === zone.zone && (
-                  <div className="mt-4 pt-4 border-t border-blue-100 animate-fadeIn">
-                    <div className="grid grid-cols-2 gap-3 text-sm">
-                      <div className="bg-blue-50/50 rounded-lg p-2">
-                        <p className="text-xs text-oliveGreen/60">
-                          Recomendación
-                        </p>
-                        <p className="font-medium text-charcoalGray">
-                          {zone.current < zone.optimal
-                            ? `Regar ${Math.round((zone.optimal - zone.current) * 0.5)}L/m²`
-                            : "Mantener nivel actual"}
-                        </p>
-                      </div>
-                      <div className="bg-blue-50/50 rounded-lg p-2">
-                        <p className="text-xs text-oliveGreen/60">
-                          Próximo riego
-                        </p>
-                        <p className="font-medium text-charcoalGray">
-                          {zone.current < zone.optimal
-                            ? "Inmediato"
-                            : "En 6-8 horas"}
-                        </p>
+              return (
+                <div
+                  key={index}
+                  className={`group bg-white/50 backdrop-blur-sm rounded-xl p-6 shadow-lg border transition-all duration-300 cursor-pointer hover:shadow-xl hover:scale-102 ${
+                    status.status === "critical"
+                      ? "border-red-200 hover:border-red-300"
+                      : status.status === "optimal"
+                        ? "border-green-200 hover:border-green-300"
+                        : "border-yellow-200 hover:border-yellow-300"
+                  }`}
+                  onClick={() => {
+                    const newZone =
+                      zone.zone === selectedZone ? null : zone.zone;
+                    setSelectedZone(newZone);
+                    if (newZone) setSelectedPlot(`Sicilia — ${newZone}`);
+                  }}
+                >
+                  <div className="flex justify-between items-start mb-4">
+                    <div>
+                      <h3 className="text-lg font-bold text-charcoalGray">
+                        {zone.zone}
+                      </h3>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-xs text-oliveGreen/60">
+                          {zone.soilType}
+                        </span>
+                        <span className="text-xs text-oliveGreen/40">•</span>
+                        <span className="text-xs text-oliveGreen/60">
+                          Riego: {zone.lastWatering}
+                        </span>
                       </div>
                     </div>
-                    <Button variant="blue" size="sm" className="w-full mt-3">
-                      💧 Riego manual ahora
-                    </Button>
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-medium ${status.colorClass}`}
+                    >
+                      {status.label}
+                    </span>
                   </div>
-                )}
-              </div>
-            ))}
+
+                  {/* Medidor circular */}
+                  <div className="flex justify-center mb-4">
+                    <div className="relative w-32 h-32">
+                      <svg className="w-full h-full" viewBox="0 0 100 100">
+                        <circle
+                          cx="50"
+                          cy="50"
+                          r="45"
+                          fill="none"
+                          stroke="#e5e7eb"
+                          strokeWidth="8"
+                        />
+                        <circle
+                          cx="50"
+                          cy="50"
+                          r="45"
+                          fill="none"
+                          stroke={color}
+                          strokeWidth="8"
+                          strokeDasharray={`${2 * Math.PI * 45}`}
+                          strokeDashoffset={`${2 * Math.PI * 45 * (1 - zone.current / 100)}`}
+                          strokeLinecap="round"
+                          transform="rotate(-90 50 50)"
+                          className="transition-all duration-500"
+                        />
+                        <text
+                          x="50"
+                          y="50"
+                          textAnchor="middle"
+                          dy="0.3em"
+                          className="text-2xl font-bold"
+                          fill={color}
+                        >
+                          {zone.current}%
+                        </text>
+                      </svg>
+                    </div>
+                  </div>
+
+                  {/* Indicador de tendencia */}
+                  <div className="flex justify-center items-center gap-1 mb-3">
+                    {getTrendIcon(zone.trend)}
+                    <span className="text-xs text-oliveGreen/60">
+                      {zone.trend === "up" && "Aumentando"}
+                      {zone.trend === "down" && "Disminuyendo"}
+                      {zone.trend === "stable" && "Estable"}
+                    </span>
+                  </div>
+
+                  {/* Gráfico histórico simplificado */}
+                  <div className="mt-4">
+                    <p className="text-xs text-oliveGreen/60 mb-2">
+                      Evolución últimas 24h
+                    </p>
+                    <div className="flex items-end justify-between h-16 gap-1">
+                      {zone.history.map((value, i) => (
+                        <div
+                          key={i}
+                          className="flex-1 bg-gradient-to-t from-blue-400 to-blue-500 rounded-t transition-all duration-300 hover:from-blue-500 hover:to-blue-600"
+                          style={{
+                            height: `${value}%`,
+                            opacity: 0.7 + (i / zone.history.length) * 0.3,
+                          }}
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="mt-4 pt-3 border-t border-blue-100 flex justify-between text-sm">
+                    <span className="text-oliveGreen/60">
+                      Óptimo: {zone.optimal}%
+                    </span>
+                    <span className="font-medium text-charcoalGray">
+                      Actual: {zone.current}%
+                    </span>
+                  </div>
+
+                  {/* Panel expandido */}
+                  {selectedZone === zone.zone && (
+                    <div className="mt-4 pt-4 border-t border-blue-100 animate-fadeIn">
+                      <div className="grid grid-cols-2 gap-3 text-sm">
+                        <div className="bg-blue-50/50 rounded-lg p-2">
+                          <p className="text-xs text-oliveGreen/60">
+                            Recomendación
+                          </p>
+                          <p className="font-medium text-charcoalGray">
+                            {zone.current < zone.optimal
+                              ? `Regar ${Math.round((zone.optimal - zone.current) * 0.5)}L/m²`
+                              : "Mantener nivel actual"}
+                          </p>
+                        </div>
+                        <div className="bg-blue-50/50 rounded-lg p-2">
+                          <p className="text-xs text-oliveGreen/60">
+                            Próximo riego
+                          </p>
+                          <p className="font-medium text-charcoalGray">
+                            {zone.current < zone.optimal
+                              ? "Inmediato"
+                              : "En 6-8 horas"}
+                          </p>
+                        </div>
+                      </div>
+                      <Button variant="blue" size="sm" className="w-full mt-3">
+                        💧 Riego manual ahora
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
 
@@ -457,7 +401,6 @@ export default function HumedadPage() {
             </div>
           </div>
 
-          {/* Nota climática */}
           <div className="mt-6 p-4 bg-yellow-50/50 rounded-xl border border-yellow-200">
             <p className="text-sm text-oliveGreen/70 flex items-center gap-2">
               <Sun className="w-4 h-4 text-yellow-600" />
