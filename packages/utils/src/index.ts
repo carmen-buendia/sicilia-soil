@@ -5,3 +5,4 @@ export * from "./lightUtils";
 export * from "./temperatureUtils";
 export * from "./humidityUtils";
 export * from "./statistics";
+export * from "./copernicusUtils";
