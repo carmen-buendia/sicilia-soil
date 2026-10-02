@@ -7,3 +7,5 @@ export { PredictionCard } from "./PredictionCard";
 export { DataTable } from "./DataTable";
 export { InsightsFooter } from "./InsightsFooter";
 export { useAnalysisData } from "../hooks/useAnalysisData";
+export { CopernicusWidget } from "./CopernicusWidget";
+export { CopernicusMap } from "./CopernicusMap";
