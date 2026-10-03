@@ -7,3 +7,5 @@ export * from "./humidityUtils";
 export * from "./statistics";
 export * from "./copernicusUtils";
 export * from "./groundCoverUtils";
+export * from "./recommendation.engine";
+export * from "./notification.engine";
