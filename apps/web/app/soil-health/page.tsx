@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import {
   ArrowLeft,
   Droplets,
@@ -15,153 +14,24 @@ import {
 import { MycologyChart } from "@sicilia-soil/ui";
 import { MushroomChip } from "./components/MushroomChip";
 import { MushroomCard } from "@/components/features/soil-health";
+import {
+  MUSHROOMS,
+  CULTIVATION_ZONES,
+  DEFAULT_MUSHROOM_ID,
+} from "@sicilia-soil/core";
 
-// Datos simulados para setas autóctonas
-const generateMushroomData = (
-  days: number,
-  baseValue: number,
-  variance: number,
-) => {
-  const data = [];
-  const now = new Date();
-  for (let i = days; i >= 0; i--) {
-    const date = new Date(now);
-    date.setDate(date.getDate() - i);
-    const variation = Math.sin((i / 7) * Math.PI) * variance;
-    const randomVar = (Math.random() - 0.5) * variance;
-    const value = baseValue + variation + randomVar;
-    data.push({
-      timestamp: date.toISOString().split("T")[0],
-      value: Math.round(value * 10) / 10,
-    });
-  }
-  return data;
-};
+export default function SoilHealthPage() {
+  const [selectedMushroom, setSelectedMushroom] = useState(DEFAULT_MUSHROOM_ID);
 
-const mushrooms = [
-  {
-    id: "cardonchello",
-    name: "Cardonchello",
-    scientificName: "Pleurotus eryngii",
-    icon: "🍄",
-    description:
-      "Seta emblemática de Sicilia, crece sobre raíces de cañaheja. Muy apreciada en la gastronomía local.",
-    habitat: "Pastizales, bordes de caminos, asociada a Ferula communis",
-    season: ["Otoño", "Invierno", "Primavera"],
-    isEndemic: false,
-    data: {
-      humidity: generateMushroomData(30, 85, 5),
-      temperature: generateMushroomData(30, 18, 3),
-      co2: generateMushroomData(30, 450, 30),
-    },
-    optimal: { humidity: [75, 85], temperature: [16, 22], co2: [400, 600] },
-  },
-  {
-    id: "cardoncello-nebrodi",
-    name: "Cardoncello di Nebrodi",
-    scientificName: "Pleurotus nebrodensis",
-    icon: "🍄",
-    description:
-      "Seta endémica de los montes Nebrodi en Sicilia. Una de las setas más raras y cotizadas del mundo.",
-    habitat: "Montañas de los Nebrodi, asociada a Cachrys ferulacea",
-    season: ["Primavera"],
-    isEndemic: true,
-    data: {
-      humidity: generateMushroomData(30, 80, 5),
-      temperature: generateMushroomData(30, 20, 3),
-      co2: generateMushroomData(30, 500, 40),
-    },
-    optimal: { humidity: [70, 85], temperature: [18, 24], co2: [400, 700] },
-  },
-  {
-    id: "prataiolo",
-    name: "Prataiolo Siciliano",
-    scientificName: "Agaricus bitorquis",
-    icon: "🍄",
-    description:
-      "Variedad autóctona del champiñón, muy valorada en la cocina tradicional siciliana.",
-    habitat: "Suelos ricos en materia orgánica, compost",
-    season: ["Primavera", "Otoño"],
-    isEndemic: false,
-    data: {
-      humidity: generateMushroomData(30, 75, 4),
-      temperature: generateMushroomData(30, 16, 2),
-      co2: generateMushroomData(30, 600, 50),
-    },
-    optimal: { humidity: [70, 80], temperature: [14, 18], co2: [500, 700] },
-  },
-  {
-    id: "niccolo",
-    name: "Níccolo",
-    scientificName: "Lactarius sanguifluus",
-    icon: "🍄",
-    description:
-      "Hongo micorrícico autóctono que crece asociado a encinas y pinos.",
-    habitat: "Bosques de encinas y pinos",
-    season: ["Otoño"],
-    isEndemic: false,
-    data: {
-      humidity: generateMushroomData(30, 82, 6),
-      temperature: generateMushroomData(30, 19, 2),
-      co2: generateMushroomData(30, 480, 35),
-    },
-    optimal: { humidity: [75, 85], temperature: [17, 21], co2: [400, 550] },
-  },
-];
-
-// Zonas de cultivo activas (datos de sensores)
-const cultivationZones = [
-  {
-    id: "zone-cardonchello",
-    name: "Cardonchello",
-    scientificName: "Pleurotus eryngii",
-    icon: "🍄",
-    location: "Invernadero Norte",
-    humidity: 82,
-    temperature: 19,
-    co2: 480,
-    stage: "fruiting" as const,
-    harvestIn: "5 días",
-    status: "optimal" as const,
-  },
-  {
-    id: "zone-nebrodi",
-    name: "Cardoncello di Nebrodi",
-    scientificName: "Pleurotus nebrodensis",
-    icon: "🍄",
-    location: "Cámara climática",
-    humidity: 78,
-    temperature: 21,
-    co2: 520,
-    stage: "growth" as const,
-    harvestIn: "12 días",
-    status: "excellent" as const,
-  },
-  {
-    id: "zone-prataiolo",
-    name: "Prataiolo Siciliano",
-    scientificName: "Agaricus bitorquis",
-    icon: "🍄",
-    location: "Bandeja de compost",
-    humidity: 74,
-    temperature: 17,
-    co2: 580,
-    stage: "harvest" as const,
-    harvestIn: "Listo hoy",
-    status: "ready" as const,
-  },
-];
-
-export default function MycologyPage() {
-  const [selectedMushroom, setSelectedMushroom] = useState("cardonchello");
-  const current = mushrooms.find((m) => m.id === selectedMushroom)!;
+  const current = MUSHROOMS.find((m) => m.id === selectedMushroom);
+  if (!current) return null;
 
   return (
     <div className="min-h-screen p-4 md:p-8 pt-24 bg-offWhite">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-col gap-2">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 flex-wrap">
             <h1 className="text-3xl md:text-4xl font-bold text-charcoalGray flex items-center gap-3">
               <div className="p-2 bg-gradient-to-br from-oliveGreen/20 to-wheatGold/20 rounded-xl">
                 <span className="text-2xl">🍄</span>
@@ -177,8 +47,9 @@ export default function MycologyPage() {
             T2)
           </p>
         </div>
-        {/* Hero Section */}
-        <div className="bg-gradient-to-r from-oliveGreen/10 to-wheatGold/10 rounded-2xl p-6 md:p-8 mb-12 border border-oliveGreen/20">
+
+        {/* Hero */}
+        <div className="bg-gradient-to-r from-oliveGreen/10 to-wheatGold/10 rounded-2xl p-6 md:p-8 my-12 border border-oliveGreen/20">
           <h2 className="text-2xl font-bold text-charcoalGray mb-3">
             🍄 Salud Biológica del Suelo
           </h2>
@@ -212,11 +83,11 @@ export default function MycologyPage() {
             🌱 Zonas de cultivo activas
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
-            {cultivationZones.map((zone) => (
+            {CULTIVATION_ZONES.map((zone) => (
               <MushroomCard
                 key={zone.id}
                 mushroom={zone}
-                onViewDetails={(id: any) => console.log("Ver detalles:", id)}
+                onViewDetails={(id: string) => console.log("Ver detalles:", id)}
               />
             ))}
           </div>
@@ -224,7 +95,7 @@ export default function MycologyPage() {
 
         {/* Selector de setas */}
         <div className="flex flex-wrap gap-3 mb-8">
-          {mushrooms.map((m) => (
+          {MUSHROOMS.map((m) => (
             <MushroomChip
               key={m.id}
               mushroom={m}
@@ -236,7 +107,6 @@ export default function MycologyPage() {
 
         {/* Info de la seta seleccionada */}
         <div className="grid md:grid-cols-3 gap-6 mb-8">
-          {/* Descripción */}
           <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-oliveGreen/15 md:col-span-2">
             <div className="flex items-center gap-2 mb-4">
               <Info className="w-5 h-5 text-oliveGreen" />
@@ -249,7 +119,6 @@ export default function MycologyPage() {
             </p>
           </div>
 
-          {/* Datos rápidos */}
           <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-oliveGreen/15">
             <div className="space-y-3">
               <div className="flex items-center gap-2">
@@ -270,7 +139,9 @@ export default function MycologyPage() {
                 <Leaf className="w-4 h-4 text-oliveGreen" />
                 <span className="text-sm text-oliveGreen/70">Endemismo:</span>
                 <span
-                  className={`text-sm font-medium ${current.isEndemic ? "text-wheatGold" : "text-oliveGreen/60"}`}
+                  className={`text-sm font-medium ${
+                    current.isEndemic ? "text-wheatGold" : "text-oliveGreen/60"
+                  }`}
                 >
                   {current.isEndemic ? "Endémica de Sicilia 🌍" : "Cosmopolita"}
                 </span>

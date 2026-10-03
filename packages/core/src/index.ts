@@ -13,3 +13,5 @@ export {
 } from "./data/humidity.data";
 
 export type { HumidityZone } from "./data/humidity.data";
+export * from "./types/soilHealth.types";
+export * from "./data/soilHealth.data";
