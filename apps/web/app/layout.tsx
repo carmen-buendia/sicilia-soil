@@ -43,34 +43,46 @@ export default function RootLayout({
             {children}
           </main>
 
-          {/* Footer mejorado */}
-          <footer className="bg-gradient-to-b from-oliveGreen/5 to-transparent border-t border-oliveGreen/15 py-10 mt-8">
-            <div className="text-center">
-              <div className="flex items-center justify-center gap-3 mb-4">
-                <div className="p-2 bg-gradient-to-br from-oliveGreen to-wheatGold rounded-xl shadow-md">
-                  <Sprout className="w-5 h-5 text-white" />
+          {/* Footer */}
+          <footer className="bg-gradient-to-b from-oliveGreen/5 to-transparent border-t border-oliveGreen/15 py-8 mt-12">
+            <div className="max-w-4xl mx-auto px-4">
+              {/* Fila superior: logo + tagline corto */}
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mb-4">
+                <div className="flex items-center gap-2">
+                  <div className="p-1.5 bg-gradient-to-br from-oliveGreen to-wheatGold rounded-lg shadow-sm">
+                    <Sprout className="w-4 h-4 text-white" />
+                  </div>
+                  <span className="font-bold text-charcoalGray">
+                    Sicilia<span className="text-sicilian-red">·</span>Soil
+                  </span>
+                  <span className="hidden sm:inline text-xs text-oliveGreen/50 ml-2">
+                    Crop-agnostic decision support
+                  </span>
                 </div>
-                <h3 className="text-xl font-bold text-charcoalGray">
-                  Sicilia‑soil | La Isola Latente
-                </h3>
+
+                <div className="flex items-center gap-3 text-xs text-oliveGreen/60">
+                  <span className="flex items-center gap-1.5">
+                    <SicilianFlag size="small" />
+                    <strong className="text-charcoalGray font-medium">
+                      Carmen María Buendía Sánchez
+                    </strong>
+                  </span>
+                  <span className="text-oliveGreen/30">·</span>
+                  <a
+                    href="https://github.com/carmen-buendia/sicilia-soil/blob/main/LICENSE"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-oliveGreen transition-colors underline decoration-dotted underline-offset-2"
+                  >
+                    Apache 2.0
+                  </a>
+                </div>
               </div>
-              <p className="text-oliveGreen/70 max-w-2xl mx-auto text-sm">
-                Tecnología al servicio de la regeneración del territorio en el
-                Geoparque Rocca di Cerere (Enna, Sicilia). Integramos diseño
-                sintrópico, micología, esparto y agricultura 4.0.
-              </p>
-              <p className="text-oliveGreen/60 max-w-2xl mx-auto text-xs mt-2 italic">
-                🌿 Inspirado en la agricultura sintrópica de{" "}
-                <strong>Ernst Götsch</strong> – "Cuanto más intervenimos para
-                acelerar la sucesión natural, más nos acerca a la abundancia."
-              </p>
-              <div className="flex items-center justify-center gap-2 mt-4 text-xs text-oliveGreen/50">
-                <SicilianFlag size="small" />
-                <span>Permacultura Sintrópica en el Mediterráneo</span>
-                <Flower2 className="w-3 h-3" />
-              </div>
-              <p className="text-xs text-oliveGreen/40 mt-6">
-                © {new Date().getFullYear()} · Sicilia‑soil · Datos simulados
+
+              {/* Fila inferior: copyright */}
+              <p className="text-center text-[11px] text-oliveGreen/40">
+                © {new Date().getFullYear()} Sicilia·Soil · Hecho con 🌱 en
+                Sicilia
               </p>
             </div>
           </footer>
