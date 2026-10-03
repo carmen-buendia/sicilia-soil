@@ -1,12 +1,8 @@
-export interface Recommendation {
-  text: string;
-  action: string;
-  color: string;
-  bg: string;
-  border: string;
-}
+import { DashboardRecommendation } from "@sicilia-soil/core";
 
-export const getLightRecommendations = (light: number): Recommendation => {
+export const getLightRecommendations = (
+  light: number,
+): DashboardRecommendation => {
   if (light < 30) {
     return {
       text: "Muy poca luz. Considera trasladar plantas o usar luces de cultivo.",

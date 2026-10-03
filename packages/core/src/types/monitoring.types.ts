@@ -159,7 +159,7 @@ export interface StatsCardData {
 // TIPOS PARA RECOMENDACIONES
 // ============================================
 
-export interface Recommendation {
+export interface DashboardRecommendation {
   text: string;
   action: string;
   color: string;
