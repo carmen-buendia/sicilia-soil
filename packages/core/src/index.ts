@@ -15,3 +15,6 @@ export {
 export type { HumidityZone } from "./data/humidity.data";
 export * from "./types/soilHealth.types";
 export * from "./data/soilHealth.data";
+export * from "./types/recommendation.types";
+export * from "./data/recommendation.rules";
+export * from "./types/notification.types";
