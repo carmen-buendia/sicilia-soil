@@ -1,6 +1,8 @@
 export * from "./types";
 export * from "./constants";
 export * from "./data/copernicus.defaults";
+export * from "./types/groundCover.types";
+export * from "./data/groundCover.data";
 export {
   HUMIDITY_DATA,
   getAverageHumidity,
