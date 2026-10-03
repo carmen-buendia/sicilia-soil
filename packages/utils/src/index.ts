@@ -6,3 +6,4 @@ export * from "./temperatureUtils";
 export * from "./humidityUtils";
 export * from "./statistics";
 export * from "./copernicusUtils";
+export * from "./groundCoverUtils";
