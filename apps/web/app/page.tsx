@@ -544,23 +544,23 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Esparto Section */}
+      {/* Ground Cover & Erosion Control Section */}
       <div className="bg-gradient-to-r from-oliveGreen/5 to-wheatGold/5 rounded-2xl p-6 border border-oliveGreen/15">
         <div className="flex items-center gap-3 mb-4">
           <div className="p-2 bg-oliveGreen/10 rounded-xl">
             <Sprout className="w-6 h-6 text-oliveGreen" />
           </div>
           <h2 className="text-xl font-bold text-charcoalGray">
-            Cultivo de Esparto
+            Cubiertas Vegetales y Control de Erosión
           </h2>
         </div>
         <p className="text-oliveGreen/70 mb-4">
-          La planta de esparto (Stipa tenacissima) es una fibra natural
-          tradicional siciliana. Actualmente en fase de crecimiento activo con
-          un 92% de salud.
+          La cubierta vegetal de esparto (Stipa tenacissima) retiene la humedad
+          del suelo y previene la erosión. Actualmente en fase de crecimiento
+          activo con un 92% de salud.
         </p>
         <Link
-          href="/esparto"
+          href="/ground-cover"
           className="inline-flex items-center gap-2 text-oliveGreen hover:text-sicilian-red transition-colors"
         >
           Ver detalles del cultivo <span>→</span>

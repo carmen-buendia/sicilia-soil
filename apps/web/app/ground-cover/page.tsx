@@ -148,37 +148,23 @@ export default function EspartoPage() {
     <div className="min-h-screen p-4 md:p-8 pt-24 bg-gradient-to-br from-offWhite to-emerald-50">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
-          <div className="flex items-center gap-4">
-            <Link
-              href="/"
-              className="p-2 hover:bg-oliveGreen/10 rounded-lg transition-colors"
-            >
-              <ArrowLeft className="w-5 h-5 text-oliveGreen" />
-            </Link>
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-charcoalGray flex items-center gap-3">
-                <div className="p-2 bg-gradient-to-br from-oliveGreen/20 to-wheatGold/20 rounded-xl">
-                  <span className="text-3xl">🌾</span>
-                </div>
-                Cultivo de Esparto
-              </h1>
-              <p className="text-oliveGreen/70">
-                {espartoData.scientificName} - Tradición y sostenibilidad en
-                Sicilia
-              </p>
-            </div>
-          </div>
-          <div
-            className={`px-4 py-2 rounded-full flex items-center gap-2 ${health.color}`}
-          >
-            <span>{health.icon}</span>
-            <span className="font-medium">
-              Salud del cultivo: {health.status}
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-3">
+            <h1 className="text-3xl md:text-4xl font-bold text-charcoalGray flex items-center gap-3">
+              <div className="p-2 bg-gradient-to-br from-oliveGreen/20 to-wheatGold/20 rounded-xl">
+                <span className="text-3xl">🌾</span>
+              </div>
+              Cubiertas Vegetales y Control de Erosión
+            </h1>
+            <span className="text-xs bg-blue-100 text-blue-700 border border-blue-200 px-3 py-1 rounded-full font-medium">
+              Módulo T3 · NOSTRADAMUS
             </span>
           </div>
+          <p className="text-oliveGreen/70">
+            Retención hídrica y prevención de erosión en suelos mediterráneos
+            (Módulo T3)
+          </p>
         </div>
-
         {/* Hero Section */}
         <div className="bg-gradient-to-r from-oliveGreen/10 to-emerald-500/10 rounded-2xl p-6 md:p-8 mb-12 border border-oliveGreen/20">
           <div className="flex flex-col md:flex-row gap-6 items-center">
@@ -190,7 +176,10 @@ export default function EspartoPage() {
                 El esparto <strong>(Stipa tenacissima)</strong> es una planta
                 milenaria que ha moldeado la cultura y economía siciliana. Su
                 fibra, resistente y versátil, representa un modelo de{" "}
-                <strong>agricultura regenerativa y sostenible</strong>.
+                <strong>agricultura regenerativa y sostenible</strong>. Como
+                cubierta vegetal mediterránea, retiene la humedad del suelo,
+                previene la erosión y contribuye a la resiliencia hídrica del
+                ecosistema (Módulo T3).
               </p>
               <div className="flex flex-wrap gap-3 mt-4">
                 <span className="px-3 py-1 bg-white/50 rounded-full text-sm">
