@@ -4,9 +4,10 @@ import { useEffect } from "react";
 // @ts-ignore
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
-import { Flower2, Sprout } from "lucide-react";
+import { Sprout } from "lucide-react";
 import { SicilianFlag } from "@/components/layout/SicilianFlag";
 import { NotificationsProvider } from "@/contexts/NotificationsContext";
+import Link from "next/link";
 // @ts-ignore
 
 export default function RootLayout({
@@ -42,48 +43,71 @@ export default function RootLayout({
           <main className="container mx-auto px-3 sm:px-4 py-6 sm:py-8">
             {children}
           </main>
-
           {/* Footer */}
-          <footer className="bg-gradient-to-b from-oliveGreen/5 to-transparent border-t border-oliveGreen/15 py-8 mt-12">
+          <footer className="bg-gradient-to-b from-oliveGreen/5 to-transparent border-t border-oliveGreen/15 py-10 mt-16">
             <div className="max-w-4xl mx-auto px-4">
-              {/* Fila superior: logo + tagline corto */}
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mb-4">
-                <div className="flex items-center gap-2">
-                  <div className="p-1.5 bg-gradient-to-br from-oliveGreen to-wheatGold rounded-lg shadow-sm">
-                    <Sprout className="w-4 h-4 text-white" />
-                  </div>
-                  <span className="font-bold text-charcoalGray">
-                    Sicilia<span className="text-sicilian-red">·</span>Soil
-                  </span>
-                  <span className="hidden sm:inline text-xs text-oliveGreen/50 ml-2">
-                    Crop-agnostic decision support
-                  </span>
+              {/* Fila 1: Logo + nombre (centrado) */}
+              <div className="flex items-center justify-center gap-2 mb-4">
+                <div className="p-1.5 bg-gradient-to-br from-oliveGreen to-wheatGold rounded-lg shadow-sm">
+                  <Sprout className="w-4 h-4 text-white" />
                 </div>
-
-                <div className="flex items-center gap-3 text-xs text-oliveGreen/60">
-                  <span className="flex items-center gap-1.5">
-                    <SicilianFlag size="small" />
-                    <strong className="text-charcoalGray font-medium">
-                      Carmen María Buendía Sánchez
-                    </strong>
-                  </span>
-                  <span className="text-oliveGreen/30">·</span>
-                  <a
-                    href="https://github.com/carmen-buendia/sicilia-soil/blob/main/LICENSE"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:text-oliveGreen transition-colors underline decoration-dotted underline-offset-2"
-                  >
-                    Apache 2.0
-                  </a>
-                </div>
+                <span className="font-bold text-charcoalGray text-base">
+                  Sicilia<span className="text-sicilian-red">·</span>Soil
+                </span>
+                <span className="hidden sm:inline text-xs text-oliveGreen/50 ml-2">
+                  Crop-agnostic decision support
+                </span>
               </div>
 
-              {/* Fila inferior: copyright */}
-              <p className="text-center text-[11px] text-oliveGreen/40">
-                © {new Date().getFullYear()} Sicilia·Soil · Hecho con 🌱 en
-                Sicilia
-              </p>
+              {/* Fila 2: Links (centrados) */}
+              <div className="flex items-center justify-center gap-4 text-xs text-oliveGreen/70 mb-4 flex-wrap">
+                <Link
+                  href="/about"
+                  className="hover:text-oliveGreen transition-colors"
+                >
+                  About
+                </Link>
+                <span className="text-oliveGreen/30">·</span>
+                <Link
+                  href="/manifesto"
+                  className="hover:text-oliveGreen transition-colors"
+                >
+                  Manifesto
+                </Link>
+                <span className="text-oliveGreen/30">·</span>
+                <a
+                  href="https://github.com/carmen-buendia/sicilia-soil"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-oliveGreen transition-colors"
+                >
+                  GitHub
+                </a>
+                <span className="text-oliveGreen/30">·</span>
+                <a
+                  href="https://github.com/carmen-buendia/sicilia-soil/blob/main/LICENSE"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-oliveGreen transition-colors"
+                >
+                  Apache 2.0
+                </a>
+              </div>
+
+              {/* Fila 3: Autoría + copyright (centrado) */}
+              <div className="text-center text-[11px] text-oliveGreen/50 leading-relaxed">
+                <p className="flex items-center justify-center gap-1.5 mb-1">
+                  <SicilianFlag size="small" />
+                  <span>Proyecto creado por</span>
+                  <strong className="text-oliveGreen/70 font-medium">
+                    Carmen María Buendía Sánchez
+                  </strong>
+                </p>
+                <p>
+                  © {new Date().getFullYear()} Sicilia·Soil · Hecho con 🌱 en
+                  Sicilia
+                </p>
+              </div>
             </div>
           </footer>
         </NotificationsProvider>
