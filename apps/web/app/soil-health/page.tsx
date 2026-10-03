@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { MycologyChart } from "@sicilia-soil/ui";
 import { MushroomChip } from "./components/MushroomChip";
-import { MushroomCard } from "@/components/features/mycology";
+import { MushroomCard } from "@/components/features/soil-health";
 
 // Datos simulados para setas autóctonas
 const generateMushroomData = (
@@ -160,38 +160,35 @@ export default function MycologyPage() {
     <div className="min-h-screen p-4 md:p-8 pt-24 bg-offWhite">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
-          <div className="flex items-center gap-4">
-            <Link
-              href="/"
-              className="p-2 hover:bg-oliveGreen/10 rounded-lg transition-colors"
-            >
-              <ArrowLeft className="w-5 h-5 text-oliveGreen" />
-            </Link>
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-charcoalGray flex items-center gap-3">
-                <div className="p-2 bg-gradient-to-br from-oliveGreen/20 to-wheatGold/20 rounded-xl">
-                  <span className="text-2xl">🍄</span>
-                </div>
-                Micología Siciliana
-              </h1>
-              <p className="text-oliveGreen/70">
-                Seguimiento de setas autóctonas y condiciones de cultivo
-              </p>
-            </div>
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-3">
+            <h1 className="text-3xl md:text-4xl font-bold text-charcoalGray flex items-center gap-3">
+              <div className="p-2 bg-gradient-to-br from-oliveGreen/20 to-wheatGold/20 rounded-xl">
+                <span className="text-2xl">🍄</span>
+              </div>
+              Salud Biológica del Suelo
+            </h1>
+            <span className="text-xs bg-blue-100 text-blue-700 border border-blue-200 px-3 py-1 rounded-full font-medium">
+              Módulo T2 · NOSTRADAMUS
+            </span>
           </div>
+          <p className="text-oliveGreen/70">
+            Monitorización de actividad microbiológica, COS y nutrientes (Módulo
+            T2)
+          </p>
         </div>
-
         {/* Hero Section */}
         <div className="bg-gradient-to-r from-oliveGreen/10 to-wheatGold/10 rounded-2xl p-6 md:p-8 mb-12 border border-oliveGreen/20">
           <h2 className="text-2xl font-bold text-charcoalGray mb-3">
-            🍄 El Reino Fungi en la Permacultura Sintrópica
+            🍄 Salud Biológica del Suelo
           </h2>
           <p className="text-charcoalGray/80 mb-4">
-            Los hongos son la <strong>red de internet de la naturaleza</strong>.
-            Conectan plantas, descomponen materia orgánica y crean suelos vivos.
-            En Sicilia, tenemos especies endémicas como el Cardoncello di
-            Nebrodi que son clave para nuestros ecosistemas.
+            La actividad microbiológica del suelo es el{" "}
+            <strong>indicador clave</strong> de su salud. Los hongos actúan como
+            la <strong>red de internet de la naturaleza</strong>, conectando
+            plantas, descomponiendo materia orgánica y creando suelos vivos. En
+            Sicilia, especies endémicas como el Cardoncello di Nebrodi son clave
+            para nuestros ecosistemas.
           </p>
           <div className="flex flex-wrap gap-3 mt-4">
             <span className="px-3 py-1 bg-white/50 rounded-full text-sm">

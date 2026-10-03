@@ -28,8 +28,8 @@ const navItems = [
   { id: "/temperature", label: "Temperatura", icon: Thermometer },
   { id: "/light", label: "Luz", icon: Sun },
   { id: "/analysis", label: "Análisis", icon: LineChart },
-  { id: "/mycology", label: "Micología", icon: Leaf },
-  { id: "/esparto", label: "Esparto", icon: Sprout },
+  { id: "/soil-health", label: "Salud del Suelo", icon: Leaf },
+  { id: "/ground-cover", label: "Cubiertas Vegetales", icon: Sprout },
   { id: "/ambiental", label: "Ambiental", icon: Activity },
   { id: "/configuration", label: "Configuración", icon: Settings },
 ];
