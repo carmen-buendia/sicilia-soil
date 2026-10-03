@@ -9,3 +9,8 @@ export { InsightsFooter } from "./InsightsFooter";
 export { useAnalysisData } from "../hooks/useAnalysisData";
 export { CopernicusWidget } from "./CopernicusWidget";
 export { CopernicusMap } from "./CopernicusMap";
+export { StatusBadge } from "./StatusBadge";
+export { MetricCard } from "./MetricCard";
+export { EnvironmentalTable } from "./EnvironmentalTable";
+export { AgronomicTab } from "./AgronomicTab";
+export { EnvironmentalTab } from "./EnvironmentalTab";
