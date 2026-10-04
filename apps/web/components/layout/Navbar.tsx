@@ -6,9 +6,6 @@ import { usePathname } from "next/navigation";
 import {
   Home,
   Droplets,
-  Thermometer,
-  Sun,
-  LineChart,
   Settings,
   Menu,
   X,
@@ -16,7 +13,6 @@ import {
   Sprout,
   Leaf,
   Flower2,
-  Activity,
   Lightbulb,
 } from "lucide-react";
 import { SicilianFlag } from "./SicilianFlag";
@@ -25,13 +21,9 @@ import { NotificationBell } from "@/components/features/notifications";
 
 const navItems = [
   { id: "/", label: "Dashboard", icon: Home },
-  { id: "/humidity", label: "Humedad", icon: Droplets },
-  { id: "/temperature", label: "Temperatura", icon: Thermometer },
-  { id: "/light", label: "Luz", icon: Sun },
-  { id: "/analysis", label: "Análisis", icon: LineChart },
   { id: "/soil-health", label: "Suelo", icon: Leaf },
-  { id: "/ground-cover", label: "Vegetales", icon: Sprout },
-  { id: "/ambiental", label: "Ambiental", icon: Activity },
+  { id: "/humidity", label: "Agua", icon: Droplets },
+  { id: "/ground-cover", label: "Cultivos", icon: Sprout },
   { id: "/recommendations", label: "Recomendaciones", icon: Lightbulb },
   { id: "/configuration", label: "Configuración", icon: Settings },
 ];
@@ -109,7 +101,7 @@ export function Navbar() {
             })}
           </div>
 
-          {/* User Menu - Versión corregida */}
+          {/* User Menu */}
           <div className="flex items-center gap-2 sm:gap-3">
             <NotificationBell />
             <div className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-oliveGreen/10 to-wheatGold/10 rounded-full pl-2 pr-4 py-1 border border-oliveGreen/20">
