@@ -1,3 +1,5 @@
+// packages/core/src/data/recommendation.rules.ts
+
 import type {
   RecommendationItem,
   RecommendationRule,
@@ -25,7 +27,7 @@ function buildRecommendation(
 }
 
 // ============================================================================
-// T3 – Water Resource Efficiency & Drought Resilience
+// T3 – Water Resource Efficiency & Drought Resilience (existentes)
 // ============================================================================
 
 const irrigationUrgentRule: RecommendationRule = {
@@ -161,7 +163,78 @@ const ndwiWaterDeficitRule: RecommendationRule = {
 };
 
 // ============================================================================
-// T2 – Nutrient & Soil Health Management
+// T3 – Nuevas reglas: lluvia, evapotranspiración
+// ============================================================================
+
+const rainForecastRule: RecommendationRule = {
+  id: "T3-rain-forecast",
+  topic: "T3",
+  category: "irrigation",
+  evaluate: (input) => {
+    if (
+      input.rainForecast !== undefined &&
+      input.rainForecast > 10 &&
+      input.soilMoisture !== undefined &&
+      input.soilMoisture < 60
+    ) {
+      return buildRecommendation({
+        topic: "T3",
+        category: "irrigation",
+        priority: "medium",
+        title: "No regar: lluvia prevista",
+        description: `Se esperan ${input.rainForecast} mm en 24 h. La humedad actual (${input.soilMoisture}%) se recuperará sin riego.`,
+        action: "Cancelar riego programado. Ahorro estimado: 15 L/m²",
+        dataSource: "rain-forecast",
+        confidence: 88,
+        zoneId: input.zoneId,
+        zoneName: input.zoneName,
+        evidence: {
+          rainForecast: input.rainForecast,
+          soilMoisture: input.soilMoisture,
+        },
+      });
+    }
+    return null;
+  },
+};
+
+const highEvapotranspirationRule: RecommendationRule = {
+  id: "T3-high-et",
+  topic: "T3",
+  category: "irrigation",
+  evaluate: (input) => {
+    if (
+      input.airTemperature !== undefined &&
+      input.airTemperature > 30 &&
+      input.light !== undefined &&
+      input.light > 85 &&
+      input.soilMoisture !== undefined &&
+      input.soilMoisture < 60
+    ) {
+      return buildRecommendation({
+        topic: "T3",
+        category: "irrigation",
+        priority: "medium",
+        title: "Aumentar riego 15%",
+        description: `Temperatura ${input.airTemperature}°C + radiación alta (${input.light}%) aceleran la evapotranspiración.`,
+        action: "Ajustar goteo durante los próximos 3 días",
+        dataSource: "composite",
+        confidence: 80,
+        zoneId: input.zoneId,
+        zoneName: input.zoneName,
+        evidence: {
+          airTemperature: input.airTemperature,
+          light: input.light,
+          soilMoisture: input.soilMoisture,
+        },
+      });
+    }
+    return null;
+  },
+};
+
+// ============================================================================
+// T2 – Nutrient & Soil Health Management (existentes)
 // ============================================================================
 
 const co2MushroomFruitingRule: RecommendationRule = {
@@ -250,18 +323,342 @@ const lstHeatStressRule: RecommendationRule = {
 };
 
 // ============================================================================
+// T2 – Regeneración del suelo (nuevas)
+// ============================================================================
+
+const lowOrganicMatterRule: RecommendationRule = {
+  id: "T2-low-organic-matter",
+  topic: "T2",
+  category: "regeneration",
+  evaluate: (input) => {
+    if (input.organicMatter !== undefined && input.organicMatter < 2) {
+      return buildRecommendation({
+        topic: "T2",
+        category: "regeneration",
+        priority: "high",
+        title: "Añadir compost",
+        description: `Materia orgánica al ${input.organicMatter}% (umbral 2%). El suelo pierde capacidad de retención hídrica.`,
+        action: "Aplicar 20 kg de compost maduro por 100 m²",
+        dataSource: "organic-matter",
+        confidence: 88,
+        zoneId: input.zoneId,
+        zoneName: input.zoneName,
+        evidence: { organicMatter: input.organicMatter },
+      });
+    }
+    return null;
+  },
+};
+
+const lowMycorrhizaRule: RecommendationRule = {
+  id: "T2-low-mycorrhiza",
+  topic: "T2",
+  category: "regeneration",
+  evaluate: (input) => {
+    if (input.mycorrhiza !== undefined && input.mycorrhiza < 30) {
+      return buildRecommendation({
+        topic: "T2",
+        category: "regeneration",
+        priority: "medium",
+        title: "Inocular micorrizas",
+        description: `Colonización micorrícica al ${input.mycorrhiza}% (umbral 30%). La red fúngica está debilitada.`,
+        action:
+          "Aplicar inóculo micorrícico tras la cosecha. Reducir labranza.",
+        dataSource: "soil-temperature",
+        confidence: 82,
+        zoneId: input.zoneId,
+        zoneName: input.zoneName,
+        evidence: { mycorrhiza: input.mycorrhiza },
+      });
+    }
+    return null;
+  },
+};
+
+const lowGlomalinRule: RecommendationRule = {
+  id: "T2-low-glomalin",
+  topic: "T2",
+  category: "regeneration",
+  evaluate: (input) => {
+    if (input.glomalin !== undefined && input.glomalin < 1.5) {
+      return buildRecommendation({
+        topic: "T2",
+        category: "regeneration",
+        priority: "medium",
+        title: "Reducir labranza",
+        description: `Glomalina al ${input.glomalin} mg/g (umbral 1.5). La estructura del suelo se está debilitando.`,
+        action: "Evitar laboreo profundo. Aumentar cubierta vegetal",
+        dataSource: "soil-temperature",
+        confidence: 80,
+        zoneId: input.zoneId,
+        zoneName: input.zoneName,
+        evidence: { glomalin: input.glomalin },
+      });
+    }
+    return null;
+  },
+};
+
+const lowFungalDiversityRule: RecommendationRule = {
+  id: "T2-low-fungal-diversity",
+  topic: "T2",
+  category: "regeneration",
+  evaluate: (input) => {
+    if (input.fungalDiversity !== undefined && input.fungalDiversity < 3) {
+      return buildRecommendation({
+        topic: "T2",
+        category: "regeneration",
+        priority: "low",
+        title: "Aumentar diversidad fúngica",
+        description: `Diversidad fúngica al ${input.fungalDiversity} (umbral 3). El sistema pierde resiliencia.`,
+        action: "Introducir restos de poda variados y mulch leñoso",
+        dataSource: "soil-temperature",
+        confidence: 72,
+        zoneId: input.zoneId,
+        zoneName: input.zoneName,
+        evidence: { fungalDiversity: input.fungalDiversity },
+      });
+    }
+    return null;
+  },
+};
+
+// ============================================================================
+// T2 – Erosión y carbono (nuevas)
+// ============================================================================
+
+const erosionRiskRule: RecommendationRule = {
+  id: "T2-erosion-risk",
+  topic: "T2",
+  category: "erosion-control",
+  evaluate: (input) => {
+    if (
+      input.windSpeed !== undefined &&
+      input.windSpeed > 40 &&
+      input.ndvi !== undefined &&
+      input.ndvi < 0.3
+    ) {
+      return buildRecommendation({
+        topic: "T2",
+        category: "erosion-control",
+        priority: "urgent",
+        title: "Riesgo de erosión eólica",
+        description: `Viento ${input.windSpeed} km/h + suelo desnudo (NDVI ${input.ndvi.toFixed(2)}).`,
+        action:
+          "Activar riego ligero para fijar el suelo. Sembrar cubierta urgente",
+        dataSource: "composite",
+        confidence: 90,
+        zoneId: input.zoneId,
+        zoneName: input.zoneName,
+        evidence: {
+          windSpeed: input.windSpeed,
+          ndvi: input.ndvi,
+        },
+      });
+    }
+    return null;
+  },
+};
+
+const lowCarbonSequestrationRule: RecommendationRule = {
+  id: "T2-low-carbon",
+  topic: "T2",
+  category: "carbon-sequestration",
+  evaluate: (input) => {
+    if (
+      input.organicMatter !== undefined &&
+      input.organicMatter < 2.5 &&
+      input.ndvi !== undefined &&
+      input.ndvi > 0.5
+    ) {
+      return buildRecommendation({
+        topic: "T2",
+        category: "carbon-sequestration",
+        priority: "low",
+        title: "Potenciar captura de carbono",
+        description: `MO al ${input.organicMatter}% con vegetación activa (NDVI ${input.ndvi.toFixed(2)}).`,
+        action: "Mantener cubierta permanente. Añadir mulch leñoso",
+        dataSource: "organic-matter",
+        confidence: 75,
+        zoneId: input.zoneId,
+        zoneName: input.zoneName,
+        evidence: {
+          organicMatter: input.organicMatter,
+          ndvi: input.ndvi,
+        },
+      });
+    }
+    return null;
+  },
+};
+
+// ============================================================================
+// Fenología – siembra, cosecha, riesgo fúngico (nuevas)
+// ============================================================================
+
+const sowingWindowRule: RecommendationRule = {
+  id: "general-sowing-window",
+  topic: "general",
+  category: "harvest",
+  evaluate: (input) => {
+    if (
+      input.cropStage === "siembra" &&
+      input.soilTemperature !== undefined &&
+      input.soilTemperature >= 8 &&
+      input.soilTemperature <= 18 &&
+      input.soilMoisture !== undefined &&
+      input.soilMoisture > 40
+    ) {
+      return buildRecommendation({
+        topic: "general",
+        category: "harvest",
+        priority: "high",
+        title: "Ventana óptima de siembra",
+        description: `Suelo a ${input.soilTemperature}°C y ${input.soilMoisture}% de humedad.`,
+        action: "Sembrar ahora. Condiciones ideales para germinación",
+        dataSource: "composite",
+        confidence: 88,
+        zoneId: input.zoneId,
+        zoneName: input.zoneName,
+        evidence: {
+          soilTemperature: input.soilTemperature,
+          soilMoisture: input.soilMoisture,
+        },
+      });
+    }
+    return null;
+  },
+};
+
+const harvestWindowRule: RecommendationRule = {
+  id: "general-harvest-window",
+  topic: "general",
+  category: "harvest",
+  evaluate: (input) => {
+    if (
+      input.cropStage === "cosecha" &&
+      input.ndvi !== undefined &&
+      input.ndvi > 0.6
+    ) {
+      return buildRecommendation({
+        topic: "general",
+        category: "harvest",
+        priority: "medium",
+        title: "Ventana de cosecha",
+        description: `NDVI ${input.ndvi.toFixed(2)} indica biomasa máxima.`,
+        action: "Cosechar en los próximos 5–7 días",
+        dataSource: "ndvi",
+        confidence: 82,
+        zoneId: input.zoneId,
+        zoneName: input.zoneName,
+        evidence: { ndvi: input.ndvi },
+      });
+    }
+    return null;
+  },
+};
+
+const fungalRiskRule: RecommendationRule = {
+  id: "T2-fungal-risk",
+  topic: "T2",
+  category: "pest-control",
+  evaluate: (input) => {
+    if (
+      input.soilMoisture !== undefined &&
+      input.soilMoisture > 80 &&
+      input.light !== undefined &&
+      input.light > 90
+    ) {
+      return buildRecommendation({
+        topic: "T2",
+        category: "pest-control",
+        priority: "medium",
+        title: "Riesgo fúngico",
+        description: `Humedad alta (${input.soilMoisture}%) + radiación intensa (${input.light}%).`,
+        action:
+          "Aplicar preventivo (cobre o bicarbonato). Ventilar si es invernadero",
+        dataSource: "composite",
+        confidence: 70,
+        zoneId: input.zoneId,
+        zoneName: input.zoneName,
+        evidence: {
+          soilMoisture: input.soilMoisture,
+          light: input.light,
+        },
+      });
+    }
+    return null;
+  },
+};
+
+const mushroomSignalRule: RecommendationRule = {
+  id: "T2-mushroom-signal",
+  topic: "T2",
+  category: "regeneration",
+  evaluate: (input) => {
+    if (
+      input.rainForecast !== undefined &&
+      input.rainForecast > 5 &&
+      input.soilMoisture !== undefined &&
+      input.soilMoisture > 60
+    ) {
+      return buildRecommendation({
+        topic: "T2",
+        category: "regeneration",
+        priority: "info",
+        title: "Posible aparición de setas",
+        description: `Lluvia reciente + humedad alta (${input.soilMoisture}%). Señal de red fúngica activa.`,
+        action: "Registrar especies que aparezcan como bioindicador",
+        dataSource: "composite",
+        confidence: 65,
+        zoneId: input.zoneId,
+        zoneName: input.zoneName,
+        evidence: {
+          rainForecast: input.rainForecast,
+          soilMoisture: input.soilMoisture,
+        },
+      });
+    }
+    return null;
+  },
+};
+
+// ============================================================================
 // Rules Registry
 // ============================================================================
 
 export const RECOMMENDATION_RULES: RecommendationRule[] = [
-  // T3 – Water
+  // T3 – Water (existentes)
   irrigationUrgentRule,
   irrigationRecommendedRule,
   windPostponeIrrigationRule,
   ndviWaterStressRule,
   ndwiWaterDeficitRule,
-  // T2 – Soil health
+
+  // T3 – Nuevas
+  rainForecastRule,
+  highEvapotranspirationRule,
+
+  // T2 – Soil health (existentes)
   co2MushroomFruitingRule,
   soilMoistureMushroomRule,
   lstHeatStressRule,
+
+  // T2 – Regeneración (nuevas)
+  lowOrganicMatterRule,
+  lowMycorrhizaRule,
+  lowGlomalinRule,
+  lowFungalDiversityRule,
+
+  // T2 – Erosión y carbono (nuevas)
+  erosionRiskRule,
+  lowCarbonSequestrationRule,
+
+  // General – Fenología (nuevas)
+  sowingWindowRule,
+  harvestWindowRule,
+
+  // T2 – Fúngico (nuevas)
+  fungalRiskRule,
+  mushroomSignalRule,
 ];
