@@ -13,6 +13,8 @@ import {
   TrendingUp,
   Award,
 } from "lucide-react";
+import { calculateSymbiosisScore } from "@sicilia-soil/utils";
+import { SymbiosisCard } from "@/components/features/shared";
 import { Button } from "@sicilia-soil/ui";
 import {
   GROUND_COVER_INFO,
@@ -25,11 +27,20 @@ import {
   type MonitoringKey,
 } from "@sicilia-soil/core";
 import { getGroundCoverHealth } from "@sicilia-soil/utils";
+import Link from "next/link";
 
 export default function GroundCoverPage() {
   const [activeTab, setActiveTab] = useState<GroundCoverTabId>("info");
 
   const health = getGroundCoverHealth(GROUND_COVER_MONITORING);
+  const symbiosis = calculateSymbiosisScore({
+    espartoHealth: health.status === "Excelente" ? 92 : 70,
+    coverDensity: 78,
+    soilMoisture: 69,
+    myceliumActivity: 85,
+    fungalDiversity: 3,
+    cosPercent: 2.5,
+  });
 
   return (
     <div className="min-h-screen p-4 md:p-8 pt-24 bg-gradient-to-br from-offWhite to-emerald-50">
@@ -92,7 +103,10 @@ export default function GroundCoverPage() {
             </div>
           </div>
         </div>
-
+        {/* Symbiosis Card */}
+        <div className="mb-8">
+          <SymbiosisCard result={symbiosis} />
+        </div>
         {/* Tabs */}
         <div className="flex flex-wrap gap-2 mb-8 border-b border-oliveGreen/15 pb-2">
           {GROUND_COVER_TABS.map((tab) => (
@@ -363,7 +377,22 @@ export default function GroundCoverPage() {
             </div>
           </div>
         )}
-
+        {/* Cross-link a soil-health */}
+        <div className="mt-8 p-6 bg-gradient-to-r from-oliveGreen/10 to-wheatGold/10 rounded-2xl border border-oliveGreen/20">
+          <h3 className="font-bold text-charcoalGray mb-2">
+            🔗 Ver el ciclo completo
+          </h3>
+          <p className="text-sm text-oliveGreen/70 mb-3">
+            El esparto alimenta al micelio con su biomasa. El micelio fortalece
+            al esparto con agua y nutrientes. Juntos regeneran el suelo.
+          </p>
+          <Link
+            href="/soil-health"
+            className="inline-flex items-center gap-2 text-oliveGreen font-medium hover:text-sicilian-red transition-colors"
+          >
+            Ver Salud Biológica del Suelo (T2) →
+          </Link>
+        </div>
         {/* Footer */}
         <div className="mt-12 p-6 bg-gradient-to-r from-oliveGreen/10 to-emerald-500/10 rounded-2xl border border-oliveGreen/15">
           <div className="flex flex-wrap gap-6 justify-between items-center">
