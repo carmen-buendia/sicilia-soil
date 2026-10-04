@@ -14,3 +14,4 @@ export { MetricCard } from "./MetricCard";
 export { EnvironmentalTable } from "./EnvironmentalTable";
 export { AgronomicTab } from "./AgronomicTab";
 export { EnvironmentalTab } from "./EnvironmentalTab";
+export { CopernicusMapMini } from "./CopernicusMapMini";
