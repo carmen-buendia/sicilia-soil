@@ -96,13 +96,10 @@ export default function RootLayout({
 
               {/* Fila 3: Autoría + copyright (centrado) */}
               <div className="text-center text-[11px] text-oliveGreen/50 leading-relaxed">
-                <p className="flex items-center justify-center gap-1.5 mb-1">
+                <div className="flex items-center justify-center gap-1.5 mb-1">
                   <SicilianFlag size="small" />
-                  <span>Proyecto creado por</span>
-                  <strong className="text-oliveGreen/70 font-medium">
-                    Carmen María Buendía Sánchez
-                  </strong>
-                </p>
+                  <span>Proyecto creado por Carmen María Buendía Sánchez</span>
+                </div>
                 <p>
                   © {new Date().getFullYear()} Sicilia·Soil · Hecho con 🌱 en
                   Sicilia

@@ -57,6 +57,7 @@ export interface MapPlot {
   name: string;
   coordinates: [number, number][];
   center: [number, number];
+  color?: string;
   indices?: {
     ndvi?: number;
     ndwi?: number;

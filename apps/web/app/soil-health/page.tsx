@@ -11,6 +11,9 @@ import {
   Leaf,
   Info,
 } from "lucide-react";
+import { calculateSymbiosisScore } from "@sicilia-soil/utils";
+import { SymbiosisCard } from "@/components/features/shared";
+import Link from "next/link";
 import { MycologyChart } from "@sicilia-soil/ui";
 import { MushroomChip } from "./components/MushroomChip";
 import { MushroomCard } from "@/components/features/soil-health";
@@ -25,6 +28,15 @@ export default function SoilHealthPage() {
 
   const current = MUSHROOMS.find((m) => m.id === selectedMushroom);
   if (!current) return null;
+
+  const symbiosis = calculateSymbiosisScore({
+    espartoHealth: 92,
+    coverDensity: 78,
+    soilMoisture: 69,
+    myceliumActivity: 85,
+    fungalDiversity: 3,
+    cosPercent: 2.5,
+  });
 
   return (
     <div className="min-h-screen p-4 md:p-8 pt-24 bg-offWhite">
@@ -76,7 +88,10 @@ export default function SoilHealthPage() {
             </span>
           </div>
         </div>
-
+        {/* Symbiosis Card */}
+        <div className="mb-8">
+          <SymbiosisCard result={symbiosis} />
+        </div>
         {/* Zonas de cultivo activas */}
         <section className="mb-12">
           <h2 className="text-xl font-bold text-charcoalGray mb-4 flex items-center gap-2">
@@ -227,7 +242,22 @@ export default function SoilHealthPage() {
             </div>
           </div>
         </div>
-
+        {/* Cross-link a ground-cover */}
+        <div className="mt-8 p-6 bg-gradient-to-r from-oliveGreen/10 to-wheatGold/10 rounded-2xl border border-oliveGreen/20">
+          <h3 className="font-bold text-charcoalGray mb-2">
+            🔗 Ver el ciclo completo
+          </h3>
+          <p className="text-sm text-oliveGreen/70 mb-3">
+            El micelio fortalece al esparto con agua y nutrientes. El esparto
+            alimenta al micelio con su biomasa. Juntos regeneran el suelo.
+          </p>
+          <Link
+            href="/ground-cover"
+            className="inline-flex items-center gap-2 text-oliveGreen font-medium hover:text-sicilian-red transition-colors"
+          >
+            Ver Cubiertas Vegetales (T3) →
+          </Link>
+        </div>
         {/* Footer educativo */}
         <div className="mt-12 p-6 bg-oliveGreen/5 rounded-2xl border border-oliveGreen/15">
           <h3 className="text-lg font-bold text-charcoalGray mb-3 flex items-center gap-2">
