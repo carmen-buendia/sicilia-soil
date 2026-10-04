@@ -18,3 +18,5 @@ export * from "./data/soilHealth.data";
 export * from "./types/recommendation.types";
 export * from "./data/recommendation.rules";
 export * from "./types/notification.types";
+export * from "./types/symbiosis.types";
+export * from "./types/copernicus.types";

@@ -1,16 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import type { LatLngExpression } from "leaflet";
-import { Satellite, Layers, MapPin } from "lucide-react";
+import { Fragment, useEffect, useMemo, useState } from "react";
+import type { LatLngExpression, LatLngBoundsExpression } from "leaflet";
+import { Satellite, Layers, MapPin, Maximize2 } from "lucide-react";
+import { useMap } from "react-leaflet";
 import {
   COPERNICUS_LAYER_CONFIG,
-  DEFAULT_MAP_PLOTS,
+  DEFAULT_FARM_PLOTS,
+  FARM_CENTER,
+  FARM_DEFAULT_ZOOM,
   type CopernicusLayer,
   type CopernicusMapProps,
 } from "@sicilia-soil/core";
 
-// 👇 Import dinámico de react-leaflet (solo en cliente)
 import dynamic from "next/dynamic";
 
 const MapContainer = dynamic(
@@ -33,21 +35,50 @@ const Popup = dynamic(() => import("react-leaflet").then((mod) => mod.Popup), {
   ssr: false,
 });
 
+/**
+ * Encaja el mapa en los límites de todas las parcelas al cargar
+ * y cuando cambian las parcelas.
+ */
+function FitToPlots({
+  plots,
+}: {
+  plots: { coordinates: [number, number][] }[];
+}) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!plots.length) return;
+    const bounds = plots.flatMap(
+      (p) => p.coordinates,
+    ) as LatLngBoundsExpression;
+    map.fitBounds(bounds, { padding: [40, 40], maxZoom: 21 });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [plots.length]);
+
+  return null;
+}
+
 export function CopernicusMap({
-  plots = DEFAULT_MAP_PLOTS,
+  plots = DEFAULT_FARM_PLOTS,
   initialLayer = "satellite",
-  initialCenter = [42.5, 16.5],
-  initialZoom = 5,
+  initialCenter = FARM_CENTER,
+  initialZoom = FARM_DEFAULT_ZOOM,
   height = "500px",
 }: CopernicusMapProps) {
   const [activeLayer, setActiveLayer] = useState<CopernicusLayer>(initialLayer);
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    // Carga el CSS de Leaflet solo en cliente
     import("leaflet/dist/leaflet.css");
     setIsMounted(true);
   }, []);
+
+  const layer = COPERNICUS_LAYER_CONFIG[activeLayer];
+
+  const center = useMemo(
+    () => initialCenter as LatLngExpression,
+    [initialCenter],
+  );
 
   if (!isMounted) {
     return (
@@ -62,8 +93,6 @@ export function CopernicusMap({
       </div>
     );
   }
-
-  const layer = COPERNICUS_LAYER_CONFIG[activeLayer];
 
   return (
     <div className="bg-white/50 backdrop-blur-sm border border-blue-100 rounded-xl p-5 shadow-lg hover:shadow-xl transition-all">
@@ -105,12 +134,14 @@ export function CopernicusMap({
 
       {/* Mapa */}
       <div
-        className="rounded-lg overflow-hidden border border-blue-100"
+        className="rounded-lg overflow-hidden border border-blue-100 relative"
         style={{ height }}
       >
         <MapContainer
-          center={initialCenter as LatLngExpression}
+          center={center}
           zoom={initialZoom}
+          minZoom={14}
+          maxZoom={22}
           scrollWheelZoom
           style={{ height: "100%", width: "100%" }}
         >
@@ -118,17 +149,19 @@ export function CopernicusMap({
             url={layer.url}
             attribution={layer.attribution}
             opacity={layer.opacity}
+            maxNativeZoom={layer.maxNativeZoom}
+            maxZoom={layer.maxZoom}
           />
 
           {plots.map((plot) => (
-            <div key={plot.id}>
+            <Fragment key={plot.id}>
               <Polygon
                 positions={plot.coordinates as LatLngExpression[]}
                 pathOptions={{
-                  color: "#2563eb",
-                  fillColor: "#3b82f6",
-                  fillOpacity: 0.2,
-                  weight: 2,
+                  color: plot.color ?? "#2563eb",
+                  fillColor: plot.color ?? "#3b82f6",
+                  fillOpacity: 0.35,
+                  weight: 3,
                 }}
               />
               <Marker position={plot.center as LatLngExpression}>
@@ -154,9 +187,25 @@ export function CopernicusMap({
                   </div>
                 </Popup>
               </Marker>
-            </div>
+            </Fragment>
           ))}
+
+          {/* Encaja automáticamente en las parcelas */}
+          <FitToPlots plots={plots} />
         </MapContainer>
+
+        {/* Botón "fit to farm" */}
+        <button
+          type="button"
+          className="absolute top-3 right-3 z-[400] bg-white/90 backdrop-blur-sm border border-blue-100 rounded-md p-1.5 shadow-sm hover:bg-white"
+          onClick={() => {
+            // El FitToPlots se dispara al montar; aquí forzamos recarga
+            window.location.reload();
+          }}
+          title="Centrar en la finca"
+        >
+          <Maximize2 className="w-4 h-4 text-blue-600" />
+        </button>
       </div>
 
       {/* Footer */}
