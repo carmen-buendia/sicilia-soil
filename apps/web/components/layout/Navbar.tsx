@@ -6,31 +6,25 @@ import { usePathname } from "next/navigation";
 import {
   Home,
   Droplets,
-  Thermometer,
-  Sun,
-  LineChart,
   Settings,
   Menu,
   X,
-  Bell,
   User,
   Sprout,
   Leaf,
   Flower2,
-  Activity,
+  Lightbulb,
 } from "lucide-react";
 import { SicilianFlag } from "./SicilianFlag";
 import { Button } from "@sicilia-soil/ui";
+import { NotificationBell } from "@/components/features/notifications";
 
 const navItems = [
   { id: "/", label: "Dashboard", icon: Home },
-  { id: "/humidity", label: "Humedad", icon: Droplets },
-  { id: "/temperature", label: "Temperatura", icon: Thermometer },
-  { id: "/light", label: "Luz", icon: Sun },
-  { id: "/analysis", label: "Análisis", icon: LineChart },
-  { id: "/mycology", label: "Micología", icon: Leaf },
-  { id: "/esparto", label: "Esparto", icon: Sprout },
-  { id: "/ambiental", label: "Ambiental", icon: Activity },
+  { id: "/soil-health", label: "Suelo", icon: Leaf },
+  { id: "/humidity", label: "Agua", icon: Droplets },
+  { id: "/ground-cover", label: "Cultivos", icon: Sprout },
+  { id: "/recommendations", label: "Recomendaciones", icon: Lightbulb },
   { id: "/configuration", label: "Configuración", icon: Settings },
 ];
 
@@ -107,13 +101,9 @@ export function Navbar() {
             })}
           </div>
 
-          {/* User Menu - Versión corregida */}
+          {/* User Menu */}
           <div className="flex items-center gap-2 sm:gap-3">
-            <Button className="relative p-1.5 ml-3 sm:p-2 rounded-full !text-oliveGreen/60 hover:text-sicilian-red transition-all duration-300 hover:bg-oliveGreen/10">
-              <Bell className="w-4 h-4 sm:w-5 sm:h-5" />
-              <span className="absolute top-0.5 right-0.5 w-1.5 h-1.5 sm:w-2 sm:h-2 bg-wheatGold rounded-full ring-2 ring-offWhite animate-pulse" />
-            </Button>
-
+            <NotificationBell />
             <div className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-oliveGreen/10 to-wheatGold/10 rounded-full pl-2 pr-4 py-1 border border-oliveGreen/20">
               <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-oliveGreen to-wheatGold rounded-full flex items-center justify-center flex-shrink-0">
                 <User className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-offWhite" />

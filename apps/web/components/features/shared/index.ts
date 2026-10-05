@@ -1,0 +1,1 @@
+export { SymbiosisCard } from "./SymbiosisCard";
