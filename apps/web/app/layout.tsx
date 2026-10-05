@@ -4,8 +4,10 @@ import { useEffect } from "react";
 // @ts-ignore
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
-import { Flower2, Sprout } from "lucide-react";
+import { Sprout } from "lucide-react";
 import { SicilianFlag } from "@/components/layout/SicilianFlag";
+import { NotificationsProvider } from "@/contexts/NotificationsContext";
+import Link from "next/link";
 // @ts-ignore
 
 export default function RootLayout({
@@ -30,48 +32,82 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen bg-offWhite text-charcoalGray">
-        {/* Navbar importado */}
-        <Navbar />
+        <NotificationsProvider>
+          {/* Navbar importado */}
+          <Navbar />
 
-        {/* Spacer para el navbar fijo */}
-        <div className="h-14 sm:h-16 lg:h-20" />
+          {/* Spacer para el navbar fijo */}
+          <div className="h-14 sm:h-16 lg:h-20" />
 
-        {/* Contenido principal */}
-        <main className="container mx-auto px-3 sm:px-4 py-6 sm:py-8">
-          {children}
-        </main>
-
-        {/* Footer mejorado */}
-        <footer className="bg-gradient-to-b from-oliveGreen/5 to-transparent border-t border-oliveGreen/15 py-10 mt-8">
-          <div className="text-center">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <div className="p-2 bg-gradient-to-br from-oliveGreen to-wheatGold rounded-xl shadow-md">
-                <Sprout className="w-5 h-5 text-white" />
+          {/* Contenido principal */}
+          <main className="container mx-auto px-3 sm:px-4 py-6 sm:py-8">
+            {children}
+          </main>
+          {/* Footer */}
+          <footer className="bg-gradient-to-b from-oliveGreen/5 to-transparent border-t border-oliveGreen/15 py-10 mt-16">
+            <div className="max-w-4xl mx-auto px-4">
+              {/* Fila 1: Logo + nombre (centrado) */}
+              <div className="flex items-center justify-center gap-2 mb-4">
+                <div className="p-1.5 bg-gradient-to-br from-oliveGreen to-wheatGold rounded-lg shadow-sm">
+                  <Sprout className="w-4 h-4 text-white" />
+                </div>
+                <span className="font-bold text-charcoalGray text-base">
+                  Sicilia<span className="text-sicilian-red">·</span>Soil
+                </span>
+                <span className="hidden sm:inline text-xs text-oliveGreen/50 ml-2">
+                  Crop-agnostic decision support
+                </span>
               </div>
-              <h3 className="text-xl font-bold text-charcoalGray">
-                Sicilia‑soil | La Isola Latente
-              </h3>
+
+              {/* Fila 2: Links (centrados) */}
+              <div className="flex items-center justify-center gap-4 text-xs text-oliveGreen/70 mb-4 flex-wrap">
+                <Link
+                  href="/about"
+                  className="hover:text-oliveGreen transition-colors"
+                >
+                  About
+                </Link>
+                <span className="text-oliveGreen/30">·</span>
+                <Link
+                  href="/manifesto"
+                  className="hover:text-oliveGreen transition-colors"
+                >
+                  Manifesto
+                </Link>
+                <span className="text-oliveGreen/30">·</span>
+                <a
+                  href="https://github.com/carmen-buendia/sicilia-soil"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-oliveGreen transition-colors"
+                >
+                  GitHub
+                </a>
+                <span className="text-oliveGreen/30">·</span>
+                <a
+                  href="https://github.com/carmen-buendia/sicilia-soil/blob/main/LICENSE"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-oliveGreen transition-colors"
+                >
+                  Apache 2.0
+                </a>
+              </div>
+
+              {/* Fila 3: Autoría + copyright (centrado) */}
+              <div className="text-center text-[11px] text-oliveGreen/50 leading-relaxed">
+                <div className="flex items-center justify-center gap-1.5 mb-1">
+                  <SicilianFlag size="small" />
+                  <span>Proyecto creado por Carmen María Buendía Sánchez</span>
+                </div>
+                <p>
+                  © {new Date().getFullYear()} Sicilia·Soil · Hecho con 🌱 en
+                  Sicilia
+                </p>
+              </div>
             </div>
-            <p className="text-oliveGreen/70 max-w-2xl mx-auto text-sm">
-              Tecnología al servicio de la regeneración del territorio en el
-              Geoparque Rocca di Cerere (Enna, Sicilia). Integramos diseño
-              sintrópico, micología, esparto y agricultura 4.0.
-            </p>
-            <p className="text-oliveGreen/60 max-w-2xl mx-auto text-xs mt-2 italic">
-              🌿 Inspirado en la agricultura sintrópica de{" "}
-              <strong>Ernst Götsch</strong> – "Cuanto más intervenimos para
-              acelerar la sucesión natural, más nos acerca a la abundancia."
-            </p>
-            <div className="flex items-center justify-center gap-2 mt-4 text-xs text-oliveGreen/50">
-              <SicilianFlag size="small" />
-              <span>Permacultura Sintrópica en el Mediterráneo</span>
-              <Flower2 className="w-3 h-3" />
-            </div>
-            <p className="text-xs text-oliveGreen/40 mt-6">
-              © {new Date().getFullYear()} · Sicilia‑soil · Datos simulados
-            </p>
-          </div>
-        </footer>
+          </footer>
+        </NotificationsProvider>
       </body>
     </html>
   );

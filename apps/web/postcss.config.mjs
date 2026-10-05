@@ -1,5 +1,5 @@
-// apps/web/postcss.config.js - VERSIÓN CORRECTA
-module.exports = {
+// apps/web/postcss.config.mjs
+export default {
   plugins: {
     tailwindcss: {},
     autoprefixer: {},

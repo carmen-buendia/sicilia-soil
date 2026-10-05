@@ -1,9 +1,9 @@
-import { Recommendation } from "@sicilia-soil/core/types/monitoring.types";
+import { DashboardRecommendation } from "@sicilia-soil/core/types/monitoring.types";
 
 export const getHumidityRecommendations = (
   humidity: number,
   optimal: number,
-): Recommendation => {
+): DashboardRecommendation => {
   if (humidity < optimal - 15) {
     return {
       text: "Humedad muy baja. Las plantas están en estrés hídrico.",
