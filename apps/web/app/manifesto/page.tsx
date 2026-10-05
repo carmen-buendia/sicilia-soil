@@ -186,14 +186,13 @@ export default function ManifestoPage() {
             (Enna, Sicilia), en un antiguo territorio agrícola abandonado que
             estamos transformando en un <strong>living lab</strong> de
             regeneración: un food forest sintrópico con olivo, algarrobo,
-            esparto, hongos nativos y cubiertas vegetales.
+            esparto, hongos nativos, cereal de prueba y cubiertas vegetales.
           </p>
           <p className="text-charcoalGray/80 leading-relaxed">
-            Desde aquí, la metodología se valida después en{" "}
-            <strong>Serbia</strong> (sistemas de cereal) a través del programa{" "}
-            <strong>NOSTRADAMUS</strong> (Horizon Europe), demostrando que el
-            enfoque es <em>crop-agnostic</em> y aplicable a cualquier
-            agroecosistema.
+            La metodología se valida in-situ y se mide con la misma vara en
+            todos los cultivos: esparto, árboles, hortalizas, cereal y
+            cubiertas. Un enfoque <em>crop-agnostic</em> que se puede aplicar a
+            cualquier agroecosistema mediterráneo.
           </p>
         </section>
 

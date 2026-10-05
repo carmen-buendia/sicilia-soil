@@ -35,8 +35,8 @@ export default function CropsPage() {
               </div>
               Cultivos
             </h1>
-            <span className="text-xs bg-blue-100 text-blue-700 border border-blue-200 px-3 py-1 rounded-full font-medium">
-              T2 + T3 · NOSTRADAMUS
+            <span className="text-xs bg-oliveGreen/15 text-oliveGreen border border-oliveGreen/20 px-3 py-1 rounded-full font-medium">
+              Regeneración del suelo
             </span>
           </div>
           <p className="text-oliveGreen/70">

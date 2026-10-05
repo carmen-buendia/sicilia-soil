@@ -104,7 +104,7 @@ export function AnalysisTab() {
           </li>
           <li>
             ✓ El <strong>cereal</strong> tiene menor colonización por el ciclo
-            corto, pero sirve como comparación directa con Serbia.
+            corto, pero es clave como cultivo de cobertura y rotación.
           </li>
           <li>
             ✓ El <strong>barbecho</strong> está en recuperación: se espera que
@@ -115,13 +115,14 @@ export function AnalysisTab() {
 
       <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 border border-oliveGreen/15">
         <h3 className="text-lg font-bold text-charcoalGray mb-3">
-          Validación cruzada NOSTRADAMUS
+          Ciclo regenerativo del sistema
         </h3>
         <p className="text-sm text-oliveGreen/70">
-          Los mismos indicadores se medirán en Sicilia (Mediterráneo,
-          policultivo) y Serbia (continental, cereal). Los resultados se
-          comparan para demostrar la transferibilidad del método en la entrega
-          D3.1.
+          Todos los cultivos comparten la misma red subterránea de micorrizas.
+          El esparto y el cereal alimentan el micelio con su biomasa. Los
+          árboles aportan hojarasca y sombra. Las hortalizas cierran el ciclo
+          vía compost. El barbecho permite que la red fúngica se recupere y
+          expanda antes del siguiente ciclo de siembra.
         </p>
       </div>
     </div>

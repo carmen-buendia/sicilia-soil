@@ -24,7 +24,7 @@ export function notificationsFromRecommendations(
       severity,
       sourceType: "recommendation",
       sourceId: rec.id,
-      topic: rec.topic === "T2" || rec.topic === "T3" ? rec.topic : "general",
+      topic: rec.topic === "soil" || rec.topic === "water" ? rec.topic : "general",
       title: rec.title,
       message: rec.description,
       actionLabel: rec.action,

@@ -27,12 +27,12 @@ function buildRecommendation(
 }
 
 // ============================================================================
-// T3 – Water Resource Efficiency & Drought Resilience (existentes)
+// water – Water Resource Efficiency & Drought Resilience (existentes)
 // ============================================================================
 
 const irrigationUrgentRule: RecommendationRule = {
-  id: "T3-irrigation-urgent",
-  topic: "T3",
+  id: "water-irrigation-urgent",
+  topic: "water",
   category: "irrigation",
   evaluate: (input: RecommendationRuleInput): RecommendationItem | null => {
     if (
@@ -42,7 +42,7 @@ const irrigationUrgentRule: RecommendationRule = {
       input.airTemperature > 28
     ) {
       return buildRecommendation({
-        topic: "T3",
+        topic: "water",
         category: "irrigation",
         priority: "urgent",
         title: "Riego urgente requerido",
@@ -63,8 +63,8 @@ const irrigationUrgentRule: RecommendationRule = {
 };
 
 const irrigationRecommendedRule: RecommendationRule = {
-  id: "T3-irrigation-recommended",
-  topic: "T3",
+  id: "water-irrigation-recommended",
+  topic: "water",
   category: "irrigation",
   evaluate: (input: RecommendationRuleInput): RecommendationItem | null => {
     if (
@@ -73,7 +73,7 @@ const irrigationRecommendedRule: RecommendationRule = {
       input.soilMoisture < 55
     ) {
       return buildRecommendation({
-        topic: "T3",
+        topic: "water",
         category: "irrigation",
         priority: "medium",
         title: "Riego recomendado próximamente",
@@ -91,13 +91,13 @@ const irrigationRecommendedRule: RecommendationRule = {
 };
 
 const windPostponeIrrigationRule: RecommendationRule = {
-  id: "T3-wind-postpone",
-  topic: "T3",
+  id: "water-wind-postpone",
+  topic: "water",
   category: "irrigation",
   evaluate: (input: RecommendationRuleInput): RecommendationItem | null => {
     if (input.windSpeed !== undefined && input.windSpeed > 25) {
       return buildRecommendation({
-        topic: "T3",
+        topic: "water",
         category: "irrigation",
         priority: "high",
         title: "Posponer riego por viento",
@@ -115,13 +115,13 @@ const windPostponeIrrigationRule: RecommendationRule = {
 };
 
 const ndviWaterStressRule: RecommendationRule = {
-  id: "T3-ndvi-stress",
-  topic: "T3",
+  id: "water-ndvi-stress",
+  topic: "water",
   category: "irrigation",
   evaluate: (input: RecommendationRuleInput): RecommendationItem | null => {
     if (input.ndvi !== undefined && input.ndvi < 0.4) {
       return buildRecommendation({
-        topic: "T3",
+        topic: "water",
         category: "irrigation",
         priority: "high",
         title: "Estrés hídrico detectado por satélite",
@@ -139,13 +139,13 @@ const ndviWaterStressRule: RecommendationRule = {
 };
 
 const ndwiWaterDeficitRule: RecommendationRule = {
-  id: "T3-ndwi-deficit",
-  topic: "T3",
+  id: "water-ndwi-deficit",
+  topic: "water",
   category: "irrigation",
   evaluate: (input: RecommendationRuleInput): RecommendationItem | null => {
     if (input.ndwi !== undefined && input.ndwi < 0.2) {
       return buildRecommendation({
-        topic: "T3",
+        topic: "water",
         category: "irrigation",
         priority: "high",
         title: "Déficit hídrico foliar",
@@ -163,12 +163,12 @@ const ndwiWaterDeficitRule: RecommendationRule = {
 };
 
 // ============================================================================
-// T3 – Nuevas reglas: lluvia, evapotranspiración
+// water – Nuevas reglas: lluvia, evapotranspiración
 // ============================================================================
 
 const rainForecastRule: RecommendationRule = {
-  id: "T3-rain-forecast",
-  topic: "T3",
+  id: "water-rain-forecast",
+  topic: "water",
   category: "irrigation",
   evaluate: (input) => {
     if (
@@ -178,7 +178,7 @@ const rainForecastRule: RecommendationRule = {
       input.soilMoisture < 60
     ) {
       return buildRecommendation({
-        topic: "T3",
+        topic: "water",
         category: "irrigation",
         priority: "medium",
         title: "No regar: lluvia prevista",
@@ -199,8 +199,8 @@ const rainForecastRule: RecommendationRule = {
 };
 
 const highEvapotranspirationRule: RecommendationRule = {
-  id: "T3-high-et",
-  topic: "T3",
+  id: "water-high-et",
+  topic: "water",
   category: "irrigation",
   evaluate: (input) => {
     if (
@@ -212,7 +212,7 @@ const highEvapotranspirationRule: RecommendationRule = {
       input.soilMoisture < 60
     ) {
       return buildRecommendation({
-        topic: "T3",
+        topic: "water",
         category: "irrigation",
         priority: "medium",
         title: "Aumentar riego 15%",
@@ -234,12 +234,12 @@ const highEvapotranspirationRule: RecommendationRule = {
 };
 
 // ============================================================================
-// T2 – Nutrient & Soil Health Management (existentes)
+// soil – Nutrient & Soil Health Management (existentes)
 // ============================================================================
 
 const co2MushroomFruitingRule: RecommendationRule = {
-  id: "T2-co2-fruiting",
-  topic: "T2",
+  id: "soil-co2-fruiting",
+  topic: "soil",
   category: "soil-health",
   evaluate: (input: RecommendationRuleInput): RecommendationItem | null => {
     if (
@@ -250,7 +250,7 @@ const co2MushroomFruitingRule: RecommendationRule = {
       input.soilTemperature <= 22
     ) {
       return buildRecommendation({
-        topic: "T2",
+        topic: "soil",
         category: "soil-health",
         priority: "medium",
         title: "CO₂ elevado: inducir fructificación",
@@ -271,8 +271,8 @@ const co2MushroomFruitingRule: RecommendationRule = {
 };
 
 const soilMoistureMushroomRule: RecommendationRule = {
-  id: "T2-mushroom-moisture",
-  topic: "T2",
+  id: "soil-mushroom-moisture",
+  topic: "soil",
   category: "soil-health",
   evaluate: (input: RecommendationRuleInput): RecommendationItem | null => {
     if (
@@ -281,7 +281,7 @@ const soilMoistureMushroomRule: RecommendationRule = {
       input.soilMoisture >= 40
     ) {
       return buildRecommendation({
-        topic: "T2",
+        topic: "soil",
         category: "soil-health",
         priority: "medium",
         title: "Humedad baja para actividad fúngica",
@@ -299,13 +299,13 @@ const soilMoistureMushroomRule: RecommendationRule = {
 };
 
 const lstHeatStressRule: RecommendationRule = {
-  id: "T2-lst-heat",
-  topic: "T2",
+  id: "soil-lst-heat",
+  topic: "soil",
   category: "soil-health",
   evaluate: (input: RecommendationRuleInput): RecommendationItem | null => {
     if (input.lst !== undefined && input.lst > 32) {
       return buildRecommendation({
-        topic: "T2",
+        topic: "soil",
         category: "soil-health",
         priority: "high",
         title: "Estrés térmico del suelo",
@@ -323,17 +323,17 @@ const lstHeatStressRule: RecommendationRule = {
 };
 
 // ============================================================================
-// T2 – Regeneración del suelo (nuevas)
+// soil – Regeneración del suelo (nuevas)
 // ============================================================================
 
 const lowOrganicMatterRule: RecommendationRule = {
-  id: "T2-low-organic-matter",
-  topic: "T2",
+  id: "soil-low-organic-matter",
+  topic: "soil",
   category: "regeneration",
   evaluate: (input) => {
     if (input.organicMatter !== undefined && input.organicMatter < 2) {
       return buildRecommendation({
-        topic: "T2",
+        topic: "soil",
         category: "regeneration",
         priority: "high",
         title: "Añadir compost",
@@ -351,13 +351,13 @@ const lowOrganicMatterRule: RecommendationRule = {
 };
 
 const lowMycorrhizaRule: RecommendationRule = {
-  id: "T2-low-mycorrhiza",
-  topic: "T2",
+  id: "soil-low-mycorrhiza",
+  topic: "soil",
   category: "regeneration",
   evaluate: (input) => {
     if (input.mycorrhiza !== undefined && input.mycorrhiza < 30) {
       return buildRecommendation({
-        topic: "T2",
+        topic: "soil",
         category: "regeneration",
         priority: "medium",
         title: "Inocular micorrizas",
@@ -376,13 +376,13 @@ const lowMycorrhizaRule: RecommendationRule = {
 };
 
 const lowGlomalinRule: RecommendationRule = {
-  id: "T2-low-glomalin",
-  topic: "T2",
+  id: "soil-low-glomalin",
+  topic: "soil",
   category: "regeneration",
   evaluate: (input) => {
     if (input.glomalin !== undefined && input.glomalin < 1.5) {
       return buildRecommendation({
-        topic: "T2",
+        topic: "soil",
         category: "regeneration",
         priority: "medium",
         title: "Reducir labranza",
@@ -400,13 +400,13 @@ const lowGlomalinRule: RecommendationRule = {
 };
 
 const lowFungalDiversityRule: RecommendationRule = {
-  id: "T2-low-fungal-diversity",
-  topic: "T2",
+  id: "soil-low-fungal-diversity",
+  topic: "soil",
   category: "regeneration",
   evaluate: (input) => {
     if (input.fungalDiversity !== undefined && input.fungalDiversity < 3) {
       return buildRecommendation({
-        topic: "T2",
+        topic: "soil",
         category: "regeneration",
         priority: "low",
         title: "Aumentar diversidad fúngica",
@@ -424,12 +424,12 @@ const lowFungalDiversityRule: RecommendationRule = {
 };
 
 // ============================================================================
-// T2 – Erosión y carbono (nuevas)
+// soil – Erosión y carbono (nuevas)
 // ============================================================================
 
 const erosionRiskRule: RecommendationRule = {
-  id: "T2-erosion-risk",
-  topic: "T2",
+  id: "soil-erosion-risk",
+  topic: "soil",
   category: "erosion-control",
   evaluate: (input) => {
     if (
@@ -439,7 +439,7 @@ const erosionRiskRule: RecommendationRule = {
       input.ndvi < 0.3
     ) {
       return buildRecommendation({
-        topic: "T2",
+        topic: "soil",
         category: "erosion-control",
         priority: "urgent",
         title: "Riesgo de erosión eólica",
@@ -461,8 +461,8 @@ const erosionRiskRule: RecommendationRule = {
 };
 
 const lowCarbonSequestrationRule: RecommendationRule = {
-  id: "T2-low-carbon",
-  topic: "T2",
+  id: "soil-low-carbon",
+  topic: "soil",
   category: "carbon-sequestration",
   evaluate: (input) => {
     if (
@@ -472,7 +472,7 @@ const lowCarbonSequestrationRule: RecommendationRule = {
       input.ndvi > 0.5
     ) {
       return buildRecommendation({
-        topic: "T2",
+        topic: "soil",
         category: "carbon-sequestration",
         priority: "low",
         title: "Potenciar captura de carbono",
@@ -559,8 +559,8 @@ const harvestWindowRule: RecommendationRule = {
 };
 
 const fungalRiskRule: RecommendationRule = {
-  id: "T2-fungal-risk",
-  topic: "T2",
+  id: "soil-fungal-risk",
+  topic: "soil",
   category: "pest-control",
   evaluate: (input) => {
     if (
@@ -570,7 +570,7 @@ const fungalRiskRule: RecommendationRule = {
       input.light > 90
     ) {
       return buildRecommendation({
-        topic: "T2",
+        topic: "soil",
         category: "pest-control",
         priority: "medium",
         title: "Riesgo fúngico",
@@ -592,8 +592,8 @@ const fungalRiskRule: RecommendationRule = {
 };
 
 const mushroomSignalRule: RecommendationRule = {
-  id: "T2-mushroom-signal",
-  topic: "T2",
+  id: "soil-mushroom-signal",
+  topic: "soil",
   category: "regeneration",
   evaluate: (input) => {
     if (
@@ -603,7 +603,7 @@ const mushroomSignalRule: RecommendationRule = {
       input.soilMoisture > 60
     ) {
       return buildRecommendation({
-        topic: "T2",
+        topic: "soil",
         category: "regeneration",
         priority: "info",
         title: "Posible aparición de setas",
@@ -628,29 +628,29 @@ const mushroomSignalRule: RecommendationRule = {
 // ============================================================================
 
 export const RECOMMENDATION_RULES: RecommendationRule[] = [
-  // T3 – Water (existentes)
+  // water – Water (existentes)
   irrigationUrgentRule,
   irrigationRecommendedRule,
   windPostponeIrrigationRule,
   ndviWaterStressRule,
   ndwiWaterDeficitRule,
 
-  // T3 – Nuevas
+  // water – Nuevas
   rainForecastRule,
   highEvapotranspirationRule,
 
-  // T2 – Soil health (existentes)
+  // soil – Soil health (existentes)
   co2MushroomFruitingRule,
   soilMoistureMushroomRule,
   lstHeatStressRule,
 
-  // T2 – Regeneración (nuevas)
+  // soil – Regeneración (nuevas)
   lowOrganicMatterRule,
   lowMycorrhizaRule,
   lowGlomalinRule,
   lowFungalDiversityRule,
 
-  // T2 – Erosión y carbono (nuevas)
+  // soil – Erosión y carbono (nuevas)
   erosionRiskRule,
   lowCarbonSequestrationRule,
 
@@ -658,7 +658,7 @@ export const RECOMMENDATION_RULES: RecommendationRule[] = [
   sowingWindowRule,
   harvestWindowRule,
 
-  // T2 – Fúngico (nuevas)
+  // soil – Fúngico (nuevas)
   fungalRiskRule,
   mushroomSignalRule,
 ];

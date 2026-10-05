@@ -40,7 +40,7 @@ export const DEFAULT_COPERNICUS_DATA: CopernicusData = {
       color: "text-amber-600",
     },
   },
-  nostradamusScores: {
+  analysisScores: {
     droughtRisk: {
       score: "Bajo (18%)",
       status: "Estable",

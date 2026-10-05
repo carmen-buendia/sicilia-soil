@@ -10,7 +10,7 @@ export type NotificationSourceType =
   | "system"
   | "weather";
 
-export type NotificationTopic = "T2" | "T3" | "general";
+export type NotificationTopic = "soil" | "water" | "general";
 
 export interface Notification {
   id: string;
