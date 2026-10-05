@@ -10,7 +10,6 @@ import {
   ThermometerSun,
   Sun,
   Sprout,
-  Activity,
   Wind,
   ArrowRight,
   AlertTriangle,
@@ -120,39 +119,44 @@ const mockZones: GardenZone[] = [
   },
 ];
 
-// ========== KPIs NOSTRADAMUS ==========
-const NOSTRADAMUS_KPIS = [
+// ========== KPIs ==========
+const DASHBOARD_KPIS = [
   {
     value: "88/100",
-    label: "SHI · Salud del suelo",
-    icon: <Leaf />,
-    subtext: "T2 · Módulo M3",
+    label: "Salud del suelo",
+    icon: <Leaf className="w-5 h-5" />,
+    subtext: "Índice SHI",
   },
   {
     value: "0.18",
-    label: "DSI · Estrés hídrico",
-    icon: <Droplet />,
-    subtext: "T3 · Bajo · Módulo M1",
+    label: "Estrés hídrico",
+    icon: <Droplet className="w-5 h-5" />,
+    subtext: "Bajo · estable",
   },
   {
     value: "31%",
-    label: "SSM · Humedad suelo",
-    icon: <Gauge />,
-    subtext: "SAR Sentinel-1",
+    label: "Humedad del suelo",
+    icon: <Gauge className="w-5 h-5" />,
+    subtext: "Sentinel-1 SAR",
   },
   {
-    value: "23°C",
-    label: "Temperatura media",
-    icon: <ThermometerSun />,
-    subtext: "Óptimo para cultivos",
+    value: "2.5%",
+    label: "Carbono orgánico (COS)",
+    icon: <Trees className="w-5 h-5" />,
+    subtext: "↑ +0.3% este ciclo",
   },
   {
-    value: "85%",
-    label: "Luz solar",
-    icon: <Sun />,
-    subtext: "Buena exposición",
+    value: "33 t/ha",
+    label: "CO₂ secuestrado",
+    icon: <Trees className="w-5 h-5" />,
+    subtext: "Captura estimada",
   },
-  { value: "9 km/h", label: "Viento", icon: <Wind />, subtext: "Moderado" },
+  {
+    value: "4",
+    label: "Setas autóctonas",
+    icon: <span className="text-xl">🍄</span>,
+    subtext: "Red fúngica activa",
+  },
 ];
 
 const PRIORITY_STYLE: Record<
@@ -186,6 +190,13 @@ const PRIORITY_STYLE: Record<
   },
 };
 
+const carbonSummary = {
+  organicCarbonPercent: 2.5,
+  bulkDensity: 1.2,
+  depth: 30,
+  co2Sequestration: 33.0,
+};
+
 export default function HomePage() {
   const [serverStatus, setServerStatus] = useState<
     "checking" | "online" | "offline"
@@ -212,7 +223,6 @@ export default function HomePage() {
           { signal: controller.signal },
         );
         clearTimeout(timeoutId);
-
         if (response.ok) {
           const zonesData = await response.json();
           if (zonesData && zonesData.length > 0) {
@@ -257,19 +267,19 @@ export default function HomePage() {
       <div className="mb-8 flex items-center justify-between flex-wrap gap-4">
         <div>
           <h1 className="text-3xl font-bold text-charcoalGray">
-            🌱 Sicilia Soil · Dashboard
+            🌱 Sicilia Soil
           </h1>
           <p className="text-oliveGreen flex items-center gap-2">
-            <Trees className="w-4 h-4" /> Permacultura Sintrópica · NOSTRADAMUS
-            T2 + T3
+            <Trees className="w-4 h-4" /> Permacultura Sintrópica · Regeneración
+            del suelo
           </p>
         </div>
         <ServerStatus status={serverStatus} />
       </div>
 
-      {/* 6 KPIs NOSTRADAMUS */}
+      {/* 6 KPIs */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
-        {NOSTRADAMUS_KPIS.map((kpi, i) => (
+        {DASHBOARD_KPIS.map((kpi, i) => (
           <StatsCard key={i} {...kpi} />
         ))}
       </div>
@@ -295,7 +305,6 @@ export default function HomePage() {
 
       {/* Two column: Zones + Alerts */}
       <div className="grid lg:grid-cols-3 gap-8 mb-12">
-        {/* Zones */}
         <div className="lg:col-span-2">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-charcoalGray">
@@ -319,7 +328,6 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Alerts */}
         <div>
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-charcoalGray flex items-center gap-2">
@@ -375,35 +383,39 @@ export default function HomePage() {
             )}
           </div>
 
-          {/* Estado NOSTRADAMUS */}
-          <div className="mt-6 bg-white rounded-xl p-4 border border-oliveGreen/10">
-            <h4 className="text-xs font-semibold text-oliveGreen/70 uppercase tracking-wider mb-3">
-              Estado del sistema
+          {/* Captura de carbono */}
+          <div className="mt-6 bg-gradient-to-r from-emerald-50 via-green-50 to-emerald-50/30 rounded-xl p-4 border border-emerald-200/40">
+            <h4 className="text-xs font-semibold text-emerald-700/80 uppercase tracking-wider flex items-center gap-1 mb-3">
+              <Trees className="w-3.5 h-3.5" /> Captura de carbono
             </h4>
             <div className="space-y-2 text-xs">
-              <div className="flex items-center justify-between">
-                <span className="text-charcoalGray/70">
-                  Data Cube Ecosystem
-                </span>
-                <span className="flex items-center gap-1 text-emerald-600 font-medium">
-                  <span className="w-2 h-2 bg-emerald-500 rounded-full" />{" "}
-                  Online
+              <div className="flex justify-between">
+                <span className="text-charcoalGray/70">COS</span>
+                <span className="font-medium text-emerald-700">
+                  {carbonSummary.organicCarbonPercent}%
                 </span>
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-charcoalGray/70">IoT Observatory</span>
-                <span className="flex items-center gap-1 text-emerald-600 font-medium">
-                  <span className="w-2 h-2 bg-emerald-500 rounded-full" />{" "}
-                  Online
+              <div className="flex justify-between">
+                <span className="text-charcoalGray/70">Densidad aparente</span>
+                <span className="font-medium text-emerald-700">
+                  {carbonSummary.bulkDensity} g/cm³
                 </span>
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-charcoalGray/70">Application Engine</span>
-                <span className="flex items-center gap-1 text-emerald-600 font-medium">
-                  <span className="w-2 h-2 bg-emerald-500 rounded-full" />{" "}
-                  Online
+              <div className="flex justify-between">
+                <span className="text-charcoalGray/70">Profundidad</span>
+                <span className="font-medium text-emerald-700">
+                  {carbonSummary.depth} cm
                 </span>
               </div>
+              <div className="flex justify-between">
+                <span className="text-charcoalGray/70">CO₂ secuestrado</span>
+                <span className="font-medium text-emerald-700">
+                  {carbonSummary.co2Sequestration} t/ha
+                </span>
+              </div>
+            </div>
+            <div className="mt-2 text-[10px] text-emerald-600/60">
+              Fórmula: CO₂ (t/ha) = (COS% × Densidad × Profundidad) / 10 × 3.67
             </div>
           </div>
         </div>
@@ -420,8 +432,8 @@ export default function HomePage() {
           </h2>
         </div>
         <p className="text-oliveGreen/70 mb-4">
-          Esparto, policultivo, cereal, cubiertas y barbecho. Comparador
-          cross-domain (Sicilia ↔ Serbia) y análisis agronómico.
+          Esparto, policultivo, cereal, cubiertas y barbecho. Análisis
+          agronómico y comparador de coberturas.
         </p>
         <Link
           href="/ground-cover"
@@ -434,7 +446,6 @@ export default function HomePage() {
   );
 }
 
-// Helpers (sin cambios)
 function getZoneName(zone: string): string {
   const names: Record<string, string> = {
     norte: "Zona de Esparto",

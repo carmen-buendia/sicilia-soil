@@ -37,7 +37,7 @@ export default function NotificationsPage() {
                 Notificaciones
               </h1>
               <p className="text-oliveGreen/70">
-                Alertas de sensores IoT y recomendaciones NOSTRADAMUS
+                Alertas de sensores IoT y recomendaciones del sistema
               </p>
             </div>
           </div>

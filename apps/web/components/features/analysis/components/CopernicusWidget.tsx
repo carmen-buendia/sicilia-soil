@@ -11,6 +11,7 @@ import {
   Eye,
 } from "lucide-react";
 import {
+  type CopernicusData,
   type CopernicusTabType,
   type CopernicusWidgetProps,
 } from "@sicilia-soil/core";
@@ -74,14 +75,14 @@ export function CopernicusWidget({
         </button>
         <button
           type="button"
-          onClick={() => setActiveTab("nostradamus")}
+          onClick={() => setActiveTab("analysis")}
           className={`px-3 py-1.5 rounded-md font-medium transition-colors ${
-            activeTab === "nostradamus"
+            activeTab === "analysis"
               ? "bg-blue-600 text-white shadow-sm"
               : "text-oliveGreen/70 hover:text-charcoalGray hover:bg-blue-50"
           }`}
         >
-          Análisis NOSTRADAMUS (M1/M3)
+          Análisis
         </button>
       </div>
 
@@ -150,20 +151,20 @@ export function CopernicusWidget({
         </div>
       )}
 
-      {/* Tab 2: NOSTRADAMUS */}
-      {activeTab === "nostradamus" && (
+      {/* Tab 2: Análisis */}
+      {activeTab === "analysis" && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div
-            className={`p-4 rounded-lg border ${data.nostradamusScores.droughtRisk.color}`}
+            className={`p-4 rounded-lg border ${data.analysisScores.droughtRisk.color}`}
           >
             <div className="flex items-center justify-between mb-1">
               <span className="text-xs font-semibold uppercase tracking-wider">
-                Módulo M1 · Estrés por Sequía (DSI)
+                Estrés por Sequía (DSI)
               </span>
               <Cloud className="w-4 h-4" />
             </div>
             <div className="text-3xl font-extrabold my-1">
-              {data.nostradamusScores.droughtRisk.score}
+              {data.analysisScores.droughtRisk.score}
             </div>
             <p className="text-xs opacity-80">
               Fusión en la nube: Sensores IoT in-situ + Retrodispersión
@@ -172,16 +173,16 @@ export function CopernicusWidget({
           </div>
 
           <div
-            className={`p-4 rounded-lg border ${data.nostradamusScores.soilHealth.color}`}
+            className={`p-4 rounded-lg border ${data.analysisScores.soilHealth.color}`}
           >
             <div className="flex items-center justify-between mb-1">
               <span className="text-xs font-semibold uppercase tracking-wider">
-                Módulo M3 · Salud del Suelo (SHI)
+                Salud del Suelo (SHI)
               </span>
               <ShieldCheck className="w-4 h-4" />
             </div>
             <div className="text-3xl font-extrabold my-1">
-              {data.nostradamusScores.soilHealth.score}
+              {data.analysisScores.soilHealth.score}
             </div>
             <p className="text-xs opacity-80">
               Nivel de materia orgánica y estructura biológica evaluada por

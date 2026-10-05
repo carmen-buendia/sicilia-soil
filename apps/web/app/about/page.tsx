@@ -7,7 +7,6 @@ import {
   Satellite,
   Cpu,
   Leaf,
-  Globe,
   Github,
   Mail,
   Target,
@@ -52,8 +51,7 @@ export default function AboutPage() {
             <strong>open-source, crop-agnostic platform</strong> that fuses
             in-situ IoT soil sensors with Copernicus Earth Observation data to
             optimise <strong>soil health</strong> and{" "}
-            <strong>water management</strong> in Mediterranean and continental
-            agroecosystems.
+            <strong>water management</strong> in Mediterranean agroecosystems.
           </p>
           <p className="text-charcoalGray/80 leading-relaxed">
             We help small and medium-sized farms translate satellite and sensor
@@ -106,43 +104,18 @@ export default function AboutPage() {
           <h2 className="text-2xl font-bold text-charcoalGray mb-4">
             Where we validate
           </h2>
-          <div className="grid md:grid-cols-3 gap-4">
-            <div className="bg-white rounded-xl p-5 border border-oliveGreen/15 shadow-sm">
-              <p className="text-xs text-oliveGreen/60 uppercase tracking-wider mb-1">
-                Living lab
-              </p>
-              <h3 className="font-bold text-charcoalGray mb-2">
-                Sicily — Assoro
-              </h3>
-              <p className="text-sm text-oliveGreen/70">
-                Syntropic food forest with esparto, olive, carob, and native
-                mushrooms. Real-world testbed for regenerative agriculture.
-              </p>
-            </div>
-            <div className="bg-white rounded-xl p-5 border border-oliveGreen/15 shadow-sm">
-              <p className="text-xs text-oliveGreen/60 uppercase tracking-wider mb-1">
-                Primary demo site
-              </p>
-              <h3 className="font-bold text-charcoalGray mb-2">
-                Serbia — Vojvodina
-              </h3>
-              <p className="text-sm text-oliveGreen/70">
-                Cereal-based system (maize, wheat) on chernozem soils. Official
-                validation through NOSTRADAMUS (BioSense / CROPT).
-              </p>
-            </div>
-            <div className="bg-white rounded-xl p-5 border border-oliveGreen/15 shadow-sm">
-              <p className="text-xs text-oliveGreen/60 uppercase tracking-wider mb-1">
-                Secondary context
-              </p>
-              <h3 className="font-bold text-charcoalGray mb-2">
-                Slovenia — Pomurje
-              </h3>
-              <p className="text-sm text-oliveGreen/70">
-                Digital validation using Data Cube and EO layers only. Smaller,
-                fragmented farms in continental climate.
-              </p>
-            </div>
+          <div className="bg-white rounded-xl p-6 border border-oliveGreen/15 shadow-sm">
+            <p className="text-xs text-oliveGreen/60 uppercase tracking-wider mb-1">
+              Living lab
+            </p>
+            <h3 className="font-bold text-charcoalGray mb-2">
+              Assoro — Sicily
+            </h3>
+            <p className="text-sm text-oliveGreen/70">
+              Syntropic food forest with esparto, olive, carob, cereal test
+              plot, and native mushrooms. Real-world testbed for regenerative
+              agriculture in a Mediterranean climate.
+            </p>
           </div>
         </section>
 
@@ -162,7 +135,7 @@ export default function AboutPage() {
               </p>
             </div>
             <div className="bg-white rounded-xl p-5 border border-oliveGreen/15 shadow-sm">
-              <Globe className="w-5 h-5 text-oliveGreen mb-2" />
+              <Leaf className="w-5 h-5 text-oliveGreen mb-2" />
               <h3 className="font-bold text-charcoalGray mb-1">
                 Farm to Fork Strategy
               </h3>
@@ -182,11 +155,10 @@ export default function AboutPage() {
             <div className="bg-white rounded-xl p-5 border border-oliveGreen/15 shadow-sm">
               <Satellite className="w-5 h-5 text-oliveGreen mb-2" />
               <h3 className="font-bold text-charcoalGray mb-1">
-                NOSTRADAMUS (Horizon Europe)
+                Open data & Copernicus
               </h3>
               <p className="text-sm text-oliveGreen/70">
-                Integrated with Data Cubes, IoT Observatory, and Application
-                Generation Engine.
+                Built on Copernicus Earth Observation and Open Data Cube.
               </p>
             </div>
           </div>
@@ -222,7 +194,7 @@ export default function AboutPage() {
             <div className="bg-white rounded-xl p-6 border border-oliveGreen/15 shadow-sm">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-12 h-12 bg-gradient-to-br from-oliveGreen to-wheatGold rounded-full flex items-center justify-center text-white font-bold text-lg">
-                  A
+                  D
                 </div>
                 <div>
                   <h3 className="font-bold text-charcoalGray">Domenico Calí</h3>

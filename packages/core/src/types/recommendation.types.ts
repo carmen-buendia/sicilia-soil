@@ -1,9 +1,8 @@
 // ============================================================================
-// Recommendation Types – NOSTRADAMUS Decision Support
+// Recommendation Types – Sicilia Soil Decision Support
 // ============================================================================
 
-export type RecommendationTopic = "T2" | "T3" | "general";
-
+export type RecommendationTopic = "soil" | "water" | "general";
 export type RecommendationPriority =
   | "info"
   | "low"

@@ -50,13 +50,12 @@ export default function SoilHealthPage() {
               </div>
               Salud Biológica del Suelo
             </h1>
-            <span className="text-xs bg-blue-100 text-blue-700 border border-blue-200 px-3 py-1 rounded-full font-medium">
-              Módulo T2 · NOSTRADAMUS
+            <span className="text-xs bg-oliveGreen/15 text-oliveGreen border border-oliveGreen/20 px-3 py-1 rounded-full font-medium">
+              Salud biológica del suelo
             </span>
           </div>
           <p className="text-oliveGreen/70">
-            Monitorización de actividad microbiológica, COS y nutrientes (Módulo
-            T2)
+            Monitorización de actividad microbiológica, COS y nutrientes
           </p>
         </div>
 
@@ -255,7 +254,7 @@ export default function SoilHealthPage() {
             href="/ground-cover"
             className="inline-flex items-center gap-2 text-oliveGreen font-medium hover:text-sicilian-red transition-colors"
           >
-            Ver Cubiertas Vegetales (T3) →
+            Ver Cubiertas Vegetales →
           </Link>
         </div>
         {/* Footer educativo */}

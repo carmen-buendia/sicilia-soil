@@ -4,12 +4,12 @@ import {
   AlertTriangle,
   Droplets,
   Leaf,
-  Wind,
   Sprout,
   Activity,
   TrendingUp,
   ShieldCheck,
   Zap,
+  Recycle,
 } from "lucide-react";
 import type {
   RecommendationItem,
@@ -71,12 +71,19 @@ const CATEGORY_ICONS: Record<RecommendationCategory, typeof Droplets> = {
   "erosion-control": ShieldCheck,
   "carbon-sequestration": TrendingUp,
   harvest: Sprout,
+  regeneration: Recycle,
   general: Activity,
 };
 
+const TOPIC_LABELS: Record<string, string> = {
+  soil: "Suelo",
+  water: "Agua",
+  general: "General",
+};
+
 const TOPIC_BADGES: Record<string, string> = {
-  T2: "bg-oliveGreen/10 text-oliveGreen border-oliveGreen/20",
-  T3: "bg-blue-100 text-blue-700 border-blue-200",
+  soil: "bg-oliveGreen/10 text-oliveGreen border-oliveGreen/20",
+  water: "bg-blue-100 text-blue-700 border-blue-200",
   general: "bg-gray-100 text-gray-700 border-gray-200",
 };
 
@@ -87,6 +94,7 @@ export function RecommendationCard({
   const style = PRIORITY_STYLES[recommendation.priority];
   const Icon = CATEGORY_ICONS[recommendation.category];
   const topicClass = TOPIC_BADGES[recommendation.topic] ?? TOPIC_BADGES.general;
+  const topicLabel = TOPIC_LABELS[recommendation.topic] ?? recommendation.topic;
 
   return (
     <div
@@ -103,7 +111,7 @@ export function RecommendationCard({
               <span
                 className={`text-xs px-2 py-0.5 rounded-full border font-medium ${topicClass}`}
               >
-                {recommendation.topic}
+                {topicLabel}
               </span>
               <span
                 className={`text-xs px-2 py-0.5 rounded-full border font-medium ${style.badge}`}

@@ -167,7 +167,7 @@ export function formatLastPass(isoString: string): string {
 export function isCopernicusDataValid(data: CopernicusData | null): boolean {
   if (!data) return false;
   return Boolean(
-    data.lastPass && data.satellite && data.indices && data.nostradamusScores,
+    data.lastPass && data.satellite && data.indices && data.analysisScores,
   );
 }
 

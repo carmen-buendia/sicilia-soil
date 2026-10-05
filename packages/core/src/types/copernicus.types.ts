@@ -2,7 +2,7 @@
 // Copernicus Types – Shared across Sicilia Soil
 // ============================================================================
 
-export type CopernicusTabType = "indices" | "nostradamus";
+export type CopernicusTabType = "indices" | "analysis";
 
 export type CopernicusLayer = "satellite" | "ndvi" | "ndwi" | "ssm" | "lst";
 
@@ -16,7 +16,7 @@ export interface IndexMetric {
   color: string;
 }
 
-export interface NostradamusScore {
+export interface AnalysisScore {
   score: string;
   status: string;
   color: string;
@@ -33,9 +33,9 @@ export interface CopernicusData {
     ssm: IndexMetric;
     lst: IndexMetric;
   };
-  nostradamusScores: {
-    droughtRisk: NostradamusScore;
-    soilHealth: NostradamusScore;
+  analysisScores: {
+    droughtRisk: AnalysisScore;
+    soilHealth: AnalysisScore;
   };
 }
 
