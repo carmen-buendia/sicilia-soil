@@ -7,7 +7,7 @@ import type {
 } from "@sicilia-soil/core";
 import { RecommendationCard } from "./RecommendationCard";
 
-type TopicFilter = "all" | "T2" | "T3";
+type TopicFilter = "all" | "soil" | "water";
 type PriorityFilter = "all" | RecommendationPriority;
 
 interface RecommendationsListProps {
@@ -21,6 +21,21 @@ const PRIORITY_ORDER: Record<RecommendationPriority, number> = {
   medium: 3,
   low: 2,
   info: 1,
+};
+
+const TOPIC_LABELS: Record<TopicFilter, string> = {
+  all: "Todos",
+  soil: "Suelo",
+  water: "Agua",
+};
+
+const PRIORITY_LABELS: Record<PriorityFilter, string> = {
+  all: "Todas",
+  urgent: "Urgente",
+  high: "Alta",
+  medium: "Media",
+  low: "Baja",
+  info: "Info",
 };
 
 export function RecommendationsList({
@@ -45,8 +60,8 @@ export function RecommendationsList({
     return {
       total: recommendations.length,
       urgent: recommendations.filter((r) => r.priority === "urgent").length,
-      T2: recommendations.filter((r) => r.topic === "T2").length,
-      T3: recommendations.filter((r) => r.topic === "T3").length,
+      soil: recommendations.filter((r) => r.topic === "soil").length,
+      water: recommendations.filter((r) => r.topic === "water").length,
     };
   }, [recommendations]);
 
@@ -58,7 +73,7 @@ export function RecommendationsList({
           <span className="text-xs font-medium text-oliveGreen/60 uppercase tracking-wider">
             Tema:
           </span>
-          {(["all", "T2", "T3"] as TopicFilter[]).map((t) => (
+          {(["all", "soil", "water"] as TopicFilter[]).map((t) => (
             <button
               key={t}
               type="button"
@@ -69,7 +84,9 @@ export function RecommendationsList({
                   : "bg-oliveGreen/10 text-oliveGreen hover:bg-oliveGreen/20"
               }`}
             >
-              {t === "all" ? `Todos (${counts.total})` : `${t} (${counts[t]})`}
+              {t === "all"
+                ? `${TOPIC_LABELS[t]} (${counts.total})`
+                : `${TOPIC_LABELS[t]} (${counts[t]})`}
             </button>
           ))}
         </div>
@@ -98,7 +115,7 @@ export function RecommendationsList({
                   : "bg-oliveGreen/10 text-oliveGreen hover:bg-oliveGreen/20"
               }`}
             >
-              {p === "all" ? "Todas" : p}
+              {PRIORITY_LABELS[p]}
             </button>
           ))}
         </div>

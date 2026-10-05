@@ -32,7 +32,6 @@ export default function RecommendationsPage() {
     [refreshKey],
   );
 
-  // 👇 NUEVO
   useEffect(() => {
     addNotificationsFromRecommendations(recommendations);
   }, [recommendations, addNotificationsFromRecommendations]);
@@ -57,7 +56,7 @@ export default function RecommendationsPage() {
                 Recomendaciones
               </h1>
               <p className="text-oliveGreen/70">
-                Decision support para T2 (suelo) y T3 (agua) · NOSTRADAMUS
+                Decisiones accionables para suelo y agua
               </p>
             </div>
           </div>
@@ -79,7 +78,7 @@ export default function RecommendationsPage() {
           <p className="text-sm text-oliveGreen/70">
             Este motor combina datos IoT (sensores in-situ) y datos Copernicus
             (NDVI, NDWI, SSM, LST) para generar recomendaciones accionables
-            alineadas con los módulos M1 (Sequía) y M3 (Suelo) de NOSTRADAMUS.
+            sobre riego, fertilización, salud del suelo y regeneración.
           </p>
         </div>
 
