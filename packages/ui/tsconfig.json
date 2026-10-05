@@ -9,6 +9,10 @@
       "@sicilia-soil/utils/*": ["./../utils/src/*"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "../../apps/web/components/features/analysis/components/CopernicusWidget.tsx"
+  ],
   "exclude": ["node_modules", "dist"]
 }
