@@ -1,0 +1,275 @@
+"use client";
+
+import { useState } from "react";
+import {
+  ArrowLeft,
+  Droplets,
+  Thermometer,
+  Wind,
+  Calendar,
+  MapPin,
+  Leaf,
+  Info,
+} from "lucide-react";
+import { calculateSymbiosisScore } from "@sicilia-soil/utils";
+import { SymbiosisCard } from "@/components/features/shared";
+import Link from "next/link";
+import { MycologyChart } from "@sicilia-soil/ui";
+import { MushroomChip } from "./components/MushroomChip";
+import { MushroomCard } from "@/components/features/soil-health";
+import {
+  MUSHROOMS,
+  CULTIVATION_ZONES,
+  DEFAULT_MUSHROOM_ID,
+} from "@sicilia-soil/core";
+
+export default function SoilHealthPage() {
+  const [selectedMushroom, setSelectedMushroom] = useState(DEFAULT_MUSHROOM_ID);
+
+  const current = MUSHROOMS.find((m) => m.id === selectedMushroom);
+  if (!current) return null;
+
+  const symbiosis = calculateSymbiosisScore({
+    espartoHealth: 92,
+    coverDensity: 78,
+    soilMoisture: 69,
+    myceliumActivity: 85,
+    fungalDiversity: 3,
+    cosPercent: 2.5,
+  });
+
+  return (
+    <div className="min-h-screen p-4 md:p-8 pt-24 bg-offWhite">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-3 flex-wrap">
+            <h1 className="text-3xl md:text-4xl font-bold text-charcoalGray flex items-center gap-3">
+              <div className="p-2 bg-gradient-to-br from-oliveGreen/20 to-wheatGold/20 rounded-xl">
+                <span className="text-2xl">🍄</span>
+              </div>
+              Salud Biológica del Suelo
+            </h1>
+            <span className="text-xs bg-oliveGreen/15 text-oliveGreen border border-oliveGreen/20 px-3 py-1 rounded-full font-medium">
+              Salud biológica del suelo
+            </span>
+          </div>
+          <p className="text-oliveGreen/70">
+            Monitorización de actividad microbiológica, COS y nutrientes
+          </p>
+        </div>
+
+        {/* Hero */}
+        <div className="bg-gradient-to-r from-oliveGreen/10 to-wheatGold/10 rounded-2xl p-6 md:p-8 my-12 border border-oliveGreen/20">
+          <h2 className="text-2xl font-bold text-charcoalGray mb-3">
+            🍄 Salud Biológica del Suelo
+          </h2>
+          <p className="text-charcoalGray/80 mb-4">
+            La actividad microbiológica del suelo es el{" "}
+            <strong>indicador clave</strong> de su salud. Los hongos actúan como
+            la <strong>red de internet de la naturaleza</strong>, conectando
+            plantas, descomponiendo materia orgánica y creando suelos vivos. En
+            Sicilia, especies endémicas como el Cardoncello di Nebrodi son clave
+            para nuestros ecosistemas.
+          </p>
+          <div className="flex flex-wrap gap-3 mt-4">
+            <span className="px-3 py-1 bg-white/50 rounded-full text-sm">
+              🔬 Micorrizas
+            </span>
+            <span className="px-3 py-1 bg-white/50 rounded-full text-sm">
+              🌍 Endemismo siciliano
+            </span>
+            <span className="px-3 py-1 bg-white/50 rounded-full text-sm">
+              ♻️ Descomposición
+            </span>
+            <span className="px-3 py-1 bg-white/50 rounded-full text-sm">
+              🍽️ Gastronomía
+            </span>
+          </div>
+        </div>
+        {/* Symbiosis Card */}
+        <div className="mb-8">
+          <SymbiosisCard result={symbiosis} />
+        </div>
+        {/* Zonas de cultivo activas */}
+        <section className="mb-12">
+          <h2 className="text-xl font-bold text-charcoalGray mb-4 flex items-center gap-2">
+            🌱 Zonas de cultivo activas
+          </h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            {CULTIVATION_ZONES.map((zone) => (
+              <MushroomCard
+                key={zone.id}
+                mushroom={zone}
+                onViewDetails={(id: string) => console.log("Ver detalles:", id)}
+              />
+            ))}
+          </div>
+        </section>
+
+        {/* Selector de setas */}
+        <div className="flex flex-wrap gap-3 mb-8">
+          {MUSHROOMS.map((m) => (
+            <MushroomChip
+              key={m.id}
+              mushroom={m}
+              active={selectedMushroom === m.id}
+              onClick={() => setSelectedMushroom(m.id)}
+            />
+          ))}
+        </div>
+
+        {/* Info de la seta seleccionada */}
+        <div className="grid md:grid-cols-3 gap-6 mb-8">
+          <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-oliveGreen/15 md:col-span-2">
+            <div className="flex items-center gap-2 mb-4">
+              <Info className="w-5 h-5 text-oliveGreen" />
+              <h3 className="text-lg font-bold text-charcoalGray">
+                Descripción
+              </h3>
+            </div>
+            <p className="text-oliveGreen/70 leading-relaxed">
+              {current.description}
+            </p>
+          </div>
+
+          <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-oliveGreen/15">
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <MapPin className="w-4 h-4 text-oliveGreen" />
+                <span className="text-sm text-oliveGreen/70">Hábitat:</span>
+                <span className="text-sm font-medium text-charcoalGray">
+                  {current.habitat}
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-oliveGreen" />
+                <span className="text-sm text-oliveGreen/70">Temporada:</span>
+                <span className="text-sm font-medium text-charcoalGray">
+                  {current.season.join(", ")}
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Leaf className="w-4 h-4 text-oliveGreen" />
+                <span className="text-sm text-oliveGreen/70">Endemismo:</span>
+                <span
+                  className={`text-sm font-medium ${
+                    current.isEndemic ? "text-wheatGold" : "text-oliveGreen/60"
+                  }`}
+                >
+                  {current.isEndemic ? "Endémica de Sicilia 🌍" : "Cosmopolita"}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Gráficos */}
+        <div className="mb-8">
+          <h2 className="text-xl font-bold text-charcoalGray mb-4 flex items-center gap-2">
+            📊 Seguimiento de condiciones
+          </h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-oliveGreen/15">
+              <MycologyChart
+                mushroomName={current.name}
+                data={current.data.humidity}
+                metric="humidity"
+                height={350}
+              />
+            </div>
+            <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-oliveGreen/15">
+              <MycologyChart
+                mushroomName={current.name}
+                data={current.data.temperature}
+                metric="temperature"
+                height={350}
+              />
+            </div>
+            <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-oliveGreen/15 md:col-span-2">
+              <MycologyChart
+                mushroomName={current.name}
+                data={current.data.co2}
+                metric="co2"
+                height={350}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Condiciones óptimas */}
+        <div className="bg-gradient-to-r from-oliveGreen/5 to-wheatGold/5 rounded-2xl p-6 border border-oliveGreen/15">
+          <h3 className="text-lg font-bold text-charcoalGray mb-4 flex items-center gap-2">
+            <Droplets className="w-5 h-5 text-oliveGreen" />
+            Condiciones óptimas para el cultivo
+          </h3>
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="flex items-center gap-3 p-3 bg-white/50 rounded-xl">
+              <div className="w-10 h-10 bg-oliveGreen/20 rounded-full flex items-center justify-center">
+                <Droplets className="w-5 h-5 text-oliveGreen" />
+              </div>
+              <div>
+                <p className="text-sm text-oliveGreen/60">Humedad ideal</p>
+                <p className="font-medium text-charcoalGray">
+                  {current.optimal.humidity[0]}% - {current.optimal.humidity[1]}
+                  %
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 p-3 bg-white/50 rounded-xl">
+              <div className="w-10 h-10 bg-sicilian-red/20 rounded-full flex items-center justify-center">
+                <Thermometer className="w-5 h-5 text-sicilian-red" />
+              </div>
+              <div>
+                <p className="text-sm text-oliveGreen/60">Temperatura ideal</p>
+                <p className="font-medium text-charcoalGray">
+                  {current.optimal.temperature[0]}°C -{" "}
+                  {current.optimal.temperature[1]}°C
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 p-3 bg-white/50 rounded-xl">
+              <div className="w-10 h-10 bg-wheatGold/20 rounded-full flex items-center justify-center">
+                <Wind className="w-5 h-5 text-wheatGold" />
+              </div>
+              <div>
+                <p className="text-sm text-oliveGreen/60">CO₂ ideal</p>
+                <p className="font-medium text-charcoalGray">
+                  {current.optimal.co2[0]} - {current.optimal.co2[1]} ppm
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* Cross-link a ground-cover */}
+        <div className="mt-8 p-6 bg-gradient-to-r from-oliveGreen/10 to-wheatGold/10 rounded-2xl border border-oliveGreen/20">
+          <h3 className="font-bold text-charcoalGray mb-2">
+            🔗 Ver el ciclo completo
+          </h3>
+          <p className="text-sm text-oliveGreen/70 mb-3">
+            El micelio fortalece al esparto con agua y nutrientes. El esparto
+            alimenta al micelio con su biomasa. Juntos regeneran el suelo.
+          </p>
+          <Link
+            href="/ground-cover"
+            className="inline-flex items-center gap-2 text-oliveGreen font-medium hover:text-sicilian-red transition-colors"
+          >
+            Ver Cubiertas Vegetales →
+          </Link>
+        </div>
+        {/* Footer educativo */}
+        <div className="mt-12 p-6 bg-oliveGreen/5 rounded-2xl border border-oliveGreen/15">
+          <h3 className="text-lg font-bold text-charcoalGray mb-3 flex items-center gap-2">
+            📚 Sabías que...
+          </h3>
+          <p className="text-sm text-oliveGreen/70">
+            El Cardoncello di Nebrodi es una de las setas más raras y cotizadas
+            del mundo. Crece exclusivamente en las montañas de los Nebrodi en
+            Sicilia y está protegida como patrimonio natural. Su cultivo en
+            sistemas sintrópicos ayuda a su conservación.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
