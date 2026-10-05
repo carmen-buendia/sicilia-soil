@@ -1,6 +1,8 @@
-import { Recommendation } from "@sicilia-soil/core/types/monitoring.types";
+import { DashboardRecommendation } from "@sicilia-soil/core/types/monitoring.types";
 
-export const getTemperatureRecommendations = (temp: number): Recommendation => {
+export const getTemperatureRecommendations = (
+  temp: number,
+): DashboardRecommendation => {
   if (temp > 35) {
     return {
       text: "Temperatura extremadamente alta. Riesgo de estrés hídrico.",

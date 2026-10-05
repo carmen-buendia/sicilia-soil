@@ -25,13 +25,16 @@
     "@sicilia-soil/utils": "workspace:*",
     "highcharts": "^12.5.0",
     "highcharts-react-official": "^3.2.3",
+    "leaflet": "^1.9.4",
     "lucide-react": "^0.309.0",
     "next": "^16.3.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-leaflet": "^5.0.0",
     "socket.io-client": "^4.8.3"
   },
   "devDependencies": {
+    "@types/leaflet": "^1.9.22",
     "@types/node": "^20.11.5",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
