@@ -109,7 +109,13 @@ export interface MonitoredZone {
   lastUpdate: Date;
 }
 
-export interface Alert {
+/**
+ * Alerta del mock de monitoring (/humidity).
+ * NO es la Alert del motor de alertas real (ver alerts.types.ts).
+ *
+ * TODO(feat/db-crud): migrar a alerts.Alert cuando el motor esté listo.
+ */
+export interface MonitoringAlert {
   id: string;
   zone: string;
   type: "humidity" | "temperature" | "light";
@@ -131,7 +137,7 @@ export interface MonitoringState {
   zones: MonitoredZone[];
   selectedZone: string | null;
   sensorData: Record<string, SensorData>;
-  alerts: Alert[];
+  alerts: MonitoringAlert[];
   isLoading: boolean;
   error: string | null;
   lastUpdate: Date | null;

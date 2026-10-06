@@ -16,3 +16,5 @@ export * from "./iot.types";
 export * from "./eo.types";
 export * from "./operations.types";
 export * from "./kpi.types";
+export * from "./alerts.types";
+export * from "./api.types";
