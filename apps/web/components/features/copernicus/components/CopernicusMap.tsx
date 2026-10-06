@@ -6,7 +6,7 @@ import { Satellite, Layers, MapPin, Maximize2 } from "lucide-react";
 import { useMap } from "react-leaflet";
 import {
   COPERNICUS_LAYER_CONFIG,
-  DEFAULT_FARM_PLOTS,
+  FARM_BOUNDARY,
   FARM_CENTER,
   FARM_DEFAULT_ZOOM,
   type CopernicusLayer,
@@ -59,7 +59,7 @@ function FitToPlots({
 }
 
 export function CopernicusMap({
-  plots = DEFAULT_FARM_PLOTS,
+  plots = FARM_BOUNDARY,
   initialLayer = "satellite",
   initialCenter = FARM_CENTER,
   initialZoom = FARM_DEFAULT_ZOOM,
