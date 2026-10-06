@@ -1,5 +1,3 @@
-// apps/web/app/page.tsx
-
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
@@ -21,143 +19,19 @@ import { ZoneCard } from "@/components/features/dashboard/components/ZoneCards";
 import { ServerStatus } from "@/components/features/dashboard/components/ServerStatus";
 import { CopernicusMapMini } from "@/components/features/analysis/components/CopernicusMapMini";
 import { useRecommendations } from "@/hooks/useRecommendations";
+import { useDashboardData } from "@/hooks/useDashboardData";
 import type { RecommendationPriority } from "@sicilia-soil/core";
 
-// ========== DATOS MOCK (FALLBACK) ==========
-type GardenZone = {
-  id: string;
-  name: string;
-  type: string;
-  location: string;
-  moisture: number;
-  temperature: number;
-  light: number;
-  wind: number;
-  status: string;
-  icon: string;
-  lastUpdate: string;
+const ICON_MAP: Record<string, any> = {
+  leaf: Leaf,
+  droplet: Droplet,
+  gauge: Gauge,
+  trees: Trees,
+  mushroom: () => <span className="text-xl">🍄</span>,
+  thermometer: ThermometerSun,
+  sun: Sun,
+  wind: Wind,
 };
-
-const mockZones: GardenZone[] = [
-  {
-    id: "norte",
-    name: "Zona de Esparto",
-    type: "Planta textil",
-    location: "Parcela Norte",
-    moisture: 65,
-    temperature: 22.5,
-    light: 85,
-    wind: 12,
-    status: "saludable",
-    icon: "🌾",
-    lastUpdate: new Date().toISOString(),
-  },
-  {
-    id: "sur",
-    name: "Huerta de Tomates",
-    type: "Hortalizas",
-    location: "Parcela Sur",
-    moisture: 58,
-    temperature: 24.2,
-    light: 92,
-    wind: 8,
-    status: "saludable",
-    icon: "🍅",
-    lastUpdate: new Date().toISOString(),
-  },
-  {
-    id: "este",
-    name: "Olivar",
-    type: "Árboles",
-    location: "Ladera Este",
-    moisture: 62,
-    temperature: 23.1,
-    light: 89,
-    wind: 10,
-    status: "saludable",
-    icon: "🫒",
-    lastUpdate: new Date().toISOString(),
-  },
-  {
-    id: "oeste",
-    name: "Jardín de Hierbas",
-    type: "Aromáticas",
-    location: "Parcela Oeste",
-    moisture: 68,
-    temperature: 21.8,
-    light: 78,
-    wind: 7,
-    status: "saludable",
-    icon: "🌿",
-    lastUpdate: new Date().toISOString(),
-  },
-  {
-    id: "compost",
-    name: "Zona Compost",
-    type: "Suelo vivo",
-    location: "Trasera",
-    moisture: 55,
-    temperature: 28,
-    light: 30,
-    wind: 5,
-    status: "activo",
-    icon: "♻️",
-    lastUpdate: new Date().toISOString(),
-  },
-  {
-    id: "agua",
-    name: "Depósito de Agua",
-    type: "Recolección",
-    location: "Noreste",
-    moisture: 90,
-    temperature: 18,
-    light: 40,
-    wind: 7,
-    status: "lleno",
-    icon: "💧",
-    lastUpdate: new Date().toISOString(),
-  },
-];
-
-// ========== KPIs ==========
-const DASHBOARD_KPIS = [
-  {
-    value: "88/100",
-    label: "Salud del suelo",
-    icon: <Leaf className="w-5 h-5" />,
-    subtext: "Índice SHI",
-  },
-  {
-    value: "0.18",
-    label: "Estrés hídrico",
-    icon: <Droplet className="w-5 h-5" />,
-    subtext: "Bajo · estable",
-  },
-  {
-    value: "31%",
-    label: "Humedad del suelo",
-    icon: <Gauge className="w-5 h-5" />,
-    subtext: "Sentinel-1 SAR",
-  },
-  {
-    value: "2.5%",
-    label: "Carbono orgánico (COS)",
-    icon: <Trees className="w-5 h-5" />,
-    subtext: "↑ +0.3% este ciclo",
-  },
-  {
-    value: "33 t/ha",
-    label: "CO₂ secuestrado",
-    icon: <Trees className="w-5 h-5" />,
-    subtext: "Captura estimada",
-  },
-  {
-    value: "4",
-    label: "Setas autóctonas",
-    icon: <span className="text-xl">🍄</span>,
-    subtext: "Red fúngica activa",
-  },
-];
 
 const PRIORITY_STYLE: Record<
   RecommendationPriority,
@@ -190,19 +64,15 @@ const PRIORITY_STYLE: Record<
   },
 };
 
-const carbonSummary = {
-  organicCarbonPercent: 2.5,
-  bulkDensity: 1.2,
-  depth: 30,
-  co2Sequestration: 33.0,
-};
-
 export default function HomePage() {
   const [serverStatus, setServerStatus] = useState<
     "checking" | "online" | "offline"
   >("checking");
-  const [gardenZones, setGardenZones] = useState<GardenZone[]>(mockZones);
+  const { zones, kpis, carbon } = useDashboardData();
 
+  // DEBUG temporal
+  console.log("ZONES:", zones);
+  console.log("Length:", zones?.length);
   const recommendations = useRecommendations();
 
   const topAlerts = useMemo(
@@ -223,43 +93,14 @@ export default function HomePage() {
           { signal: controller.signal },
         );
         clearTimeout(timeoutId);
-        if (response.ok) {
-          const zonesData = await response.json();
-          if (zonesData && zonesData.length > 0) {
-            const convertedZones: GardenZone[] = zonesData.map((data: any) => ({
-              id: data.zone,
-              name: getZoneName(data.zone),
-              type: getZoneType(data.zone),
-              location: getZoneLocation(data.zone),
-              moisture: data.humidity,
-              temperature: data.temperature,
-              light: data.light,
-              wind: Math.floor(Math.random() * 15) + 5,
-              status:
-                data.humidity < 40
-                  ? "necesita riego"
-                  : data.humidity > 85
-                    ? "exceso de agua"
-                    : "saludable",
-              icon: getZoneIcon(data.zone),
-              lastUpdate: data.timestamp,
-            }));
-            setGardenZones(convertedZones);
-            setServerStatus("online");
-          }
-        } else {
-          throw new Error(`HTTP ${response.status}`);
-        }
+        if (response.ok) setServerStatus("online");
+        else throw new Error();
       } catch {
         setServerStatus("offline");
       }
     }
     fetchRealData();
   }, []);
-
-  const handleViewHistory = (zoneId: string) => {
-    console.log(`Ver historial de zona: ${zoneId}`);
-  };
 
   return (
     <div className="max-w-6xl mx-auto">
@@ -277,17 +118,32 @@ export default function HomePage() {
         <ServerStatus status={serverStatus} />
       </div>
 
-      {/* 6 KPIs */}
+      {/* KPIs */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
-        {DASHBOARD_KPIS.map((kpi, i) => (
-          <StatsCard key={i} {...kpi} />
-        ))}
+        {kpis.map((kpi, i) => {
+          const Icon = ICON_MAP[kpi.icon] ?? Leaf;
+          return (
+            <StatsCard
+              key={i}
+              value={kpi.value}
+              label={kpi.label}
+              icon={
+                typeof Icon === "function" && Icon.name === "" ? (
+                  Icon()
+                ) : (
+                  <Icon className="w-5 h-5" />
+                )
+              }
+              subtext={kpi.subtext}
+            />
+          );
+        })}
       </div>
 
       {/* Mini-mapa */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-xl font-bold text-charcoalGray flex items-center gap-2">
+          <h2 className="text-xl font-bold text-charcoalGray">
             🗺️ Mapa de la finca
           </h2>
           <Link
@@ -303,7 +159,7 @@ export default function HomePage() {
         />
       </div>
 
-      {/* Two column: Zones + Alerts */}
+      {/* Zonas + Alertas */}
       <div className="grid lg:grid-cols-3 gap-8 mb-12">
         <div className="lg:col-span-2">
           <div className="flex items-center justify-between mb-6">
@@ -318,11 +174,11 @@ export default function HomePage() {
             </Link>
           </div>
           <div className="grid md:grid-cols-2 gap-6">
-            {gardenZones.map((zone) => (
+            {zones.map((zone) => (
               <ZoneCard
                 key={zone.id}
-                zone={zone}
-                onViewHistory={handleViewHistory}
+                zone={{ ...zone, lastUpdate: new Date().toISOString() }}
+                onViewHistory={(id) => console.log("Ver historial:", id)}
               />
             ))}
           </div>
@@ -347,9 +203,6 @@ export default function HomePage() {
               <div className="bg-emerald-50 rounded-xl p-6 border border-emerald-200 text-center">
                 <p className="text-sm text-emerald-700 font-medium">
                   ✓ Sin alertas urgentes
-                </p>
-                <p className="text-xs text-emerald-600/70 mt-1">
-                  El sistema está en equilibrio
                 </p>
               </div>
             ) : (
@@ -392,30 +245,27 @@ export default function HomePage() {
               <div className="flex justify-between">
                 <span className="text-charcoalGray/70">COS</span>
                 <span className="font-medium text-emerald-700">
-                  {carbonSummary.organicCarbonPercent}%
+                  {carbon.organicCarbonPercent}%
                 </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-charcoalGray/70">Densidad aparente</span>
                 <span className="font-medium text-emerald-700">
-                  {carbonSummary.bulkDensity} g/cm³
+                  {carbon.bulkDensity} g/cm³
                 </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-charcoalGray/70">Profundidad</span>
                 <span className="font-medium text-emerald-700">
-                  {carbonSummary.depth} cm
+                  {carbon.depth} cm
                 </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-charcoalGray/70">CO₂ secuestrado</span>
                 <span className="font-medium text-emerald-700">
-                  {carbonSummary.co2Sequestration} t/ha
+                  {carbon.co2Sequestration} t/ha
                 </span>
               </div>
-            </div>
-            <div className="mt-2 text-[10px] text-emerald-600/60">
-              Fórmula: CO₂ (t/ha) = (COS% × Densidad × Profundidad) / 10 × 3.67
             </div>
           </div>
         </div>
@@ -444,41 +294,4 @@ export default function HomePage() {
       </div>
     </div>
   );
-}
-
-function getZoneName(zone: string): string {
-  const names: Record<string, string> = {
-    norte: "Zona de Esparto",
-    sur: "Huerta de Tomates",
-    este: "Olivar",
-    oeste: "Jardín de Hierbas",
-  };
-  return names[zone] || zone;
-}
-function getZoneType(zone: string): string {
-  const types: Record<string, string> = {
-    norte: "Planta textil",
-    sur: "Hortalizas",
-    este: "Árboles",
-    oeste: "Aromáticas",
-  };
-  return types[zone] || "Cultivo";
-}
-function getZoneLocation(zone: string): string {
-  const locations: Record<string, string> = {
-    norte: "Parcela Norte",
-    sur: "Parcela Sur",
-    este: "Ladera Este",
-    oeste: "Parcela Oeste",
-  };
-  return locations[zone] || `Parcela ${zone}`;
-}
-function getZoneIcon(zone: string): string {
-  const icons: Record<string, string> = {
-    norte: "🌾",
-    sur: "🍅",
-    este: "🫒",
-    oeste: "🌿",
-  };
-  return icons[zone] || "🌱";
 }
