@@ -1,4 +1,4 @@
-// packages/core/data/copernicus.defaults.ts
+// packages/core/src/data/copernicus.defaults.ts
 
 import type {
   CopernicusData,
@@ -9,11 +9,10 @@ import type {
 // ============================================================================
 // Farm center (Assoro, Sicilia)
 // ----------------------------------------------------------------------------
-// PLACEHOLDER: centro aproximado de la finca.
-// Sustituir por las coordenadas reales cuando las midas.
+// Medido con GPS. Finca ~100m × 52m (~1 ha).
 // ============================================================================
 
-export const FARM_CENTER: [number, number] = [37.63541, 14.41143];
+export const FARM_CENTER: [number, number] = [37.6353, 14.41153];
 export const FARM_DEFAULT_ZOOM = 19;
 export const FARM_MINI_ZOOM = 18;
 
@@ -55,72 +54,31 @@ export const DEFAULT_COPERNICUS_DATA: CopernicusData = {
 };
 
 // ============================================================================
-// Default Map Plots — Cross-country view (NOSTRADAMUS / transferability)
-// ============================================================================
-
-export const DEFAULT_MAP_PLOTS: MapPlot[] = [
-  {
-    id: "sicilia-food-forest",
-    name: "Sicilia — Food Forest (Assoro)",
-    color: "#8B9D6B",
-    // Pin pequeño (2 × 2 m) alrededor del centro de la finca
-    coordinates: [
-      [FARM_CENTER[0] + 0.00001, FARM_CENTER[1] - 0.00001],
-      [FARM_CENTER[0] + 0.00001, FARM_CENTER[1] + 0.00001],
-      [FARM_CENTER[0] - 0.00001, FARM_CENTER[1] + 0.00001],
-      [FARM_CENTER[0] - 0.00001, FARM_CENTER[1] - 0.00001],
-    ],
-    center: FARM_CENTER,
-    indices: { ndvi: 0.74, ndwi: 0.52, ssm: 31, lst: 24.8 },
-  },
-  {
-    id: "serbia-cereals",
-    name: "Serbia — Vojvodina (Cereales)",
-    color: "#D4A574",
-    coordinates: [
-      [45.2671, 19.8335],
-      [45.2671, 19.8395],
-      [45.2621, 19.8395],
-      [45.2621, 19.8335],
-    ],
-    center: [45.2646, 19.8365],
-    indices: { ndvi: 0.71, ndwi: 0.48, ssm: 28, lst: 22.1 },
-  },
-  {
-    id: "slovenia-validation",
-    name: "Slovenia — Pomurje (Validación)",
-    color: "#6B8E23",
-    coordinates: [
-      [46.6625, 16.1663],
-      [46.6625, 16.1723],
-      [46.6585, 16.1723],
-      [46.6585, 16.1663],
-    ],
-    center: [46.6605, 16.1693],
-    indices: { ndvi: 0.69, ndwi: 0.52, ssm: 38, lst: 19.8 },
-  },
-];
-
-// ============================================================================
-// Default Farm Plots — Living lab in Assoro (Sicily)
+// Farm boundary — Real measured perimeter (Assoro, Sicily)
 // ----------------------------------------------------------------------------
-// PLACEHOLDER: pin en el centro de la finca.
-// Sustituir por los polígonos reales cuando estén medidos con GPS.
+// 10 vértices medidos con GPS. Leaflet cierra el polígono automáticamente.
+// Las parcelas productivas y la zona habitable se añadirán en una branch
+// posterior (feat/farm-parcels) cuando estén medidas.
 // ============================================================================
 
-export const DEFAULT_FARM_PLOTS: MapPlot[] = [
+export const FARM_BOUNDARY: MapPlot[] = [
   {
-    id: "farm-pin",
-    name: "Sicilia Soil — Finca (Assoro)",
+    id: "farm",
+    name: "Sicilia Soil — Assoro",
     color: "#8B9D6B",
     center: FARM_CENTER,
     coordinates: [
-      [FARM_CENTER[0] + 0.00001, FARM_CENTER[1] - 0.00001],
-      [FARM_CENTER[0] + 0.00001, FARM_CENTER[1] + 0.00001],
-      [FARM_CENTER[0] - 0.00001, FARM_CENTER[1] + 0.00001],
-      [FARM_CENTER[0] - 0.00001, FARM_CENTER[1] - 0.00001],
+      [37.63539, 14.41096], // SW
+      [37.63545, 14.41102], // W
+      [37.63552, 14.41114], // NW
+      [37.63553, 14.41114], // N
+      [37.63546, 14.41151], // NE
+      [37.63529, 14.41203], // E
+      [37.63517, 14.41206], // SE
+      [37.63506, 14.41209], // S
+      [37.63513, 14.4118], //  entre S y SW
+      [37.63521, 14.41152], //  entre S y SW
     ],
-    indices: { ndvi: 0.74, ndwi: 0.52, ssm: 31, lst: 24.8 },
   },
 ];
 
@@ -184,5 +142,5 @@ export const COPERNICUS_LAYER_CONFIG: Record<CopernicusLayer, LayerConfig> = {
 // Demo Constants
 // ============================================================================
 
-export const DEFAULT_PLOT_ID = "farm-pin";
-export const DEFAULT_PLOT_NAME = "Sicilia Soil — Finca (Assoro)";
+export const DEFAULT_PLOT_ID = "farm";
+export const DEFAULT_PLOT_NAME = "Sicilia Soil — Assoro";

@@ -6,7 +6,7 @@ import { MapPin } from "lucide-react";
 import dynamic from "next/dynamic";
 import {
   COPERNICUS_LAYER_CONFIG,
-  DEFAULT_FARM_PLOTS,
+  FARM_BOUNDARY,
   FARM_CENTER,
   FARM_MINI_ZOOM,
 } from "@sicilia-soil/core";
@@ -52,7 +52,7 @@ export function CopernicusMapMini({
   }
 
   const layer = COPERNICUS_LAYER_CONFIG.satellite;
-  const plot = DEFAULT_FARM_PLOTS[0];
+  const plot = FARM_BOUNDARY[0];
 
   return (
     <div
