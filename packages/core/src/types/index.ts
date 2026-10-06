@@ -18,3 +18,4 @@ export * from "./operations.types";
 export * from "./kpi.types";
 export * from "./alerts.types";
 export * from "./api.types";
+export * from "./report.types";
