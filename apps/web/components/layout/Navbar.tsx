@@ -25,7 +25,6 @@ const navItems = [
   { id: "/humidity", label: "Agua", icon: Droplets },
   { id: "/ground-cover", label: "Cultivos", icon: Sprout },
   { id: "/recommendations", label: "Recomendaciones", icon: Lightbulb },
-  { id: "/configuration", label: "Configuración", icon: Settings },
 ];
 
 export function Navbar() {
@@ -101,9 +100,23 @@ export function Navbar() {
             })}
           </div>
 
-          {/* User Menu */}
+          {/* User Menu + Iconos */}
           <div className="flex items-center gap-2 sm:gap-3">
             <NotificationBell />
+
+            <Link
+              href="/configuration"
+              className={`hidden sm:flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300 ${
+                pathname === "/configuration"
+                  ? "bg-oliveGreen text-offWhite shadow-md"
+                  : "text-oliveGreen/70 hover:bg-oliveGreen/10 hover:text-oliveGreen"
+              }`}
+              aria-label="Configuración"
+              title="Configuración"
+            >
+              <Settings className="w-5 h-5" />
+            </Link>
+
             <div className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-oliveGreen/10 to-wheatGold/10 rounded-full pl-2 pr-4 py-1 border border-oliveGreen/20">
               <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-oliveGreen to-wheatGold rounded-full flex items-center justify-center flex-shrink-0">
                 <User className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-offWhite" />
@@ -152,6 +165,23 @@ export function Navbar() {
                   </Link>
                 );
               })}
+
+              {/* Configuración en mobile menu */}
+              <Link
+                href="/configuration"
+                onClick={() => setIsMenuOpen(false)}
+                className={`flex items-center gap-3 w-full px-4 py-3 rounded-xl transition-all duration-300 ${
+                  pathname === "/configuration"
+                    ? "bg-oliveGreen text-offWhite shadow-md"
+                    : "text-charcoalGray/60 hover:bg-oliveGreen/10 hover:text-oliveGreen"
+                }`}
+              >
+                <Settings className="w-5 h-5" />
+                <span className="font-medium">Configuración</span>
+                {pathname === "/configuration" && (
+                  <div className="ml-auto w-1.5 h-1.5 bg-wheatGold rounded-full animate-pulse" />
+                )}
+              </Link>
             </div>
           </div>
         )}
