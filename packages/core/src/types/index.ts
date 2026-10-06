@@ -15,3 +15,4 @@ export * from "./auth.types";
 export * from "./iot.types";
 export * from "./eo.types";
 export * from "./operations.types";
+export * from "./kpi.types";
