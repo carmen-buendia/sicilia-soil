@@ -1,10 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import type {
-  DataPoint,
-  Statistics,
-} from "@sicilia-soil/core";
+import type { DataPoint, Statistics } from "@sicilia-soil/core";
 import { monitoringZones } from "@/lib/config/site.config";
 
 interface ZoneData {
@@ -56,7 +53,7 @@ const calculateStatistics = (data: DataPoint[]): Statistics => {
   };
 };
 
-export function useAnalysisData() {
+export function useHistoricalAnalysis() {
   const [zonesData, setZonesData] = useState<ZoneData[]>([]);
   const [statistics, setStatistics] = useState<Record<string, Statistics>>({});
   const [isLoading, setIsLoading] = useState(true);
