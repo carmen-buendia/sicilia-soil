@@ -7,7 +7,8 @@
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "test": "echo \"No tests yet\""
+    "test": "echo \"No tests yet\"",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "express": "^4.18.2",
