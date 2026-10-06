@@ -12,6 +12,7 @@ export * from "./copernicus.defaults";
 export * from "./recommendation.rules";
 export * from "./sensors.mock";
 export * from "./temperature.data";
+export * from "./light.data";
 
 // Humidity: exporta datos + helpers, no el tipo
 export {
