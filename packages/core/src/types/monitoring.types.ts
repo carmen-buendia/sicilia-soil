@@ -70,7 +70,13 @@ export interface SensorData {
   lastUpdate: string;
 }
 
-export interface SensorReading {
+/**
+ * Snapshot de una lectura en el mock de monitoring (/humidity, /ground-cover).
+ * NO es la SensorReading histórica (ver iot.types.ts).
+ *
+ * TODO(feat/db-crud): migrar a iot.SensorSnapshot + iot.SensorReading.
+ */
+export interface MonitoringSensorSnapshot {
   value: number;
   timestamp: Date;
   unit: string;
@@ -78,13 +84,21 @@ export interface SensorReading {
 }
 
 export interface ZoneSensors {
-  moisture: SensorReading;
-  temperature: SensorReading;
-  light: SensorReading;
-  wind?: SensorReading;
+  moisture: MonitoringSensorSnapshot;
+  temperature: MonitoringSensorSnapshot;
+  light: MonitoringSensorSnapshot;
+  wind?: MonitoringSensorSnapshot;
 }
 
-export interface Zone {
+/**
+ * Snapshot de sensores por zona — usado por las páginas de monitoring
+ * (/humidity, /ground-cover). NO es la Zone espacial del modelo real
+ * (ver spatial.types.ts → Zone).
+ *
+ * TODO(feat/db-crud): migrar a spatial.Zone + iot.SensorReading cuando
+ * el CRUD esté disponible.
+ */
+export interface MonitoredZone {
   id: string;
   name: string;
   type: string;
@@ -114,7 +128,7 @@ export type MetricType = "moisture" | "temperature" | "light";
 // ============================================
 
 export interface MonitoringState {
-  zones: Zone[];
+  zones: MonitoredZone[];
   selectedZone: string | null;
   sensorData: Record<string, SensorData>;
   alerts: Alert[];
