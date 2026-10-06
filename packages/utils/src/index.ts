@@ -4,10 +4,9 @@
 export * from "./formatters";
 export * from "./numberUtils";
 
-// Utilidades específicas por dominio (legacy pero en uso por /light, /temperature, /humidity)
+// Utilidades específicas por dominio (reservadas para widgets de light/temperature)
 export * from "./lightUtils";
 export * from "./temperatureUtils";
-export * from "./humidityUtils";
 
 // Motores
 export * from "./recommendation.engine";
