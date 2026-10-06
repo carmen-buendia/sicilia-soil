@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Capa base - estilos globales */
+@layer base {
+  body {
+    background-color: #fdfbf7;
+    color: #1a1a1a;
+  }
+}
+
+/* Capa de componentes - utilidades personalizadas */
+@layer components {
+  .btn-primary {
+    @apply bg-oliveGreen text-white px-4 py-2 rounded-lg hover:bg-oliveGreen/90 transition-all;
+  }
+
+  .card {
+    @apply bg-white rounded-xl p-6 shadow-sm border border-oliveGreen/15 hover:shadow-md transition-all;
+  }
+}
+
+/* Capa de utilidades */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.4s ease-out forwards;
+}

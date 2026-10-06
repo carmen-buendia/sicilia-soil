@@ -1,0 +1,57 @@
+{
+  "name": "web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Real-time monitoring system for syntropic permaculture in Sicily",
+  "author": "Carmen Buendía",
+  "keywords": [
+    "syntropic-permaculture",
+    "mycology",
+    "esparto",
+    "sicily",
+    "iot",
+    "soil-monitoring",
+    "agricultura-regenerativa"
+  ],
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@sicilia-soil/core": "workspace:*",
+    "@sicilia-soil/ui": "workspace:*",
+    "@sicilia-soil/utils": "workspace:*",
+    "highcharts": "^12.5.0",
+    "highcharts-react-official": "^3.2.3",
+    "leaflet": "^1.9.4",
+    "lucide-react": "^0.309.0",
+    "next": "^16.3.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-leaflet": "^5.0.0",
+    "socket.io-client": "^4.8.3"
+  },
+  "devDependencies": {
+    "@types/leaflet": "^1.9.22",
+    "@types/node": "^20.11.5",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.33",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.3.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/carmen-buendia/sicilia-soil-web.git"
+  },
+  "bugs": {
+    "url": "https://github.com/carmen-buendia/sicilia-soil-web/issues"
+  },
+  "homepage": "https://sicilia-soil-web.vercel.app"
+}
