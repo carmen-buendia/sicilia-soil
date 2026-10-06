@@ -5,7 +5,6 @@ import {
   Thermometer,
   Sun,
   Wind,
-  Leaf,
   Sprout,
   Scissors,
   Package,
@@ -15,25 +14,60 @@ import {
   calculateSymbiosisScore,
   getGroundCoverHealth,
 } from "@sicilia-soil/utils";
-import { SymbiosisCard } from "@/components/features/shared";
 import {
-  GROUND_COVER_INFO,
-  GROUND_COVER_MONITORING,
-  GROUND_COVER_HARVEST_CALENDAR,
-  GROUND_COVER_MYCORRHIZAL_SYMBIOSIS,
-  MONITORING_CHART_CONFIG,
-  type MonitoringKey,
-} from "@sicilia-soil/core";
+  SymbiosisCard,
+  SoilChart,
+  SOIL_COLORS,
+  CycleDiagram,
+  YearCycleChart,
+} from "@/components/features/shared";
+import { useEspartoData } from "@/hooks/useEspartoData";
+import type { MonitoringKey } from "@sicilia-soil/core";
+
+const KPI_ICONS: Record<string, any> = {
+  moisture: Droplets,
+  temperature: Thermometer,
+  light: Sun,
+  wind: Wind,
+};
+
+const KPI_COLORS: Record<string, string> = {
+  moisture: "text-blue-500",
+  temperature: "text-red-500",
+  light: "text-yellow-500",
+  wind: "text-gray-500",
+};
 
 export function EspartoTab() {
-  const health = getGroundCoverHealth(GROUND_COVER_MONITORING);
+  const {
+    kpis,
+    symbiosisInput,
+    info,
+    monitoring,
+    chartConfig,
+    yearCycle,
+    cycleStages,
+    cycleClosingNote,
+  } = useEspartoData();
+
+  const health = getGroundCoverHealth(monitoring);
+
   const symbiosis = calculateSymbiosisScore({
     espartoHealth: health.status === "Excelente" ? 92 : 70,
-    coverDensity: 78,
-    soilMoisture: 69,
-    myceliumActivity: 85,
-    fungalDiversity: 3,
-    cosPercent: 2.5,
+    ...symbiosisInput,
+  });
+
+  // Prepara las series de Highcharts desde monitoring
+  const monitoringKeys = Object.keys(monitoring) as MonitoringKey[];
+  const days = monitoring[monitoringKeys[0]].map((_, i) => `D${i + 1}`);
+
+  const chartSeries = monitoringKeys.map((key, i) => {
+    const cfg = chartConfig[key];
+    return {
+      name: cfg.label,
+      data: monitoring[key],
+      color: Object.values(SOIL_COLORS)[i % 8],
+    };
   });
 
   return (
@@ -46,9 +80,9 @@ export function EspartoTab() {
               🌾 El Tesoro Fibroso del Mediterráneo
             </h2>
             <p className="text-charcoalGray/80 mb-4">
-              El esparto <strong>({GROUND_COVER_INFO.scientificName})</strong>{" "}
-              es una planta milenaria que ha moldeado la cultura siciliana. Su
-              fibra, resistente y versátil, representa un modelo de{" "}
+              El esparto <strong>({info.scientificName})</strong> es una planta
+              milenaria que ha moldeado la cultura siciliana. Su fibra,
+              resistente y versátil, representa un modelo de{" "}
               <strong>agricultura regenerativa y sostenible</strong>.
             </p>
             <div className="flex flex-wrap gap-3 mt-4">
@@ -67,7 +101,7 @@ export function EspartoTab() {
             </div>
           </div>
           <div className="text-center">
-            <div className="text-8xl mb-2">{GROUND_COVER_INFO.icon}</div>
+            <div className="text-8xl mb-2">{info.icon}</div>
             <p className="text-sm text-oliveGreen/60">
               Símbolo de resistencia mediterránea
             </p>
@@ -85,9 +119,7 @@ export function EspartoTab() {
             <Sprout className="w-5 h-5 text-oliveGreen" />
             Historia y tradición
           </h3>
-          <p className="text-oliveGreen/70 leading-relaxed">
-            {GROUND_COVER_INFO.history}
-          </p>
+          <p className="text-oliveGreen/70 leading-relaxed">{info.history}</p>
         </div>
 
         <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-oliveGreen/15">
@@ -96,7 +128,7 @@ export function EspartoTab() {
             Beneficios
           </h3>
           <div className="grid grid-cols-2 gap-2">
-            {GROUND_COVER_INFO.benefits.map((benefit, i) => (
+            {info.benefits.map((benefit, i) => (
               <div
                 key={i}
                 className="flex items-center gap-2 text-sm text-oliveGreen/70"
@@ -114,7 +146,7 @@ export function EspartoTab() {
             Usos tradicionales y modernos
           </h3>
           <div className="grid grid-cols-2 gap-2">
-            {GROUND_COVER_INFO.uses.map((use, i) => (
+            {info.uses.map((use, i) => (
               <div
                 key={i}
                 className="flex items-center gap-2 text-sm text-oliveGreen/70"
@@ -146,162 +178,68 @@ export function EspartoTab() {
         </div>
       </div>
 
-      {/* Monitoring */}
+      {/* Monitoring KPIs */}
       <div className="space-y-6">
         <h3 className="text-xl font-bold text-charcoalGray">
           📊 Monitoreo del esparto
         </h3>
         <div className="grid md:grid-cols-4 gap-4">
-          {(
-            [
-              {
-                key: "moisture",
-                icon: Droplets,
-                color: "text-blue-500",
-                value: "69%",
-                note: "↑ Óptimo",
-                noteColor: "text-green-600",
-              },
-              {
-                key: "temperature",
-                icon: Thermometer,
-                color: "text-red-500",
-                value: "20°C",
-                note: "✓ Ideal",
-                noteColor: "text-green-600",
-              },
-              {
-                key: "light",
-                icon: Sun,
-                color: "text-yellow-500",
-                value: "64%",
-                note: "Buena exposición",
-                noteColor: "text-green-600",
-              },
-              {
-                key: "wind",
-                icon: Wind,
-                color: "text-gray-500",
-                value: "12 km/h",
-                note: "Moderado",
-                noteColor: "text-green-600",
-              },
-            ] as const
-          ).map((item) => {
-            const Icon = item.icon;
-            const cfg = MONITORING_CHART_CONFIG[item.key as MonitoringKey];
+          {kpis.map((kpi) => {
+            const Icon = KPI_ICONS[kpi.key];
+            const color = KPI_COLORS[kpi.key];
+            const cfg = chartConfig[kpi.key];
             return (
               <div
-                key={item.key}
+                key={kpi.key}
                 className="bg-white/50 backdrop-blur-sm rounded-xl p-4 text-center border border-oliveGreen/15"
               >
-                <Icon className={`w-8 h-8 ${item.color} mx-auto mb-2`} />
+                <Icon className={`w-8 h-8 ${color} mx-auto mb-2`} />
                 <p className="text-sm text-oliveGreen/60">{cfg.label} media</p>
                 <p className="text-2xl font-bold text-charcoalGray">
-                  {item.value}
+                  {kpi.value}
                 </p>
-                <p className={`text-xs ${item.noteColor}`}>{item.note}</p>
+                <p className={`text-xs ${kpi.noteColor}`}>{kpi.note}</p>
               </div>
             );
           })}
         </div>
 
+        {/* Evolución con Highcharts */}
         <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-oliveGreen/15">
           <h3 className="text-lg font-bold text-charcoalGray mb-4">
             Evolución de condiciones (últimos 14 días)
           </h3>
-          <div className="space-y-6">
-            {(Object.keys(GROUND_COVER_MONITORING) as MonitoringKey[]).map(
-              (key) => {
-                const values = GROUND_COVER_MONITORING[key];
-                const cfg = MONITORING_CHART_CONFIG[key];
-                return (
-                  <div key={key}>
-                    <div className="flex justify-between text-sm mb-1">
-                      <span>{cfg.label}</span>
-                      <span>
-                        {values[values.length - 1]}
-                        {cfg.unit}
-                      </span>
-                    </div>
-                    <div className="h-12 flex items-end gap-1">
-                      {values.map((value, idx) => (
-                        <div
-                          key={idx}
-                          className="flex-1 rounded-t transition-all hover:opacity-80"
-                          style={{
-                            height: `${(value / cfg.max) * 40}px`,
-                            backgroundColor: cfg.color,
-                            opacity: 0.3 + (idx / values.length) * 0.7,
-                          }}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                );
-              },
-            )}
-          </div>
+          <SoilChart
+            type="spline"
+            categories={days}
+            series={chartSeries}
+            yAxisLabel="Valor"
+            height={340}
+            legend
+          />
+          <p className="text-xs text-oliveGreen/60 mt-3">
+            Series temporales de humedad, temperatura, luz y viento. La red
+            micorrícica mantiene la actividad biológica incluso cuando bajan las
+            condiciones ambientales.
+          </p>
         </div>
       </div>
 
-      {/* Harvest Calendar */}
-      <div>
-        <h3 className="text-xl font-bold text-charcoalGray mb-4">
-          📅 Calendario de aprovechamiento
-        </h3>
-        <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-3">
-          {GROUND_COVER_HARVEST_CALENDAR.map((month) => (
-            <div
-              key={month.month}
-              className={`${month.color} rounded-xl p-4 border border-oliveGreen/15 hover:shadow-md transition-all`}
-            >
-              <p className="font-bold text-charcoalGray">{month.month}</p>
-              <p className="text-sm text-oliveGreen/70 mt-1">
-                {month.activity}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* Ciclo anual del sistema (reemplaza Calendario) */}
+      <YearCycleChart
+        months={yearCycle.months}
+        data={yearCycle.data}
+        legend={yearCycle.legend}
+        note={yearCycle.note}
+      />
 
-      {/* Symbiosis with mushrooms */}
-      <div>
-        <h3 className="text-xl font-bold text-charcoalGray mb-4">
-          🍄 Simbiosis esparto–micelio
-        </h3>
-        <div className="grid md:grid-cols-3 gap-6">
-          {GROUND_COVER_MYCORRHIZAL_SYMBIOSIS.map((sym, idx) => (
-            <div
-              key={idx}
-              className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-oliveGreen/15 hover:shadow-xl transition-all"
-            >
-              <div className="text-center mb-4">
-                <span className="text-5xl">{sym.icon}</span>
-                <h3 className="text-lg font-bold text-charcoalGray mt-2">
-                  {sym.mushroom}
-                </h3>
-              </div>
-              <p className="text-sm text-oliveGreen/70 text-center">
-                {sym.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="bg-gradient-to-r from-oliveGreen/10 to-wheatGold/10 rounded-2xl p-6 border border-oliveGreen/20">
-        <h3 className="text-lg font-bold text-charcoalGray mb-3">
-          🍄 + 🌾 = ♾️
-        </h3>
-        <p className="text-oliveGreen/70">
-          El esparto y los hongos forman un sistema simbiótico perfecto. Los
-          restos de esparto proporcionan el sustrato ideal para el cultivo de
-          setas, mientras que el micelio ayuda a descomponer la materia
-          orgánica, enriqueciendo el suelo y mejorando las condiciones para el
-          esparto.
-        </p>
-      </div>
+      {/* Ciclo regenerativo (reemplaza Simbiosis esparto-micelio) */}
+      <CycleDiagram
+        stages={cycleStages}
+        closingNote={cycleClosingNote}
+        title="Ciclo regenerativo del esparto"
+        subtitle="De la biomasa al bioindicador, pasando por la red micorrícica"
+      />
     </div>
   );
 }

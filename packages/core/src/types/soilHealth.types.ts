@@ -1,6 +1,16 @@
 // ============================================================================
-// Soil Health Types – T2 Module (Nutrient & Soil Health Management)
+// Soil Health Types – Monitoring of soil biology and mycorrhizal network
+// ----------------------------------------------------------------------------
+// NOTA: las setas son un bioindicador estacional de la salud fúngica.
+// El micelio trabaja todo el año. El objetivo principal es la regeneración
+// del suelo a través de la red micorrícica (AMF en la mayoría, ECM en pinos).
 // ============================================================================
+
+import type { MycorrhizaHostId, MycorrhizaType } from "./mycorrhiza.types";
+
+// ----------------------------------------------------------------------------
+// Time series
+// ----------------------------------------------------------------------------
 
 export interface TimeSeriesPoint {
   timestamp: string;
@@ -19,6 +29,15 @@ export interface MushroomOptimal {
   co2: [number, number];
 }
 
+// ----------------------------------------------------------------------------
+// Mushroom (bioindicador estacional)
+// ----------------------------------------------------------------------------
+
+/**
+ * Setas como bioindicador fúngico.
+ * El micelio (invisible) trabaja todo el año.
+ * Las setas (visibles) aparecen principalmente en otoño.
+ */
 export interface Mushroom {
   id: string;
   name: string;
@@ -28,23 +47,56 @@ export interface Mushroom {
   habitat: string;
   season: string[];
   isEndemic: boolean;
+  /** Rol en el sistema: bioindicador, cultivo secundario, o ambos */
+  role: "bioindicator" | "cultivation" | "both";
+  /** Tipo de micorriza asociada (AMF/ECM) */
+  mycorrhizaType: MycorrhizaType;
+  /** Host principal con el que se asocia */
+  hostId?: MycorrhizaHostId;
   data: MushroomData;
   optimal: MushroomOptimal;
 }
 
+// ----------------------------------------------------------------------------
+// Monitoring zone (antes CultivationZone)
+// ----------------------------------------------------------------------------
+
 export type MushroomStage = "growth" | "fruiting" | "harvest";
 export type MushroomStatus = "optimal" | "excellent" | "good" | "ready";
 
-export interface CultivationZone {
+/**
+ * Zona monitorizada del sistema.
+ * Puede ser un host micorrícico (olivo, esparto, pino, etc.) o una zona
+ * de fructificación de setas.
+ */
+export interface MonitoringZone {
   id: string;
+  /** Host micorrícico al que pertenece (opcional) */
+  hostId?: MycorrhizaHostId;
   name: string;
-  scientificName: string;
+  scientificName?: string;
   icon: string;
   location: string;
+  /** Tipo de micorriza dominante */
+  mycorrhizaType: MycorrhizaType;
+  /** Colonización micorrícica (%) */
+  colonisation: number;
+  /** Glomalina (mg/g) — solo AMF */
+  glomalin?: number;
+  /** Datos ambientales */
   humidity: number;
   temperature: number;
   co2: number;
-  stage: MushroomStage;
-  harvestIn: string;
+  /** Estado fenológico (solo si aplica a setas) */
+  stage?: MushroomStage;
+  /** Tiempo estimado hasta la próxima fructificación */
+  harvestIn?: string;
   status: MushroomStatus;
 }
+
+// ----------------------------------------------------------------------------
+// Alias retrocompatible (evita romper imports existentes)
+// ----------------------------------------------------------------------------
+
+/** @deprecated Usar MonitoringZone */
+export type CultivationZone = MonitoringZone;
