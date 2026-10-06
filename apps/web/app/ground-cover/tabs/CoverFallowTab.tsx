@@ -1,95 +1,19 @@
 "use client";
 
 import { RotateCcw, Leaf, TrendingUp, Droplets } from "lucide-react";
+import { SoilChart, SOIL_COLORS } from "@/components/features/shared";
+import { useCoverFallowData } from "@/hooks/useCoverFallowData";
 
-const COVER_KPIS = [
-  {
-    label: "Cobertura del suelo",
-    value: "78%",
-    note: "↑ Óptimo",
-    icon: Leaf,
-    color: "text-emerald-600",
-  },
-  {
-    label: "Biomasa aérea",
-    value: "2.4 t/ha",
-    note: "Estimada por NDVI",
-    icon: TrendingUp,
-    color: "text-oliveGreen",
-  },
-  {
-    label: "N fijado (leguminosas)",
-    value: "18 kg/ha",
-    note: "Trébol + veza",
-    icon: Leaf,
-    color: "text-green-600",
-  },
-  {
-    label: "Ahorro de agua",
-    value: "22%",
-    note: "vs. suelo desnudo",
-    icon: Droplets,
-    color: "text-blue-500",
-  },
-];
-
-const COVERS = [
-  {
-    name: "Trébol subterráneo",
-    icon: "🍀",
-    cover: 82,
-    biomass: "2.8",
-    n: "22",
-    season: "Otoño-invierno",
-    status: "Activo",
-  },
-  {
-    name: "Veza",
-    icon: "🌿",
-    cover: 76,
-    biomass: "2.5",
-    n: "20",
-    season: "Otoño-invierno",
-    status: "Activo",
-  },
-  {
-    name: "Avena",
-    icon: "🌾",
-    cover: 85,
-    biomass: "3.1",
-    n: "0",
-    season: "Otoño",
-    status: "Activo",
-  },
-  {
-    name: "Mostaza",
-    icon: "🌼",
-    cover: 68,
-    biomass: "2.0",
-    n: "0",
-    season: "Otoño",
-    status: "Terminando",
-  },
-];
-
-const FALLOW_KPIS = [
-  { label: "Duración", value: "6 meses", note: "rotación planificada" },
-  { label: "Humedad del suelo", value: "45%", note: "recuperando" },
-  { label: "Materia orgánica", value: "1.8%", note: "↑ 0.2 este ciclo" },
-  { label: "Próxima siembra", value: "Marzo", note: "cereal de primavera" },
-];
-
-const FALLOW_TIMELINE = [
-  { month: "Sep", stage: "Terminación de cereal", state: "done" },
-  { month: "Oct", stage: "Reposo inicial", state: "done" },
-  { month: "Nov", stage: "Recuperación de humedad", state: "active" },
-  { month: "Dic", stage: "Recuperación de nutrientes", state: "pending" },
-  { month: "Ene", stage: "Reposo profundo", state: "pending" },
-  { month: "Feb", stage: "Preparación siembra", state: "pending" },
-  { month: "Mar", stage: "Siembra de cereal", state: "pending" },
-];
+const ICON_MAP: Record<string, any> = {
+  leaf: Leaf,
+  "trending-up": TrendingUp,
+  droplet: Droplets,
+};
 
 export function CoverFallowTab() {
+  const { coverKpis, coverSpecies, fallowKpis, fallowTimeline } =
+    useCoverFallowData();
+
   return (
     <div className="space-y-8">
       {/* Cubiertas */}
@@ -100,8 +24,8 @@ export function CoverFallowTab() {
         </h3>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-          {COVER_KPIS.map((kpi) => {
-            const Icon = kpi.icon;
+          {coverKpis.map((kpi) => {
+            const Icon = ICON_MAP[kpi.icon] ?? Leaf;
             return (
               <div
                 key={kpi.label}
@@ -122,6 +46,36 @@ export function CoverFallowTab() {
           })}
         </div>
 
+        <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 border border-oliveGreen/15 mb-6">
+          <h4 className="font-bold text-charcoalGray mb-4">
+            Comparador de cubiertas
+          </h4>
+          <SoilChart
+            type="column"
+            categories={coverSpecies.map((c) => c.name)}
+            series={[
+              {
+                name: "Cobertura (%)",
+                data: coverSpecies.map((c) => c.cover),
+                color: SOIL_COLORS.olive,
+              },
+              {
+                name: "Biomasa (t/ha)",
+                data: coverSpecies.map((c) => c.biomass),
+                color: SOIL_COLORS.wheat,
+              },
+              {
+                name: "N fijado (kg/ha)",
+                data: coverSpecies.map((c) => c.n),
+                color: SOIL_COLORS.green,
+              },
+            ]}
+            yAxisLabel="Valor"
+            height={320}
+            legend
+          />
+        </div>
+
         <div className="bg-white/60 backdrop-blur-sm rounded-2xl border border-oliveGreen/15 overflow-hidden">
           <div className="grid grid-cols-6 gap-2 p-3 bg-oliveGreen/5 text-xs font-medium text-oliveGreen/70">
             <span>Especie</span>
@@ -131,9 +85,9 @@ export function CoverFallowTab() {
             <span>Temporada</span>
             <span>Estado</span>
           </div>
-          {COVERS.map((c) => (
+          {coverSpecies.map((c) => (
             <div
-              key={c.name}
+              key={c.id}
               className="grid grid-cols-6 gap-2 p-3 border-t border-oliveGreen/10 text-sm items-center"
             >
               <span className="flex items-center gap-2 font-medium text-charcoalGray">
@@ -166,7 +120,7 @@ export function CoverFallowTab() {
         </h3>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-          {FALLOW_KPIS.map((kpi) => (
+          {fallowKpis.map((kpi) => (
             <div
               key={kpi.label}
               className="bg-white/70 backdrop-blur-sm rounded-2xl p-5 border border-oliveGreen/15"
@@ -180,37 +134,27 @@ export function CoverFallowTab() {
           ))}
         </div>
 
-        {/* Timeline */}
         <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 border border-oliveGreen/15">
           <h4 className="font-bold text-charcoalGray mb-4">
             Rotación planificada
           </h4>
-          <div className="flex items-center gap-1">
-            {FALLOW_TIMELINE.map((step, idx) => (
-              <div
-                key={idx}
-                className="flex-1 flex flex-col items-center gap-2"
-              >
-                <div
-                  className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                    step.state === "done"
-                      ? "bg-oliveGreen text-white"
-                      : step.state === "active"
-                        ? "bg-wheatGold text-white animate-pulse"
-                        : "bg-oliveGreen/20 text-oliveGreen/60"
-                  }`}
-                >
-                  {step.state === "done" ? "✓" : idx + 1}
-                </div>
-                <span className="text-xs font-medium text-charcoalGray">
-                  {step.month}
-                </span>
-                <span className="text-xs text-oliveGreen/60 text-center leading-tight">
-                  {step.stage}
-                </span>
-              </div>
-            ))}
-          </div>
+          <SoilChart
+            type="bar"
+            categories={fallowTimeline.map((t) => t.month)}
+            series={[
+              {
+                name: "Estado del ciclo",
+                data: fallowTimeline.map((t) =>
+                  t.state === "done" ? 100 : t.state === "active" ? 60 : 20,
+                ),
+                color: SOIL_COLORS.olive,
+              },
+            ]}
+            yAxisLabel="Progreso"
+            yAxisUnit="%"
+            height={280}
+            legend={false}
+          />
         </div>
       </section>
 
