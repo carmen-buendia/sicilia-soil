@@ -13,3 +13,4 @@ export * from "./species.types";
 export * from "./spatial.types";
 export * from "./auth.types";
 export * from "./iot.types";
+export * from "./eo.types";
