@@ -14,6 +14,10 @@
       "default": "./src/*.ts"
     }
   },
+  "dependencies": {
+    "highcharts": "^12.5.0",
+    "highcharts-react-official": "^3.2.3"
+  },
   "peerDependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
