@@ -13,7 +13,6 @@ import { Button } from "@sicilia-soil/ui";
 import {
   AgronomicTab,
   EnvironmentalTab,
-  useAnalysisData,
 } from "@/components/features/analysis/components";
 import {
   heavyMetals,
@@ -26,6 +25,7 @@ import {
   type WaterQuality,
   type SoilQuality,
 } from "@/lib/data/ambientalData";
+import { useHistoricalAnalysis } from "@/components/features/analysis/hooks/useHistoricalAnalysis";
 
 export default function AnalisiPage() {
   const [selectedZones, setSelectedZones] = useState<string[]>([
@@ -64,7 +64,7 @@ export default function AnalisiPage() {
     return () => clearInterval(interval);
   }, []);
 
-  const { zonesData, statistics, isLoading } = useAnalysisData();
+  const { zonesData, statistics, isLoading } = useHistoricalAnalysis();
 
   const handleExport = () => {
     const exportData = {

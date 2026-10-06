@@ -1,7 +1,8 @@
 "use client";
 
-import { ArrowLeftRight, Sparkles, Info } from "lucide-react";
+import { ArrowLeftRight, Info } from "lucide-react";
 import type { SymbiosisResult } from "@sicilia-soil/core";
+import { SoilChart, SOIL_COLORS } from "@/components/features/shared";
 
 interface SymbiosisCardProps {
   result: SymbiosisResult;
@@ -15,11 +16,11 @@ const CATEGORY_STYLES: Record<SymbiosisResult["category"], string> = {
   Ausente: "bg-red-50 border-red-200 text-red-800",
 };
 
-const BAR_COLORS: Record<SymbiosisResult["category"], string> = {
-  Establecida: "#10b981",
-  "En desarrollo": "#eab308",
-  Inicial: "#f97316",
-  Ausente: "#ef4444",
+const CATEGORY_COLOR: Record<SymbiosisResult["category"], string> = {
+  Establecida: SOIL_COLORS.green,
+  "En desarrollo": SOIL_COLORS.amber,
+  Inicial: SOIL_COLORS.orange,
+  Ausente: SOIL_COLORS.red,
 };
 
 export function SymbiosisCard({
@@ -27,7 +28,7 @@ export function SymbiosisCard({
   variant = "full",
 }: SymbiosisCardProps) {
   const style = CATEGORY_STYLES[result.category];
-  const barColor = BAR_COLORS[result.category];
+  const barColor = CATEGORY_COLOR[result.category];
 
   // ---- Compact variant ----
   if (variant === "compact") {
@@ -36,7 +37,7 @@ export function SymbiosisCard({
         <div className="flex items-center gap-2 mb-1">
           <ArrowLeftRight className="w-4 h-4" />
           <span className="text-xs font-semibold uppercase tracking-wider">
-            Simbiosis esparto ↔ micelio
+            Simbiosis planta ↔ micelio
           </span>
         </div>
         <p className="text-2xl font-bold">{result.score}/100</p>
@@ -45,6 +46,36 @@ export function SymbiosisCard({
     );
   }
 
+  // ---- Datos para el radar de indicadores ----
+  const radarData = [
+    result.indicators.substrateFlow,
+    result.indicators.nutrientFlow,
+    result.indicators.carbonFlow,
+    result.indicators.structuralStability,
+  ];
+
+  // ---- Datos para el bar de hosts ----
+  const hostsAmf = result.hosts.filter((h) => h.type === "AMF");
+  const hostsEcm = result.hosts.filter((h) => h.type === "ECM");
+  const allHosts = [...hostsAmf, ...hostsEcm];
+
+  const hostSeries = [
+    {
+      name: "AMF",
+      data: allHosts.map((h) =>
+        h.type === "AMF" ? h.colonisation : null,
+      ) as any[],
+      color: SOIL_COLORS.olive,
+    },
+    {
+      name: "ECM",
+      data: allHosts.map((h) =>
+        h.type === "ECM" ? h.colonisation : null,
+      ) as any[],
+      color: SOIL_COLORS.amber,
+    },
+  ];
+
   // ---- Full variant ----
   return (
     <div className={`rounded-2xl p-6 border shadow-sm ${style}`}>
@@ -52,10 +83,10 @@ export function SymbiosisCard({
       <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
         <div className="flex items-center gap-2">
           <ArrowLeftRight className="w-5 h-5" />
-          <h3 className="text-lg font-bold">Simbiosis esparto ↔ micelio</h3>
+          <h3 className="text-lg font-bold">Simbiosis planta ↔ micelio</h3>
         </div>
         <span className="text-xs font-medium bg-white/60 px-3 py-1 rounded-full">
-          Indicador integrado T2+T3
+          Ciclo regenerativo
         </span>
       </div>
 
@@ -67,81 +98,116 @@ export function SymbiosisCard({
           <p className="text-[10px] opacity-60 mt-1">{result.category}</p>
         </div>
         <div className="bg-white/70 rounded-lg p-3">
-          <p className="text-xs opacity-70 mb-1">Esparto → Micelio</p>
-          <p className="text-2xl font-bold">
-            {result.indicators.espartoToMycelium}
-          </p>
-          <p className="text-[10px] opacity-60 mt-1">Aporte de sustrato</p>
+          <p className="text-xs opacity-70 mb-1">Red AMF</p>
+          <p className="text-2xl font-bold">{result.networks.amf}</p>
+          <p className="text-[10px] opacity-60 mt-1">Arbuscular</p>
         </div>
         <div className="bg-white/70 rounded-lg p-3">
-          <p className="text-xs opacity-70 mb-1">Micelio → Esparto</p>
-          <p className="text-2xl font-bold">
-            {result.indicators.myceliumToEsparto}
-          </p>
-          <p className="text-[10px] opacity-60 mt-1">Agua + nutrientes</p>
+          <p className="text-xs opacity-70 mb-1">Red ECM</p>
+          <p className="text-2xl font-bold">{result.networks.ecm}</p>
+          <p className="text-[10px] opacity-60 mt-1">Pinos</p>
         </div>
         <div className="bg-white/70 rounded-lg p-3">
-          <p className="text-xs opacity-70 mb-1">Captura C</p>
+          <p className="text-xs opacity-70 mb-1">Carbono</p>
           <p className="text-2xl font-bold">{result.indicators.carbonFlow}</p>
-          <p className="text-[10px] opacity-60 mt-1">COS del ciclo</p>
+          <p className="text-[10px] opacity-60 mt-1">Glomalina + COS</p>
         </div>
       </div>
 
-      {/* Progress bars */}
-      <div className="space-y-2 mb-4">
-        <ProgressBar
-          label="Flujo esparto → micelio"
-          value={result.indicators.espartoToMycelium}
-          color={barColor}
+      {/* Radar de indicadores con Highcharts */}
+      <div className="bg-white/40 rounded-xl p-4 mb-4">
+        <p className="text-xs font-semibold uppercase tracking-wider mb-2 opacity-70">
+          Indicadores del ciclo
+        </p>
+        <SoilChart
+          type="radar"
+          categories={["Sustrato", "Retorno", "Carbono", "Estructura"]}
+          series={[
+            {
+              name: "Red actual",
+              data: radarData,
+              color: barColor,
+            },
+          ]}
+          yAxisMax={100}
+          height={300}
+          legend={false}
         />
-        <ProgressBar
-          label="Flujo micelio → esparto"
-          value={result.indicators.myceliumToEsparto}
-          color={barColor}
-        />
-        <ProgressBar
-          label="Captura de carbono"
-          value={result.indicators.carbonFlow}
-          color={barColor}
-        />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-3 text-xs">
+          <div className="text-center">
+            <p className="opacity-60">Sustrato</p>
+            <p className="font-bold">{result.indicators.substrateFlow}%</p>
+          </div>
+          <div className="text-center">
+            <p className="opacity-60">Retorno</p>
+            <p className="font-bold">{result.indicators.nutrientFlow}%</p>
+          </div>
+          <div className="text-center">
+            <p className="opacity-60">Carbono</p>
+            <p className="font-bold">{result.indicators.carbonFlow}%</p>
+          </div>
+          <div className="text-center">
+            <p className="opacity-60">Estructura</p>
+            <p className="font-bold">
+              {result.indicators.structuralStability}%
+            </p>
+          </div>
+        </div>
       </div>
+
+      {/* Bar chart de hosts con Highcharts */}
+      {allHosts.length > 0 && (
+        <div className="bg-white/40 rounded-xl p-4 mb-4">
+          <p className="text-xs font-semibold uppercase tracking-wider mb-2 opacity-70">
+            Colonización por huésped
+          </p>
+          <SoilChart
+            type="bar"
+            categories={allHosts.map((h) => h.name)}
+            series={hostSeries}
+            yAxisLabel="Colonización"
+            yAxisUnit="%"
+            yAxisMax={100}
+            height={Math.max(220, allHosts.length * 34)}
+            legend
+          />
+          <div className="flex items-center gap-4 mt-3 text-xs opacity-70">
+            <span className="flex items-center gap-1">
+              <span
+                className="w-2.5 h-2.5 rounded-full"
+                style={{ background: SOIL_COLORS.olive }}
+              />
+              AMF · Arbuscular
+            </span>
+            <span className="flex items-center gap-1">
+              <span
+                className="w-2.5 h-2.5 rounded-full"
+                style={{ background: SOIL_COLORS.amber }}
+              />
+              ECM · Ectomicorrícica
+            </span>
+          </div>
+        </div>
+      )}
 
       {/* Interpretation */}
-      <div className="flex items-start gap-2 bg-white/50 rounded-lg p-3">
+      <div className="flex items-start gap-2 bg-white/50 rounded-lg p-3 mb-3">
         <Info className="w-4 h-4 flex-shrink-0 mt-0.5" />
         <p className="text-sm leading-relaxed">{result.interpretation}</p>
+      </div>
+
+      {/* Mushroom note */}
+      <div className="flex items-start gap-2 bg-white/40 rounded-lg p-3 border border-white/60">
+        <span className="text-base flex-shrink-0">🍄</span>
+        <p className="text-xs leading-relaxed italic opacity-80">
+          {result.mushroomNote}
+        </p>
       </div>
 
       {/* Footer */}
       <p className="text-[10px] opacity-50 mt-3 text-right">
         Actualizado: {new Date(result.timestamp).toLocaleDateString("es-ES")}
       </p>
-    </div>
-  );
-}
-
-// ---- Progress bar helper ----
-function ProgressBar({
-  label,
-  value,
-  color,
-}: {
-  label: string;
-  value: number;
-  color: string;
-}) {
-  return (
-    <div>
-      <div className="flex justify-between text-xs mb-1">
-        <span className="opacity-70">{label}</span>
-        <span className="font-medium">{value}%</span>
-      </div>
-      <div className="w-full h-1.5 bg-white/50 rounded-full overflow-hidden">
-        <div
-          className="h-full rounded-full transition-all"
-          style={{ width: `${value}%`, background: color }}
-        />
-      </div>
     </div>
   );
 }

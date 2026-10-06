@@ -1,64 +1,17 @@
 "use client";
 
-import {
-  Droplets,
-  Thermometer,
-  Sun,
-  Wind,
-  Wheat,
-  TrendingUp,
-  BarChart3,
-} from "lucide-react";
-
-const CEREAL_KPIS = [
-  {
-    label: "NDVI actual",
-    value: "0.58",
-    note: "Crecimiento vegetativo",
-    color: "text-emerald-600",
-  },
-  {
-    label: "Humedad",
-    value: "58%",
-    note: "Óptimo 60-70%",
-    color: "text-blue-500",
-  },
-  {
-    label: "Temperatura",
-    value: "24°C",
-    note: "✓ Ideal",
-    color: "text-red-500",
-  },
-  {
-    label: "Colonización micorrícica",
-    value: "30%",
-    note: "vs. esparto: 45%",
-    color: "text-amber-600",
-  },
-];
-
-const GROWTH_DATA = [
-  { week: "S1", ndvi: 0.12, moisture: 68 },
-  { week: "S2", ndvi: 0.21, moisture: 66 },
-  { week: "S3", ndvi: 0.34, moisture: 64 },
-  { week: "S4", ndvi: 0.45, moisture: 62 },
-  { week: "S5", ndvi: 0.52, moisture: 60 },
-  { week: "S6", ndvi: 0.58, moisture: 58 },
-];
-
-const SERBIA_COMPARISON = [
-  { metric: "NDVI", sicily: 0.58, serbia: 0.71, unit: "" },
-  { metric: "Humedad", sicily: 58, serbia: 48, unit: "%" },
-  { metric: "Colonización", sicily: 30, serbia: 28, unit: "%" },
-  { metric: "SHI", sicily: 62, serbia: 68, unit: "/100" },
-];
+import { Wheat, TrendingUp, BarChart3 } from "lucide-react";
+import { SoilChart, SOIL_COLORS } from "@/components/features/shared";
+import { useCerealData } from "@/hooks/useCerealData";
 
 export function CerealTab() {
+  const { kpis, growth, comparison, plotInfo } = useCerealData();
+
   return (
     <div className="space-y-8">
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {CEREAL_KPIS.map((kpi) => (
+        {kpis.map((kpi) => (
           <div
             key={kpi.label}
             className="bg-white/70 backdrop-blur-sm rounded-2xl p-5 border border-oliveGreen/15"
@@ -78,114 +31,79 @@ export function CerealTab() {
           </div>
           <div className="flex-1">
             <h3 className="text-xl font-bold text-charcoalGray mb-1">
-              Parcela de Cereal
+              {plotInfo.name}
             </h3>
-            <p className="text-sm text-oliveGreen/70 mb-3">
-              Validación de cereal mediterráneo en clima Csa · comparación
-              directa con Serbia
-            </p>
+            <p className="text-sm text-oliveGreen/70 mb-3">{plotInfo.role}</p>
             <div className="flex flex-wrap gap-2">
               <span className="px-3 py-1 bg-white/70 rounded-full text-xs">
-                📐 40–50 m²
+                📐 {plotInfo.area}
               </span>
               <span className="px-3 py-1 bg-white/70 rounded-full text-xs">
-                🌱 Trigo · Cebada · Avena
+                🌱 {plotInfo.crops.join(" · ")}
               </span>
               <span className="px-3 py-1 bg-white/70 rounded-full text-xs font-medium text-amber-700">
-                ⏱ Crecimiento vegetativo
+                ⏱ {plotInfo.stage}
               </span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Curva de crecimiento */}
+      {/* Evolución NDVI + humedad */}
       <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 border border-oliveGreen/15">
         <h3 className="text-lg font-bold text-charcoalGray mb-4 flex items-center gap-2">
           <TrendingUp className="w-5 h-5 text-oliveGreen" />
-          Evolución NDVI y humedad (6 semanas)
+          Evolución NDVI y humedad
         </h3>
-        <div className="space-y-4">
-          {GROWTH_DATA.map((d) => (
-            <div key={d.week} className="flex items-center gap-4">
-              <span className="text-xs text-oliveGreen/60 w-8">{d.week}</span>
-              <div className="flex-1 space-y-1">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-emerald-600 w-12">NDVI</span>
-                  <div className="flex-1 h-3 bg-oliveGreen/10 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-emerald-500 rounded-full"
-                      style={{ width: `${(d.ndvi / 0.8) * 100}%` }}
-                    />
-                  </div>
-                  <span className="text-xs font-medium text-charcoalGray w-10 text-right">
-                    {d.ndvi}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-blue-600 w-12">Humedad</span>
-                  <div className="flex-1 h-3 bg-oliveGreen/10 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-blue-500 rounded-full"
-                      style={{ width: `${d.moisture}%` }}
-                    />
-                  </div>
-                  <span className="text-xs font-medium text-charcoalGray w-10 text-right">
-                    {d.moisture}%
-                  </span>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+        <SoilChart
+          type="spline"
+          categories={growth.map((g) => g.week)}
+          series={[
+            {
+              name: "NDVI",
+              data: growth.map((g) => g.ndvi),
+              color: SOIL_COLORS.green,
+              yAxis: 0,
+            },
+            {
+              name: "Humedad",
+              data: growth.map((g) => g.moisture),
+              color: SOIL_COLORS.blue,
+              yAxis: 1,
+            },
+          ]}
+          yAxisLabel="NDVI"
+          secondaryYAxis={{ label: "Humedad", unit: "%", opposite: true }}
+          height={320}
+          legend
+        />
       </div>
 
-      {/* Comparación con Serbia */}
+      {/* Comparación cereal vs esparto */}
       <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 border border-oliveGreen/15">
         <h3 className="text-lg font-bold text-charcoalGray mb-4 flex items-center gap-2">
           <BarChart3 className="w-5 h-5 text-oliveGreen" />
-          Validación cruzada: Sicilia ↔ Serbia
+          Comparación interna: Cereal vs Esparto
         </h3>
-        <div className="space-y-3">
-          {SERBIA_COMPARISON.map((row) => (
-            <div key={row.metric}>
-              <div className="flex justify-between text-sm mb-1">
-                <span className="text-oliveGreen/70">{row.metric}</span>
-                <span className="text-xs text-oliveGreen/60">
-                  Sicilia {row.sicily}
-                  {row.unit} · Serbia {row.serbia}
-                  {row.unit}
-                </span>
-              </div>
-              <div className="flex gap-2">
-                <div className="flex-1 h-2 bg-oliveGreen/10 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-amber-500 rounded-full"
-                    style={{
-                      width: `${(row.sicily / (Math.max(row.sicily, row.serbia) * 1.2)) * 100}%`,
-                    }}
-                  />
-                </div>
-                <div className="flex-1 h-2 bg-oliveGreen/10 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-blue-500 rounded-full"
-                    style={{
-                      width: `${(row.serbia / (Math.max(row.sicily, row.serbia) * 1.2)) * 100}%`,
-                    }}
-                  />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="mt-4 flex items-center gap-4 text-xs text-oliveGreen/60">
-          <span className="flex items-center gap-1">
-            <span className="w-3 h-3 bg-amber-500 rounded-full" /> Sicilia (Csa)
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-3 h-3 bg-blue-500 rounded-full" /> Serbia (Dfb)
-          </span>
-        </div>
+        <SoilChart
+          type="column"
+          categories={comparison.map((c) => c.metric)}
+          series={[
+            {
+              name: "Cereal",
+              data: comparison.map((c) => c.cereal),
+              color: SOIL_COLORS.wheat,
+            },
+            {
+              name: "Esparto",
+              data: comparison.map((c) => c.esparto),
+              color: SOIL_COLORS.olive,
+            },
+          ]}
+          yAxisLabel="Valor"
+          height={300}
+          legend
+        />
       </div>
 
       {/* Recomendaciones */}
@@ -204,8 +122,8 @@ export function CerealTab() {
             🍄 Colonización micorrícica al 30%. Aplicar inóculo tras la cosecha.
           </li>
           <li>
-            📊 Comparación con Serbia: SHI 62 vs. 68. Ajustar manejo de
-            cubierta.
+            🌾 Tras la cosecha, sembrar cubierta de trébol o veza para mantener
+            la red micorrícica activa.
           </li>
         </ul>
       </div>
