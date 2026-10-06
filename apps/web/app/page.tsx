@@ -17,7 +17,7 @@ import {
 import { StatsCard } from "@/components/features/dashboard/components/StatsCards";
 import { ZoneCard } from "@/components/features/dashboard/components/ZoneCards";
 import { ServerStatus } from "@/components/features/dashboard/components/ServerStatus";
-import { CopernicusMapMini } from "@/components/features/analysis/components/CopernicusMapMini";
+import { CopernicusMapMini } from "@/components/features/copernicus/components";
 import { useRecommendations } from "@/hooks/useRecommendations";
 import { useDashboardData } from "@/hooks/useDashboardData";
 import type { RecommendationPriority } from "@sicilia-soil/core";
