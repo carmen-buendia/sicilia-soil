@@ -1,7 +1,19 @@
 "use client";
 
-import { Fragment, useEffect, useMemo, useState } from "react";
-import type { LatLngExpression, LatLngBoundsExpression } from "leaflet";
+import {
+  Fragment,
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import type {
+  LatLngExpression,
+  LatLngBoundsExpression,
+  DivIcon,
+} from "leaflet";
 import { Satellite, Layers, MapPin, Maximize2 } from "lucide-react";
 import { useMap } from "react-leaflet";
 import {
@@ -36,27 +48,66 @@ const Popup = dynamic(() => import("react-leaflet").then((mod) => mod.Popup), {
 });
 
 /**
- * Encaja el mapa en los límites de todas las parcelas al cargar
- * y cuando cambian las parcelas.
+ * Crea el icono de marca de Sicilia Soil (DivIcon, sin PNG externo).
+ * Debe llamarse solo en cliente, tras cargar leaflet dinámicamente.
+ *
+ * Por qué DivIcon y no PNG:
+ *   Next.js/Turbopack rompen las rutas relativas a los PNGs por defecto
+ *   de Leaflet. Un DivIcon (HTML+CSS inline) es inmune a ese problema,
+ *   coincide con la paleta de marca y no depende de unpkg.
  */
-function FitToPlots({
-  plots,
-}: {
-  plots: { coordinates: [number, number][] }[];
-}) {
+function createFarmMarkerIcon(L: typeof import("leaflet")): DivIcon {
+  return L.divIcon({
+    className: "sicilia-soil-marker",
+    html: `
+      <div style="
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: #8B9D6B;
+        border: 3px solid #ffffff;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.35);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        line-height: 1;
+      ">🌱</div>
+    `,
+    iconSize: [34, 34],
+    iconAnchor: [17, 17],
+    popupAnchor: [0, -17],
+  });
+}
+
+/**
+ * Encaja el mapa en los límites de todas las parcelas al cargar
+ * y cuando cambian. Expone `fit()` vía ref para el botón "centrar".
+ */
+const FitToPlots = forwardRef<
+  { fit: () => void },
+  { plots: { coordinates: [number, number][] }[] }
+>(({ plots }, ref) => {
   const map = useMap();
 
-  useEffect(() => {
+  const fit = () => {
     if (!plots.length) return;
     const bounds = plots.flatMap(
       (p) => p.coordinates,
     ) as LatLngBoundsExpression;
     map.fitBounds(bounds, { padding: [40, 40], maxZoom: 21 });
+  };
+
+  useImperativeHandle(ref, () => ({ fit }));
+
+  useEffect(() => {
+    fit();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [plots.length]);
 
   return null;
-}
+});
+FitToPlots.displayName = "FitToPlots";
 
 export function CopernicusMap({
   plots = FARM_BOUNDARY,
@@ -67,10 +118,16 @@ export function CopernicusMap({
 }: CopernicusMapProps) {
   const [activeLayer, setActiveLayer] = useState<CopernicusLayer>(initialLayer);
   const [isMounted, setIsMounted] = useState(false);
+  const [markerIcon, setMarkerIcon] = useState<DivIcon | null>(null);
+
+  const fitRef = useRef<{ fit: () => void }>(null);
 
   useEffect(() => {
     import("leaflet/dist/leaflet.css");
-    setIsMounted(true);
+    import("leaflet").then((mod) => {
+      setMarkerIcon(createFarmMarkerIcon(mod));
+      setIsMounted(true);
+    });
   }, []);
 
   const layer = COPERNICUS_LAYER_CONFIG[activeLayer];
@@ -164,44 +221,46 @@ export function CopernicusMap({
                   weight: 3,
                 }}
               />
-              <Marker position={plot.center as LatLngExpression}>
-                <Popup>
-                  <div className="text-xs">
-                    <strong className="text-charcoalGray">{plot.name}</strong>
-                    {plot.indices && (
-                      <ul className="mt-2 space-y-0.5 text-oliveGreen/80">
-                        {plot.indices.ndvi !== undefined && (
-                          <li>NDVI: {plot.indices.ndvi.toFixed(2)}</li>
-                        )}
-                        {plot.indices.ndwi !== undefined && (
-                          <li>NDWI: {plot.indices.ndwi.toFixed(2)}</li>
-                        )}
-                        {plot.indices.ssm !== undefined && (
-                          <li>SSM: {plot.indices.ssm}%</li>
-                        )}
-                        {plot.indices.lst !== undefined && (
-                          <li>LST: {plot.indices.lst}°C</li>
-                        )}
-                      </ul>
-                    )}
-                  </div>
-                </Popup>
-              </Marker>
+              {markerIcon && (
+                <Marker
+                  position={plot.center as LatLngExpression}
+                  icon={markerIcon}
+                >
+                  <Popup>
+                    <div className="text-xs">
+                      <strong className="text-charcoalGray">{plot.name}</strong>
+                      {plot.indices && (
+                        <ul className="mt-2 space-y-0.5 text-oliveGreen/80">
+                          {plot.indices.ndvi !== undefined && (
+                            <li>NDVI: {plot.indices.ndvi.toFixed(2)}</li>
+                          )}
+                          {plot.indices.ndwi !== undefined && (
+                            <li>NDWI: {plot.indices.ndwi.toFixed(2)}</li>
+                          )}
+                          {plot.indices.ssm !== undefined && (
+                            <li>SSM: {plot.indices.ssm}%</li>
+                          )}
+                          {plot.indices.lst !== undefined && (
+                            <li>LST: {plot.indices.lst}°C</li>
+                          )}
+                        </ul>
+                      )}
+                    </div>
+                  </Popup>
+                </Marker>
+              )}
             </Fragment>
           ))}
 
-          {/* Encaja automáticamente en las parcelas */}
-          <FitToPlots plots={plots} />
+          {/* Encaja automáticamente + expone fit() vía ref */}
+          <FitToPlots ref={fitRef} plots={plots} />
         </MapContainer>
 
-        {/* Botón "fit to farm" */}
+        {/* Botón "fit to farm" — sin recargar la página */}
         <button
           type="button"
           className="absolute top-3 right-3 z-[400] bg-white/90 backdrop-blur-sm border border-blue-100 rounded-md p-1.5 shadow-sm hover:bg-white"
-          onClick={() => {
-            // El FitToPlots se dispara al montar; aquí forzamos recarga
-            window.location.reload();
-          }}
+          onClick={() => fitRef.current?.fit()}
           title="Centrar en la finca"
         >
           <Maximize2 className="w-4 h-4 text-blue-600" />
