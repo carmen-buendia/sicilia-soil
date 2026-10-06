@@ -142,5 +142,4 @@ export const COPERNICUS_LAYER_CONFIG: Record<CopernicusLayer, LayerConfig> = {
 // Demo Constants
 // ============================================================================
 
-export const DEFAULT_PLOT_ID = "farm";
 export const DEFAULT_PLOT_NAME = "Sicilia Soil — Assoro";
