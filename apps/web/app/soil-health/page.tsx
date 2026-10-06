@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import {
-  ArrowLeft,
   Droplets,
   Thermometer,
   Wind,
@@ -10,6 +9,8 @@ import {
   MapPin,
   Leaf,
   Info,
+  TreeDeciduous,
+  Wheat,
 } from "lucide-react";
 import { calculateSymbiosisScore } from "@sicilia-soil/utils";
 import { SymbiosisCard } from "@/components/features/shared";
@@ -19,7 +20,7 @@ import { MushroomChip } from "./components/MushroomChip";
 import { MushroomCard } from "@/components/features/soil-health";
 import {
   MUSHROOMS,
-  CULTIVATION_ZONES,
+  MONITORING_ZONES,
   DEFAULT_MUSHROOM_ID,
 } from "@sicilia-soil/core";
 
@@ -33,9 +34,14 @@ export default function SoilHealthPage() {
     espartoHealth: 92,
     coverDensity: 78,
     soilMoisture: 69,
-    myceliumActivity: 85,
-    fungalDiversity: 3,
+    mycorrhizalColonisation: 45,
+    glomalin: 2.1,
+    fungalDiversity: 4,
+    soilRespiration: 3.2,
     cosPercent: 2.5,
+    aggregateStability: 34,
+    mushroomOccurrence: 2,
+    mushroomSeason: "otono",
   });
 
   return (
@@ -51,73 +57,98 @@ export default function SoilHealthPage() {
               Salud Biológica del Suelo
             </h1>
             <span className="text-xs bg-oliveGreen/15 text-oliveGreen border border-oliveGreen/20 px-3 py-1 rounded-full font-medium">
-              Salud biológica del suelo
+              Red micorrícica
             </span>
           </div>
           <p className="text-oliveGreen/70">
-            Monitorización de actividad microbiológica, COS y nutrientes
+            Redes AMF y ECM, glomalina y bioindicadores estacionales
           </p>
         </div>
 
         {/* Hero */}
         <div className="bg-gradient-to-r from-oliveGreen/10 to-wheatGold/10 rounded-2xl p-6 md:p-8 my-12 border border-oliveGreen/20">
           <h2 className="text-2xl font-bold text-charcoalGray mb-3">
-            🍄 Salud Biológica del Suelo
+            La red que trabaja todo el año
           </h2>
           <p className="text-charcoalGray/80 mb-4">
-            La actividad microbiológica del suelo es el{" "}
-            <strong>indicador clave</strong> de su salud. Los hongos actúan como
-            la <strong>red de internet de la naturaleza</strong>, conectando
-            plantas, descomponiendo materia orgánica y creando suelos vivos. En
-            Sicilia, especies endémicas como el Cardoncello di Nebrodi son clave
-            para nuestros ecosistemas.
+            La <strong>red micorrícica</strong> conecta las raíces de olivos,
+            almendros, esparto, cereal y cubiertas. Trabaja{" "}
+            <strong>365 días al año</strong>: capta agua y nutrientes para las
+            plantas, recibe azúcares a cambio, y produce{" "}
+            <strong>glomalina</strong>, la proteína que estructura el suelo y
+            fija carbono. Las <strong>setas</strong> son la parte visible de esa
+            red y aparecen principalmente en otoño — un{" "}
+            <strong>bioindicador estacional</strong> de que el sistema está
+            sano.
           </p>
           <div className="flex flex-wrap gap-3 mt-4">
             <span className="px-3 py-1 bg-white/50 rounded-full text-sm">
-              🔬 Micorrizas
+              🔬 AMF en la mayoría de cultivos
             </span>
             <span className="px-3 py-1 bg-white/50 rounded-full text-sm">
-              🌍 Endemismo siciliano
+              🌲 ECM en los dos pinos
             </span>
             <span className="px-3 py-1 bg-white/50 rounded-full text-sm">
-              ♻️ Descomposición
+              ♻️ Glomalina y estructura
             </span>
             <span className="px-3 py-1 bg-white/50 rounded-full text-sm">
-              🍽️ Gastronomía
+              🍄 Setas: bioindicador
             </span>
           </div>
         </div>
+
         {/* Symbiosis Card */}
         <div className="mb-8">
           <SymbiosisCard result={symbiosis} />
         </div>
-        {/* Zonas de cultivo activas */}
+
+        {/* Hosts micorrícicos monitorizados */}
         <section className="mb-12">
-          <h2 className="text-xl font-bold text-charcoalGray mb-4 flex items-center gap-2">
-            🌱 Zonas de cultivo activas
-          </h2>
-          <div className="grid md:grid-cols-3 gap-6">
-            {CULTIVATION_ZONES.map((zone) => (
+          <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+            <h2 className="text-xl font-bold text-charcoalGray flex items-center gap-2">
+              🌱 Redes activas del sistema
+            </h2>
+            <span className="text-xs text-oliveGreen/60">
+              {MONITORING_ZONES.length} hosts monitorizados
+            </span>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {MONITORING_ZONES.map((zone) => (
               <MushroomCard
                 key={zone.id}
-                mushroom={zone}
+                zone={zone}
                 onViewDetails={(id: string) => console.log("Ver detalles:", id)}
               />
             ))}
           </div>
         </section>
 
-        {/* Selector de setas */}
-        <div className="flex flex-wrap gap-3 mb-8">
-          {MUSHROOMS.map((m) => (
-            <MushroomChip
-              key={m.id}
-              mushroom={m}
-              active={selectedMushroom === m.id}
-              onClick={() => setSelectedMushroom(m.id)}
-            />
-          ))}
-        </div>
+        {/* Selector de setas (bioindicador estacional) */}
+        <section className="mb-8">
+          <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+            <h2 className="text-xl font-bold text-charcoalGray flex items-center gap-2">
+              🍄 Bioindicadores estacionales
+            </h2>
+            <span className="text-xs text-oliveGreen/60">
+              Pico en otoño · el micelio trabaja todo el año
+            </span>
+          </div>
+          <p className="text-sm text-oliveGreen/70 mb-4">
+            Las setas son la parte visible de la red fúngica. No son el objetivo
+            principal — son una <strong>señal</strong> de que el micelio está
+            activo. Algunas se aprovechan como subproducto gastronómico.
+          </p>
+          <div className="flex flex-wrap gap-3 mb-8">
+            {MUSHROOMS.map((m) => (
+              <MushroomChip
+                key={m.id}
+                mushroom={m}
+                active={selectedMushroom === m.id}
+                onClick={() => setSelectedMushroom(m.id)}
+              />
+            ))}
+          </div>
+        </section>
 
         {/* Info de la seta seleccionada */}
         <div className="grid md:grid-cols-3 gap-6 mb-8">
@@ -131,6 +162,23 @@ export default function SoilHealthPage() {
             <p className="text-oliveGreen/70 leading-relaxed">
               {current.description}
             </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <span className="px-3 py-1 bg-oliveGreen/10 text-oliveGreen rounded-full text-xs font-medium">
+                {current.role === "bioindicator" && "🔬 Bioindicador"}
+                {current.role === "cultivation" && "🍽 Subproducto"}
+                {current.role === "both" && "🔬 + 🍽 Ambos"}
+              </span>
+              <span className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-medium">
+                {current.mycorrhizaType === "AMF" && "AMF · Arbuscular"}
+                {current.mycorrhizaType === "ECM" && "ECM · Ectomicorrícica"}
+                {current.mycorrhizaType === "none" && "Saprófita"}
+              </span>
+              {current.hostId && (
+                <span className="px-3 py-1 bg-white/70 rounded-full text-xs font-medium text-charcoalGray">
+                  Host: {current.hostId}
+                </span>
+              )}
+            </div>
           </div>
 
           <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-oliveGreen/15">
@@ -201,7 +249,7 @@ export default function SoilHealthPage() {
         <div className="bg-gradient-to-r from-oliveGreen/5 to-wheatGold/5 rounded-2xl p-6 border border-oliveGreen/15">
           <h3 className="text-lg font-bold text-charcoalGray mb-4 flex items-center gap-2">
             <Droplets className="w-5 h-5 text-oliveGreen" />
-            Condiciones óptimas para el cultivo
+            Condiciones de fructificación
           </h3>
           <div className="grid md:grid-cols-3 gap-4">
             <div className="flex items-center gap-3 p-3 bg-white/50 rounded-xl">
@@ -241,33 +289,51 @@ export default function SoilHealthPage() {
             </div>
           </div>
         </div>
+
         {/* Cross-link a ground-cover */}
         <div className="mt-8 p-6 bg-gradient-to-r from-oliveGreen/10 to-wheatGold/10 rounded-2xl border border-oliveGreen/20">
           <h3 className="font-bold text-charcoalGray mb-2">
             🔗 Ver el ciclo completo
           </h3>
           <p className="text-sm text-oliveGreen/70 mb-3">
-            El micelio fortalece al esparto con agua y nutrientes. El esparto
-            alimenta al micelio con su biomasa. Juntos regeneran el suelo.
+            Esparto, cereal y árboles alimentan al micelio con su biomasa. El
+            micelio devuelve agua, nutrientes y estructura. Juntos regeneran el
+            suelo.
           </p>
           <Link
             href="/ground-cover"
             className="inline-flex items-center gap-2 text-oliveGreen font-medium hover:text-sicilian-red transition-colors"
           >
-            Ver Cubiertas Vegetales →
+            Ver Cultivos →
           </Link>
         </div>
+
         {/* Footer educativo */}
         <div className="mt-12 p-6 bg-oliveGreen/5 rounded-2xl border border-oliveGreen/15">
           <h3 className="text-lg font-bold text-charcoalGray mb-3 flex items-center gap-2">
             📚 Sabías que...
           </h3>
-          <p className="text-sm text-oliveGreen/70">
-            El Cardoncello di Nebrodi es una de las setas más raras y cotizadas
-            del mundo. Crece exclusivamente en las montañas de los Nebrodi en
-            Sicilia y está protegida como patrimonio natural. Su cultivo en
-            sistemas sintrópicos ayuda a su conservación.
-          </p>
+          <div className="space-y-3 text-sm text-oliveGreen/70">
+            <p>
+              <strong className="text-charcoalGray">
+                El micelio trabaja todo el año.
+              </strong>{" "}
+              Las setas son solo su órgano reproductivo, visible en otoño tras
+              las lluvias. Que no veas setas no significa que la red esté
+              inactiva.
+            </p>
+            <p>
+              <strong className="text-charcoalGray">AMF vs. ECM:</strong> la
+              mayoría de tus cultivos (olivo, almendro, esparto, cereal) forman
+              micorrizas arbusculares (AMF). Los dos pinos forman ectomicorrizas
+              (ECM) y producen setas como el níccolo.
+            </p>
+            <p>
+              <strong className="text-charcoalGray">Glomalina:</strong> la
+              proteína que pega las partículas del suelo. A más glomalina, más
+              estructura, más retención de agua y más carbono fijado.
+            </p>
+          </div>
         </div>
       </div>
     </div>

@@ -259,3 +259,21 @@ export interface ZoneConfig {
   optimalTemperature?: number;
   optimalLight?: number;
 }
+
+// ============================================
+// TIPOS PARA DASHBOARD
+// ============================================
+
+export interface DashboardKpi {
+  value: string;
+  label: string;
+  icon: string;
+  subtext: string;
+}
+
+export interface CarbonSummary {
+  organicCarbonPercent: number;
+  bulkDensity: number;
+  depth: number;
+  co2Sequestration: number;
+}
