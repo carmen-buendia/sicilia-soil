@@ -1,6 +1,6 @@
 "use client";
-import { useState } from "react";
 
+import { useState } from "react";
 import {
   Droplets,
   ArrowLeft,
@@ -16,17 +16,22 @@ import Link from "next/link";
 import { Button } from "@sicilia-soil/ui";
 import { CopernicusWidget } from "@/components/features/analysis/components/CopernicusWidget";
 import { CopernicusMap } from "@/components/features/analysis/components/CopernicusMap";
-import {
-  getAverageHumidity,
-  getCriticalZones,
-  getOptimalZones,
-  HUMIDITY_DATA,
-  getZoneStatus,
-  getZoneColor,
-  HumidityZone,
-} from "@sicilia-soil/core";
+import { useHumidityData } from "@/hooks/useHumidityData";
+import { getZoneStatus, getZoneColor } from "@sicilia-soil/core";
+import { FARM_CENTER, FARM_DEFAULT_ZOOM } from "@sicilia-soil/core";
 
 export default function HumedadPage() {
+  const {
+    zones,
+    climate,
+    waterControl,
+    forecast,
+    lastReading,
+    average,
+    criticalZones,
+    optimalZones,
+  } = useHumidityData();
+
   const [selectedZone, setSelectedZone] = useState<string | null>(null);
   const [selectedPlot, setSelectedPlot] = useState<string>(
     "Sicilia — Food Forest (Assoro)",
@@ -40,10 +45,9 @@ export default function HumedadPage() {
     return null;
   };
 
-  // Métricas derivadas
-  const averageHumidity = getAverageHumidity();
-  const criticalZones = getCriticalZones().length;
-  const optimalZones = getOptimalZones().length;
+  const consumptionPercent = Math.round(
+    (waterControl.consumption.current / waterControl.consumption.limit) * 100,
+  );
 
   return (
     <div className="min-h-screen p-4 md:p-8 pt-24 bg-gradient-to-br from-offWhite to-blue-50">
@@ -92,9 +96,7 @@ export default function HumedadPage() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <div className="bg-white/50 backdrop-blur-sm rounded-xl p-5 border border-blue-100 shadow-lg hover:shadow-xl transition-all">
             <p className="text-sm text-oliveGreen/60">Promedio general</p>
-            <p className="text-3xl font-bold text-blue-600">
-              {averageHumidity}%
-            </p>
+            <p className="text-3xl font-bold text-blue-600">{average}%</p>
             <p className="text-xs text-green-600 mt-1">↑ 2% vs ayer</p>
           </div>
 
@@ -102,7 +104,7 @@ export default function HumedadPage() {
             <p className="text-sm text-oliveGreen/60">Zonas óptimas</p>
             <p className="text-3xl font-bold text-green-600">{optimalZones}</p>
             <p className="text-xs text-oliveGreen/60">
-              de {HUMIDITY_DATA.length} zonas
+              de {zones.length} zonas
             </p>
           </div>
 
@@ -114,7 +116,7 @@ export default function HumedadPage() {
 
           <div className="bg-white/50 backdrop-blur-sm rounded-xl p-5 border border-blue-100 shadow-lg hover:shadow-xl transition-all">
             <p className="text-sm text-oliveGreen/60">Última lectura</p>
-            <p className="text-3xl font-bold text-purple-600">2 min</p>
+            <p className="text-3xl font-bold text-purple-600">{lastReading}</p>
             <p className="text-xs text-oliveGreen/60">sensores activos</p>
           </div>
         </div>
@@ -124,31 +126,48 @@ export default function HumedadPage() {
           <div className="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 rounded-xl p-4 border border-yellow-200">
             <div className="flex items-center gap-2">
               <Sun className="w-5 h-5 text-yellow-600" />
-              <span className="text-sm font-medium">Temperatura</span>
+              <span className="text-sm font-medium">
+                {climate.temperature.label}
+              </span>
             </div>
-            <p className="text-2xl font-bold mt-2">28°C</p>
+            <p className="text-2xl font-bold mt-2">
+              {climate.temperature.value}
+              {climate.temperature.unit}
+            </p>
             <p className="text-xs text-oliveGreen/60">
-              Sensación térmica: 26°C
+              {climate.temperature.note}
             </p>
           </div>
 
           <div className="bg-gradient-to-r from-blue-500/10 to-cyan-500/10 rounded-xl p-4 border border-blue-200">
             <div className="flex items-center gap-2">
               <Wind className="w-5 h-5 text-blue-600" />
-              <span className="text-sm font-medium">Humedad ambiental</span>
+              <span className="text-sm font-medium">
+                {climate.ambientHumidity.label}
+              </span>
             </div>
-            <p className="text-2xl font-bold mt-2">65%</p>
-            <p className="text-xs text-oliveGreen/60">Viento: 12 km/h</p>
+            <p className="text-2xl font-bold mt-2">
+              {climate.ambientHumidity.value}
+              {climate.ambientHumidity.unit}
+            </p>
+            <p className="text-xs text-oliveGreen/60">
+              {climate.ambientHumidity.note}
+            </p>
           </div>
 
           <div className="bg-gradient-to-r from-emerald-500/10 to-green-500/10 rounded-xl p-4 border border-green-200">
             <div className="flex items-center gap-2">
               <Thermometer className="w-5 h-5 text-emerald-600" />
-              <span className="text-sm font-medium">Evapotranspiración</span>
+              <span className="text-sm font-medium">
+                {climate.evapotranspiration.label}
+              </span>
             </div>
-            <p className="text-2xl font-bold mt-2">4.2 mm/día</p>
+            <p className="text-2xl font-bold mt-2">
+              {climate.evapotranspiration.value}{" "}
+              {climate.evapotranspiration.unit}
+            </p>
             <p className="text-xs text-oliveGreen/60">
-              Riego recomendado: 5L/m²
+              {climate.evapotranspiration.note}
             </p>
           </div>
         </div>
@@ -158,12 +177,12 @@ export default function HumedadPage() {
           <CopernicusWidget selectedPlot={selectedPlot} />
         </div>
 
-        {/* Copernicus Map */}
+        {/* Copernicus Map — CORREGIDO */}
         <div className="mb-8">
           <CopernicusMap
             initialLayer="satellite"
-            initialCenter={[42.5, 16.5]}
-            initialZoom={5}
+            initialCenter={FARM_CENTER}
+            initialZoom={FARM_DEFAULT_ZOOM}
             height="500px"
           />
         </div>
@@ -178,14 +197,14 @@ export default function HumedadPage() {
           </h2>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {HUMIDITY_DATA.map((zone: HumidityZone, index: number) => {
+            {zones.map((zone) => {
               const status = getZoneStatus(zone.current, zone.optimal);
               const color = getZoneColor(zone.current, zone.optimal);
 
               return (
                 <div
-                  key={index}
-                  className={`group bg-white/50 backdrop-blur-sm rounded-xl p-6 shadow-lg border transition-all duration-300 cursor-pointer hover:shadow-xl hover:scale-102 ${
+                  key={zone.id}
+                  className={`group bg-white/50 backdrop-blur-sm rounded-xl p-6 shadow-lg border transition-all duration-300 cursor-pointer hover:shadow-xl ${
                     status.status === "critical"
                       ? "border-red-200 hover:border-red-300"
                       : status.status === "optimal"
@@ -193,15 +212,15 @@ export default function HumedadPage() {
                         : "border-yellow-200 hover:border-yellow-300"
                   }`}
                   onClick={() => {
-                    const newZone =
-                      zone.zone === selectedZone ? null : zone.zone;
+                    const newZone = zone.id === selectedZone ? null : zone.id;
                     setSelectedZone(newZone);
-                    if (newZone) setSelectedPlot(`Sicilia — ${newZone}`);
+                    if (newZone) setSelectedPlot(`Sicilia — ${zone.zone}`);
                   }}
                 >
                   <div className="flex justify-between items-start mb-4">
                     <div>
-                      <h3 className="text-lg font-bold text-charcoalGray">
+                      <h3 className="text-lg font-bold text-charcoalGray flex items-center gap-2">
+                        <span>{zone.icon}</span>
                         {zone.zone}
                       </h3>
                       <div className="flex items-center gap-2 mt-1">
@@ -260,7 +279,6 @@ export default function HumedadPage() {
                     </div>
                   </div>
 
-                  {/* Indicador de tendencia */}
                   <div className="flex justify-center items-center gap-1 mb-3">
                     {getTrendIcon(zone.trend)}
                     <span className="text-xs text-oliveGreen/60">
@@ -270,7 +288,6 @@ export default function HumedadPage() {
                     </span>
                   </div>
 
-                  {/* Gráfico histórico simplificado */}
                   <div className="mt-4">
                     <p className="text-xs text-oliveGreen/60 mb-2">
                       Evolución últimas 24h
@@ -298,9 +315,8 @@ export default function HumedadPage() {
                     </span>
                   </div>
 
-                  {/* Panel expandido */}
-                  {selectedZone === zone.zone && (
-                    <div className="mt-4 pt-4 border-t border-blue-100 animate-fadeIn">
+                  {selectedZone === zone.id && (
+                    <div className="mt-4 pt-4 border-t border-blue-100">
                       <div className="grid grid-cols-2 gap-3 text-sm">
                         <div className="bg-blue-50/50 rounded-lg p-2">
                           <p className="text-xs text-oliveGreen/60">
@@ -352,7 +368,7 @@ export default function HumedadPage() {
               <div className="flex items-center justify-between mb-3">
                 <span className="text-oliveGreen/70">Estado</span>
                 <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
-                  Activado
+                  {waterControl.autoIrrigation.statusLabel}
                 </span>
               </div>
               <div>
@@ -360,30 +376,42 @@ export default function HumedadPage() {
                   Próximo riego programado
                 </p>
                 <p className="text-xl font-bold text-charcoalGray">
-                  en 2 horas
+                  {waterControl.autoIrrigation.nextIn}
                 </p>
               </div>
               <div className="mt-3 pt-3 border-t border-blue-100">
                 <p className="text-xs text-oliveGreen/60">Duración estimada</p>
-                <p className="font-medium">15 minutos</p>
+                <p className="font-medium">
+                  {waterControl.autoIrrigation.duration}
+                </p>
               </div>
             </div>
 
             <div className="bg-white/50 backdrop-blur-sm rounded-xl p-6 border border-blue-100">
               <h3 className="font-bold text-lg mb-4">Consumo de agua</h3>
               <p className="text-4xl font-bold text-blue-600">
-                124<span className="text-lg">L</span>
+                {waterControl.consumption.current}
+                <span className="text-lg">{waterControl.consumption.unit}</span>
               </p>
               <p className="text-sm text-oliveGreen/60 mb-3">
-                en las últimas 24h
+                {waterControl.consumption.period}
               </p>
               <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-                <div className="w-3/4 h-full bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full"></div>
+                <div
+                  className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full"
+                  style={{ width: `${consumptionPercent}%` }}
+                />
               </div>
               <div className="flex justify-between mt-2 text-xs text-oliveGreen/60">
-                <span>0L</span>
-                <span>124L</span>
-                <span>200L (límite)</span>
+                <span>0{waterControl.consumption.unit}</span>
+                <span>
+                  {waterControl.consumption.current}
+                  {waterControl.consumption.unit}
+                </span>
+                <span>
+                  {waterControl.consumption.limit}
+                  {waterControl.consumption.unit} (límite)
+                </span>
               </div>
             </div>
 
@@ -404,8 +432,7 @@ export default function HumedadPage() {
           <div className="mt-6 p-4 bg-yellow-50/50 rounded-xl border border-yellow-200">
             <p className="text-sm text-oliveGreen/70 flex items-center gap-2">
               <Sun className="w-4 h-4 text-yellow-600" />
-              Pronóstico: Se esperan temperaturas de 30°C mañana. Aumentar riego
-              en un 15% en zonas críticas.
+              Pronóstico: {forecast}
             </p>
           </div>
         </div>
@@ -416,32 +443,11 @@ export default function HumedadPage() {
             💧 Datos actualizados en tiempo real desde sensores IoT
           </p>
           <p className="text-xs text-oliveGreen/50 mt-2">
-            Última sincronización: hace 2 minutos • Todos los sensores
+            Última sincronización: hace 2 minutos · Todos los sensores
             operativos
           </p>
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(-10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .animate-fadeIn {
-          animation: fadeIn 0.3s ease-out;
-        }
-
-        .hover\:scale-102:hover {
-          transform: scale(1.02);
-        }
-      `}</style>
     </div>
   );
 }
