@@ -15,10 +15,7 @@ import {
   type CopernicusTabType,
   type CopernicusWidgetProps,
 } from "@sicilia-soil/core";
-import {
-  DEFAULT_PLOT_NAME,
-  DEFAULT_COPERNICUS_DATA,
-} from "@sicilia-soil/core/data/copernicus.defaults";
+import { DEFAULT_PLOT_NAME, DEFAULT_COPERNICUS_DATA } from "@sicilia-soil/core";
 
 export function CopernicusWidget({
   selectedPlot = DEFAULT_PLOT_NAME,
