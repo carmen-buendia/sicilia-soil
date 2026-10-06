@@ -4,7 +4,13 @@
 // Mycorrhizal network types — Sicilia Soil
 // ============================================================================
 
-export type MycorrhizaType = "AMF" | "ECM" | "none";
+export type MycorrhizaType =
+  | "AMF" // arbuscular (mayoría de cultivos, gramíneas, frutales)
+  | "ECM" // ectomicorriza (pinos, robles, castaños, abedules)
+  | "ericoid" // ericoid (brezos, arándanos)
+  | "orchid" // orquídeas
+  | "none" // no micorrícica (brasicáceas, ciperáceas)
+  | "unknown"; // aún no determinada
 
 export type MycorrhizaHostId =
   | "olivo"
@@ -101,7 +107,7 @@ export const MYCORRHIZA_HOSTS: MycorrhizaHost[] = [
     glomalinThreshold: 1.4,
     producesMushrooms: false,
     notes:
-      "Especie mediterránea rústica. Tolera suelos pobres y sequía gracias a la red micorrícica.",
+      "Consumo propio. Sus restos alimentan el compost, que devuelve la materia orgánica al suelo.",
   },
   {
     id: "esparto",

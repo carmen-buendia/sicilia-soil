@@ -9,3 +9,7 @@ export * from "./mycorrhiza.types";
 export * from "./soilHealth.types";
 export * from "./groundCover.types";
 export * from "./farm.types";
+export * from "./species.types";
+export * from "./spatial.types";
+export * from "./auth.types";
+export * from "./iot.types";
