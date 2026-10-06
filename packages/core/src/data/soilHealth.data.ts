@@ -3,11 +3,14 @@
 import type {
   Mushroom,
   MonitoringZone,
+  SoilContamination,
+  RemediationProgress,
   TimeSeriesPoint,
+  SoilContaminationFull,
 } from "../types/soilHealth.types";
 
 // ============================================================================
-// Mock Time Series Generator (private – do not export)
+// Mock Time Series Generator (private)
 // ============================================================================
 
 function generateTimeSeries(
@@ -21,26 +24,19 @@ function generateTimeSeries(
   for (let i = days; i >= 0; i--) {
     const date = new Date(now);
     date.setDate(date.getDate() - i);
-
     const variation = Math.sin((i / 7) * Math.PI) * variance;
     const randomVar = (Math.random() - 0.5) * variance;
     const value = baseValue + variation + randomVar;
-
     data.push({
       timestamp: date.toISOString().split("T")[0],
       value: Math.round(value * 10) / 10,
     });
   }
-
   return data;
 }
 
 // ============================================================================
 // MUSHROOMS — bioindicadores y producción secundaria
-// ----------------------------------------------------------------------------
-// El micelio trabaja todo el año. Las setas son la señal visible de que la
-// red fúngica está activa. Algunas son comestibles y se aprovechan como
-// subproducto del sistema regenerativo.
 // ============================================================================
 
 export const MUSHROOMS: Mushroom[] = [
@@ -125,9 +121,6 @@ export const MUSHROOMS: Mushroom[] = [
 
 // ============================================================================
 // MONITORING ZONES — hosts micorrícicos reales de la finca
-// ----------------------------------------------------------------------------
-// Cada zona monitoriza un huésped micorrícico: árboles, esparto, cereal,
-// cubiertas o los pinos. Los datos son mock hasta conectar sensores IoT.
 // ============================================================================
 
 export const MONITORING_ZONES: MonitoringZone[] = [
@@ -224,15 +217,118 @@ export const MONITORING_ZONES: MonitoringZone[] = [
   },
 ];
 
-// ----------------------------------------------------------------------------
-// Alias retrocompatible (evita romper imports existentes)
-// ----------------------------------------------------------------------------
-
 /** @deprecated Usar MONITORING_ZONES */
 export const CULTIVATION_ZONES = MONITORING_ZONES;
 
 // ============================================================================
-// Helpers
+// CONTAMINACIÓN HISTÓRICA Y BIORREMEDIACIÓN
+// ----------------------------------------------------------------------------
+// Zona noreste: antigua zona de quemas de plásticos, aluminios y cartones.
+// Plan de biorremediación iniciado en enero de 2026.
+// Mediciones trimestrales.
+// ============================================================================
+
+export const SOIL_CONTAMINATION: SoilContaminationFull = {
+  measurements: [
+    {
+      period: "2026 Q1",
+      lead: 15.2,
+      cadmium: 1.8,
+      mercury: 0.9,
+      hydrocarbons: 45,
+      real: true,
+    },
+    {
+      period: "2026 Q2",
+      lead: 14.1,
+      cadmium: 1.6,
+      mercury: 0.8,
+      hydrocarbons: 40,
+      real: true,
+    },
+    {
+      period: "2026 Q3",
+      lead: 13.2,
+      cadmium: 1.5,
+      mercury: 0.7,
+      hydrocarbons: 36,
+      real: true,
+    },
+    {
+      period: "2026 Q4",
+      lead: 12.5,
+      cadmium: 1.4,
+      mercury: 0.6,
+      hydrocarbons: 33,
+      real: true,
+    },
+  ],
+  soilHealth: [
+    {
+      period: "2026 Q1",
+      ph: 5.4,
+      conductivity: 320,
+      fungalBiomass: 18,
+      glomalin: 0.8,
+      mycorrhizalColonisation: 15,
+    },
+    {
+      period: "2026 Q2",
+      ph: 5.8,
+      conductivity: 285,
+      fungalBiomass: 24,
+      glomalin: 1.1,
+      mycorrhizalColonisation: 22,
+    },
+    {
+      period: "2026 Q3",
+      ph: 6.2,
+      conductivity: 245,
+      fungalBiomass: 32,
+      glomalin: 1.4,
+      mycorrhizalColonisation: 30,
+    },
+    {
+      period: "2026 Q4",
+      ph: 6.5,
+      conductivity: 210,
+      fungalBiomass: 38,
+      glomalin: 1.7,
+      mycorrhizalColonisation: 38,
+    },
+  ],
+  thresholds: {
+    lead: 5,
+    cadmium: 0.5,
+    mercury: 0.2,
+    hydrocarbons: 10,
+  },
+  strategy: {
+    description:
+      "Biorremediación con hongos autóctonos + cubierta permanente de esparto",
+    fungi: ["Pleurotus ostreatus", "Trametes versicolor", "Pleurotus eryngii"],
+    plants: ["Esparto", "Mostaza", "Girasol"],
+    expectedCompletion: "2029",
+    startYear: 2026,
+    affectedZone: "Zona noreste · antigua zona de quemas",
+  },
+};
+
+export function getRemediationProgress(): RemediationProgress {
+  const initial = SOIL_CONTAMINATION.measurements[0];
+  const current = SOIL_CONTAMINATION.measurements.at(-1)!;
+  const reduce = (start: number, end: number) =>
+    Math.round(((start - end) / start) * 100);
+  return {
+    leadReduction: reduce(initial.lead, current.lead),
+    cadmiumReduction: reduce(initial.cadmium, current.cadmium),
+    mercuryReduction: reduce(initial.mercury, current.mercury),
+    hydrocarbonsReduction: reduce(initial.hydrocarbons, current.hydrocarbons),
+  };
+}
+
+// ============================================================================
+// Demo constants
 // ============================================================================
 
 export const DEFAULT_MUSHROOM_ID = "niccolo";
