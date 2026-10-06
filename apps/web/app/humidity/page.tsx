@@ -14,11 +14,13 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@sicilia-soil/ui";
-import { CopernicusWidget } from "@/components/features/analysis/components/CopernicusWidget";
-import { CopernicusMap } from "@/components/features/analysis/components/CopernicusMap";
 import { useHumidityData } from "@/hooks/useHumidityData";
 import { getZoneStatus, getZoneColor } from "@sicilia-soil/core";
 import { FARM_CENTER, FARM_DEFAULT_ZOOM } from "@sicilia-soil/core";
+import {
+  CopernicusWidget,
+  CopernicusMap,
+} from "@/components/features/copernicus/components";
 
 export default function HumedadPage() {
   const {
