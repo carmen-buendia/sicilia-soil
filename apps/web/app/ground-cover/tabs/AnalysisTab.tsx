@@ -1,53 +1,12 @@
 "use client";
 
 import { BarChart3 } from "lucide-react";
-
-const COVER_COMPARISON = [
-  {
-    cover: "Esparto",
-    colonisation: 45,
-    glomalin: 2.1,
-    shi: 88,
-    color: "#8B9D6B",
-  },
-  {
-    cover: "Árboles",
-    colonisation: 42,
-    glomalin: 2.0,
-    shi: 82,
-    color: "#6B8E23",
-  },
-  {
-    cover: "Hortalizas",
-    colonisation: 35,
-    glomalin: 1.6,
-    shi: 68,
-    color: "#E07A5F",
-  },
-  {
-    cover: "Cereal",
-    colonisation: 30,
-    glomalin: 1.5,
-    shi: 62,
-    color: "#D4A574",
-  },
-  {
-    cover: "Cubiertas",
-    colonisation: 38,
-    glomalin: 1.8,
-    shi: 74,
-    color: "#A3B18A",
-  },
-  {
-    cover: "Barbecho",
-    colonisation: 25,
-    glomalin: 1.2,
-    shi: 55,
-    color: "#B8B8B8",
-  },
-];
+import { SoilChart, SOIL_COLORS } from "@/components/features/shared";
+import { useAnalysisData } from "@/hooks/useAnalysisData";
 
 export function AnalysisTab() {
+  const { coverComparison } = useAnalysisData();
+
   return (
     <div className="space-y-6">
       <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 border border-oliveGreen/15">
@@ -61,30 +20,33 @@ export function AnalysisTab() {
           <strong>crop-agnostic</strong>.
         </p>
 
-        <div className="space-y-4">
-          {COVER_COMPARISON.map((row) => (
-            <div key={row.cover} className="space-y-2">
-              <div className="flex items-center justify-between text-sm">
-                <span className="font-medium text-charcoalGray">
-                  {row.cover}
-                </span>
-                <span className="text-oliveGreen/70">SHI {row.shi}/100</span>
-              </div>
-              <div className="h-3 bg-oliveGreen/10 rounded-full overflow-hidden">
-                <div
-                  className="h-full rounded-full transition-all"
-                  style={{ width: `${row.shi}%`, backgroundColor: row.color }}
-                />
-              </div>
-              <div className="flex gap-4 text-xs text-oliveGreen/60">
-                <span>Colonización: {row.colonisation}%</span>
-                <span>Glomalina: {row.glomalin} mg/g</span>
-              </div>
-            </div>
-          ))}
-        </div>
+        <SoilChart
+          type="column"
+          categories={coverComparison.map((c) => c.cover)}
+          series={[
+            {
+              name: "SHI (0-100)",
+              data: coverComparison.map((c) => c.shi),
+              color: SOIL_COLORS.olive,
+            },
+            {
+              name: "Colonización AMF (%)",
+              data: coverComparison.map((c) => c.colonisation),
+              color: SOIL_COLORS.green,
+            },
+            {
+              name: "Glomalina (mg/g × 10)",
+              data: coverComparison.map((c) => c.glomalin * 10),
+              color: SOIL_COLORS.wheat,
+            },
+          ]}
+          yAxisLabel="Valor"
+          height={360}
+          legend
+        />
       </div>
 
+      {/* Interpretación */}
       <div className="bg-gradient-to-r from-oliveGreen/5 to-wheatGold/5 rounded-2xl p-6 border border-oliveGreen/15">
         <h3 className="text-lg font-bold text-charcoalGray mb-3">
           Interpretación

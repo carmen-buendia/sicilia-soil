@@ -14,85 +14,13 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@sicilia-soil/ui";
-
-// Datos simulados de temperatura
-const temperatureData = [
-  {
-    zone: "Zona de Esparto",
-    current: 22,
-    optimal: 25,
-    min: 18,
-    max: 30,
-    history: [21, 22, 23, 22, 21, 22, 22],
-    unit: "°C",
-    trend: "up",
-    soilType: "Arcilloso",
-    status: "buena",
-  },
-  {
-    zone: "Huerta de Tomates",
-    current: 24,
-    optimal: 28,
-    min: 20,
-    max: 32,
-    history: [23, 24, 25, 24, 23, 24, 24],
-    unit: "°C",
-    trend: "up",
-    soilType: "Franco",
-    status: "buena",
-  },
-  {
-    zone: "Olivar",
-    current: 21,
-    optimal: 30,
-    min: 18,
-    max: 35,
-    history: [20, 21, 22, 21, 20, 21, 21],
-    unit: "°C",
-    trend: "down",
-    soilType: "Calcáreo",
-    status: "baja",
-  },
-  {
-    zone: "Zona Compost",
-    current: 28,
-    optimal: 35,
-    min: 25,
-    max: 45,
-    history: [27, 28, 29, 28, 27, 28, 28],
-    unit: "°C",
-    trend: "up",
-    soilType: "Orgánico",
-    status: "buena",
-  },
-  {
-    zone: "Jardín de Hierbas",
-    current: 23,
-    optimal: 26,
-    min: 18,
-    max: 30,
-    history: [22, 23, 24, 23, 22, 23, 23],
-    unit: "°C",
-    trend: "stable",
-    soilType: "Arenoso",
-    status: "buena",
-  },
-  {
-    zone: "Depósito de Agua",
-    current: 18,
-    optimal: 22,
-    min: 15,
-    max: 25,
-    history: [17, 18, 19, 18, 17, 18, 18],
-    unit: "°C",
-    trend: "up",
-    soilType: "N/A",
-    status: "buena",
-  },
-];
+import { useTemperatureData } from "@/hooks/useTemperatureData";
+import { getTempStatusColor, getTempStatusText } from "@sicilia-soil/core";
 
 export default function TemperaturePage() {
   const [selectedZone, setSelectedZone] = useState<string | null>(null);
+  const { zones, climate, average, highZones, optimalZones } =
+    useTemperatureData();
 
   const getTrendIcon = (trend: string) => {
     if (trend === "up")
@@ -101,29 +29,6 @@ export default function TemperaturePage() {
       return <TrendingDown className="w-3 h-3 text-red-500" />;
     return null;
   };
-
-  const getStatusColor = (current: number, optimal: number) => {
-    if (current <= optimal) return "bg-green-100 text-green-800";
-    if (current <= optimal + 5) return "bg-yellow-100 text-yellow-800";
-    return "bg-red-100 text-red-800";
-  };
-
-  const getStatusText = (current: number, optimal: number) => {
-    if (current <= optimal) return "Óptimo";
-    if (current <= optimal + 5) return "Moderado";
-    return "Alta - Proteger";
-  };
-
-  const averageTemp = Math.round(
-    temperatureData.reduce((acc, z) => acc + z.current, 0) /
-      temperatureData.length,
-  );
-  const highZones = temperatureData.filter(
-    (z) => z.current > z.optimal + 5,
-  ).length;
-  const optimalZones = temperatureData.filter(
-    (z) => z.current <= z.optimal,
-  ).length;
 
   return (
     <div className="min-h-screen p-4 md:p-8 pt-24 bg-gradient-to-br from-offWhite to-red-50">
@@ -172,7 +77,7 @@ export default function TemperaturePage() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <div className="bg-white/50 backdrop-blur-sm rounded-xl p-5 border border-red-100 shadow-lg hover:shadow-xl transition-all">
             <p className="text-sm text-oliveGreen/60">Promedio general</p>
-            <p className="text-3xl font-bold text-red-600">{averageTemp}°C</p>
+            <p className="text-3xl font-bold text-red-600">{average}°C</p>
             <p className="text-xs text-green-600 mt-1">↑ 1°C vs ayer</p>
           </div>
 
@@ -180,7 +85,7 @@ export default function TemperaturePage() {
             <p className="text-sm text-oliveGreen/60">Zonas óptimas</p>
             <p className="text-3xl font-bold text-green-600">{optimalZones}</p>
             <p className="text-xs text-oliveGreen/60">
-              de {temperatureData.length} zonas
+              de {zones.length} zonas
             </p>
           </div>
 
@@ -202,28 +107,42 @@ export default function TemperaturePage() {
           <div className="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 rounded-xl p-4 border border-yellow-200">
             <div className="flex items-center gap-2">
               <Sun className="w-5 h-5 text-yellow-600" />
-              <span className="text-sm font-medium">Radiación solar</span>
+              <span className="text-sm font-medium">
+                {climate.solarRadiation.label}
+              </span>
             </div>
-            <p className="text-2xl font-bold mt-2">780 W/m²</p>
-            <p className="text-xs text-oliveGreen/60">Alta</p>
+            <p className="text-2xl font-bold mt-2">
+              {climate.solarRadiation.value} {climate.solarRadiation.unit}
+            </p>
+            <p className="text-xs text-oliveGreen/60">
+              {climate.solarRadiation.status}
+            </p>
           </div>
 
           <div className="bg-gradient-to-r from-blue-500/10 to-cyan-500/10 rounded-xl p-4 border border-blue-200">
             <div className="flex items-center gap-2">
               <Droplets className="w-5 h-5 text-blue-600" />
-              <span className="text-sm font-medium">Humedad relativa</span>
+              <span className="text-sm font-medium">
+                {climate.relativeHumidity.label}
+              </span>
             </div>
-            <p className="text-2xl font-bold mt-2">55%</p>
-            <p className="text-xs text-oliveGreen/60">Moderada</p>
+            <p className="text-2xl font-bold mt-2">
+              {climate.relativeHumidity.value} {climate.relativeHumidity.unit}
+            </p>
+            <p className="text-xs text-oliveGreen/60">
+              {climate.relativeHumidity.status}
+            </p>
           </div>
 
           <div className="bg-gradient-to-r from-emerald-500/10 to-green-500/10 rounded-xl p-4 border border-green-200">
             <div className="flex items-center gap-2">
               <Wind className="w-5 h-5 text-emerald-600" />
-              <span className="text-sm font-medium">Viento</span>
+              <span className="text-sm font-medium">{climate.wind.label}</span>
             </div>
-            <p className="text-2xl font-bold mt-2">12 km/h</p>
-            <p className="text-xs text-oliveGreen/60">Brisa suave</p>
+            <p className="text-2xl font-bold mt-2">
+              {climate.wind.value} {climate.wind.unit}
+            </p>
+            <p className="text-xs text-oliveGreen/60">{climate.wind.status}</p>
           </div>
         </div>
 
@@ -237,10 +156,10 @@ export default function TemperaturePage() {
           </h2>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {temperatureData.map((zone, index) => (
+            {zones.map((zone) => (
               <div
-                key={index}
-                className={`group bg-white/50 backdrop-blur-sm rounded-xl p-6 shadow-lg border transition-all duration-300 cursor-pointer hover:shadow-xl hover:scale-102 ${
+                key={zone.id}
+                className={`group bg-white/50 backdrop-blur-sm rounded-xl p-6 shadow-lg border transition-all duration-300 cursor-pointer hover:shadow-xl ${
                   zone.current > zone.optimal + 5
                     ? "border-red-200 hover:border-red-300"
                     : zone.current <= zone.optimal
@@ -248,24 +167,25 @@ export default function TemperaturePage() {
                       : "border-yellow-200 hover:border-yellow-300"
                 }`}
                 onClick={() =>
-                  setSelectedZone(zone.zone === selectedZone ? null : zone.zone)
+                  setSelectedZone(zone.id === selectedZone ? null : zone.id)
                 }
               >
                 <div className="flex justify-between items-start mb-4">
                   <div>
-                    <h3 className="text-lg font-bold text-charcoalGray">
+                    <h3 className="text-lg font-bold text-charcoalGray flex items-center gap-2">
+                      <span>{zone.icon}</span>
                       {zone.zone}
                     </h3>
                     <div className="flex items-center gap-2 mt-1">
                       <span className="text-xs text-oliveGreen/60">
-                        {zone.soilType}
+                        {zone.soilType} · {zone.location}
                       </span>
                     </div>
                   </div>
                   <span
-                    className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(zone.current, zone.optimal)}`}
+                    className={`px-3 py-1 rounded-full text-xs font-medium ${getTempStatusColor(zone.current, zone.optimal)}`}
                   >
-                    {getStatusText(zone.current, zone.optimal)}
+                    {getTempStatusText(zone.current, zone.optimal)}
                   </span>
                 </div>
 
@@ -316,7 +236,7 @@ export default function TemperaturePage() {
                         className="text-xs"
                         fill="#6b7280"
                       >
-                        Celsius
+                        {zone.unit.replace("°", "")}
                       </text>
                     </svg>
                   </div>
@@ -332,7 +252,7 @@ export default function TemperaturePage() {
                   </span>
                 </div>
 
-                {/* Gráfico histórico simplificado */}
+                {/* Mini gráfico histórico */}
                 <div className="mt-4">
                   <p className="text-xs text-oliveGreen/60 mb-2">
                     Evolución últimas 24h
@@ -353,23 +273,27 @@ export default function TemperaturePage() {
 
                 <div className="mt-4 pt-3 border-t border-red-100 flex justify-between text-sm">
                   <span className="text-oliveGreen/60">
-                    Óptimo: ≤{zone.optimal}°C
+                    Óptimo: ≤{zone.optimal}
+                    {zone.unit}
                   </span>
                   <span className="font-medium text-charcoalGray">
-                    Actual: {zone.current}°C
+                    Actual: {zone.current}
+                    {zone.unit}
                   </span>
                 </div>
 
                 {/* Panel expandido */}
-                {selectedZone === zone.zone && (
-                  <div className="mt-4 pt-4 border-t border-red-100 animate-fadeIn">
+                {selectedZone === zone.id && (
+                  <div className="mt-4 pt-4 border-t border-red-100">
                     <div className="grid grid-cols-2 gap-3 text-sm">
                       <div className="bg-red-50/50 rounded-lg p-2">
                         <p className="text-xs text-oliveGreen/60">
                           Rango óptimo
                         </p>
                         <p className="font-medium text-charcoalGray">
-                          {zone.min}°C - {zone.max}°C
+                          {zone.min}
+                          {zone.unit} - {zone.max}
+                          {zone.unit}
                         </p>
                       </div>
                       <div className="bg-red-50/50 rounded-lg p-2">
@@ -396,30 +320,11 @@ export default function TemperaturePage() {
             🌡️ Datos actualizados en tiempo real desde sensores IoT
           </p>
           <p className="text-xs text-oliveGreen/50 mt-2">
-            Última sincronización: hace 2 minutos • Todos los sensores
+            Última sincronización: hace 2 minutos · Todos los sensores
             operativos
           </p>
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(-10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        .animate-fadeIn {
-          animation: fadeIn 0.3s ease-out;
-        }
-        .hover\\:scale-102:hover {
-          transform: scale(1.02);
-        }
-      `}</style>
     </div>
   );
 }

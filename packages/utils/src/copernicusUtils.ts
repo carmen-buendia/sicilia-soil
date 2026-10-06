@@ -28,7 +28,7 @@ export function getIndexColor(type: IndexType): string {
   return COLOR_CLASSES[type];
 }
 
-export function getStatusColor(
+export function getIndexStatusColor(
   level: "optimal" | "warning" | "critical" | "neutral",
 ): string {
   return STATUS_COLORS[level];
