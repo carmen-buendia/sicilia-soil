@@ -21,135 +21,21 @@ import {
   getLightProgressColor,
   getRecommendedPlants,
 } from "@sicilia-soil/utils";
-
-// Datos de las zonas de luz
-const lightZones = [
-  {
-    id: "esparto",
-    zone: "Zona de Esparto",
-    current: 65,
-    optimal: 70,
-    min: 50,
-    max: 85,
-    history: [62, 63, 65, 64, 66, 65, 65],
-    unit: "%",
-    trend: "up" as const,
-    soilType: "Arcilloso",
-    status: "buena" as const,
-    icon: "🌾",
-    location: "Parcela Norte",
-    uv: 4,
-    hours: 8.5,
-  },
-  {
-    id: "tomates",
-    zone: "Huerta de Tomates",
-    current: 78,
-    optimal: 80,
-    min: 60,
-    max: 90,
-    history: [75, 76, 78, 77, 79, 78, 78],
-    unit: "%",
-    trend: "up" as const,
-    soilType: "Franco",
-    status: "excelente" as const,
-    icon: "🍅",
-    location: "Parcela Sur",
-    uv: 5,
-    hours: 9.2,
-  },
-  {
-    id: "olivar",
-    zone: "Olivar",
-    current: 45,
-    optimal: 60,
-    min: 40,
-    max: 75,
-    history: [43, 44, 45, 44, 46, 45, 45],
-    unit: "%",
-    trend: "down" as const,
-    soilType: "Calcáreo",
-    status: "baja" as const,
-    icon: "🫒",
-    location: "Ladera Este",
-    uv: 3,
-    hours: 6.0,
-  },
-  {
-    id: "compost",
-    zone: "Zona Compost",
-    current: 30,
-    optimal: 40,
-    min: 25,
-    max: 55,
-    history: [28, 29, 30, 31, 30, 29, 30],
-    unit: "%",
-    trend: "up" as const,
-    soilType: "Orgánico",
-    status: "muy baja" as const,
-    icon: "♻️",
-    location: "Trasera",
-    uv: 2,
-    hours: 4.5,
-  },
-  {
-    id: "hierbas",
-    zone: "Jardín de Hierbas",
-    current: 70,
-    optimal: 75,
-    min: 55,
-    max: 85,
-    history: [68, 69, 70, 71, 70, 69, 70],
-    unit: "%",
-    trend: "stable" as const,
-    soilType: "Arenoso",
-    status: "buena" as const,
-    icon: "🌿",
-    location: "Parcela Oeste",
-    uv: 4,
-    hours: 8.0,
-  },
-  {
-    id: "agua",
-    zone: "Depósito de Agua",
-    current: 40,
-    optimal: 50,
-    min: 35,
-    max: 65,
-    history: [38, 39, 40, 41, 40, 39, 40],
-    unit: "%",
-    trend: "up" as const,
-    soilType: "N/A",
-    status: "baja" as const,
-    icon: "💧",
-    location: "Noreste",
-    uv: 3,
-    hours: 5.5,
-  },
-];
-
-// Datos históricos
-const historicalData = [
-  { day: "Lun", value: 65, optimal: 70 },
-  { day: "Mar", value: 68, optimal: 70 },
-  { day: "Mié", value: 72, optimal: 70 },
-  { day: "Jue", value: 70, optimal: 70 },
-  { day: "Vie", value: 75, optimal: 70 },
-  { day: "Sáb", value: 78, optimal: 70 },
-  { day: "Dom", value: 73, optimal: 70 },
-];
-
-// Previsión
-const forecastData = [
-  { day: "Lun", value: 72, uv: 5 },
-  { day: "Mar", value: 75, uv: 6 },
-  { day: "Mié", value: 68, uv: 4 },
-  { day: "Jue", value: 70, uv: 5 },
-  { day: "Vie", value: 78, uv: 7 },
-];
+import { useLightData } from "@/hooks/useLightData";
 
 export default function LightPage() {
-  const [selectedZone, setSelectedZone] = useState(lightZones[0]);
+  const {
+    zones,
+    historical,
+    forecast,
+    climate,
+    sunData,
+    average,
+    lowZones,
+    optimalZones,
+  } = useLightData();
+
+  const [selectedZone, setSelectedZone] = useState(zones[0]);
   const [isLive, setIsLive] = useState(true);
   const [notifications, setNotifications] = useState(true);
   const [currentTime, setCurrentTime] = useState<string>("");
@@ -165,12 +51,6 @@ export default function LightPage() {
 
   const rec = getLightRecommendations(selectedZone.current);
   const progressColor = getLightProgressColor(selectedZone.current);
-
-  const averageLight = Math.round(
-    lightZones.reduce((acc, z) => acc + z.current, 0) / lightZones.length,
-  );
-  const lowZones = lightZones.filter((z) => z.current < z.optimal - 15).length;
-  const optimalZones = lightZones.filter((z) => z.current >= z.optimal).length;
 
   return (
     <div className="min-h-screen p-4 md:p-8 pt-24 bg-gradient-to-br from-offWhite to-yellow-50">
@@ -242,9 +122,7 @@ export default function LightPage() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <div className="bg-white/50 backdrop-blur-sm rounded-xl p-5 border border-yellow-100 shadow-lg hover:shadow-xl transition-all">
             <p className="text-sm text-oliveGreen/60">Promedio general</p>
-            <p className="text-3xl font-bold text-yellow-600">
-              {averageLight}%
-            </p>
+            <p className="text-3xl font-bold text-yellow-600">{average}%</p>
             <p className="text-xs text-green-600 mt-1">↑ 2% vs ayer</p>
           </div>
 
@@ -252,7 +130,7 @@ export default function LightPage() {
             <p className="text-sm text-oliveGreen/60">Zonas óptimas</p>
             <p className="text-3xl font-bold text-green-600">{optimalZones}</p>
             <p className="text-xs text-oliveGreen/60">
-              de {lightZones.length} zonas
+              de {zones.length} zonas
             </p>
           </div>
 
@@ -274,34 +152,52 @@ export default function LightPage() {
           <div className="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 rounded-xl p-4 border border-yellow-200">
             <div className="flex items-center gap-2">
               <Sun className="w-5 h-5 text-yellow-600" />
-              <span className="text-sm font-medium">Radiación solar</span>
+              <span className="text-sm font-medium">
+                {climate.solarRadiation.label}
+              </span>
             </div>
-            <p className="text-2xl font-bold mt-2">650 W/m²</p>
-            <p className="text-xs text-oliveGreen/60">Buena exposición</p>
+            <p className="text-2xl font-bold mt-2">
+              {climate.solarRadiation.value} {climate.solarRadiation.unit}
+            </p>
+            <p className="text-xs text-oliveGreen/60">
+              {climate.solarRadiation.status}
+            </p>
           </div>
 
           <div className="bg-gradient-to-r from-blue-500/10 to-cyan-500/10 rounded-xl p-4 border border-blue-200">
             <div className="flex items-center gap-2">
               <Droplets className="w-5 h-5 text-blue-600" />
-              <span className="text-sm font-medium">Humedad ambiental</span>
+              <span className="text-sm font-medium">
+                {climate.ambientHumidity.label}
+              </span>
             </div>
-            <p className="text-2xl font-bold mt-2">58%</p>
-            <p className="text-xs text-oliveGreen/60">Normal</p>
+            <p className="text-2xl font-bold mt-2">
+              {climate.ambientHumidity.value} {climate.ambientHumidity.unit}
+            </p>
+            <p className="text-xs text-oliveGreen/60">
+              {climate.ambientHumidity.status}
+            </p>
           </div>
 
           <div className="bg-gradient-to-r from-emerald-500/10 to-green-500/10 rounded-xl p-4 border border-green-200">
             <div className="flex items-center gap-2">
               <Thermometer className="w-5 h-5 text-emerald-600" />
-              <span className="text-sm font-medium">Temperatura</span>
+              <span className="text-sm font-medium">
+                {climate.temperature.label}
+              </span>
             </div>
-            <p className="text-2xl font-bold mt-2">24°C</p>
-            <p className="text-xs text-oliveGreen/60">Templado</p>
+            <p className="text-2xl font-bold mt-2">
+              {climate.temperature.value} {climate.temperature.unit}
+            </p>
+            <p className="text-xs text-oliveGreen/60">
+              {climate.temperature.status}
+            </p>
           </div>
         </div>
 
         {/* Selector de zonas */}
         <div className="flex overflow-x-auto gap-2 mb-8 pb-2">
-          {lightZones.map((zone) => (
+          {zones.map((zone) => (
             <Button
               key={zone.id}
               variant="chip-yellow"
@@ -470,7 +366,7 @@ export default function LightPage() {
                 Últimos 7 días
               </h3>
               <div className="flex items-end justify-between h-48 gap-2">
-                {historicalData.map((day, i) => (
+                {historical.map((day, i) => (
                   <div
                     key={i}
                     className="flex flex-col items-center flex-1 group"
@@ -509,7 +405,7 @@ export default function LightPage() {
                 Previsión próximos días
               </h3>
               <div className="grid grid-cols-5 gap-3">
-                {forecastData.map((day, i) => (
+                {forecast.map((day, i) => (
                   <div key={i} className="text-center p-3 bg-white rounded-xl">
                     <p className="font-medium text-sm">{day.day}</p>
                     <p className="text-2xl mt-1">{day.value}%</p>
@@ -561,7 +457,6 @@ export default function LightPage() {
                 <div>
                   <label className="flex items-center justify-between mb-2">
                     <span className="text-charcoalGray">Notificaciones</span>
-                    {/* Switch nativo */}
                     <button
                       onClick={() => setNotifications(!notifications)}
                       className={`relative w-12 h-6 rounded-full transition-colors ${
@@ -626,23 +521,25 @@ export default function LightPage() {
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between">
                   <span className="text-oliveGreen/60">Amanecer</span>
-                  <span className="font-medium">06:47</span>
+                  <span className="font-medium">{sunData.sunrise}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-oliveGreen/60">Atardecer</span>
-                  <span className="font-medium">19:32</span>
+                  <span className="font-medium">{sunData.sunset}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-oliveGreen/60">Horas de luz</span>
-                  <span className="font-medium">12h 45m</span>
+                  <span className="font-medium">{sunData.dayLength}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-oliveGreen/60">Índice UV máximo</span>
-                  <span className="font-medium text-yellow-600">7 (Alto)</span>
+                  <span className="font-medium text-yellow-600">
+                    {sunData.maxUV.value} ({sunData.maxUV.label})
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-oliveGreen/60">Próxima alarma</span>
-                  <span className="font-medium">En 2h (UV alto)</span>
+                  <span className="font-medium">{sunData.nextAlarm}</span>
                 </div>
               </div>
             </div>
@@ -673,9 +570,7 @@ export default function LightPage() {
             </div>
             <div>
               <h4 className="font-bold text-charcoalGray mb-2">Estadísticas</h4>
-              <p className="text-oliveGreen/70">
-                Promedio general: {averageLight}%
-              </p>
+              <p className="text-oliveGreen/70">Promedio general: {average}%</p>
               <p className="text-oliveGreen/70">
                 Mejor zona: Huerta de Tomates (78%)
               </p>
@@ -687,12 +582,6 @@ export default function LightPage() {
           </p>
         </footer>
       </div>
-
-      <style jsx>{`
-        .hover\\:scale-102:hover {
-          transform: scale(1.02);
-        }
-      `}</style>
     </div>
   );
 }
