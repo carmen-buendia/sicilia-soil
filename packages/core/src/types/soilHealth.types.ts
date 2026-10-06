@@ -1,3 +1,5 @@
+// packages/core/src/types/soilHealth.types.ts
+
 // ============================================================================
 // Soil Health Types – Monitoring of soil biology and mycorrhizal network
 // ----------------------------------------------------------------------------
@@ -100,3 +102,79 @@ export interface MonitoringZone {
 
 /** @deprecated Usar MonitoringZone */
 export type CultivationZone = MonitoringZone;
+
+// ============================================================================
+// Contaminación histórica y biorremediación
+// ----------------------------------------------------------------------------
+// La zona noreste de la finca sufrió quemas de plásticos, aluminios y
+// cartones durante años. El plan de biorremediación con hongos autóctonos
+// arrancó en enero de 2026. Las mediciones se toman trimestralmente.
+// ============================================================================
+
+export type RemediationMeasurement = {
+  /** Periodo de la medición: "2026 Q1", "2026 Q2", ... */
+  period: string;
+  /** Plomo (mg/kg) */
+  lead: number;
+  /** Cadmio (mg/kg) */
+  cadmium: number;
+  /** Mercurio (mg/kg) */
+  mercury: number;
+  /** Hidrocarburos (mg/kg) */
+  hydrocarbons: number;
+  /** true = medición real de laboratorio, false = proyección */
+  real?: boolean;
+  /** Notas opcionales (método de análisis, laboratorio, incidencias) */
+  notes?: string;
+};
+
+export type RemediationThresholds = {
+  lead: number;
+  cadmium: number;
+  mercury: number;
+  hydrocarbons: number;
+};
+
+export type RemediationStrategy = {
+  description: string;
+  fungi: string[];
+  plants: string[];
+  expectedCompletion: string;
+  startYear: number;
+  affectedZone: string;
+};
+
+export type SoilContamination = {
+  measurements: RemediationMeasurement[];
+  thresholds: RemediationThresholds;
+  strategy: RemediationStrategy;
+};
+
+export type RemediationProgress = {
+  leadReduction: number;
+  cadmiumReduction: number;
+  mercuryReduction: number;
+  hydrocarbonsReduction: number;
+};
+
+// ----------------------------------------------------------------------------
+// Indicadores de suelo en la zona contaminada (por periodo)
+// ----------------------------------------------------------------------------
+
+export type RemediationSoilHealth = {
+  period: string;
+  /** pH del suelo (afecta movilidad de metales) */
+  ph: number;
+  /** Conductividad eléctrica (µS/cm) */
+  conductivity: number;
+  /** Biomasa fúngica (µg/g) — actividad biorremediadora */
+  fungalBiomass: number;
+  /** Glomalina (mg/g) — estabiliza metales en agregados */
+  glomalin: number;
+  /** Colonización micorrícica en la zona (%) */
+  mycorrhizalColonisation: number;
+};
+
+export type SoilContaminationFull = SoilContamination & {
+  soilHealth: RemediationSoilHealth[];
+};
