@@ -1,10 +1,15 @@
 // packages/core/src/data/humidity.data.ts
 
 // ============================================================================
-// Humidity Data – Simulated data for development
+// MOCK DATA — Humedad del suelo
+// Reemplazar por hook useHumidityData() cuando IoT esté conectado
 // ============================================================================
 
 import type { HumidityZone } from "../types/monitoring.types";
+
+// ----------------------------------------------------------------------------
+// Zonas monitorizadas
+// ----------------------------------------------------------------------------
 
 export const HUMIDITY_DATA: HumidityZone[] = [
   {
@@ -104,6 +109,59 @@ export const HUMIDITY_DATA: HumidityZone[] = [
     lastWatering: "automático",
   },
 ];
+
+// ----------------------------------------------------------------------------
+// Clima general
+// ----------------------------------------------------------------------------
+
+export const HUMIDITY_CLIMATE = {
+  temperature: {
+    value: 28,
+    unit: "°C",
+    label: "Temperatura",
+    note: "Sensación térmica: 26°C",
+  },
+  ambientHumidity: {
+    value: 65,
+    unit: "%",
+    label: "Humedad ambiental",
+    note: "Viento: 12 km/h",
+  },
+  evapotranspiration: {
+    value: 4.2,
+    unit: "mm/día",
+    label: "Evapotranspiración",
+    note: "Riego recomendado: 5L/m²",
+  },
+};
+
+// ----------------------------------------------------------------------------
+// Control de riego
+// ----------------------------------------------------------------------------
+
+export const WATER_CONTROL = {
+  autoIrrigation: {
+    enabled: true,
+    statusLabel: "Activado",
+    nextIn: "en 2 horas",
+    duration: "15 minutos",
+  },
+  consumption: {
+    current: 124,
+    limit: 200,
+    unit: "L",
+    period: "en las últimas 24h",
+  },
+};
+
+// ----------------------------------------------------------------------------
+// Pronóstico
+// ----------------------------------------------------------------------------
+
+export const HUMIDITY_FORECAST =
+  "Se esperan temperaturas de 30°C mañana. Aumentar riego en un 15% en zonas críticas.";
+
+export const HUMIDITY_LAST_READING = "2 min";
 
 // ----------------------------------------------------------------------------
 // Helpers
