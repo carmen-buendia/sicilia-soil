@@ -14,6 +14,7 @@ export * from "./sensors.mock";
 export * from "./temperature.data";
 export * from "./light.data";
 export * from "./humidity.data";
+export * from "./decision.mock";
 
 // Humidity: exporta datos + helpers, no el tipo
 export {
