@@ -124,6 +124,12 @@ importers:
 
   packages/ui:
     dependencies:
+      highcharts:
+        specifier: ^12.5.0
+        version: 12.6.0
+      highcharts-react-official:
+        specifier: ^3.2.3
+        version: 3.2.3(highcharts@12.6.0)(react@18.3.1)
       react:
         specifier: ^18.2.0
         version: 18.3.1
