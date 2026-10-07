@@ -25,13 +25,17 @@ const STATUS_LABEL: Record<MonitoringZone["status"], string> = {
   ready: "Listo",
 };
 
-const MYCORRHIZA_LABEL: Record<MonitoringZone["mycorrhizaType"], string> = {
+const MYCORRHIZA_LABEL: Partial<
+  Record<MonitoringZone["mycorrhizaType"], string>
+> = {
   AMF: "AMF · Arbuscular",
   ECM: "ECM · Ectomicorrícica",
   none: "Sin micorriza",
 };
 
-const MYCORRHIZA_BADGE: Record<MonitoringZone["mycorrhizaType"], string> = {
+const MYCORRHIZA_BADGE: Partial<
+  Record<MonitoringZone["mycorrhizaType"], string>
+> = {
   AMF: "bg-emerald-50 text-emerald-700 border-emerald-200",
   ECM: "bg-amber-50 text-amber-700 border-amber-200",
   none: "bg-gray-50 text-gray-700 border-gray-200",
@@ -70,7 +74,7 @@ export const MushroomCard = ({ zone, onViewDetails }: MushroomCardProps) => {
         <span
           className={`text-[10px] px-2 py-0.5 rounded-full border font-medium ${mycorrhizaBadge}`}
         >
-          {MYCORRHIZA_LABEL[zone.mycorrhizaType]}
+          {MYCORRHIZA_LABEL[zone.mycorrhizaType] ?? zone.mycorrhizaType}
         </span>
       </div>
 
