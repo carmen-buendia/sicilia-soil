@@ -13,55 +13,27 @@ import {
   AlertTriangle,
   Gauge,
   Leaf,
+  Network,
 } from "lucide-react";
 import { StatsCard } from "@/components/features/dashboard/components/StatsCards";
 import { ZoneCard } from "@/components/features/dashboard/components/ZoneCards";
 import { ServerStatus } from "@/components/features/dashboard/components/ServerStatus";
 import { CopernicusMapMini } from "@/components/features/copernicus/components";
+import { DailyDecisionCard } from "@/components/features/decision";
 import { useRecommendations } from "@/hooks/useRecommendations";
 import { useDashboardData } from "@/hooks/useDashboardData";
-import type { RecommendationPriority } from "@sicilia-soil/core";
+import { useTodayDecision } from "@/hooks/useTodayDecision";
+import { PRIORITY_STYLES } from "@/config/recommendation.styles";
 
 const ICON_MAP: Record<string, any> = {
   leaf: Leaf,
   droplet: Droplet,
   gauge: Gauge,
   trees: Trees,
-  mushroom: () => <span className="text-xl">🍄</span>,
+  mycorrhiza: Network,
   thermometer: ThermometerSun,
   sun: Sun,
   wind: Wind,
-};
-
-const PRIORITY_STYLE: Record<
-  RecommendationPriority,
-  { bg: string; text: string; label: string }
-> = {
-  urgent: {
-    bg: "bg-red-50 border-red-200",
-    text: "text-red-700",
-    label: "Urgente",
-  },
-  high: {
-    bg: "bg-orange-50 border-orange-200",
-    text: "text-orange-700",
-    label: "Alta",
-  },
-  medium: {
-    bg: "bg-amber-50 border-amber-200",
-    text: "text-amber-700",
-    label: "Media",
-  },
-  low: {
-    bg: "bg-blue-50 border-blue-200",
-    text: "text-blue-700",
-    label: "Baja",
-  },
-  info: {
-    bg: "bg-emerald-50 border-emerald-200",
-    text: "text-emerald-700",
-    label: "Info",
-  },
 };
 
 export default function HomePage() {
@@ -69,10 +41,11 @@ export default function HomePage() {
     "checking" | "online" | "offline"
   >("checking");
   const { zones, kpis, carbon } = useDashboardData();
-
-  // DEBUG temporal
-  console.log("ZONES:", zones);
-  console.log("Length:", zones?.length);
+  const {
+    output: decision,
+    context: decisionContext,
+    evidence: decisionEvidence,
+  } = useTodayDecision();
   const recommendations = useRecommendations();
 
   const topAlerts = useMemo(
@@ -117,7 +90,14 @@ export default function HomePage() {
         </div>
         <ServerStatus status={serverStatus} />
       </div>
-
+      {/* 🎯 DECISIÓN DEL DÍA — primera cosa que ve el agricultor */}
+      <div className="mb-8">
+        <DailyDecisionCard
+          output={decision}
+          context={decisionContext}
+          evidence={decisionEvidence}
+        />
+      </div>
       {/* KPIs */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
         {kpis.map((kpi, i) => {
@@ -207,7 +187,7 @@ export default function HomePage() {
               </div>
             ) : (
               topAlerts.map((alert) => {
-                const style = PRIORITY_STYLE[alert.priority];
+                const style = PRIORITY_STYLES[alert.priority];
                 return (
                   <Link
                     key={alert.id}

@@ -125,8 +125,8 @@ export const DASHBOARD_KPIS: DashboardKpi[] = [
   },
   {
     value: "4",
-    label: "Setas autóctonas",
-    icon: "mushroom",
+    label: "Redes micorrícicas",
+    icon: "mycorrhiza",
     subtext: "Red fúngica activa",
   },
 ];
