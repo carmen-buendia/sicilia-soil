@@ -1,0 +1,22 @@
+{
+  "name": "@sicilia-soil/edge",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Runtime for constrained edge devices. Local rule execution, sensor polling, offline buffering. Runs on Raspberry Pi, ESP32.",
+  "license": "Apache-2.0",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "dependencies": {
+    "@sicilia-soil/decision": "workspace:*",
+    "@sicilia-soil/sync": "workspace:*"
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit"
+  }
+}
