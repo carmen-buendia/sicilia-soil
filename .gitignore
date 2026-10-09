@@ -58,4 +58,4 @@ backup-*/
 
 # Backend (temporal, hasta que renombremos)
 backend/node_modules/
-backend/dist/
+backend/dist/licenses.json

@@ -15,7 +15,9 @@
       "@sicilia-soil/ui": ["./packages/ui/src"],
       "@sicilia-soil/ui/*": ["./packages/ui/src/*"],
       "@sicilia-soil/utils": ["./packages/utils/src"],
-      "@sicilia-soil/utils/*": ["./packages/utils/src/*"]
+      "@sicilia-soil/utils/*": ["./packages/utils/src/*"],
+      "@sicilia-soil/db": ["./packages/db/src"],
+      "@sicilia-soil/db/*": ["./packages/db/src/*"]
     }
   },
   "exclude": ["node_modules", "apps/*/node_modules", "packages/*/node_modules"]
