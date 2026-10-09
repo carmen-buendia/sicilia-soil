@@ -1,7 +1,6 @@
 // packages/core/src/decision/sicilia-soil.adapter.ts
 // SPDX-License-Identifier: Apache-2.0
-// Copyright 2026 Sicilia Soil Contributors
-
+// Copyright 2026 Carmen María Buendía Sánchez
 // ============================================================================
 // Sicilia Soil — Evidence Adapter
 // ----------------------------------------------------------------------------
