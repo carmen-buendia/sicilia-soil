@@ -114,7 +114,7 @@ export function SymbiosisCard({
         </div>
       </div>
 
-      {/* Radar de indicadores con Highcharts */}
+      {/* Radar de indicadores con ECharts */}
       <div className="bg-white/40 rounded-xl p-4 mb-4">
         <p className="text-xs font-semibold uppercase tracking-wider mb-2 opacity-70">
           Indicadores del ciclo
@@ -155,7 +155,7 @@ export function SymbiosisCard({
         </div>
       </div>
 
-      {/* Bar chart de hosts con Highcharts */}
+      {/* Bar chart de hosts con ECharts */}
       {allHosts.length > 0 && (
         <div className="bg-white/40 rounded-xl p-4 mb-4">
           <p className="text-xs font-semibold uppercase tracking-wider mb-2 opacity-70">
