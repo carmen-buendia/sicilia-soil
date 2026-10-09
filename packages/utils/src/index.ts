@@ -16,5 +16,3 @@ export * from "./symbiosis.engine";
 // Utilidades específicas de dominio
 export * from "./copernicusUtils";
 export * from "./groundCoverUtils";
-
-export * from "./decision";

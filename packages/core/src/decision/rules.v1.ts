@@ -1,5 +1,4 @@
-// packages/utils/src/decision/rules.v1.ts
-
+// packages/core/src/decision/rules.v1.ts
 // ============================================================================
 // Sicilia Soil — Decision rules v1
 // ----------------------------------------------------------------------------
@@ -9,7 +8,7 @@
 // The engine applies them. The learner adjusts weights over time.
 // ============================================================================
 
-import type { DecisionRule } from "@sicilia-soil/core";
+import { DecisionRule } from "../../../decision/src/types";
 
 export const DECISION_RULES_V1: DecisionRule[] = [
   // -------------------------------------------------------------------------
