@@ -1,0 +1,13 @@
+# SQLite database files (local only)
+data/*.db
+data/*.db-shm
+data/*.db-wal
+
+# Drizzle migrations metadata (keep, but ignore journal temp)
+# drizzle/meta/_journal.json
+
+# Build output
+dist/
+
+# Node
+node_modules/

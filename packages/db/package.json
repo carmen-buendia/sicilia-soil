@@ -1,0 +1,39 @@
+{
+  "name": "@sicilia-soil/db",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Database layer for Sicilia Soil — Drizzle ORM + sql.js",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./schema": {
+      "types": "./src/schema/index.ts",
+      "default": "./src/schema/index.ts"
+    }
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit",
+    "db:generate": "node ./node_modules/drizzle-kit/bin.cjs generate",
+    "db:migrate": "tsx src/migrate.ts",
+    "db:push": "node ./node_modules/drizzle-kit/bin.cjs push",
+    "db:studio": "node ./node_modules/drizzle-kit/bin.cjs studio",
+    "db:seed": "tsx src/seed/index.ts"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.14.0",
+    "@sicilia-soil/core": "workspace:*",
+    "drizzle-orm": "^0.45.2",
+    "sql.js": "^1.14.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "@types/sql.js": "^1.4.9",
+    "drizzle-kit": "^0.31.10",
+    "tsx": "^4.19.2",
+    "typescript": "^5.8.2"
+  }
+}
