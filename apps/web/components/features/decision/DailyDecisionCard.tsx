@@ -8,6 +8,7 @@ import {
   SOURCE_META,
   VOTE_DOT_COLOR,
   weightTextColor,
+  DEFAULT_SOURCE_META,
 } from "@/config/decision.styles";
 import { WhyPanel } from "./WhyPanel";
 import { useState } from "react";
@@ -184,7 +185,7 @@ export function DailyDecisionCard({
       <div className="border-t border-oliveGreen/10 bg-white/40 backdrop-blur-sm px-5 py-3 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2 flex-wrap">
           {output.sourcesUsed.map((src) => {
-            const meta = SOURCE_META[src];
+            const meta = SOURCE_META[src] ?? DEFAULT_SOURCE_META;
             const Icon = meta.Icon;
             return (
               <span

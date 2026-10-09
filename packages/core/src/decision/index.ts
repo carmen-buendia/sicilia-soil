@@ -1,0 +1,18 @@
+// packages/core/src/decision/index.ts
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 Sicilia Soil Contributors
+
+export * from "./rules.v1";
+export * from "./sicilia-soil.adapter";
+export * from "./decide";
+
+// Re-export the generic engine types so consumers only need @sicilia-soil/core
+export type {
+  DecisionOutput,
+  DecisionState,
+  DecisionRule,
+  RuleCondition,
+  RuleOperator,
+  FiredRule,
+  InputConflict,
+} from "@sicilia-soil/decision";
