@@ -67,7 +67,7 @@ export interface SourceMeta {
   Icon: typeof Satellite;
 }
 
-export const SOURCE_META: Record<EvidenceSource, SourceMeta> = {
+export const SOURCE_META: Record<string, SourceMeta> = {
   sentinel1: { label: "Sentinel-1", Icon: Satellite },
   sentinel2: { label: "Sentinel-2", Icon: Satellite },
   sentinel3: { label: "Sentinel-3", Icon: Satellite },
@@ -75,6 +75,11 @@ export const SOURCE_META: Record<EvidenceSource, SourceMeta> = {
   weather: { label: "Meteo", Icon: Cloud },
   historical: { label: "Histórico", Icon: History },
   observation: { label: "Observación", Icon: Info },
+};
+
+export const DEFAULT_SOURCE_META: SourceMeta = {
+  label: "Desconocido",
+  Icon: Info,
 };
 
 // ---------------------------------------------------------------------------
