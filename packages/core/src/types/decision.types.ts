@@ -1,7 +1,6 @@
 // packages/core/src/types/decision.types.ts
 // SPDX-License-Identifier: Apache-2.0
-// Copyright 2026 Sicilia Soil Contributors
-
+// Copyright 2026 Carmen María Buendía Sánchez
 // ============================================================================
 // Sicilia Soil — Domain-specific decision types
 // ----------------------------------------------------------------------------

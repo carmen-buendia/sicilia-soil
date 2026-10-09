@@ -19,7 +19,11 @@
       "@sicilia-soil/db": ["./packages/db/src"],
       "@sicilia-soil/db/*": ["./packages/db/src/*"],
       "@sicilia-soil/decision": ["./packages/decision/src"],
-      "@sicilia-soil/decision/*": ["./packages/decision/src/*"]
+      "@sicilia-soil/decision/*": ["./packages/decision/src/*"],
+      "@sicilia-soil/sync": ["./packages/sync/src"],
+      "@sicilia-soil/sync/*": ["./packages/sync/src/*"],
+      "@sicilia-soil/edge": ["./packages/edge/src"],
+      "@sicilia-soil/edge/*": ["./packages/edge/src/*"]
     }
   },
   "exclude": ["node_modules", "apps/*/node_modules", "packages/*/node_modules"]

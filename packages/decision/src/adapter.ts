@@ -1,7 +1,6 @@
 // packages/decision/src/adapter.ts
 // SPDX-License-Identifier: Apache-2.0
-// Copyright 2026 Sicilia Soil Contributors
-
+// Copyright 2026 Carmen María Buendía Sánchez
 import type { InputConflict } from "./types";
 
 export interface EvidenceAdapter<TEvidence> {
