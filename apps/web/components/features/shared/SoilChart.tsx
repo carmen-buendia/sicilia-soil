@@ -1,8 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Highcharts from "highcharts";
-import HighchartsReact from "highcharts-react-official";
+// apps/web/components/features/shared/SoilChart.tsx
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 Carmen Maria Buendia Sanchez
+
+import ReactECharts from "echarts-for-react";
+import type { EChartsOption, SeriesOption } from "echarts";
 
 // ============================================================================
 // Paleta Sicilia Soil
@@ -69,6 +72,25 @@ export type SoilChartProps = {
 };
 
 // ============================================================================
+// Helpers
+// ============================================================================
+
+const COLOR_VALUES = Object.values(SOIL_COLORS);
+
+function toCartesianSeriesType(t: SoilChartType): "line" | "bar" {
+  switch (t) {
+    case "column":
+    case "bar":
+      return "bar";
+    case "area":
+    case "spline":
+    case "line":
+    default:
+      return "line";
+  }
+}
+
+// ============================================================================
 // Componente
 // ============================================================================
 
@@ -88,174 +110,222 @@ export function SoilChart({
   secondaryYAxis,
   thresholdLine,
 }: SoilChartProps) {
-  const [modulesReady, setModulesReady] = useState(false);
   const isRadar = type === "radar";
   const isPie = type === "pie";
+  const isArea = type === "area";
+  const isSpline = type === "spline";
 
-  // Carga el módulo polar solo en cliente (necesario para radar)
-  useEffect(() => {
-    if (isRadar) {
-      import("highcharts/highcharts-more")
-        .then(() => setModulesReady(true))
-        .catch(() => setModulesReady(true));
-    } else {
-      setModulesReady(true);
-    }
-  }, [isRadar]);
+  // ---------------------------------------------------------------------------
+  // Y axes (only for cartesian charts)
+  // ---------------------------------------------------------------------------
 
-  if (!modulesReady) {
-    return (
-      <div
-        className="flex items-center justify-center text-xs text-oliveGreen/60"
-        style={{ height }}
-      >
-        Cargando gráfico…
-      </div>
-    );
-  }
-
-  const yAxis: Highcharts.YAxisOptions[] = [
-    {
-      title: yAxisLabel
-        ? {
-            text: yAxisLabel,
-            style: { color: "#6b7280", fontSize: "11px" },
-          }
-        : undefined,
-      labels: {
-        format: `{value}${yAxisUnit}`,
-        style: { color: "#6b7280", fontSize: "11px" },
-      },
-      gridLineColor: "#f3f4f6",
-      stackLabels: stacked ? { enabled: false } : undefined,
-      max: isRadar ? (yAxisMax ?? 100) : yAxisMax,
+  const yAxes: any[] = [];
+  if (!isPie && !isRadar) {
+    const primaryAxis: any = {
+      type: "value",
+      name: yAxisLabel,
+      nameTextStyle: { color: "#6b7280", fontSize: 11 },
+      max: yAxisMax,
       min: yAxisMin,
-      plotLines:
-        thresholdLine && !isRadar && !isPie
-          ? [
-              {
-                value: thresholdLine.value,
-                color: thresholdLine.color ?? SOIL_COLORS.red,
-                width: 1.5,
-                dashStyle: "Dash",
-                label: {
-                  text: thresholdLine.label ?? `Umbral ${thresholdLine.value}`,
-                  style: {
-                    color: thresholdLine.color ?? SOIL_COLORS.red,
-                    fontSize: "10px",
-                  },
-                },
-                zIndex: 5,
-              },
-            ]
-          : undefined,
-    },
-  ];
+      axisLine: { show: true, lineStyle: { color: "#e5e7eb" } },
+      axisLabel: {
+        color: "#6b7280",
+        fontSize: 11,
+        formatter: `{value}${yAxisUnit}`,
+      },
+      splitLine: { lineStyle: { color: "#f3f4f6" } },
+    };
 
-  if (secondaryYAxis && !isRadar && !isPie) {
-    yAxis.push({
-      title: {
-        text: secondaryYAxis.label,
-        style: { color: "#6b7280", fontSize: "11px" },
-      },
-      labels: {
-        format: `{value}${secondaryYAxis.unit ?? ""}`,
-        style: { color: "#6b7280", fontSize: "11px" },
-      },
-      opposite: secondaryYAxis.opposite ?? true,
-      gridLineWidth: 0,
-    });
+    // Threshold line (as markLine on the axis — ECharts doesn't support directly)
+    // We attach it via markLine on each series below instead.
+
+    yAxes.push(primaryAxis);
+
+    if (secondaryYAxis) {
+      yAxes.push({
+        type: "value",
+        name: secondaryYAxis.label,
+        nameTextStyle: { color: "#6b7280", fontSize: 11 },
+        position: secondaryYAxis.opposite === false ? "left" : "right",
+        axisLine: { show: true, lineStyle: { color: "#e5e7eb" } },
+        axisLabel: {
+          color: "#6b7280",
+          fontSize: 11,
+          formatter: `{value}${secondaryYAxis.unit ?? ""}`,
+        },
+        splitLine: { show: false },
+      });
+    }
   }
 
-  const options: Highcharts.Options = {
-    chart: {
-      type: isRadar ? "line" : type,
-      polar: isRadar,
-      height,
-      backgroundColor: "transparent",
-      style: { fontFamily: "inherit" },
-      spacing: [10, 10, 15, 10],
-    },
+  // ---------------------------------------------------------------------------
+  // Series
+  // ---------------------------------------------------------------------------
+
+  const echartsSeries: SeriesOption[] = series.map((s, i) => {
+    const color = s.color ?? COLOR_VALUES[i % COLOR_VALUES.length];
+    const chartType = s.type ?? type;
+
+    // --- PIE ---
+    if (isPie) {
+      return {
+        name: s.name,
+        type: "pie",
+        radius: ["45%", "75%"],
+        center: ["50%", "55%"],
+        data: (categories ?? []).map((cat, idx) => ({
+          name: cat,
+          value: s.data[idx] ?? 0,
+        })),
+        itemStyle: { borderColor: "#ffffff", borderWidth: 2 },
+        label: { fontSize: 11 },
+      } as SeriesOption;
+    }
+
+    // --- RADAR ---
+    if (isRadar) {
+      return {
+        name: s.name,
+        type: "radar",
+        data: [
+          {
+            value: s.data,
+            name: s.name,
+            lineStyle: { width: 2, color },
+            itemStyle: { color },
+            areaStyle: { opacity: 0.15, color },
+            symbol: "circle",
+            symbolSize: 4,
+          },
+        ],
+      } as SeriesOption;
+    }
+
+    // --- CARTESIAN (line, area, spline, bar, column) ---
+    const echartsType = toCartesianSeriesType(chartType);
+    const yAxisIndex = s.yAxis ?? 0;
+
+    // Threshold line as markLine on this series
+    const markLine =
+      thresholdLine && i === 0
+        ? {
+            silent: true,
+            symbol: "none",
+            lineStyle: {
+              color: thresholdLine.color ?? SOIL_COLORS.red,
+              type: "dashed",
+              width: 1.5,
+            },
+            label: {
+              formatter: thresholdLine.label ?? `Umbral ${thresholdLine.value}`,
+              color: thresholdLine.color ?? SOIL_COLORS.red,
+              fontSize: 10,
+              position: "end",
+            },
+            data: [{ yAxis: thresholdLine.value }],
+          }
+        : undefined;
+
+    return {
+      name: s.name,
+      type: echartsType,
+      data: s.data,
+      yAxisIndex,
+      stack: stacked ? "total" : undefined,
+      smooth: isSpline,
+      areaStyle: isArea ? { opacity: 0.2 } : undefined,
+      lineStyle: { width: 2, color },
+      itemStyle: { color },
+      showSymbol: series.length <= 2,
+      barMaxWidth: 40,
+      markLine,
+    } as SeriesOption;
+  });
+
+  // ---------------------------------------------------------------------------
+  // Option
+  // ---------------------------------------------------------------------------
+
+  const option: EChartsOption = {
+    animation: false,
     title: title
       ? {
           text: title,
-          style: {
+          subtext: subtitle,
+          textStyle: {
             color: SOIL_COLORS.charcoal,
-            fontSize: "14px",
-            fontWeight: "600",
+            fontSize: 14,
+            fontWeight: 600,
           },
+          subtextStyle: { color: "#6b7280", fontSize: 11 },
+          left: 8,
+          top: 4,
         }
       : undefined,
-    subtitle: subtitle
-      ? {
-          text: subtitle,
-          style: { color: "#6b7280", fontSize: "11px" },
-        }
-      : undefined,
-    xAxis: {
-      categories,
-      labels: {
-        style: { color: "#6b7280", fontSize: "11px" },
-      },
-      lineColor: "#e5e7eb",
-      tickColor: "#e5e7eb",
-      gridLineColor: isRadar ? "#f3f4f6" : undefined,
-    },
-    yAxis: isPie ? undefined : yAxis,
-    legend: {
-      enabled: legend,
-      itemStyle: { color: SOIL_COLORS.charcoal, fontSize: "11px" },
-      symbolRadius: 3,
-    },
-    plotOptions: {
-      series: {
-        stacking: stacked ? "normal" : undefined,
-        marker: {
-          enabled: series.length <= 2 || isRadar,
-          radius: 3,
-        },
-        lineWidth: 2,
-      },
-      column: { borderRadius: 3, borderWidth: 0 },
-      bar: { borderRadius: 3, borderWidth: 0 },
-      pie: {
-        innerSize: "55%",
-        borderWidth: 2,
-        borderColor: "#ffffff",
-        dataLabels: {
-          enabled: true,
-          format: "<b>{point.name}</b><br>{point.y}",
-          style: { fontSize: "11px" },
-        },
-      },
-    },
-    series: series.map((s, i) => {
-      const base = {
-        name: s.name,
-        data: s.data,
-        type: (s.type ?? (isRadar ? "line" : type)) as any,
-        color:
-          s.color ??
-          Object.values(SOIL_COLORS)[i % Object.values(SOIL_COLORS).length],
-        yAxis: s.yAxis ?? 0,
-        ...(isRadar ? { fillOpacity: 0.15 } : {}),
-      };
-      return base;
-    }) as Highcharts.SeriesOptionsType[],
-    credits: { enabled: false },
+    grid:
+      isPie || isRadar
+        ? undefined
+        : {
+            left: 56,
+            right: secondaryYAxis ? 56 : 24,
+            top: title ? 48 : 24,
+            bottom: legend ? 40 : 24,
+          },
+    legend:
+      legend && !isPie && !isRadar
+        ? {
+            bottom: 0,
+            textStyle: { color: SOIL_COLORS.charcoal, fontSize: 11 },
+            icon: "circle",
+          }
+        : undefined,
     tooltip: {
-      shared: !isPie,
+      trigger: isPie ? "item" : isRadar ? "item" : "axis",
       backgroundColor: "rgba(255,255,255,0.98)",
       borderColor: "#e5e7eb",
-      borderRadius: 8,
-      style: { fontSize: "12px" },
-      valueSuffix: isPie ? "" : yAxisUnit,
+      textStyle: { fontSize: 12 },
+      valueFormatter:
+        isPie || isRadar ? undefined : (value) => `${value}${yAxisUnit}`,
     },
+    ...(isRadar
+      ? {
+          radar: {
+            indicator: (categories ?? []).map((name) => ({
+              name,
+              max: yAxisMax ?? 100,
+              min: yAxisMin ?? 0,
+            })),
+            axisName: { color: "#6b7280", fontSize: 11 },
+            splitLine: { lineStyle: { color: "#f3f4f6" } },
+            splitArea: { areaStyle: { color: ["#ffffff", "#fafafa"] } },
+            radius: "65%",
+            center: ["50%", "55%"],
+          },
+        }
+      : isPie
+        ? {}
+        : {
+            xAxis: {
+              type: "category",
+              data: categories,
+              axisLine: { lineStyle: { color: "#e5e7eb" } },
+              axisLabel: { color: "#6b7280", fontSize: 11 },
+              boundaryGap: type === "bar" || type === "column",
+            },
+            yAxis: yAxes,
+          }),
+    series: echartsSeries,
   };
 
   return (
-    <div className="w-full">
-      <HighchartsReact highcharts={Highcharts} options={options} />
+    <div className="w-full" style={{ height }}>
+      <ReactECharts
+        option={option}
+        style={{ height: "100%", width: "100%" }}
+        opts={{ renderer: "canvas" }}
+        notMerge={true}
+        lazyUpdate={true}
+      />
     </div>
   );
 }
