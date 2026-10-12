@@ -15,7 +15,7 @@ packages/ui/src/
 │   │   └── Chip.tsx            Selectable chip
 │   ├── LoadingSpinner.tsx
 │   └── Charts/
-│       ├── MycologyChart.tsx   Highcharts line chart for mushroom conditions
+│       ├── MycologyChart.tsx   ECharts line chart for mushroom conditions
 │       └── index.ts
 └── index.ts                    Public API
 ```
@@ -38,7 +38,7 @@ import {
 
 ## Chart components
 
-Chart components wrap **Highcharts** with a consistent theme.
+Chart components wrap **ECharts** with a consistent theme.
 
 - `MycologyChart` — line chart for mushroom conditions (humidity, temperature, CO2).
 

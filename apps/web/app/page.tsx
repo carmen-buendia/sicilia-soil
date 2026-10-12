@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import {
   Trees,
   Droplet,
@@ -18,7 +19,6 @@ import {
 import { StatsCard } from "@/components/features/dashboard/components/StatsCards";
 import { ZoneCard } from "@/components/features/dashboard/components/ZoneCards";
 import { ServerStatus } from "@/components/features/dashboard/components/ServerStatus";
-import { CopernicusMapMini } from "@/components/features/copernicus/components";
 import { DailyDecisionCard } from "@/components/features/decision";
 import { useRecommendations } from "@/hooks/useRecommendations";
 import { useDashboardData } from "@/hooks/useDashboardData";
@@ -35,6 +35,23 @@ const ICON_MAP: Record<string, any> = {
   sun: Sun,
   wind: Wind,
 };
+const CopernicusMapMini = dynamic(
+  () =>
+    import("@/components/features/copernicus/components").then(
+      (m) => m.CopernicusMapMini,
+    ),
+  {
+    ssr: false,
+    loading: () => (
+      <div
+        className="flex items-center justify-center bg-blue-50/40 border border-blue-100 rounded-xl animate-pulse"
+        style={{ height: 260 }}
+      >
+        <p className="text-sm text-oliveGreen/60">Cargando mapa…</p>
+      </div>
+    ),
+  },
+);
 
 export default function HomePage() {
   const [serverStatus, setServerStatus] = useState<

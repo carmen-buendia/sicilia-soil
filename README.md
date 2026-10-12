@@ -106,7 +106,7 @@ pnpm build
 | Layer    | Technology                               |
 | :------- | :--------------------------------------- |
 | Frontend | Next.js 16, React, TailwindCSS           |
-| Charts   | Highcharts                               |
+| Charts   | ECharts                                  |
 | Maps     | Leaflet, Copernicus tiles                |
 | State    | React hooks, Context                     |
 | Backend  | Fastify (planned)                        |

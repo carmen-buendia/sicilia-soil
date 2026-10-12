@@ -1,7 +1,11 @@
 "use client";
 
-import Highcharts from "highcharts";
-import HighchartsReact from "highcharts-react-official";
+// packages/ui/src/components/Charts/MycologyChart.tsx
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 Carmen Maria Buendia Sanchez
+
+import ReactECharts from "echarts-for-react";
+import type { EChartsOption } from "echarts";
 
 interface MycologyChartProps {
   mushroomName: string;
@@ -31,64 +35,60 @@ export const MycologyChart = ({
 }: MycologyChartProps) => {
   const config = getMetricConfig(metric);
 
-  const options: Highcharts.Options = {
-    accessibility: { enabled: false },
-    chart: {
-      type: "line",
-      height,
-      backgroundColor: "transparent",
-      style: { fontFamily: "inherit" },
-      spacing: [10, 10, 15, 10],
-    },
+  const option: EChartsOption = {
+    animation: false,
     title: {
       text: `${config.title} · ${mushroomName}`,
-      style: { color: "#3A3A3A", fontSize: "14px", fontWeight: "600" },
+      textStyle: { color: "#3A3A3A", fontSize: 14, fontWeight: 600 },
+      left: 8,
+      top: 4,
     },
+    grid: { left: 48, right: 24, top: 48, bottom: 40 },
     xAxis: {
-      categories: data.map((d) => d.timestamp),
-      labels: { style: { color: "#6b7280", fontSize: "11px" } },
-      lineColor: "#e5e7eb",
-      tickColor: "#e5e7eb",
+      type: "category",
+      data: data.map((d) => d.timestamp),
+      axisLine: { lineStyle: { color: "#e5e7eb" } },
+      axisLabel: { color: "#6b7280", fontSize: 11 },
     },
     yAxis: {
-      title: {
-        text: config.title,
-        style: { color: "#6b7280", fontSize: "11px" },
+      type: "value",
+      name: config.title,
+      nameTextStyle: { color: "#6b7280", fontSize: 11 },
+      axisLine: { show: true, lineStyle: { color: "#e5e7eb" } },
+      axisLabel: {
+        color: "#6b7280",
+        fontSize: 11,
+        formatter: `{value}${config.unit}`,
       },
-      labels: {
-        format: `{value}${config.unit}`,
-        style: { color: "#6b7280", fontSize: "11px" },
-      },
-      gridLineColor: "#f3f4f6",
+      splitLine: { lineStyle: { color: "#f3f4f6" } },
     },
-    legend: { enabled: false },
-    plotOptions: {
-      series: {
-        marker: { enabled: false, radius: 3 },
-        lineWidth: 2,
-      },
+    tooltip: {
+      trigger: "axis",
+      backgroundColor: "rgba(255,255,255,0.98)",
+      borderColor: "#e5e7eb",
+      textStyle: { fontSize: 12 },
+      valueFormatter: (value) => `${value}${config.unit}`,
     },
     series: [
       {
         name: config.title,
-        data: data.map((d) => d.value),
         type: "line",
-        color: config.color,
+        smooth: true,
+        data: data.map((d) => d.value),
+        lineStyle: { width: 2, color: config.color },
+        itemStyle: { color: config.color },
+        showSymbol: false,
       },
     ],
-    credits: { enabled: false },
-    tooltip: {
-      backgroundColor: "rgba(255,255,255,0.98)",
-      borderColor: "#e5e7eb",
-      borderRadius: 8,
-      style: { fontSize: "12px" },
-      valueSuffix: config.unit,
-    },
   };
 
   return (
-    <div className="w-full">
-      <HighchartsReact highcharts={Highcharts} options={options} />
+    <div className="w-full" style={{ height }}>
+      <ReactECharts
+        option={option}
+        style={{ height: "100%", width: "100%" }}
+        opts={{ renderer: "canvas" }}
+      />
     </div>
   );
 };
