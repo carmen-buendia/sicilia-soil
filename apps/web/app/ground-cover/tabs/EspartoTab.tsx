@@ -57,7 +57,7 @@ export function EspartoTab() {
     ...symbiosisInput,
   });
 
-  // Prepara las series de Highcharts desde monitoring
+  // Prepara las series de ECharts desde monitoring
   const monitoringKeys = Object.keys(monitoring) as MonitoringKey[];
   const days = monitoring[monitoringKeys[0]].map((_, i) => `D${i + 1}`);
 
@@ -204,7 +204,7 @@ export function EspartoTab() {
           })}
         </div>
 
-        {/* Evolución con Highcharts */}
+        {/* Evolución con ECharts */}
         <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-oliveGreen/15">
           <h3 className="text-lg font-bold text-charcoalGray mb-4">
             Evolución de condiciones (últimos 14 días)

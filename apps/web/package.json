@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "Real-time monitoring system for syntropic permaculture in Sicily",
-  "author": "Carmen Buendía",
+  "author": "Carmen María Buendía Sánchez",
   "keywords": [
     "syntropic-permaculture",
     "mycology",
@@ -24,14 +24,14 @@
     "@sicilia-soil/core": "workspace:*",
     "@sicilia-soil/ui": "workspace:*",
     "@sicilia-soil/utils": "workspace:*",
-    "highcharts": "^12.5.0",
-    "highcharts-react-official": "^3.2.3",
+    "echarts": "^5.5.1",
+    "echarts-for-react": "^3.0.2",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.309.0",
     "next": "^16.3.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-leaflet": "^5.0.0",
+    "react-leaflet": "^4.2.1",
     "socket.io-client": "^4.8.3"
   },
   "devDependencies": {
