@@ -1,21 +1,15 @@
 "use client";
 
-import {
-  Fragment,
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import type {
-  LatLngExpression,
-  LatLngBoundsExpression,
-  DivIcon,
-} from "leaflet";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import Map, {
+  Source,
+  Layer,
+  Marker,
+  Popup,
+  type MapRef,
+} from "react-map-gl/maplibre";
 import { Satellite, Layers, MapPin, Maximize2 } from "lucide-react";
-import { useMap } from "react-leaflet";
+import "maplibre-gl/dist/maplibre-gl.css";
 import {
   COPERNICUS_LAYER_CONFIG,
   FARM_BOUNDARY,
@@ -24,90 +18,15 @@ import {
   type CopernicusLayer,
   type CopernicusMapProps,
 } from "@sicilia-soil/core";
+import { initMapLibreWorker } from "./MapLibreSetup";
 
-import dynamic from "next/dynamic";
+const BASE_STYLE =
+  "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json";
 
-const MapContainer = dynamic(
-  () => import("react-leaflet").then((mod) => mod.MapContainer),
-  { ssr: false },
-);
-const TileLayer = dynamic(
-  () => import("react-leaflet").then((mod) => mod.TileLayer),
-  { ssr: false },
-);
-const Polygon = dynamic(
-  () => import("react-leaflet").then((mod) => mod.Polygon),
-  { ssr: false },
-);
-const Marker = dynamic(
-  () => import("react-leaflet").then((mod) => mod.Marker),
-  { ssr: false },
-);
-const Popup = dynamic(() => import("react-leaflet").then((mod) => mod.Popup), {
-  ssr: false,
-});
-
-/**
- * Crea el icono de marca de Sicilia Soil (DivIcon, sin PNG externo).
- * Debe llamarse solo en cliente, tras cargar leaflet dinámicamente.
- *
- * Por qué DivIcon y no PNG:
- *   Next.js/Turbopack rompen las rutas relativas a los PNGs por defecto
- *   de Leaflet. Un DivIcon (HTML+CSS inline) es inmune a ese problema,
- *   coincide con la paleta de marca y no depende de unpkg.
- */
-function createFarmMarkerIcon(L: typeof import("leaflet")): DivIcon {
-  return L.divIcon({
-    className: "sicilia-soil-marker",
-    html: `
-      <div style="
-        width: 34px;
-        height: 34px;
-        border-radius: 50%;
-        background: #8B9D6B;
-        border: 3px solid #ffffff;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.35);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 18px;
-        line-height: 1;
-      ">🌱</div>
-    `,
-    iconSize: [34, 34],
-    iconAnchor: [17, 17],
-    popupAnchor: [0, -17],
-  });
-}
-
-/**
- * Encaja el mapa en los límites de todas las parcelas al cargar
- * y cuando cambian. Expone `fit()` vía ref para el botón "centrar".
- */
-const FitToPlots = forwardRef<
-  { fit: () => void },
-  { plots: { coordinates: [number, number][] }[] }
->(({ plots }, ref) => {
-  const map = useMap();
-
-  const fit = () => {
-    if (!plots.length) return;
-    const bounds = plots.flatMap(
-      (p) => p.coordinates,
-    ) as LatLngBoundsExpression;
-    map.fitBounds(bounds, { padding: [40, 40], maxZoom: 21 });
-  };
-
-  useImperativeHandle(ref, () => ({ fit }));
-
-  useEffect(() => {
-    fit();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [plots.length]);
-
-  return null;
-});
-FitToPlots.displayName = "FitToPlots";
+const toLngLat = (coord: [number, number]): [number, number] => [
+  coord[1],
+  coord[0],
+];
 
 export function CopernicusMap({
   plots = FARM_BOUNDARY,
@@ -116,40 +35,62 @@ export function CopernicusMap({
   initialZoom = FARM_DEFAULT_ZOOM,
   height = "500px",
 }: CopernicusMapProps) {
-  const [activeLayer, setActiveLayer] = useState<CopernicusLayer>(initialLayer);
-  const [isMounted, setIsMounted] = useState(false);
-  const [markerIcon, setMarkerIcon] = useState<DivIcon | null>(null);
-
-  const fitRef = useRef<{ fit: () => void }>(null);
-
   useEffect(() => {
-    import("leaflet/dist/leaflet.css");
-    import("leaflet").then((mod) => {
-      setMarkerIcon(createFarmMarkerIcon(mod));
-      setIsMounted(true);
-    });
+    initMapLibreWorker();
   }, []);
+  const mapRef = useRef<MapRef>(null);
+  const [activeLayer, setActiveLayer] = useState<CopernicusLayer>(initialLayer);
+  const [popupPlot, setPopupPlot] = useState<(typeof plots)[number] | null>(
+    null,
+  );
 
   const layer = COPERNICUS_LAYER_CONFIG[activeLayer];
 
-  const center = useMemo(
-    () => initialCenter as LatLngExpression,
-    [initialCenter],
+  const plotsGeoJSON = useMemo(
+    () => ({
+      type: "FeatureCollection" as const,
+      features: plots.map((plot) => ({
+        type: "Feature" as const,
+        properties: {
+          id: plot.id,
+          name: plot.name,
+          color: plot.color ?? "#2563eb",
+        },
+        geometry: {
+          type: "Polygon" as const,
+          coordinates: [
+            [...plot.coordinates.map(toLngLat), toLngLat(plot.coordinates[0])],
+          ],
+        },
+      })),
+    }),
+    [plots],
   );
 
-  if (!isMounted) {
-    return (
-      <div
-        className="flex items-center justify-center bg-blue-50/50 border border-blue-100 rounded-xl"
-        style={{ height }}
-      >
-        <div className="flex flex-col items-center gap-2 text-oliveGreen/70">
-          <Satellite className="w-6 h-6 animate-pulse text-blue-600" />
-          <p className="text-sm">Cargando mapa satelital…</p>
-        </div>
-      </div>
+  const fitToPlots = useCallback(() => {
+    if (!plots.length || !mapRef.current) return;
+    const lngs: number[] = [];
+    const lats: number[] = [];
+    plots.forEach((p) => {
+      p.coordinates.forEach(([lat, lng]) => {
+        lngs.push(lng);
+        lats.push(lat);
+      });
+    });
+    mapRef.current.fitBounds(
+      [
+        [Math.min(...lngs), Math.min(...lats)],
+        [Math.max(...lngs), Math.max(...lats)],
+      ],
+      { padding: 40, maxZoom: 21, duration: 600 },
     );
-  }
+  }, [plots]);
+
+  useEffect(() => {
+    fitToPlots();
+  }, [fitToPlots]);
+
+  const [centerLng, centerLat] = toLngLat(initialCenter as [number, number]);
 
   return (
     <div className="bg-white/50 backdrop-blur-sm border border-blue-100 rounded-xl p-5 shadow-lg hover:shadow-xl transition-all">
@@ -194,73 +135,135 @@ export function CopernicusMap({
         className="rounded-lg overflow-hidden border border-blue-100 relative"
         style={{ height }}
       >
-        <MapContainer
-          center={center}
-          zoom={initialZoom}
+        <Map
+          ref={mapRef}
+          initialViewState={{
+            longitude: centerLng,
+            latitude: centerLat,
+            zoom: initialZoom,
+          }}
           minZoom={14}
           maxZoom={22}
-          scrollWheelZoom
-          style={{ height: "100%", width: "100%" }}
+          scrollZoom
+          mapStyle={BASE_STYLE}
+          dragRotate={false}
+          pitchWithRotate={false}
+          touchPitch={false}
+          attributionControl={{ compact: true }}
+          style={{ width: "100%", height: "100%" }}
         >
-          <TileLayer
-            url={layer.url}
+          {/* Tiles de Copernicus — key fuerza remount al cambiar de capa */}
+          <Source
+            key={activeLayer}
+            id="copernicus-raster"
+            type="raster"
+            tiles={[layer.url]}
+            tileSize={256}
             attribution={layer.attribution}
-            opacity={layer.opacity}
-            maxNativeZoom={layer.maxNativeZoom}
-            maxZoom={layer.maxZoom}
-          />
+          >
+            <Layer
+              id="copernicus-raster-layer"
+              type="raster"
+              paint={{ "raster-opacity": layer.opacity ?? 1 }}
+            />
+          </Source>
 
-          {plots.map((plot) => (
-            <Fragment key={plot.id}>
-              <Polygon
-                positions={plot.coordinates as LatLngExpression[]}
-                pathOptions={{
-                  color: plot.color ?? "#2563eb",
-                  fillColor: plot.color ?? "#3b82f6",
-                  fillOpacity: 0.35,
-                  weight: 3,
+          {/* Polígonos */}
+          <Source id="plots-geojson" type="geojson" data={plotsGeoJSON}>
+            <Layer
+              id="plots-fill"
+              type="fill"
+              paint={{
+                "fill-color": ["get", "color"],
+                "fill-opacity": 0.35,
+              }}
+            />
+            <Layer
+              id="plots-line"
+              type="line"
+              paint={{
+                "line-color": ["get", "color"],
+                "line-width": 3,
+              }}
+            />
+          </Source>
+
+          {/* Markers */}
+          {plots.map((plot) => {
+            const [markerLng, markerLat] = toLngLat(
+              plot.center as [number, number],
+            );
+            return (
+              <Marker
+                key={plot.id}
+                longitude={markerLng}
+                latitude={markerLat}
+                anchor="center"
+                onClick={(e) => {
+                  e.originalEvent.stopPropagation();
+                  setPopupPlot(plot);
                 }}
-              />
-              {markerIcon && (
-                <Marker
-                  position={plot.center as LatLngExpression}
-                  icon={markerIcon}
+              >
+                <div
+                  style={{
+                    width: 34,
+                    height: 34,
+                    borderRadius: "50%",
+                    background: "#8B9D6B",
+                    border: "3px solid #ffffff",
+                    boxShadow: "0 2px 10px rgba(0,0,0,0.35)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: 18,
+                    lineHeight: 1,
+                    cursor: "pointer",
+                  }}
                 >
-                  <Popup>
-                    <div className="text-xs">
-                      <strong className="text-charcoalGray">{plot.name}</strong>
-                      {plot.indices && (
-                        <ul className="mt-2 space-y-0.5 text-oliveGreen/80">
-                          {plot.indices.ndvi !== undefined && (
-                            <li>NDVI: {plot.indices.ndvi.toFixed(2)}</li>
-                          )}
-                          {plot.indices.ndwi !== undefined && (
-                            <li>NDWI: {plot.indices.ndwi.toFixed(2)}</li>
-                          )}
-                          {plot.indices.ssm !== undefined && (
-                            <li>SSM: {plot.indices.ssm}%</li>
-                          )}
-                          {plot.indices.lst !== undefined && (
-                            <li>LST: {plot.indices.lst}°C</li>
-                          )}
-                        </ul>
-                      )}
-                    </div>
-                  </Popup>
-                </Marker>
-              )}
-            </Fragment>
-          ))}
+                  🌱
+                </div>
+              </Marker>
+            );
+          })}
 
-          {/* Encaja automáticamente + expone fit() vía ref */}
-          <FitToPlots ref={fitRef} plots={plots} />
-        </MapContainer>
+          {/* Popup con índices */}
+          {popupPlot && (
+            <Popup
+              longitude={toLngLat(popupPlot.center as [number, number])[0]}
+              latitude={toLngLat(popupPlot.center as [number, number])[1]}
+              anchor="bottom"
+              onClose={() => setPopupPlot(null)}
+              closeOnClick={false}
+              maxWidth="240px"
+            >
+              <div className="text-xs">
+                <strong className="text-charcoalGray">{popupPlot.name}</strong>
+                {popupPlot.indices && (
+                  <ul className="mt-2 space-y-0.5 text-oliveGreen/80">
+                    {popupPlot.indices.ndvi !== undefined && (
+                      <li>NDVI: {popupPlot.indices.ndvi.toFixed(2)}</li>
+                    )}
+                    {popupPlot.indices.ndwi !== undefined && (
+                      <li>NDWI: {popupPlot.indices.ndwi.toFixed(2)}</li>
+                    )}
+                    {popupPlot.indices.ssm !== undefined && (
+                      <li>SSM: {popupPlot.indices.ssm}%</li>
+                    )}
+                    {popupPlot.indices.lst !== undefined && (
+                      <li>LST: {popupPlot.indices.lst}°C</li>
+                    )}
+                  </ul>
+                )}
+              </div>
+            </Popup>
+          )}
+        </Map>
 
-        {/* Botón "fit to farm" — sin recargar la página */}
+        {/* Botón fit-to-farm */}
         <button
           type="button"
           className="absolute top-3 right-3 z-[400] bg-white/90 backdrop-blur-sm border border-blue-100 rounded-md p-1.5 shadow-sm hover:bg-white"
-          onClick={() => fitRef.current?.fit()}
+          onClick={fitToPlots}
           title="Centrar en la finca"
         >
           <Maximize2 className="w-4 h-4 text-blue-600" />
