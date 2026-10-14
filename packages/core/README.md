@@ -28,7 +28,7 @@ packages/core/src/
 │   ├── dashboard.data.ts
 │   ├── esparto.data.ts
 │   ├── groundCover.data.ts
-│   ├── humidity.data.ts
+│   ├── water.data.ts
 │   ├── light.data.ts
 │   ├── polyculture.data.ts
 │   ├── sensors.mock.ts
@@ -50,7 +50,7 @@ import {
   FARM_DEFAULT_ZOOM,
   DEFAULT_FARM_PLOTS,
   COPERNICUS_LAYER_CONFIG,
-  HUMIDITY_DATA,
+  WATER_DATA,
   SOIL_CONTAMINATION,
   getRemediationProgress,
 } from "@sicilia-soil/core";
@@ -66,7 +66,7 @@ All data lives here as **mock data** until the backend is connected. Once the AP
 2. Replace the mock values in `data/` with **fetch calls from hooks** in the app.
 3. Delete the mock file for that domain.
 
-Example: `humidity.data.ts` will be replaced by `useHumidityData()` that fetches from `/api/humidity`.
+Example: `water.data.ts` will be replaced by `useWaterData()` that fetches from `/api/water`.
 
 ---
 

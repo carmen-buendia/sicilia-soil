@@ -13,18 +13,22 @@ export * from "./recommendation.rules";
 export * from "./sensors.mock";
 export * from "./temperature.data";
 export * from "./light.data";
-export * from "./humidity.data";
+export * from "./water.data";
 export * from "./decision.mock";
 
-// Humidity: exporta datos + helpers, no el tipo
+// Water: export data + helpers, not the type
 export {
-  HUMIDITY_DATA,
-  getAverageHumidity,
+  WATER_DATA,
+  WATER_CLIMATE,
+  WATER_FORECAST,
+  WATER_LAST_READING,
+  WATER_CONTROL,
+  getAverageWater,
   getCriticalZones,
   getOptimalZones,
   getZoneStatus,
   getZoneColor,
-} from "./humidity.data";
+} from "./water.data";
 
 // Dashboard
 export { GARDEN_ZONES, DASHBOARD_KPIS, CARBON_SUMMARY } from "./dashboard.data";
