@@ -18,7 +18,27 @@ export const ui = {
     login: "Iniciar sesión",
     logout: "Cerrar sesión",
   },
-
+  auth: {
+    signIn: "Sign in",
+    subtitle: "Access the soil recovery instrument",
+    noAccount: "No account yet? Registration opens soon.",
+  },
+  landing: {
+    headline: "Open-source soil recovery for Mediterranean agroecosystems",
+    intro:
+      "MycoMesh Protocol fuses in-situ IoT soil sensors with Copernicus Earth Observation data into open-source, offline-first infrastructure for sovereign soil monitoring.",
+    pillars: {
+      soilHealth: "Soil health",
+      waterEfficiency: "Water efficiency",
+      carbonCapture: "Carbon capture",
+    },
+    cta: {
+      accessDashboard: "Access dashboard",
+      viewOnGithub: "View on GitHub",
+    },
+    footerNote:
+      "Apache 2.0 · Developed in Sicily · Living lab: Sikelia Lab (Assoro)",
+  },
   actions: {
     viewFull: "Ver completo",
     viewAll: "Ver todas",
