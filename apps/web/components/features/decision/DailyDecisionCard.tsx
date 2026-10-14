@@ -1,7 +1,8 @@
-import type {
-  DecisionOutput,
-  DecisionContext,
-  DecisionEvidence,
+import {
+  type DecisionOutput,
+  type DecisionContext,
+  type DecisionEvidence,
+  getLocale,
 } from "@sicilia-soil/core";
 import {
   STATE_STYLES,
@@ -37,7 +38,8 @@ export function DailyDecisionCard({
   evidence,
 }: DailyDecisionCardProps) {
   const [whyOpen, setWhyOpen] = useState(false);
-  const s = STATE_STYLES[output.state];
+  const stateStyle = STATE_STYLES[output.state];
+  const locale = getLocale("es");
 
   const StateIcon =
     output.state === "green"
@@ -49,24 +51,25 @@ export function DailyDecisionCard({
           : HelpCircle;
 
   const confidencePct = Math.round(output.confidence * 100);
+  const moreRulesCount = output.firedRules.length - 4;
 
   return (
     <div
-      className={`rounded-2xl border ${s.border} ${s.bg} shadow-sm hover:shadow-md transition-all overflow-hidden`}
+      className={`rounded-2xl border ${stateStyle.border} ${stateStyle.bg} shadow-sm hover:shadow-md transition-all overflow-hidden`}
     >
       {/* HEADER */}
       <div className="flex items-center justify-between px-5 pt-4 pb-2">
         <div className="flex items-center gap-2 text-xs text-charcoalGray/70">
           <span className="font-semibold tracking-wide uppercase">
-            Decisión de hoy
+            {locale.systemStatus.header}
           </span>
           <span className="w-1 h-1 rounded-full bg-charcoalGray/30" />
           <span>{context.scopeName}</span>
         </div>
         <span
-          className={`text-[10px] px-2 py-0.5 rounded-full border font-semibold uppercase tracking-wider ${s.badge}`}
+          className={`text-[10px] px-2 py-0.5 rounded-full border font-semibold uppercase tracking-wider ${stateStyle.badge}`}
         >
-          {s.label}
+          {stateStyle.label}
         </span>
       </div>
 
@@ -89,17 +92,40 @@ export function DailyDecisionCard({
           </div>
 
           <div className="flex-1 min-w-0">
-            <h2 className={`text-2xl font-bold ${s.text} leading-tight mb-2`}>
-              {output.headline}
+            <h2
+              className={`text-2xl font-bold ${stateStyle.text} leading-tight mb-1`}
+            >
+              {locale.systemStatus.phase[output.state]}
             </h2>
 
             <p
-              className={`text-sm ${s.text} opacity-80 whitespace-pre-line leading-relaxed`}
+              className={`text-sm ${stateStyle.text} opacity-90 font-medium mb-2`}
             >
-              {output.explanation}
+              {locale.systemStatus.action[output.state]}
             </p>
+
+            <p
+              className={`text-sm ${stateStyle.text} opacity-80 leading-relaxed`}
+            >
+              {locale.systemStatus.explanationIntro[output.state]}
+            </p>
+
+            {output.firedRules.length > 0 && (
+              <ul
+                className={`mt-2 text-sm ${stateStyle.text} opacity-80 space-y-0.5`}
+              >
+                {output.firedRules
+                  .slice()
+                  .sort((ruleA, ruleB) => ruleB.weight - ruleA.weight)
+                  .slice(0, 3)
+                  .map((firedRule) => (
+                    <li key={firedRule.ruleId}>• {firedRule.ruleId}</li>
+                  ))}
+              </ul>
+            )}
+
             {evidence?.weather && (
-              <div className="mt-2 flex items-center gap-3 text-xs text-charcoalGray/60 flex-wrap">
+              <div className="mt-3 flex items-center gap-3 text-xs text-charcoalGray/60 flex-wrap">
                 <span>
                   🌡️ {evidence.weather.tempMaxC}° / {evidence.weather.tempMinC}°
                 </span>
@@ -116,6 +142,7 @@ export function DailyDecisionCard({
                 </span>
               </div>
             )}
+
             {output.suggestedAction && (
               <div className="mt-3 flex items-start gap-2 px-3 py-2 bg-white/60 backdrop-blur-sm border border-amber-200 rounded-lg">
                 <ArrowRight className="w-4 h-4 text-amber-600 mt-0.5 shrink-0" />
@@ -133,7 +160,7 @@ export function DailyDecisionCard({
         <div className="space-y-1">
           <div className="flex justify-between text-[11px]">
             <span className="text-charcoalGray/60 font-medium">
-              Confianza del sistema
+              {locale.systemStatus.confidence}
             </span>
             <span className="font-bold text-charcoalGray">
               {confidencePct}%
@@ -141,7 +168,7 @@ export function DailyDecisionCard({
           </div>
           <div className="w-full h-1.5 bg-charcoalGray/8 rounded-full overflow-hidden">
             <div
-              className={`h-full ${s.dot} transition-all duration-700 ease-out`}
+              className={`h-full ${stateStyle.dot} transition-all duration-700 ease-out`}
               style={{ width: `${confidencePct}%` }}
             />
           </div>
@@ -151,7 +178,9 @@ export function DailyDecisionCard({
           <div className="flex items-start gap-2 px-3 py-2 bg-amber-50/80 border border-amber-200 rounded-lg">
             <AlertTriangle className="w-4 h-4 text-amber-600 mt-0.5 shrink-0" />
             <div className="text-xs text-amber-900">
-              <span className="font-semibold">Fuentes en desacuerdo:</span>{" "}
+              <span className="font-semibold">
+                {locale.systemStatus.sourcesInConflict}:
+              </span>{" "}
               {output.conflicts[0].description}
             </div>
           </div>
@@ -160,23 +189,28 @@ export function DailyDecisionCard({
 
       {/* RULE BADGES */}
       <div className="px-5 pb-3 flex flex-wrap gap-1.5">
-        {output.firedRules.slice(0, 4).map((r) => (
+        {output.firedRules.slice(0, 4).map((firedRule) => (
           <div
-            key={r.ruleId}
+            key={firedRule.ruleId}
             className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-white/70 border border-oliveGreen/10 rounded-full text-[10px]"
           >
             <span
-              className={`w-1.5 h-1.5 rounded-full ${VOTE_DOT_COLOR[r.vote]}`}
+              className={`w-1.5 h-1.5 rounded-full ${VOTE_DOT_COLOR[firedRule.vote]}`}
             />
-            <code className="font-mono text-charcoalGray/70">{r.ruleId}</code>
-            <span className={`font-bold ${weightTextColor(r.weight)}`}>
-              ×{r.weight.toFixed(1)}
+            <code className="font-mono text-charcoalGray/70">
+              {firedRule.ruleId}
+            </code>
+            <span className={`font-bold ${weightTextColor(firedRule.weight)}`}>
+              ×{firedRule.weight.toFixed(1)}
             </span>
           </div>
         ))}
         {output.firedRules.length > 4 && (
           <div className="inline-flex items-center px-2 py-0.5 bg-white/70 border border-oliveGreen/10 rounded-full text-[10px] text-charcoalGray/60">
-            +{output.firedRules.length - 4} más
+            {locale.systemStatus.moreRules.replace(
+              "{count}",
+              String(moreRulesCount),
+            )}
           </div>
         )}
       </div>
@@ -184,17 +218,17 @@ export function DailyDecisionCard({
       {/* FOOTER */}
       <div className="border-t border-oliveGreen/10 bg-white/40 backdrop-blur-sm px-5 py-3 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2 flex-wrap">
-          {output.sourcesUsed.map((src) => {
-            const meta = SOURCE_META[src] ?? DEFAULT_SOURCE_META;
-            const Icon = meta.Icon;
+          {output.sourcesUsed.map((source) => {
+            const sourceMeta = SOURCE_META[source] ?? DEFAULT_SOURCE_META;
+            const SourceIcon = sourceMeta.Icon;
             return (
               <span
-                key={src}
+                key={source}
                 className="inline-flex items-center gap-1 px-2 py-0.5 bg-oliveGreen/5 rounded text-[10px] text-charcoalGray/70"
-                title={meta.label}
+                title={sourceMeta.label}
               >
-                <Icon className="w-3 h-3" />
-                {meta.label}
+                <SourceIcon className="w-3 h-3" />
+                {sourceMeta.label}
               </span>
             );
           })}
@@ -202,10 +236,10 @@ export function DailyDecisionCard({
 
         <button
           type="button"
-          onClick={() => setWhyOpen((v) => !v)}
+          onClick={() => setWhyOpen((isOpen) => !isOpen)}
           className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-oliveGreen hover:text-oliveGreen/80 hover:bg-oliveGreen/5 rounded-md transition-colors"
         >
-          ¿Por qué?
+          {locale.systemStatus.why}
           {whyOpen ? (
             <ChevronUp className="w-3.5 h-3.5" />
           ) : (
@@ -220,8 +254,7 @@ export function DailyDecisionCard({
       <div className="px-5 py-2 bg-oliveGreen/5 border-t border-oliveGreen/10 flex items-center gap-2">
         <Brain className="w-3.5 h-3.5 text-oliveGreen" />
         <span className="text-[10px] text-oliveGreen/80 italic">
-          Este sistema aprende de cada decisión automáticamente. No necesitas
-          pulsar nada.
+          {locale.systemStatus.autoLearning}
         </span>
       </div>
     </div>
