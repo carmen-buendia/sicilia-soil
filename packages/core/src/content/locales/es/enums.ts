@@ -7,7 +7,8 @@ export const enums = {
   alertSeverity: {
     info: "Informativa",
     warning: "Advertencia",
-    urgent: "Urgente",
+    alert: "Alerta",
+    critical: "Crítica",
   },
   dataSource: {
     mock: "Mock",
