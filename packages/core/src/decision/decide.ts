@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2026 Carmen María Buendía Sánchez
 // ============================================================================
-// MycoMesh Protocoltocol — Decision wrapper
+// MycoMesh Protocol — Decision wrapper
 // ----------------------------------------------------------------------------
 // Pre-wires SiciliaSoilAdapter + DECISION_RULES_V1 with the generic engine.
 // Customizes headline + explanation to Spanish domain language.
@@ -20,7 +20,7 @@ import { SiciliaSoilAdapter } from "./sicilia-soil.adapter";
 import { DECISION_RULES_V1 } from "./rules.v1";
 
 // ---------------------------------------------------------------------------
-// MycoMesh Protocoltocol — natural language builders
+// MycoMesh Protocol — natural language builders
 // ---------------------------------------------------------------------------
 
 function buildHeadline(state: DecisionState): string {
