@@ -58,7 +58,7 @@ export default function HumedadPage() {
         <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
           <div className="flex items-center gap-4">
             <Link
-              href="/"
+              href="/dashboard"
               className="p-2 hover:bg-blue-100 rounded-lg transition-colors"
             >
               <ArrowLeft className="w-5 h-5 text-blue-600" />
