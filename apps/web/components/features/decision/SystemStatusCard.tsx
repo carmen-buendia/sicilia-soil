@@ -5,7 +5,7 @@ import {
   getLocale,
 } from "@sicilia-soil/core";
 import {
-  STATE_STYLES,
+  DECISION_STATE_THEME,
   SOURCE_META,
   VOTE_DOT_COLOR,
   weightTextColor,
@@ -26,19 +26,19 @@ import {
   XCircle,
 } from "lucide-react";
 
-interface DailyDecisionCardProps {
+interface SystemStatusCardProps {
   output: DecisionOutput;
   context: DecisionContext;
   evidence?: DecisionEvidence;
 }
 
-export function DailyDecisionCard({
+export function SystemStatusCard({
   output,
   context,
   evidence,
-}: DailyDecisionCardProps) {
+}: SystemStatusCardProps) {
   const [whyOpen, setWhyOpen] = useState(false);
-  const stateStyle = STATE_STYLES[output.state];
+  const stateStyle = DECISION_STATE_THEME[output.state];
   const locale = getLocale("es");
 
   const StateIcon =
