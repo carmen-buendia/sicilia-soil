@@ -7,14 +7,21 @@
  */
 
 // ----------------------------------------------------------------------------
-// Enums
+// Re-exports from canonical types
+// ----------------------------------------------------------------------------
+
+// AlertSeverity is already defined in packages/core/src/types/alerts.types.ts
+// with values: "info" | "warning" | "alert" | "critical".
+// Re-export it here so consumers of content/types can import it from one place.
+export type { AlertSeverity } from "../../types/alerts.types";
+
+// ----------------------------------------------------------------------------
+// Enums specific to content module
 // ----------------------------------------------------------------------------
 
 export type WaterNeed = "low" | "medium" | "high";
 
 export type MycorrhizalAffinity = "high" | "medium" | "low" | "none";
-
-export type AlertSeverity = "info" | "warning" | "urgent";
 
 export type DataSource = "mock" | "sensor" | "satellite";
 
