@@ -7,12 +7,17 @@ import type {
 } from "../types/copernicus.types";
 
 // ============================================================================
-// Farm center (Assoro, Sicilia)
+// Farm location — fallback genérico
 // ----------------------------------------------------------------------------
-// Medido con GPS. Finca ~100m × 52m (~1 ha).
+// Las coordenadas reales de la finca NO viven en el repositorio.
+// Se añadirán cuando exista el sistema de autenticación (env vars servidas
+// por el backend). Ver TODO.md.
+//
+// Este fallback apunta a un punto genérico en Sicilia para que los mapas
+// rendericen en desarrollo sin exponer la ubicación real.
 // ============================================================================
 
-export const FARM_CENTER: [number, number] = [37.6353, 14.41153];
+export const FARM_CENTER: [number, number] = [37.5, 14.0];
 export const FARM_DEFAULT_ZOOM = 19;
 export const FARM_MINI_ZOOM = 18;
 
@@ -54,30 +59,23 @@ export const DEFAULT_COPERNICUS_DATA: CopernicusData = {
 };
 
 // ============================================================================
-// Farm boundary — Real measured perimeter (Assoro, Sicily)
+// Farm boundary — cuadrado genérico (~1 ha alrededor del centro)
 // ----------------------------------------------------------------------------
-// 10 vértices medidos con GPS. Leaflet cierra el polígono automáticamente.
-// Las parcelas productivas y la zona habitable se añadirán en una branch
-// posterior (feat/farm-parcels) cuando estén medidas.
+// Placeholder hasta que exista el sistema de auth. Reemplazar por las
+// coordenadas reales servidas desde el backend.
 // ============================================================================
 
 export const FARM_BOUNDARY: MapPlot[] = [
   {
     id: "farm",
-    name: "Sicilia Soil — Assoro",
+    name: "Sicilia Soil",
     color: "#8B9D6B",
     center: FARM_CENTER,
     coordinates: [
-      [37.63539, 14.41096], // SW
-      [37.63545, 14.41102], // W
-      [37.63552, 14.41114], // NW
-      [37.63553, 14.41114], // N
-      [37.63546, 14.41151], // NE
-      [37.63529, 14.41203], // E
-      [37.63517, 14.41206], // SE
-      [37.63506, 14.41209], // S
-      [37.63513, 14.4118], //  entre S y SW
-      [37.63521, 14.41152], //  entre S y SW
+      [FARM_CENTER[0] - 0.0005, FARM_CENTER[1] - 0.0005],
+      [FARM_CENTER[0] - 0.0005, FARM_CENTER[1] + 0.0005],
+      [FARM_CENTER[0] + 0.0005, FARM_CENTER[1] + 0.0005],
+      [FARM_CENTER[0] + 0.0005, FARM_CENTER[1] - 0.0005],
     ],
   },
 ];
@@ -142,4 +140,4 @@ export const COPERNICUS_LAYER_CONFIG: Record<CopernicusLayer, LayerConfig> = {
 // Demo Constants
 // ============================================================================
 
-export const DEFAULT_PLOT_NAME = "Sicilia Soil — Assoro";
+export const DEFAULT_PLOT_NAME = "Sicilia Soil";
