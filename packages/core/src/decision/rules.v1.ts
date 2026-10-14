@@ -1,6 +1,6 @@
 // packages/core/src/decision/rules.v1.ts
 // ============================================================================
-// Sicilia Soil — Decision rules v1
+// MycoMesh Protocoltocol — Decision rules v1
 // ----------------------------------------------------------------------------
 // Ten declarative rules. Each reads like a sentence:
 //   "IF soil is wet AND rain is coming THEN don't intervene"

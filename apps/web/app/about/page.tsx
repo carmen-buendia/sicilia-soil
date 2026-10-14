@@ -33,10 +33,10 @@ export default function AboutPage() {
               <div className="p-2 bg-gradient-to-br from-oliveGreen/20 to-wheatGold/20 rounded-xl">
                 <Sprout className="w-8 h-8 text-oliveGreen" />
               </div>
-              About Sicilia Soil
+              About MycoMesh Protocol
             </h1>
             <p className="text-oliveGreen/70">
-              Crop-agnostic decision support for regenerative agriculture
+              Crop-agnostic soil infrastructure for regenerative agriculture
             </p>
           </div>
         </div>
@@ -47,10 +47,10 @@ export default function AboutPage() {
             Our mission
           </h2>
           <p className="text-charcoalGray/80 leading-relaxed mb-3">
-            Sicilia Soil is an{" "}
-            <strong>open-source, crop-agnostic platform</strong> that fuses
-            in-situ IoT soil sensors with Copernicus Earth Observation data to
-            optimise <strong>soil health</strong> and{" "}
+            MycoMesh Protocol is an{" "}
+            <strong>open-source, crop-agnostic soil infrastructure</strong> that
+            fuses in-situ IoT soil sensors with Copernicus Earth Observation
+            data to optimise <strong>soil health</strong> and{" "}
             <strong>water management</strong> in Mediterranean agroecosystems.
           </p>
           <p className="text-charcoalGray/80 leading-relaxed">

@@ -32,7 +32,7 @@ export default function ManifestoPage() {
               Manifesto
             </h1>
             <p className="text-oliveGreen/70">
-              Por qué existe Sicilia Soil y hacia dónde va
+              Por qué existe MycoMesh Protocol y hacia dónde va
             </p>
           </div>
         </div>
@@ -40,7 +40,7 @@ export default function ManifestoPage() {
         {/* Por qué existe */}
         <section className="mb-12">
           <h2 className="text-2xl font-bold text-charcoalGray mb-4">
-            Por qué existe Sicilia Soil
+            Por qué existe MycoMesh Protocol
           </h2>
           <p className="text-charcoalGray/80 leading-relaxed mb-4">
             Durante demasiado tiempo, la tecnología ha estado desconectada de la
@@ -50,7 +50,7 @@ export default function ManifestoPage() {
             el sentido.
           </p>
           <p className="text-charcoalGray/80 leading-relaxed mb-4">
-            <strong>Sicilia Soil existe para cambiar eso.</strong>
+            <strong>MycoMesh Protocol existe para cambiar eso.</strong>
           </p>
           <p className="text-charcoalGray/80 leading-relaxed">
             No es solo un huerto. Es un ecosistema que se diseña a sí mismo con
@@ -182,11 +182,12 @@ export default function ManifestoPage() {
             Donde nace todo
           </h2>
           <p className="text-charcoalGray/80 leading-relaxed mb-4">
-            Sicilia Soil nace en el <strong>Geoparque Rocca di Cerere</strong>{" "}
-            (Enna, Sicilia), en un antiguo territorio agrícola abandonado que
-            estamos transformando en un <strong>living lab</strong> de
-            regeneración: un food forest sintrópico con olivo, algarrobo,
-            esparto, hongos nativos, cereal de prueba y cubiertas vegetales.
+            MycoMesh Protocol nace en el{" "}
+            <strong>Geoparque Rocca di Cerere</strong> (Enna, Sicilia), en un
+            antiguo territorio agrícola abandonado que estamos transformando en
+            un <strong>living lab</strong> de regeneración: un food forest
+            sintrópico con olivo, algarrobo, esparto, hongos nativos, cereal de
+            prueba y cubiertas vegetales.
           </p>
           <p className="text-charcoalGray/80 leading-relaxed">
             La metodología se valida in-situ y se mide con la misma vara en
@@ -242,12 +243,13 @@ export default function ManifestoPage() {
         {/* La Isola Latente */}
         <section className="bg-gradient-to-r from-oliveGreen/5 to-wheatGold/5 rounded-2xl p-6 md:p-8 mb-12 border border-oliveGreen/15">
           <h2 className="text-2xl font-bold text-charcoalGray mb-4">
-            Futuro: La Isola Latente
+            Futuro: La Isola Latente & Sikelia Lab (Living Lab)
           </h2>
           <p className="text-charcoalGray/80 leading-relaxed mb-4">
-            Sicilia Soil es el primer paso. A partir de aquí, si el proyecto
-            crece, nacerá <strong>La Isola Latente</strong>: un proyecto más
-            amplio, cultural y agronómico, que englobará:
+            MycoMesh Protocol es el primer paso. A partir de aquí, si el
+            proyecto crece, nacerá{" "}
+            <strong>La Isola Latente & Sikelia Lab (Living Lab)</strong>: un
+            proyecto más amplio, cultural y agronómico, que englobará:
           </p>
           <ul className="space-y-2 text-charcoalGray/80">
             <li className="flex items-start gap-2">
@@ -269,9 +271,7 @@ export default function ManifestoPage() {
             </li>
             <li className="flex items-start gap-2">
               <span className="text-oliveGreen">·</span>
-              <span>
-                Plataforma tecnológica (Sicilia Soil) como motor de decisión.
-              </span>
+              <span>(MycoMesh Protocol)</span>
             </li>
           </ul>
         </section>
@@ -279,7 +279,7 @@ export default function ManifestoPage() {
         {/* Cita final */}
         <section className="text-center py-12 border-t border-oliveGreen/15">
           <p className="text-xl md:text-2xl font-bold text-charcoalGray mb-4 italic">
-            "Sicilia Soil no es solo un proyecto.
+            "MycoMesh Protocol no es solo un proyecto.
             <br />
             Es una propuesta."
           </p>
@@ -292,8 +292,8 @@ export default function ManifestoPage() {
             "De la tierra siciliana, para el mundo."
           </p>
           <p className="text-sm text-oliveGreen/60 flex items-center justify-center gap-2">
-            <SicilianFlag size="small" />— Carmen Buendía, creadora de Sicilia
-            Soil
+            <SicilianFlag size="small" />— Carmen María Buendía Sánchez,
+            creadora de MycoMesh Protocol
           </p>
         </section>
 

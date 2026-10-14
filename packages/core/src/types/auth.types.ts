@@ -1,7 +1,7 @@
 // packages/core/src/types/auth.types.ts
 
 // ============================================================================
-// Sicilia Soil — Auth & tenancy
+// MycoMesh Protocoltocoltocoltocoltocol — Auth & tenancy
 // ----------------------------------------------------------------------------
 // Design principles:
 //   - Multi-farm from day 1 (a user can own/manage several farms)

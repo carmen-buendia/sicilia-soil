@@ -1,7 +1,7 @@
 // packages/db/src/client.ts
 
 // ============================================================================
-// Sicilia Soil — Database client
+// MycoMesh Protocol — Database client
 // ----------------------------------------------------------------------------
 // sql.js: SQLite compiled to WebAssembly.
 // - Zero native compilation (no Python, no Visual Studio)
