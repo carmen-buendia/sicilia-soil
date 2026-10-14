@@ -23,6 +23,14 @@ export const ui = {
     subtitle: "Access the soil recovery instrument",
     noAccount: "No account yet? Registration opens soon.",
   },
+  dashboard: {
+    moisture: "Humedad",
+    temperature: "Temperatura",
+    light: "Luz Solar",
+    wind: "Viento",
+    updated: "Actualizado",
+    viewHistory: "Ver histórico",
+  },
   landing: {
     headline: "Open-source soil recovery for Mediterranean agroecosystems",
     intro:
@@ -36,8 +44,7 @@ export const ui = {
       accessDashboard: "Access dashboard",
       viewOnGithub: "View on GitHub",
     },
-    footerNote:
-      "Apache 2.0 · Developed in Sicily · Living lab: Sikelia Lab (Assoro)",
+    footerNote: "Apache 2.0 · Developed in Sicily",
   },
   actions: {
     viewFull: "Ver completo",
