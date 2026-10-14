@@ -11,20 +11,19 @@ import {
   X,
   User,
   Sprout,
-  Leaf,
-  Flower2,
-  Lightbulb,
+  Brain,
+  Layers,
 } from "lucide-react";
 import { SicilianFlag } from "./SicilianFlag";
 import { Button } from "@sicilia-soil/ui";
 import { NotificationBell } from "@/components/features/notifications";
 
 const navItems = [
-  { id: "/dashboard", label: "Dashboard", icon: Home },
-  { id: "/soil-health", label: "Suelo", icon: Leaf },
+  { id: "/dashboard", label: "Panel", icon: Home },
+  { id: "/soil-health", label: "Suelo", icon: Layers },
   { id: "/water", label: "Agua", icon: Droplets },
   { id: "/ground-cover", label: "Cultivos", icon: Sprout },
-  { id: "/recommendations", label: "Recomendaciones", icon: Lightbulb },
+  { id: "/engine", label: "Motor", icon: Brain },
 ];
 
 export function Navbar() {
