@@ -25,3 +25,6 @@
   - `packages/core/src/types/farm.types.ts` → `FarmConfig` (deprecated, usar `Farm` de spatial.types)
   - `packages/core/src/types/monitoring.types.ts` → `ZoneConfig` (legacy site.config)
   - Renombrar `SiteZoneConfig` → `ZoneConfig` una vez eliminados.
+- [ ] `content/mock/recommendation-inputs.ts`: pasar de un único
+      input global a un Record por zoneId, y que recommendations/page
+      corra el motor por zona (como en el resto del proyecto).
