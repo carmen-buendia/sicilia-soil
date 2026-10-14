@@ -145,7 +145,7 @@ gardenZones.forEach((zone) => {
 // Ruta principal
 app.get("/", (req, res) => {
   res.json({
-    message: "🌱 Sicilia Soil - Servidor de Permacultura",
+    message: "🌱 MycoMesh Protocol - Servidor de Permacultura",
     version: "1.0.0",
     status: "online",
     endpoints: {
@@ -380,7 +380,7 @@ io.on("connection", (socket) => {
 const PORT = 3001;
 server.listen(PORT, () => {
   console.log("=".repeat(60));
-  console.log("🌱 SICILIA SOIL - Servidor de Permacultura");
+  console.log("🌱 MycoMesh Protocol - Servidor de Permacultura");
   console.log("=".repeat(60));
   console.log(`📡 Puerto: ${PORT}`);
   console.log(`🌐 URL: http://localhost:${PORT}`);

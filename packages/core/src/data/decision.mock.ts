@@ -1,7 +1,7 @@
 // packages/core/src/data/decision.mock.ts
 
 // ============================================================================
-// Sicilia Soil — Decision mock data
+// MycoMesh Protocoltocoltocoltocol — Decision mock data
 // ----------------------------------------------------------------------------
 // Real values from the Assoro farm, captured 2026-10-07.
 // Replace with API call once feat/db-crud is available.
@@ -20,7 +20,7 @@ export const MOCK_DECISION_CONTEXT: DecisionContext = {
   farmId: "farm-assoro",
   scopeType: "farm",
   scopeId: "farm",
-  scopeName: "Sicilia Soil — Assoro",
+  scopeName: "MycoMesh Protocoltocoltocoltocol — Assoro",
   areaM2: 2240,
   criteria: ["water", "fertilisation", "protection", "efficiency", "decisions"],
 };

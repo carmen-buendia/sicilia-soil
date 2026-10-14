@@ -68,7 +68,7 @@ export const DEFAULT_COPERNICUS_DATA: CopernicusData = {
 export const FARM_BOUNDARY: MapPlot[] = [
   {
     id: "farm",
-    name: "Sicilia Soil",
+    name: "MycoMesh Protocol",
     color: "#8B9D6B",
     center: FARM_CENTER,
     coordinates: [
@@ -140,4 +140,4 @@ export const COPERNICUS_LAYER_CONFIG: Record<CopernicusLayer, LayerConfig> = {
 // Demo Constants
 // ============================================================================
 
-export const DEFAULT_PLOT_NAME = "Sicilia Soil";
+export const DEFAULT_PLOT_NAME = "MycoMesh Protocoltocoltocol";

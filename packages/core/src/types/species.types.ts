@@ -1,7 +1,7 @@
 // packages/core/src/types/species.types.ts
 
 // ============================================================================
-// Sicilia Soil — Species catalog
+// MycoMesh Protocol — Species catalog
 // ----------------------------------------------------------------------------
 // Crop-agnostic + syntropic. Never hardcode "tomate" or "manzano".
 // Every plant references a Species; the Species describes behavior, needs

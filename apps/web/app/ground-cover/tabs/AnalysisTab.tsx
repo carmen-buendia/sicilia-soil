@@ -17,7 +17,7 @@ export function AnalysisTab() {
         <p className="text-sm text-oliveGreen/70 mb-6">
           Misma metodología (SHI, colonización micorrícica, glomalina) aplicada
           a todos los componentes del sistema. Evidencia del enfoque{" "}
-          <strong>crop-agnostic</strong>.
+          <strong>crop-agnostic soil infrastructure</strong>.
         </p>
 
         <SoilChart

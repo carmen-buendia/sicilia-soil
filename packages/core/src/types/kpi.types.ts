@@ -1,7 +1,7 @@
 // packages/core/src/types/kpi.types.ts
 
 // ============================================================================
-// Sicilia Soil — KPIs
+// MycoMesh Protocol — KPIs
 // ----------------------------------------------------------------------------
 // Precomputed KPI values for the dashboard, reports and grant deliverables.
 //

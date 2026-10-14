@@ -65,15 +65,14 @@ export function Navbar() {
             </div>
             <div className="flex flex-col">
               <h1 className="text-base sm:text-xl font-bold">
-                <span className="text-charcoalGray">Sicilia</span>
-                <span className="text-sicilian-red ml-1">Soil</span>
+                <span className="text-charcoalGray">MycoMesh</span>
+                <span className="text-sicilian-red ml-1">Protocol</span>
               </h1>
               <div className="flex items-center gap-2 mr-2 text-xs text-oliveGreen/70 whitespace-nowrap">
                 <SicilianFlag size="small" className="flex-shrink-0" />
-                <span className="whitespace-nowrap">
-                  Permacultura Sintrópica
+                <span className="whitespace-normal">
+                  Open-source, offline-first soil infrastructure{" "}
                 </span>
-                <Flower2 className="w-3 h-3 flex-shrink-0" />
               </div>
             </div>
           </Link>
