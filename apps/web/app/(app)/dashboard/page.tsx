@@ -146,7 +146,7 @@ export default function HomePage() {
             {locale.ui.dashboard.mapTitle}
           </h2>
           <Link
-            href="/humidity"
+            href="/water"
             className="text-sm text-oliveGreen hover:text-sicilian-red transition-colors flex items-center gap-1"
           >
             {locale.ui.actions.viewFull} <ArrowRight className="w-3 h-3" />
@@ -154,7 +154,7 @@ export default function HomePage() {
         </div>
         <CopernicusMapMini
           height="260px"
-          onExpand={() => (window.location.href = "/humidity")}
+          onExpand={() => (window.location.href = "/water")}
         />
       </div>
 

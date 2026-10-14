@@ -22,7 +22,7 @@ import { NotificationBell } from "@/components/features/notifications";
 const navItems = [
   { id: "/dashboard", label: "Dashboard", icon: Home },
   { id: "/soil-health", label: "Suelo", icon: Leaf },
-  { id: "/humidity", label: "Agua", icon: Droplets },
+  { id: "/water", label: "Agua", icon: Droplets },
   { id: "/ground-cover", label: "Cultivos", icon: Sprout },
   { id: "/recommendations", label: "Recomendaciones", icon: Lightbulb },
 ];
