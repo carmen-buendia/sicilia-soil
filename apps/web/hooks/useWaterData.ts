@@ -1,24 +1,24 @@
 "use client";
 
 import {
-  HUMIDITY_DATA,
-  HUMIDITY_CLIMATE,
+  WATER_DATA,
+  WATER_CLIMATE,
   WATER_CONTROL,
-  HUMIDITY_FORECAST,
-  HUMIDITY_LAST_READING,
-  getAverageHumidity,
+  WATER_FORECAST,
+  WATER_LAST_READING,
+  getAverageWater,
   getCriticalZones,
   getOptimalZones,
 } from "@sicilia-soil/core";
 
 export function useWaterData() {
   return {
-    zones: HUMIDITY_DATA,
-    climate: HUMIDITY_CLIMATE,
+    zones: WATER_DATA,
+    climate: WATER_CLIMATE,
     waterControl: WATER_CONTROL,
-    forecast: HUMIDITY_FORECAST,
-    lastReading: HUMIDITY_LAST_READING,
-    average: getAverageHumidity(),
+    forecast: WATER_FORECAST,
+    lastReading: WATER_LAST_READING,
+    average: getAverageWater(),
     criticalZones: getCriticalZones().length,
     optimalZones: getOptimalZones().length,
   };
