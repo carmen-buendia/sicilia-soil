@@ -140,4 +140,4 @@ export const COPERNICUS_LAYER_CONFIG: Record<CopernicusLayer, LayerConfig> = {
 // Demo Constants
 // ============================================================================
 
-export const DEFAULT_PLOT_NAME = "MycoMesh Protocoltocoltocol";
+export const DEFAULT_PLOT_NAME = "MycoMesh Protocol";
