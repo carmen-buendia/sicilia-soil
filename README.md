@@ -18,22 +18,28 @@ The platform works with any crop (esparto, cereal, olive, almond, carob, vegetab
 
 ## Monorepo architecture
 
-This repository is a **pnpm workspace** with Turborepo. It is organised so that each package has a clear responsibility and can be reused across applications.
+This repository is a **pnpm workspace**. It is organised so that each package has a clear responsibility and can be reused across applications.
 
 ```
+
 sicilia-soil/
 ├── apps/
-│   ├── web/              Next.js frontend (the DSS)
-│   └── backend/          API (Fastify + SQLite/Postgres)
+│ ├── web/ Next.js 16 frontend (the DSS)
+│ └── backend/ Express API + socket.io
 │
 ├── packages/
-│   ├── core/             Types, mock data, constants, config
-│   ├── utils/            Domain engines (recommendations, symbiosis, notifications)
-│   └── ui/               Reusable React components (Button, Badge, SoilChart, MycologyChart)
+│ ├── core/ Types, mock data, constants, config
+│ │ └── src/decision/ Sicilia Soil's implementation of the decision engine
+│ ├── decision/ Generic, domain-agnostic rule engine (reusable)
+│ ├── db/ libSQL + Drizzle ORM + sql.js
+│ ├── edge/ (planned) edge computing layer
+│ ├── sync/ (planned) offline-first sync
+│ ├── ui/ Reusable React components (charts, cards, badges)
+│ └── utils/ Pure domain engines (recommendations, symbiosis, notifications)
 │
 ├── pnpm-workspace.yaml
-├── turbo.json
 └── package.json
+
 ```
 
 ### Package responsibilities
@@ -109,7 +115,7 @@ pnpm build
 | Charts   | ECharts                                  |
 | Maps     | Leaflet, Copernicus tiles                |
 | State    | React hooks, Context                     |
-| Backend  | Fastify (planned)                        |
+| Backend  | Express 4                                |
 | Database | SQLite → Postgres (planned)              |
 | EO data  | Copernicus (Sentinel-1, 2, 3), NASA GIBS |
 | Weather  | Open-Meteo (planned)                     |
