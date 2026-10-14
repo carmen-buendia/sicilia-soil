@@ -18,3 +18,6 @@
   - `echarts@5.5.1`: XSS moderada. Riesgo bajo si los datos son internos.
     Evaluar subir a 6.x cuando haya tiempo para probar los gráficos.
   - `esbuild@0.18.20`: dev-only vía drizzle-kit. Riesgo bajo.
+- [ ] Migrar a React 19 antes de actualizar a Next.js 17.
+      Requiere verificar: react-leaflet (ya no se usa), react-map-gl (compatible),
+      echarts-for-react (verificar), @types/react (actualizar).
