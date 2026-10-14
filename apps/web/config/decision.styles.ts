@@ -23,7 +23,7 @@ export interface StateStyle {
   label: string;
 }
 
-export const STATE_STYLES: Record<DecisionState, StateStyle> = {
+export const DECISION_STATE_THEME: Record<DecisionState, StateStyle> = {
   green: {
     bg: "bg-gradient-to-br from-emerald-50 via-emerald-50/70 to-white",
     border: "border-emerald-200",

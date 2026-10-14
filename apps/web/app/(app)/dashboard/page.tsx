@@ -19,7 +19,7 @@ import {
 import { StatsCard } from "@/components/features/dashboard/components/StatsCards";
 import { ZoneCard } from "@/components/features/dashboard/components/ZoneCards";
 import { ServerStatus } from "@/components/features/dashboard/components/ServerStatus";
-import { DailyDecisionCard } from "@/components/features/decision";
+import { SystemStatusCard } from "@/components/features/decision";
 import { useRecommendations } from "@/hooks/useRecommendations";
 import { useDashboardData } from "@/hooks/useDashboardData";
 import { useTodayDecision } from "@/hooks/useTodayDecision";
@@ -112,7 +112,7 @@ export default function HomePage() {
       </div>
       {/* 🎯 DECISIÓN DEL DÍA — primera cosa que ve el agricultor */}
       <div className="mb-8">
-        <DailyDecisionCard
+        <SystemStatusCard
           output={decision}
           context={decisionContext}
           evidence={decisionEvidence}
