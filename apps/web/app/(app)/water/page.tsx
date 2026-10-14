@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@sicilia-soil/ui";
-import { useHumidityData } from "@/hooks/useHumidityData";
+import { useWaterData } from "@/hooks/useWaterData";
 import { getZoneStatus, getZoneColor } from "@sicilia-soil/core";
 import { FARM_CENTER, FARM_DEFAULT_ZOOM } from "@sicilia-soil/core";
 import {
@@ -22,7 +22,7 @@ import {
   CopernicusMap,
 } from "@/components/features/copernicus/components";
 
-export default function HumedadPage() {
+export default function WaterPage() {
   const {
     zones,
     climate,
@@ -32,7 +32,7 @@ export default function HumedadPage() {
     average,
     criticalZones,
     optimalZones,
-  } = useHumidityData();
+  } = useWaterData();
 
   const [selectedZone, setSelectedZone] = useState<string | null>(null);
   const [selectedPlot, setSelectedPlot] = useState<string>(
