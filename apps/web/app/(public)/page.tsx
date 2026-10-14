@@ -9,10 +9,10 @@ import {
 } from "lucide-react";
 import { getLocale } from "@sicilia-soil/core";
 
-const t = getLocale("es");
+const locale = getLocale("es");
 
 export const metadata = {
-  title: `MycoMesh Protocol — ${t.ui.landing.pillars.soilHealth} & Water efficiency`,
+  title: `MycoMesh Protocol — ${locale.ui.app.subtitle}`,
 };
 
 export default function LandingPage() {
@@ -29,30 +29,30 @@ export default function LandingPage() {
         </div>
 
         <h1 className="text-4xl sm:text-5xl font-bold text-charcoalGray mb-4 leading-tight">
-          {t.ui.landing.headline}
+          {locale.content.landing.headline}
         </h1>
 
         <p className="text-lg text-oliveGreen/80 mb-10 leading-relaxed">
-          {t.ui.landing.intro}
+          {locale.content.landing.intro}
         </p>
 
         <div className="grid sm:grid-cols-3 gap-4 mb-10">
           <div className="bg-white/60 backdrop-blur-sm border border-oliveGreen/15 rounded-xl p-4">
             <Leaf className="w-5 h-5 text-oliveGreen mb-2" />
             <p className="text-sm font-medium text-charcoalGray">
-              {t.ui.landing.pillars.soilHealth}
+              {locale.ui.landing.pillars.soilHealth}
             </p>
           </div>
           <div className="bg-white/60 backdrop-blur-sm border border-oliveGreen/15 rounded-xl p-4">
             <Droplets className="w-5 h-5 text-oliveGreen mb-2" />
             <p className="text-sm font-medium text-charcoalGray">
-              {t.ui.landing.pillars.waterEfficiency}
+              {locale.ui.landing.pillars.waterEfficiency}
             </p>
           </div>
           <div className="bg-white/60 backdrop-blur-sm border border-oliveGreen/15 rounded-xl p-4">
             <Mountain className="w-5 h-5 text-oliveGreen mb-2" />
             <p className="text-sm font-medium text-charcoalGray">
-              {t.ui.landing.pillars.carbonCapture}
+              {locale.ui.landing.pillars.carbonCapture}
             </p>
           </div>
         </div>
@@ -62,7 +62,7 @@ export default function LandingPage() {
             href="/login"
             className="inline-flex items-center gap-2 px-6 py-3 bg-oliveGreen text-white rounded-lg font-medium hover:bg-oliveGreen/90 transition-colors"
           >
-            {t.ui.landing.cta.accessDashboard}{" "}
+            {locale.ui.landing.cta.accessDashboard}{" "}
             <ArrowRight className="w-4 h-4" />
           </Link>
           <a
@@ -71,12 +71,12 @@ export default function LandingPage() {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-6 py-3 border border-oliveGreen/20 text-charcoalGray rounded-lg font-medium hover:bg-oliveGreen/5 transition-colors"
           >
-            <Github className="w-4 h-4" /> {t.ui.landing.cta.viewOnGithub}
+            <Github className="w-4 h-4" /> {locale.ui.landing.cta.viewOnGithub}
           </a>
         </div>
 
         <p className="mt-12 text-xs text-oliveGreen/50">
-          {t.ui.landing.footerNote}
+          {locale.content.landing.footerNote}
         </p>
       </div>
     </main>

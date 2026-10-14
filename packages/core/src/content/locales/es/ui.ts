@@ -1,12 +1,11 @@
 export const ui = {
   app: {
     name: "MycoMesh Protocol",
-    subtitle:
-      "Recuperación de suelo open-source · Eficiencia hídrica · Captura de carbono",
+    subtitle: "Infraestructura open-source para la recuperación de suelo",
   },
 
   nav: {
-    home: "Inicio",
+    dashboard: "Panel",
     water: "Agua",
     soilHealth: "Salud del suelo",
     groundCover: "Coberturas",
@@ -18,11 +17,13 @@ export const ui = {
     login: "Iniciar sesión",
     logout: "Cerrar sesión",
   },
+
   auth: {
-    signIn: "Sign in",
-    subtitle: "Access the soil recovery instrument",
-    noAccount: "No account yet? Registration opens soon.",
+    signIn: "Iniciar sesión",
+    subtitle: "Accede al instrumento de recuperación de suelo",
+    noAccount: "¿No tienes cuenta? El registro se abrirá pronto.",
   },
+
   dashboard: {
     moisture: "Humedad",
     temperature: "Temperatura",
@@ -30,22 +31,32 @@ export const ui = {
     wind: "Viento",
     updated: "Actualizado",
     viewHistory: "Ver histórico",
+    currentCrop: "Cultivo actual",
+    mapTitle: "🗺️ Mapa de la finca",
+    zonesTitle: "Zonas de sensores",
+    alertsTitle: "Alertas",
+    alertsEmpty: "✓ Sin alertas urgentes",
+    carbon: {
+      title: "Captura de carbono",
+      soc: "COS",
+      bulkDensity: "Densidad aparente",
+      depth: "Profundidad",
+      co2: "CO₂ secuestrado",
+    },
   },
+
   landing: {
-    headline: "Open-source soil recovery for Mediterranean agroecosystems",
-    intro:
-      "MycoMesh Protocol fuses in-situ IoT soil sensors with Copernicus Earth Observation data into open-source, offline-first infrastructure for sovereign soil monitoring.",
     pillars: {
-      soilHealth: "Soil health",
-      waterEfficiency: "Water efficiency",
-      carbonCapture: "Carbon capture",
+      soilHealth: "Salud del suelo",
+      waterEfficiency: "Eficiencia hídrica",
+      carbonCapture: "Captura de carbono",
     },
     cta: {
-      accessDashboard: "Access dashboard",
-      viewOnGithub: "View on GitHub",
+      accessDashboard: "Acceder al panel",
+      viewOnGithub: "Ver en GitHub",
     },
-    footerNote: "Apache 2.0 · Developed in Sicily",
   },
+
   actions: {
     viewFull: "Ver completo",
     viewAll: "Ver todas",
@@ -63,25 +74,5 @@ export const ui = {
     empty: "Sin datos disponibles",
     error: "Ha ocurrido un error",
     offline: "Sin conexión",
-  },
-
-  home: {
-    map: {
-      title: "🗺️ Mapa de la finca",
-    },
-    zones: {
-      title: "Zonas del Huerto",
-    },
-    alerts: {
-      title: "Alertas",
-      empty: "✓ Sin alertas urgentes",
-    },
-    carbon: {
-      title: "Captura de carbono",
-      soc: "COS",
-      bulkDensity: "Densidad aparente",
-      depth: "Profundidad",
-      co2: "CO₂ secuestrado",
-    },
   },
 } as const;

@@ -1,8 +1,8 @@
 export const zones = {
-  "zone-esparto": "Zona de Esparto",
-  "zone-tomates": "Huerta de Tomates",
-  "zone-olivar": "Olivar",
-  "zone-hierbas": "Jardín de Hierbas",
-  "zone-compost": "Zona Compost",
-  "zone-agua": "Depósito de Agua",
+  "zone-01": "Zona 1",
+  "zone-02": "Zona 2",
+  "zone-03": "Zona 3",
+  "zone-04": "Zona 4",
+  "zone-05": "Zona 5",
+  "zone-06": "Zona 6",
 } as const;
