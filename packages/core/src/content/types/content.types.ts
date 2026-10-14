@@ -2,7 +2,7 @@
  * Domain types. No text, no numeric values — only shapes and unions.
  *
  * All IDs follow the convention: `{domain}-{slug}` (e.g. "crop-tomato",
- * "zone-north", "sensor-1"). This makes it obvious where a value comes
+ * "zone-01", "sensor-01"). This makes it obvious where a value comes
  * from and avoids collisions across domains.
  */
 
@@ -10,9 +10,6 @@
 // Re-exports from canonical types
 // ----------------------------------------------------------------------------
 
-// AlertSeverity is already defined in packages/core/src/types/alerts.types.ts
-// with values: "info" | "warning" | "alert" | "critical".
-// Re-export it here so consumers of content/types can import it from one place.
 export type { AlertSeverity } from "../../types/alerts.types";
 
 // ----------------------------------------------------------------------------
@@ -34,6 +31,13 @@ export type CropTrait =
   | "bioremediation"
   | "pioneer";
 
+export type ZoneStatusKey =
+  | "optimal"
+  | "needsWater"
+  | "needsAttention"
+  | "offline"
+  | "unknown";
+
 // ----------------------------------------------------------------------------
 // Domain shapes
 // ----------------------------------------------------------------------------
@@ -51,14 +55,6 @@ export interface CropDefinition {
   mycorrhizalAffinity: MycorrhizalAffinity;
 }
 
-export interface ZoneData {
-  id: string; // "zone-north"
-  cropId: string; // "crop-tomato"
-  ssm: number; // soil surface moisture %
-  temperature: number; // °C
-  lastUpdate: string; // ISO 8601
-}
-
 export interface SoilHealthData {
   plotId: string; // "plot-1"
   timestamp: string; // ISO 8601
@@ -70,27 +66,3 @@ export interface SoilHealthData {
   };
   source: DataSource;
 }
-
-export type ZoneStatusKey =
-  | "optimal"
-  | "healthy"
-  | "needsWater"
-  | "active"
-  | "full"
-  | "unknown";
-
-export type ZoneTypeKey =
-  | "fiber"
-  | "vegetables"
-  | "trees"
-  | "aromatics"
-  | "livingSoil"
-  | "waterCollection";
-
-export type ZoneLocationKey =
-  | "north"
-  | "south"
-  | "east"
-  | "west"
-  | "rear"
-  | "northeast";
