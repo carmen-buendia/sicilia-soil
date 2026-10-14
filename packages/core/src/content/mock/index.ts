@@ -1,6 +1,6 @@
 // Mock data. No human-readable text. Only IDs and numeric values.
 // Populated page by page during refactor.
 
-export * from "./zones";
+export * from "./sensor-readings";
 export * from "./kpis";
 export * from "./carbon";
