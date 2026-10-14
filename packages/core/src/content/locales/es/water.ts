@@ -1,0 +1,75 @@
+export const water = {
+  header: {
+    title: "Humedad del Suelo",
+    subtitle: "Monitoreo detallado de humedad por zona",
+    rangeLastWeek: "Última semana",
+    exportData: "Exportar datos",
+  },
+
+  stats: {
+    average: "Promedio general",
+    averageTrend: "↑ 2% vs ayer",
+    optimalZones: "Zonas óptimas",
+    ofZones: "de {count} zonas",
+    needsWater: "Necesitan riego",
+    urgentAttention: "⚠️ Atención urgente",
+    lastReading: "Última lectura",
+    activeSensors: "sensores activos",
+  },
+
+  climate: {
+    temperatureLabel: "Temperatura",
+    temperatureNote: "Sensación térmica: {feelsLike}°C",
+    humidityLabel: "Humedad ambiental",
+    humidityNote: "Viento: {windKmh} km/h",
+    evapotranspirationLabel: "Evapotranspiración",
+    evapotranspirationNote: "Riego recomendado: {hint}L/m²",
+  },
+
+  zones: {
+    sectionTitle: "Monitoreo por Zona",
+    watering: "Riego",
+    wateringHoursAgo: "hace {hours}h",
+    wateringAuto: "automático",
+    trendUp: "Aumentando",
+    trendDown: "Disminuyendo",
+    trendStable: "Estable",
+    evolution24h: "Evolución últimas 24h",
+    optimal: "Óptimo",
+    current: "Actual",
+    recommendation: "Recomendación",
+    recommendationWater: "Regar {liters}L/m²",
+    recommendationKeep: "Mantener nivel actual",
+    nextWatering: "Próximo riego",
+    nextWateringNow: "Inmediato",
+    nextWateringLater: "En 6-8 horas",
+    manualWatering: "💧 Riego manual ahora",
+  },
+
+  control: {
+    title: "Control de Riego Inteligente",
+    autoIrrigation: "Riego automático",
+    status: "Estado",
+    statusOn: "Activado",
+    statusOff: "Desactivado",
+    nextScheduled: "Próximo riego programado",
+    nextInHours: "en {hours} horas",
+    duration: "Duración estimada",
+    durationMinutes: "{minutes} minutos",
+    consumptionTitle: "Consumo de agua",
+    consumptionPeriod: "en las últimas {hours}h",
+    consumptionLimit: "límite",
+    quickActions: "Acciones rápidas",
+    scheduleWatering: "📅 Programar riego",
+    advancedConfig: "⚙️ Configuración avanzada",
+    forecast: "Pronóstico",
+    forecastTemplate:
+      "Se esperan temperaturas de {temp}°C mañana. Aumentar riego en un {percent}% en zonas críticas.",
+  },
+
+  footer: {
+    realtime: "💧 Datos actualizados en tiempo real desde sensores IoT",
+    syncMinutesAgo: "Última sincronización: hace {minutes} minutos",
+    allOperational: "Todos los sensores operativos",
+  },
+} as const;
