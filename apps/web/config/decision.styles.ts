@@ -1,7 +1,7 @@
 // apps/web/config/decision.styles.ts
 
 // ============================================================================
-// Sicilia Soil — Decision UI styles
+// MycoMesh Protocol — Decision UI styles
 // ----------------------------------------------------------------------------
 // Tailwind palettes + icon metadata for the Decision layer.
 // Web-specific: lives in apps/web, not in packages.

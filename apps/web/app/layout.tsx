@@ -18,10 +18,10 @@ export default function RootLayout({
   return (
     <html lang="es">
       <head>
-        <title>Sicilia Soil - Permacultura Sintrópica en el Mediterráneo</title>
+        <title>MycoMesh Protocol - Crop-agnostic soil infrastructure</title>
         <meta
           name="description"
-          content="Monitoreo de huerto de permacultura sintrópica en la región del Mediterráneo"
+          content="Enabling soil recovery, water efficency and carbon sequstration through sovereign data infrastructure."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link
@@ -52,10 +52,10 @@ export default function RootLayout({
                   <Sprout className="w-4 h-4 text-white" />
                 </div>
                 <span className="font-bold text-charcoalGray text-base">
-                  Sicilia<span className="text-sicilian-red">·</span>Soil
+                  MycoMesh<span className="text-sicilian-red">·</span>Protocol
                 </span>
                 <span className="hidden sm:inline text-xs text-oliveGreen/50 ml-2">
-                  Crop-agnostic decision support
+                  Crop-agnostic soil infrastructure
                 </span>
               </div>
 
@@ -101,8 +101,8 @@ export default function RootLayout({
                   <span>Proyecto creado por Carmen María Buendía Sánchez</span>
                 </div>
                 <p>
-                  © {new Date().getFullYear()} Sicilia·Soil · Hecho con 🌱 en
-                  Sicilia
+                  © {new Date().getFullYear()} MycoMesh·Protocol · Hecho con 🌱
+                  en Sicilia, Italy. Código abierto bajo licencia Apache 2.0.
                 </p>
               </div>
             </div>

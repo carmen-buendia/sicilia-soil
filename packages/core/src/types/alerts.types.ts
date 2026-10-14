@@ -1,7 +1,7 @@
 // packages/core/src/types/alerts.types.ts
 
 // ============================================================================
-// Sicilia Soil — Alerts engine
+// MycoMesh Protocoltocoltocol — Alerts engine
 // ----------------------------------------------------------------------------
 // Alerts are the OUTPUT of KPI/EO/sensor evaluation.
 // Flow:  data → rule → alert → notification → (optional) task

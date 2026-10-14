@@ -1,6 +1,6 @@
-# Sicilia Soil -- Open Internet Stack Alignment
+# MycoMesh Protocol -- Open Internet Stack Alignment
 
-## What Sicilia Soil is
+## What MycoMesh Protocol is
 
 A field-deployed decision-support system for regenerative agriculture
 in Mediterranean environments.
@@ -65,7 +65,7 @@ Reusable for: any sensor-driven application on constrained hardware.
 ## Architecture
 
     +-------------------------------------------------+
-    |              Sicilia Soil DDS (domain)          |
+    |              MycoMesh Protocol DDS (domain)          |
     |  +--------------+  +------------+  +---------+  |
     |  | @core/types  |  | @ui/react  |  | @db/    |  |
     |  | (agriculture)|  | (dashboards|  | drizzle |  |

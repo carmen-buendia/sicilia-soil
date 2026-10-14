@@ -1,7 +1,7 @@
 // packages/core/src/types/iot.types.ts
 
 // ============================================================================
-// Sicilia Soil — IoT layer
+// MycoMesh Protocol — IoT layer
 // ----------------------------------------------------------------------------
 // Design principles:
 //   - Protocol-agnostic (MQTT, CoAP, LoRaWAN, HTTP fallback)
