@@ -1,32 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import type { LatLngExpression, DivIcon } from "leaflet";
+import { useEffect, useMemo } from "react";
+import Map, { Source, Layer, Marker } from "react-map-gl/maplibre";
 import { MapPin } from "lucide-react";
-import { MapContainer, TileLayer, Polygon, Marker } from "react-leaflet";
+import "maplibre-gl/dist/maplibre-gl.css";
 import {
   COPERNICUS_LAYER_CONFIG,
   FARM_BOUNDARY,
   FARM_CENTER,
   FARM_MINI_ZOOM,
 } from "@sicilia-soil/core";
+import { initMapLibreWorker } from "./MapLibreSetup";
 
-function createMiniMarkerIcon(L: typeof import("leaflet")): DivIcon {
-  return L.divIcon({
-    className: "sicilia-soil-marker-mini",
-    html: `
-      <div style="
-        width: 26px; height: 26px; border-radius: 50%;
-        background: #8B9D6B; border: 2px solid #ffffff;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.35);
-        display: flex; align-items: center; justify-content: center;
-        font-size: 14px; line-height: 1;
-      ">🌱</div>
-    `,
-    iconSize: [26, 26],
-    iconAnchor: [13, 13],
-  });
-}
+// Estilo base neutro (Carto Positron), público y sin token.
+const BASE_STYLE =
+  "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json";
+
+// Leaflet usa [lat, lng] → MapLibre usa [lng, lat]
+const toLngLat = (coord: [number, number]): [number, number] => [
+  coord[1],
+  coord[0],
+];
 
 export function CopernicusMapMini({
   height = "240px",
@@ -35,68 +29,107 @@ export function CopernicusMapMini({
   height?: string;
   onExpand?: () => void;
 }) {
-  const [isMounted, setIsMounted] = useState(false);
-  const [markerIcon, setMarkerIcon] = useState<DivIcon | null>(null);
-
   useEffect(() => {
-    import("leaflet/dist/leaflet.css");
-    import("leaflet").then((mod) => {
-      setMarkerIcon(createMiniMarkerIcon(mod));
-      setIsMounted(true);
-    });
+    initMapLibreWorker();
   }, []);
-
-  if (!isMounted) {
-    return (
-      <div
-        className="flex items-center justify-center bg-blue-50/40 border border-blue-100 rounded-xl animate-pulse"
-        style={{ height }}
-      >
-        <p className="text-sm text-oliveGreen/60">Cargando mapa…</p>
-      </div>
-    );
-  }
-
   const layer = COPERNICUS_LAYER_CONFIG.satellite;
   const plot = FARM_BOUNDARY[0];
+
+  const boundaryGeoJSON = useMemo(
+    () => ({
+      type: "Feature" as const,
+      properties: {},
+      geometry: {
+        type: "Polygon" as const,
+        coordinates: [
+          [
+            ...plot.coordinates.map(toLngLat),
+            toLngLat(plot.coordinates[0]), // cerrar el anillo
+          ],
+        ],
+      },
+    }),
+    [plot],
+  );
+
+  const [centerLng, centerLat] = toLngLat(FARM_CENTER as [number, number]);
+  const [markerLng, markerLat] = toLngLat(plot.center as [number, number]);
 
   return (
     <div
       className="relative rounded-xl overflow-hidden border border-oliveGreen/15 group"
       style={{ height }}
     >
-      <MapContainer
-        center={FARM_CENTER as LatLngExpression}
-        zoom={FARM_MINI_ZOOM}
-        zoomControl={true}
-        dragging={true}
-        scrollWheelZoom={false}
-        doubleClickZoom={true}
-        style={{ height: "100%", width: "100%" }}
+      <Map
+        initialViewState={{
+          longitude: centerLng,
+          latitude: centerLat,
+          zoom: FARM_MINI_ZOOM,
+        }}
+        mapStyle={BASE_STYLE}
+        scrollZoom={false}
+        dragRotate={false}
+        pitchWithRotate={false}
+        touchPitch={false}
+        attributionControl={{ compact: true }}
+        style={{ width: "100%", height: "100%" }}
       >
-        <TileLayer
-          url={layer.url}
+        {/* Tiles satelitales de Copernicus (raster) */}
+        <Source
+          id="copernicus-satellite"
+          type="raster"
+          tiles={[layer.url]}
+          tileSize={256}
           attribution={layer.attribution}
-          opacity={layer.opacity}
-          maxNativeZoom={layer.maxNativeZoom}
-          maxZoom={layer.maxZoom}
-        />
-        <Polygon
-          positions={plot.coordinates as LatLngExpression[]}
-          pathOptions={{
-            color: plot.color ?? "#8B9D6B",
-            fillColor: plot.color ?? "#8B9D6B",
-            fillOpacity: 0.35,
-            weight: 3,
-          }}
-        />
-        {markerIcon && (
-          <Marker
-            position={plot.center as LatLngExpression}
-            icon={markerIcon}
+        >
+          <Layer
+            id="copernicus-satellite-layer"
+            type="raster"
+            paint={{ "raster-opacity": layer.opacity ?? 1 }}
           />
-        )}
-      </MapContainer>
+        </Source>
+
+        {/* Polígono de la parcela */}
+        <Source id="farm-boundary" type="geojson" data={boundaryGeoJSON}>
+          <Layer
+            id="farm-boundary-fill"
+            type="fill"
+            paint={{
+              "fill-color": plot.color ?? "#8B9D6B",
+              "fill-opacity": 0.35,
+            }}
+          />
+          <Layer
+            id="farm-boundary-line"
+            type="line"
+            paint={{
+              "line-color": plot.color ?? "#8B9D6B",
+              "line-width": 3,
+            }}
+          />
+        </Source>
+
+        {/* Marker con emoji (equivalente al DivIcon de Leaflet) */}
+        <Marker longitude={markerLng} latitude={markerLat} anchor="center">
+          <div
+            style={{
+              width: 26,
+              height: 26,
+              borderRadius: "50%",
+              background: "#8B9D6B",
+              border: "2px solid #ffffff",
+              boxShadow: "0 2px 6px rgba(0,0,0,0.35)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: 14,
+              lineHeight: 1,
+            }}
+          >
+            🌱
+          </div>
+        </Marker>
+      </Map>
 
       <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-3 flex items-center justify-between pointer-events-none">
         <span className="flex items-center gap-1.5 text-xs text-white font-medium">
