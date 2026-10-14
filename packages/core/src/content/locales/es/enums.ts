@@ -23,26 +23,9 @@ export const enums = {
   },
   zoneStatus: {
     optimal: "Óptimo",
-    healthy: "Saludable",
     needsWater: "Necesita riego",
-    active: "Activo",
-    full: "Lleno",
+    needsAttention: "Requiere atención",
+    offline: "Sin conexión",
     unknown: "Sin datos",
-  },
-  zoneType: {
-    fiber: "Planta textil",
-    vegetables: "Hortalizas",
-    trees: "Árboles",
-    aromatics: "Aromáticas",
-    livingSoil: "Suelo vivo",
-    waterCollection: "Recolección",
-  },
-  zoneLocation: {
-    north: "Parcela Norte",
-    south: "Parcela Sur",
-    east: "Ladera Este",
-    west: "Parcela Oeste",
-    rear: "Trasera",
-    northeast: "Noreste",
   },
 } as const;

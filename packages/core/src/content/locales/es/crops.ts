@@ -1,6 +1,6 @@
 export const crops = {
-  "crop-tomato": "Tomate",
   "crop-esparto": "Esparto",
-  "crop-olive": "Olivar",
-  "crop-basil": "Albahaca",
+  "crop-tomate": "Tomate",
+  "crop-olivar": "Olivar",
+  "crop-hierbas": "Hierbas aromáticas",
 } as const;

@@ -36,6 +36,7 @@ const ICON_MAP: Record<string, any> = {
   sun: Sun,
   wind: Wind,
 };
+
 const CopernicusMapMini = dynamic(
   () =>
     import("@/components/features/copernicus/components").then(
@@ -71,7 +72,12 @@ export default function HomePage() {
   const topAlerts = useMemo(
     () =>
       recommendations
-        .filter((r) => r.priority === "urgent" || r.priority === "high")
+        .filter((recommendation) => {
+          return (
+            recommendation.priority === "urgent" ||
+            recommendation.priority === "high"
+          );
+        })
         .slice(0, 3),
     [recommendations],
   );
@@ -101,23 +107,15 @@ export default function HomePage() {
       <div className="mb-8 flex items-center justify-between flex-wrap gap-4">
         <div>
           <h1 className="text-3xl font-bold text-charcoalGray">
-            🌱 MycoMesh Protocol
+            🌱 {locale.ui.app.name}
           </h1>
           <p className="text-oliveGreen flex items-center gap-2">
-            <Trees className="w-4 h-4" /> Permacultura Sintrópica · Regeneración
-            del suelo
+            <Trees className="w-4 h-4" /> {locale.ui.app.subtitle}
           </p>
         </div>
         <ServerStatus status={serverStatus} />
       </div>
-      {/* 🎯 DECISIÓN DEL DÍA — primera cosa que ve el agricultor */}
-      <div className="mb-8">
-        <SystemStatusCard
-          output={decision}
-          context={decisionContext}
-          evidence={decisionEvidence}
-        />
-      </div>
+
       {/* KPIs */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
         {kpis.map((kpi) => {
@@ -145,13 +143,13 @@ export default function HomePage() {
       <div className="mb-8">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-xl font-bold text-charcoalGray">
-            🗺️ Mapa de la finca
+            {locale.ui.dashboard.mapTitle}
           </h2>
           <Link
             href="/humidity"
             className="text-sm text-oliveGreen hover:text-sicilian-red transition-colors flex items-center gap-1"
           >
-            Ver completo <ArrowRight className="w-3 h-3" />
+            {locale.ui.actions.viewFull} <ArrowRight className="w-3 h-3" />
           </Link>
         </div>
         <CopernicusMapMini
@@ -160,18 +158,27 @@ export default function HomePage() {
         />
       </div>
 
+      {/* ESTADO DEL SISTEMA */}
+      <div className="mb-8">
+        <SystemStatusCard
+          output={decision}
+          context={decisionContext}
+          evidence={decisionEvidence}
+        />
+      </div>
+
       {/* Zonas + Alertas */}
       <div className="grid lg:grid-cols-3 gap-8 mb-12">
         <div className="lg:col-span-2">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-charcoalGray">
-              Zonas del Huerto
+              {locale.ui.dashboard.zonesTitle}
             </h2>
             <Link
               href="/ground-cover"
               className="text-sm text-oliveGreen hover:text-sicilian-red transition-colors flex items-center gap-1"
             >
-              Ver cultivos <ArrowRight className="w-3 h-3" />
+              {locale.ui.actions.viewCrops} <ArrowRight className="w-3 h-3" />
             </Link>
           </div>
           <div className="grid md:grid-cols-2 gap-6">
@@ -189,13 +196,13 @@ export default function HomePage() {
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-charcoalGray flex items-center gap-2">
               <AlertTriangle className="w-6 h-6 text-sicilian-red" />
-              Alertas
+              {locale.ui.dashboard.alertsTitle}
             </h2>
             <Link
               href="/recommendations"
               className="text-sm text-oliveGreen hover:text-sicilian-red transition-colors flex items-center gap-1"
             >
-              Ver todas <ArrowRight className="w-3 h-3" />
+              {locale.ui.actions.viewAll} <ArrowRight className="w-3 h-3" />
             </Link>
           </div>
 
@@ -203,7 +210,7 @@ export default function HomePage() {
             {topAlerts.length === 0 ? (
               <div className="bg-emerald-50 rounded-xl p-6 border border-emerald-200 text-center">
                 <p className="text-sm text-emerald-700 font-medium">
-                  ✓ Sin alertas urgentes
+                  {locale.ui.dashboard.alertsEmpty}
                 </p>
               </div>
             ) : (
@@ -240,12 +247,13 @@ export default function HomePage() {
           {/* Captura de carbono */}
           <div className="mt-6 bg-gradient-to-r from-emerald-50 via-green-50 to-emerald-50/30 rounded-xl p-4 border border-emerald-200/40">
             <h4 className="text-xs font-semibold text-emerald-700/80 uppercase tracking-wider flex items-center gap-1 mb-3">
-              <Trees className="w-3.5 h-3.5" /> {locale.ui.home.carbon.title}
+              <Trees className="w-3.5 h-3.5" />{" "}
+              {locale.ui.dashboard.carbon.title}
             </h4>
             <div className="space-y-2 text-xs">
               <div className="flex justify-between">
                 <span className="text-charcoalGray/70">
-                  {locale.ui.home.carbon.soc}
+                  {locale.ui.dashboard.carbon.soc}
                 </span>
                 <span className="font-medium text-emerald-700">
                   {carbon.organicCarbonPercent}%
@@ -253,7 +261,7 @@ export default function HomePage() {
               </div>
               <div className="flex justify-between">
                 <span className="text-charcoalGray/70">
-                  {locale.ui.home.carbon.bulkDensity}
+                  {locale.ui.dashboard.carbon.bulkDensity}
                 </span>
                 <span className="font-medium text-emerald-700">
                   {carbon.bulkDensity} g/cm³
@@ -261,16 +269,15 @@ export default function HomePage() {
               </div>
               <div className="flex justify-between">
                 <span className="text-charcoalGray/70">
-                  {locale.ui.home.carbon.depth}
+                  {locale.ui.dashboard.carbon.depth}
                 </span>
                 <span className="font-medium text-emerald-700">
                   {carbon.depth} cm
                 </span>
               </div>
               <div className="flex justify-between">
-                +{" "}
                 <span className="text-charcoalGray/70">
-                  {locale.ui.home.carbon.co2}
+                  {locale.ui.dashboard.carbon.co2}
                 </span>
                 <span className="font-medium text-emerald-700">
                   {carbon.co2Sequestration} t/ha
@@ -288,18 +295,17 @@ export default function HomePage() {
             <Sprout className="w-6 h-6 text-oliveGreen" />
           </div>
           <h2 className="text-xl font-bold text-charcoalGray">
-            Cultivos y coberturas
+            {locale.content.home.cropsCta.title}
           </h2>
         </div>
         <p className="text-oliveGreen/70 mb-4">
-          Esparto, policultivo, cereal, cubiertas y barbecho. Análisis
-          agronómico y comparador de coberturas.
+          {locale.content.home.cropsCta.description}
         </p>
         <Link
           href="/ground-cover"
           className="inline-flex items-center gap-2 text-oliveGreen hover:text-sicilian-red transition-colors font-medium"
         >
-          Ver cultivos <ArrowRight className="w-4 h-4" />
+          {locale.ui.actions.viewCrops} <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
     </div>
