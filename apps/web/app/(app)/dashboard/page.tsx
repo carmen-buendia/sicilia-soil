@@ -15,6 +15,7 @@ import {
   Gauge,
   Leaf,
   Network,
+  Layers,
 } from "lucide-react";
 import { StatsCard } from "@/components/features/dashboard/components/StatsCards";
 import { ZoneCard } from "@/components/features/dashboard/components/ZoneCards";
@@ -27,7 +28,7 @@ import { PRIORITY_STYLES } from "@/config/recommendation.styles";
 import { getLocale } from "@sicilia-soil/core";
 
 const ICON_MAP: Record<string, any> = {
-  leaf: Leaf,
+  leaf: Layers,
   droplet: Droplet,
   gauge: Gauge,
   trees: Trees,

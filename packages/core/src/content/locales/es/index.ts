@@ -8,6 +8,7 @@ import { systemStatus } from "./system-status";
 import { water } from "./water";
 import { content } from "./content";
 import { glossary } from "./glossary";
+import { engine } from "./engine";
 
 export const es = {
   ui,
@@ -20,4 +21,5 @@ export const es = {
   water,
   content,
   glossary,
+  engine,
 } as const;
