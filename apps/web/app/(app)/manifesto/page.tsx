@@ -19,7 +19,7 @@ export default function ManifestoPage() {
         {/* Header */}
         <div className="flex items-center gap-4 mb-12">
           <Link
-            href="/"
+            href="/dashboard"
             className="p-2 hover:bg-oliveGreen/10 rounded-lg transition-colors"
           >
             <ArrowLeft className="w-5 h-5 text-oliveGreen" />
