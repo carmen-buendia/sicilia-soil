@@ -16,19 +16,5 @@ export * from "./light.data";
 export * from "./water.data";
 export * from "./decision.mock";
 
-// Water: export data + helpers, not the type
-export {
-  WATER_DATA,
-  WATER_CLIMATE,
-  WATER_FORECAST,
-  WATER_LAST_READING,
-  WATER_CONTROL,
-  getAverageWater,
-  getCriticalZones,
-  getOptimalZones,
-  getZoneStatus,
-  getZoneColor,
-} from "./water.data";
-
 // Dashboard
 export { GARDEN_ZONES, DASHBOARD_KPIS, CARBON_SUMMARY } from "./dashboard.data";

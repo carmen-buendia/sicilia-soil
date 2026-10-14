@@ -15,12 +15,25 @@ import {
 import Link from "next/link";
 import { Button } from "@sicilia-soil/ui";
 import { useWaterData } from "@/hooks/useWaterData";
-import { getZoneStatus, getZoneColor } from "@sicilia-soil/core";
-import { FARM_CENTER, FARM_DEFAULT_ZOOM } from "@sicilia-soil/core";
+import {
+  getLocale,
+  getZoneColor,
+  getZoneStatus,
+  FARM_CENTER,
+  FARM_DEFAULT_ZOOM,
+} from "@sicilia-soil/core";
 import {
   CopernicusWidget,
   CopernicusMap,
 } from "@/components/features/copernicus/components";
+
+function formatWateringAgo(
+  hoursAgo: number | "auto",
+  t: ReturnType<typeof getLocale>["water"],
+): string {
+  if (hoursAgo === "auto") return t.zones.wateringAuto;
+  return t.zones.wateringHoursAgo.replace("{hours}", String(hoursAgo));
+}
 
 export default function WaterPage() {
   const {
@@ -28,16 +41,17 @@ export default function WaterPage() {
     climate,
     waterControl,
     forecast,
-    lastReading,
+    lastReadingMinutes,
     average,
     criticalZones,
     optimalZones,
   } = useWaterData();
 
+  const locale = getLocale("es");
+  const t = locale.water;
+
   const [selectedZone, setSelectedZone] = useState<string | null>(null);
-  const [selectedPlot, setSelectedPlot] = useState<string>(
-    "Sicilia — Food Forest (Assoro)",
-  );
+  const [selectedPlot, setSelectedPlot] = useState<string>("");
 
   const getTrendIcon = (trend: string) => {
     if (trend === "up")
@@ -47,9 +61,19 @@ export default function WaterPage() {
     return null;
   };
 
+  const getTrendLabel = (trend: string) => {
+    if (trend === "up") return t.zones.trendUp;
+    if (trend === "down") return t.zones.trendDown;
+    return t.zones.trendStable;
+  };
+
   const consumptionPercent = Math.round(
     (waterControl.consumption.current / waterControl.consumption.limit) * 100,
   );
+
+  const forecastText = t.control.forecastTemplate
+    .replace("{temp}", String(forecast.airTempC))
+    .replace("{percent}", String(forecast.irrigationIncreasePercent));
 
   return (
     <div className="min-h-screen p-4 md:p-8 pt-24 bg-gradient-to-br from-offWhite to-blue-50">
@@ -68,11 +92,9 @@ export default function WaterPage() {
                 <div className="p-2 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-xl">
                   <Droplets className="w-8 h-8 text-blue-600" />
                 </div>
-                Humedad del Suelo
+                {t.header.title}
               </h1>
-              <p className="text-oliveGreen/70">
-                Monitoreo detallado de humedad por zona de cultivo
-              </p>
+              <p className="text-oliveGreen/70">{t.header.subtitle}</p>
             </div>
           </div>
 
@@ -82,54 +104,57 @@ export default function WaterPage() {
               size="md"
               icon={<Calendar className="w-4 h-4" />}
             >
-              Última semana
+              {t.header.rangeLastWeek}
             </Button>
             <Button
               variant="glass-red"
               size="md"
               icon={<Download className="w-4 h-4" />}
             >
-              Exportar datos
+              {t.header.exportData}
             </Button>
           </div>
         </div>
 
-        {/* Stats Cards */}
+        {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white/50 backdrop-blur-sm rounded-xl p-5 border border-blue-100 shadow-lg hover:shadow-xl transition-all">
-            <p className="text-sm text-oliveGreen/60">Promedio general</p>
+          <div className="bg-white/50 backdrop-blur-sm rounded-xl p-5 border border-blue-100 shadow-lg">
+            <p className="text-sm text-oliveGreen/60">{t.stats.average}</p>
             <p className="text-3xl font-bold text-blue-600">{average}%</p>
-            <p className="text-xs text-green-600 mt-1">↑ 2% vs ayer</p>
-          </div>
-
-          <div className="bg-white/50 backdrop-blur-sm rounded-xl p-5 border border-blue-100 shadow-lg hover:shadow-xl transition-all">
-            <p className="text-sm text-oliveGreen/60">Zonas óptimas</p>
-            <p className="text-3xl font-bold text-green-600">{optimalZones}</p>
-            <p className="text-xs text-oliveGreen/60">
-              de {zones.length} zonas
+            <p className="text-xs text-green-600 mt-1">
+              {t.stats.averageTrend}
             </p>
           </div>
-
-          <div className="bg-white/50 backdrop-blur-sm rounded-xl p-5 border border-blue-100 shadow-lg hover:shadow-xl transition-all">
-            <p className="text-sm text-oliveGreen/60">Necesitan riego</p>
-            <p className="text-3xl font-bold text-red-600">{criticalZones}</p>
-            <p className="text-xs text-orange-600">⚠️ Atención urgente</p>
+          <div className="bg-white/50 backdrop-blur-sm rounded-xl p-5 border border-blue-100 shadow-lg">
+            <p className="text-sm text-oliveGreen/60">{t.stats.optimalZones}</p>
+            <p className="text-3xl font-bold text-green-600">{optimalZones}</p>
+            <p className="text-xs text-oliveGreen/60">
+              {t.stats.ofZones.replace("{count}", String(zones.length))}
+            </p>
           </div>
-
-          <div className="bg-white/50 backdrop-blur-sm rounded-xl p-5 border border-blue-100 shadow-lg hover:shadow-xl transition-all">
-            <p className="text-sm text-oliveGreen/60">Última lectura</p>
-            <p className="text-3xl font-bold text-purple-600">{lastReading}</p>
-            <p className="text-xs text-oliveGreen/60">sensores activos</p>
+          <div className="bg-white/50 backdrop-blur-sm rounded-xl p-5 border border-blue-100 shadow-lg">
+            <p className="text-sm text-oliveGreen/60">{t.stats.needsWater}</p>
+            <p className="text-3xl font-bold text-red-600">{criticalZones}</p>
+            <p className="text-xs text-orange-600">{t.stats.urgentAttention}</p>
+          </div>
+          <div className="bg-white/50 backdrop-blur-sm rounded-xl p-5 border border-blue-100 shadow-lg">
+            <p className="text-sm text-oliveGreen/60">{t.stats.lastReading}</p>
+            <p className="text-3xl font-bold text-purple-600">
+              {lastReadingMinutes} min
+            </p>
+            <p className="text-xs text-oliveGreen/60">
+              {t.stats.activeSensors}
+            </p>
           </div>
         </div>
 
-        {/* Dashboard Climático */}
+        {/* Climate */}
         <div className="grid md:grid-cols-3 gap-4 mb-8">
           <div className="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 rounded-xl p-4 border border-yellow-200">
             <div className="flex items-center gap-2">
               <Sun className="w-5 h-5 text-yellow-600" />
               <span className="text-sm font-medium">
-                {climate.temperature.label}
+                {t.climate.temperatureLabel}
               </span>
             </div>
             <p className="text-2xl font-bold mt-2">
@@ -137,7 +162,10 @@ export default function WaterPage() {
               {climate.temperature.unit}
             </p>
             <p className="text-xs text-oliveGreen/60">
-              {climate.temperature.note}
+              {t.climate.temperatureNote.replace(
+                "{feelsLike}",
+                String(climate.temperature.feelsLike),
+              )}
             </p>
           </div>
 
@@ -145,7 +173,7 @@ export default function WaterPage() {
             <div className="flex items-center gap-2">
               <Wind className="w-5 h-5 text-blue-600" />
               <span className="text-sm font-medium">
-                {climate.ambientHumidity.label}
+                {t.climate.humidityLabel}
               </span>
             </div>
             <p className="text-2xl font-bold mt-2">
@@ -153,7 +181,10 @@ export default function WaterPage() {
               {climate.ambientHumidity.unit}
             </p>
             <p className="text-xs text-oliveGreen/60">
-              {climate.ambientHumidity.note}
+              {t.climate.humidityNote.replace(
+                "{windKmh}",
+                String(climate.ambientHumidity.windKmh),
+              )}
             </p>
           </div>
 
@@ -161,7 +192,7 @@ export default function WaterPage() {
             <div className="flex items-center gap-2">
               <Thermometer className="w-5 h-5 text-emerald-600" />
               <span className="text-sm font-medium">
-                {climate.evapotranspiration.label}
+                {t.climate.evapotranspirationLabel}
               </span>
             </div>
             <p className="text-2xl font-bold mt-2">
@@ -169,17 +200,19 @@ export default function WaterPage() {
               {climate.evapotranspiration.unit}
             </p>
             <p className="text-xs text-oliveGreen/60">
-              {climate.evapotranspiration.note}
+              {t.climate.evapotranspirationNote.replace(
+                "{hint}",
+                String(climate.evapotranspiration.irrigationHint),
+              )}
             </p>
           </div>
         </div>
 
-        {/* Copernicus Widget */}
+        {/* Copernicus */}
         <div className="mb-8">
           <CopernicusWidget selectedPlot={selectedPlot} />
         </div>
 
-        {/* Copernicus Map — CORREGIDO */}
         <div className="mb-8">
           <CopernicusMap
             initialLayer="satellite"
@@ -189,50 +222,55 @@ export default function WaterPage() {
           />
         </div>
 
-        {/* Grid de Zonas */}
+        {/* Zones */}
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-charcoalGray mb-6 flex items-center gap-2">
             <div className="p-2 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-xl">
               <Droplets className="w-5 h-5 text-blue-600" />
             </div>
-            Monitoreo por Zona
+            {t.zones.sectionTitle}
           </h2>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {zones.map((zone) => {
               const status = getZoneStatus(zone.current, zone.optimal);
               const color = getZoneColor(zone.current, zone.optimal);
+              const zoneName =
+                locale.zones[zone.id as keyof typeof locale.zones] ?? zone.id;
 
               return (
                 <div
                   key={zone.id}
                   className={`group bg-white/50 backdrop-blur-sm rounded-xl p-6 shadow-lg border transition-all duration-300 cursor-pointer hover:shadow-xl ${
                     status.status === "critical"
-                      ? "border-red-200 hover:border-red-300"
+                      ? "border-red-200"
                       : status.status === "optimal"
-                        ? "border-green-200 hover:border-green-300"
-                        : "border-yellow-200 hover:border-yellow-300"
+                        ? "border-green-200"
+                        : "border-yellow-200"
                   }`}
                   onClick={() => {
                     const newZone = zone.id === selectedZone ? null : zone.id;
                     setSelectedZone(newZone);
-                    if (newZone) setSelectedPlot(`Sicilia — ${zone.zone}`);
+                    if (newZone) setSelectedPlot(zone.location);
                   }}
                 >
                   <div className="flex justify-between items-start mb-4">
                     <div>
-                      <h3 className="text-lg font-bold text-charcoalGray flex items-center gap-2">
-                        <span>{zone.icon}</span>
-                        {zone.zone}
+                      <h3 className="text-lg font-bold text-charcoalGray">
+                        {zoneName}
                       </h3>
                       <div className="flex items-center gap-2 mt-1">
                         <span className="text-xs text-oliveGreen/60">
-                          {zone.soilType}
+                          {zone.location}
                         </span>
                         <span className="text-xs text-oliveGreen/40">•</span>
                         <span className="text-xs text-oliveGreen/60">
-                          Riego: {zone.lastWatering}
+                          {zone.soilType}
                         </span>
+                      </div>
+                      <div className="text-xs text-oliveGreen/60 mt-1">
+                        {t.zones.watering}:{" "}
+                        {formatWateringAgo(zone.lastWateringHoursAgo, t)}
                       </div>
                     </div>
                     <span
@@ -242,7 +280,7 @@ export default function WaterPage() {
                     </span>
                   </div>
 
-                  {/* Medidor circular */}
+                  {/* Circular meter */}
                   <div className="flex justify-center mb-4">
                     <div className="relative w-32 h-32">
                       <svg className="w-full h-full" viewBox="0 0 100 100">
@@ -265,7 +303,6 @@ export default function WaterPage() {
                           strokeDashoffset={`${2 * Math.PI * 45 * (1 - zone.current / 100)}`}
                           strokeLinecap="round"
                           transform="rotate(-90 50 50)"
-                          className="transition-all duration-500"
                         />
                         <text
                           x="50"
@@ -284,21 +321,19 @@ export default function WaterPage() {
                   <div className="flex justify-center items-center gap-1 mb-3">
                     {getTrendIcon(zone.trend)}
                     <span className="text-xs text-oliveGreen/60">
-                      {zone.trend === "up" && "Aumentando"}
-                      {zone.trend === "down" && "Disminuyendo"}
-                      {zone.trend === "stable" && "Estable"}
+                      {getTrendLabel(zone.trend)}
                     </span>
                   </div>
 
                   <div className="mt-4">
                     <p className="text-xs text-oliveGreen/60 mb-2">
-                      Evolución últimas 24h
+                      {t.zones.evolution24h}
                     </p>
                     <div className="flex items-end justify-between h-16 gap-1">
                       {zone.history.map((value, i) => (
                         <div
                           key={i}
-                          className="flex-1 bg-gradient-to-t from-blue-400 to-blue-500 rounded-t transition-all duration-300 hover:from-blue-500 hover:to-blue-600"
+                          className="flex-1 bg-gradient-to-t from-blue-400 to-blue-500 rounded-t"
                           style={{
                             height: `${value}%`,
                             opacity: 0.7 + (i / zone.history.length) * 0.3,
@@ -310,10 +345,10 @@ export default function WaterPage() {
 
                   <div className="mt-4 pt-3 border-t border-blue-100 flex justify-between text-sm">
                     <span className="text-oliveGreen/60">
-                      Óptimo: {zone.optimal}%
+                      {t.zones.optimal}: {zone.optimal}%
                     </span>
                     <span className="font-medium text-charcoalGray">
-                      Actual: {zone.current}%
+                      {t.zones.current}: {zone.current}%
                     </span>
                   </div>
 
@@ -322,27 +357,34 @@ export default function WaterPage() {
                       <div className="grid grid-cols-2 gap-3 text-sm">
                         <div className="bg-blue-50/50 rounded-lg p-2">
                           <p className="text-xs text-oliveGreen/60">
-                            Recomendación
+                            {t.zones.recommendation}
                           </p>
                           <p className="font-medium text-charcoalGray">
                             {zone.current < zone.optimal
-                              ? `Regar ${Math.round((zone.optimal - zone.current) * 0.5)}L/m²`
-                              : "Mantener nivel actual"}
+                              ? t.zones.recommendationWater.replace(
+                                  "{liters}",
+                                  String(
+                                    Math.round(
+                                      (zone.optimal - zone.current) * 0.5,
+                                    ),
+                                  ),
+                                )
+                              : t.zones.recommendationKeep}
                           </p>
                         </div>
                         <div className="bg-blue-50/50 rounded-lg p-2">
                           <p className="text-xs text-oliveGreen/60">
-                            Próximo riego
+                            {t.zones.nextWatering}
                           </p>
                           <p className="font-medium text-charcoalGray">
                             {zone.current < zone.optimal
-                              ? "Inmediato"
-                              : "En 6-8 horas"}
+                              ? t.zones.nextWateringNow
+                              : t.zones.nextWateringLater}
                           </p>
                         </div>
                       </div>
                       <Button variant="blue" size="sm" className="w-full mt-3">
-                        💧 Riego manual ahora
+                        {t.zones.manualWatering}
                       </Button>
                     </div>
                   )}
@@ -352,51 +394,66 @@ export default function WaterPage() {
           </div>
         </div>
 
-        {/* Panel de Control de Riego */}
+        {/* Control */}
         <div className="bg-gradient-to-r from-blue-500/10 via-cyan-500/10 to-blue-500/10 rounded-2xl p-8 border border-blue-200 shadow-xl">
           <h2 className="text-2xl font-bold text-charcoalGray mb-6 flex items-center gap-2">
             <div className="p-2 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-xl">
               <Droplets className="w-6 h-6 text-blue-600" />
             </div>
-            Control de Riego Inteligente
+            {t.control.title}
           </h2>
 
           <div className="grid md:grid-cols-3 gap-6">
             <div className="bg-white/50 backdrop-blur-sm rounded-xl p-6 border border-blue-100">
               <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                Riego automático
+                {t.control.autoIrrigation}
               </h3>
               <div className="flex items-center justify-between mb-3">
-                <span className="text-oliveGreen/70">Estado</span>
+                <span className="text-oliveGreen/70">{t.control.status}</span>
                 <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
-                  {waterControl.autoIrrigation.statusLabel}
+                  {waterControl.autoIrrigation.enabled
+                    ? t.control.statusOn
+                    : t.control.statusOff}
                 </span>
               </div>
               <div>
                 <p className="text-sm text-oliveGreen/60">
-                  Próximo riego programado
+                  {t.control.nextScheduled}
                 </p>
                 <p className="text-xl font-bold text-charcoalGray">
-                  {waterControl.autoIrrigation.nextIn}
+                  {t.control.nextInHours.replace(
+                    "{hours}",
+                    String(waterControl.autoIrrigation.nextInHours),
+                  )}
                 </p>
               </div>
               <div className="mt-3 pt-3 border-t border-blue-100">
-                <p className="text-xs text-oliveGreen/60">Duración estimada</p>
+                <p className="text-xs text-oliveGreen/60">
+                  {t.control.duration}
+                </p>
                 <p className="font-medium">
-                  {waterControl.autoIrrigation.duration}
+                  {t.control.durationMinutes.replace(
+                    "{minutes}",
+                    String(waterControl.autoIrrigation.durationMinutes),
+                  )}
                 </p>
               </div>
             </div>
 
             <div className="bg-white/50 backdrop-blur-sm rounded-xl p-6 border border-blue-100">
-              <h3 className="font-bold text-lg mb-4">Consumo de agua</h3>
+              <h3 className="font-bold text-lg mb-4">
+                {t.control.consumptionTitle}
+              </h3>
               <p className="text-4xl font-bold text-blue-600">
                 {waterControl.consumption.current}
                 <span className="text-lg">{waterControl.consumption.unit}</span>
               </p>
               <p className="text-sm text-oliveGreen/60 mb-3">
-                {waterControl.consumption.period}
+                {t.control.consumptionPeriod.replace(
+                  "{hours}",
+                  String(waterControl.consumption.periodHours),
+                )}
               </p>
               <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
                 <div
@@ -412,21 +469,23 @@ export default function WaterPage() {
                 </span>
                 <span>
                   {waterControl.consumption.limit}
-                  {waterControl.consumption.unit} (límite)
+                  {waterControl.consumption.unit} ({t.control.consumptionLimit})
                 </span>
               </div>
             </div>
 
             <div className="bg-white/50 backdrop-blur-sm rounded-xl p-6 border border-blue-100">
-              <h3 className="font-bold text-lg mb-4">Acciones rápidas</h3>
+              <h3 className="font-bold text-lg mb-4">
+                {t.control.quickActions}
+              </h3>
               <Button variant="gradient-blue" className="w-full mb-2">
-                💧 Riego manual ahora
+                {t.zones.manualWatering}
               </Button>
               <Button variant="outline-blue" className="w-full">
-                📅 Programar riego
+                {t.control.scheduleWatering}
               </Button>
               <Button variant="ghost" size="sm" className="w-full mt-2">
-                ⚙️ Configuración avanzada
+                {t.control.advancedConfig}
               </Button>
             </div>
           </div>
@@ -434,19 +493,20 @@ export default function WaterPage() {
           <div className="mt-6 p-4 bg-yellow-50/50 rounded-xl border border-yellow-200">
             <p className="text-sm text-oliveGreen/70 flex items-center gap-2">
               <Sun className="w-4 h-4 text-yellow-600" />
-              Pronóstico: {forecast}
+              {t.control.forecast}: {forecastText}
             </p>
           </div>
         </div>
 
         {/* Footer */}
         <div className="text-center py-8 border-t border-blue-100 mt-8">
-          <p className="text-sm text-oliveGreen/70">
-            💧 Datos actualizados en tiempo real desde sensores IoT
-          </p>
+          <p className="text-sm text-oliveGreen/70">{t.footer.realtime}</p>
           <p className="text-xs text-oliveGreen/50 mt-2">
-            Última sincronización: hace 2 minutos · Todos los sensores
-            operativos
+            {t.footer.syncMinutesAgo.replace(
+              "{minutes}",
+              String(lastReadingMinutes),
+            )}{" "}
+            · {t.footer.allOperational}
           </p>
         </div>
       </div>

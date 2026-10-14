@@ -4,3 +4,5 @@ export * from "./constants";
 export * from "./decision";
 export * from "./content";
 export * from "./site";
+
+export { getZoneStatus, getZoneColor } from "./data/water.data";
