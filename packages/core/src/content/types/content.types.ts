@@ -70,3 +70,27 @@ export interface SoilHealthData {
   };
   source: DataSource;
 }
+
+export type ZoneStatusKey =
+  | "optimal"
+  | "healthy"
+  | "needsWater"
+  | "active"
+  | "full"
+  | "unknown";
+
+export type ZoneTypeKey =
+  | "fiber"
+  | "vegetables"
+  | "trees"
+  | "aromatics"
+  | "livingSoil"
+  | "waterCollection";
+
+export type ZoneLocationKey =
+  | "north"
+  | "south"
+  | "east"
+  | "west"
+  | "rear"
+  | "northeast";
