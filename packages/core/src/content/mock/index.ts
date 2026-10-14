@@ -2,3 +2,5 @@
 // Populated page by page during refactor.
 
 export * from "./zones";
+export * from "./kpis";
+export * from "./carbon";

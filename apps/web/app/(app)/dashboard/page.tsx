@@ -24,6 +24,7 @@ import { useRecommendations } from "@/hooks/useRecommendations";
 import { useDashboardData } from "@/hooks/useDashboardData";
 import { useTodayDecision } from "@/hooks/useTodayDecision";
 import { PRIORITY_STYLES } from "@/config/recommendation.styles";
+import { getLocale } from "@sicilia-soil/core";
 
 const ICON_MAP: Record<string, any> = {
   leaf: Leaf,
@@ -58,6 +59,8 @@ export default function HomePage() {
     "checking" | "online" | "offline"
   >("checking");
   const { zones, kpis, carbon } = useDashboardData();
+  const locale = getLocale("es");
+
   const {
     output: decision,
     context: decisionContext,
@@ -117,13 +120,14 @@ export default function HomePage() {
       </div>
       {/* KPIs */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
-        {kpis.map((kpi, i) => {
+        {kpis.map((kpi) => {
           const Icon = ICON_MAP[kpi.icon] ?? Leaf;
+          const kpiLabels = locale.kpis[kpi.id as keyof typeof locale.kpis];
           return (
             <StatsCard
-              key={i}
+              key={kpi.id}
               value={kpi.value}
-              label={kpi.label}
+              label={kpiLabels?.label ?? kpi.id}
               icon={
                 typeof Icon === "function" && Icon.name === "" ? (
                   Icon()
@@ -131,7 +135,7 @@ export default function HomePage() {
                   <Icon className="w-5 h-5" />
                 )
               }
-              subtext={kpi.subtext}
+              subtext={kpiLabels?.subtext}
             />
           );
         })}
@@ -236,29 +240,38 @@ export default function HomePage() {
           {/* Captura de carbono */}
           <div className="mt-6 bg-gradient-to-r from-emerald-50 via-green-50 to-emerald-50/30 rounded-xl p-4 border border-emerald-200/40">
             <h4 className="text-xs font-semibold text-emerald-700/80 uppercase tracking-wider flex items-center gap-1 mb-3">
-              <Trees className="w-3.5 h-3.5" /> Captura de carbono
+              <Trees className="w-3.5 h-3.5" /> {locale.ui.home.carbon.title}
             </h4>
             <div className="space-y-2 text-xs">
               <div className="flex justify-between">
-                <span className="text-charcoalGray/70">COS</span>
+                <span className="text-charcoalGray/70">
+                  {locale.ui.home.carbon.soc}
+                </span>
                 <span className="font-medium text-emerald-700">
                   {carbon.organicCarbonPercent}%
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-charcoalGray/70">Densidad aparente</span>
+                <span className="text-charcoalGray/70">
+                  {locale.ui.home.carbon.bulkDensity}
+                </span>
                 <span className="font-medium text-emerald-700">
                   {carbon.bulkDensity} g/cm³
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-charcoalGray/70">Profundidad</span>
+                <span className="text-charcoalGray/70">
+                  {locale.ui.home.carbon.depth}
+                </span>
                 <span className="font-medium text-emerald-700">
                   {carbon.depth} cm
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-charcoalGray/70">CO₂ secuestrado</span>
+                +{" "}
+                <span className="text-charcoalGray/70">
+                  {locale.ui.home.carbon.co2}
+                </span>
                 <span className="font-medium text-emerald-700">
                   {carbon.co2Sequestration} t/ha
                 </span>
