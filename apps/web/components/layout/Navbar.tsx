@@ -20,7 +20,7 @@ import { Button } from "@sicilia-soil/ui";
 import { NotificationBell } from "@/components/features/notifications";
 
 const navItems = [
-  { id: "/", label: "Dashboard", icon: Home },
+  { id: "/dashboard", label: "Dashboard", icon: Home },
   { id: "/soil-health", label: "Suelo", icon: Leaf },
   { id: "/humidity", label: "Agua", icon: Droplets },
   { id: "/ground-cover", label: "Cultivos", icon: Sprout },
@@ -54,7 +54,7 @@ export function Navbar() {
         <div className="flex items-center justify-between h-14 sm:h-16 lg:h-20">
           {/* Logo */}
           <Link
-            href="/"
+            href="/dashboard"
             className="flex items-center gap-2 sm:gap-3 group transition-all duration-300 hover:scale-[1.02]"
           >
             <div className="relative">
