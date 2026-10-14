@@ -21,3 +21,7 @@
 - [ ] Migrar a React 19 antes de actualizar a Next.js 17.
       Requiere verificar: react-leaflet (ya no se usa), react-map-gl (compatible),
       echarts-for-react (verificar), @types/react (actualizar).
+- [ ] Eliminar types legacy huérfanos:
+  - `packages/core/src/types/farm.types.ts` → `FarmConfig` (deprecated, usar `Farm` de spatial.types)
+  - `packages/core/src/types/monitoring.types.ts` → `ZoneConfig` (legacy site.config)
+  - Renombrar `SiteZoneConfig` → `ZoneConfig` una vez eliminados.
