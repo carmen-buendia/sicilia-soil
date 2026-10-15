@@ -7,7 +7,7 @@ import { ArrowLeft, Brain, RefreshCw } from "lucide-react";
 import { Button } from "@sicilia-soil/ui";
 import { RecommendationsList } from "@/components/features/recommendations";
 import { generateRecommendations } from "@sicilia-soil/utils";
-import { getLocale, RECOMMENDATION_INPUT_MOCK } from "@sicilia-soil/core";
+import { getLocale, RECOMMENDATION_INPUT_DEFAULT } from "@sicilia-soil/core";
 import { getZones } from "@sicilia-soil/core/site";
 
 export default function EnginePage() {
@@ -24,7 +24,7 @@ export default function EnginePage() {
 
   const engineInput = useMemo(
     () => ({
-      ...RECOMMENDATION_INPUT_MOCK,
+      ...RECOMMENDATION_INPUT_DEFAULT,
       zoneId: firstZone?.id ?? "zone-unknown",
       zoneName,
     }),

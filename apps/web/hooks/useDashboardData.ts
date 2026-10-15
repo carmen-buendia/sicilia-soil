@@ -1,15 +1,15 @@
 "use client";
 
 import {
-  SENSOR_READINGS_MOCK,
-  KPIS_MOCK,
-  CARBON_MOCK,
+  SENSOR_READINGS_DEFAULT,
+  KPIS_DEFAULT,
+  CARBON_DEFAULT,
 } from "@sicilia-soil/core";
 import { getZones } from "@sicilia-soil/core/site";
 
 export function useDashboardData() {
   const zones = getZones().map((config) => {
-    const reading = SENSOR_READINGS_MOCK.find(
+    const reading = SENSOR_READINGS_DEFAULT.find(
       (r) => r.sensorId === config.sensorId,
     );
 
@@ -26,5 +26,5 @@ export function useDashboardData() {
     };
   });
 
-  return { zones, kpis: KPIS_MOCK, carbon: CARBON_MOCK };
+  return { zones, kpis: KPIS_DEFAULT, carbon: CARBON_DEFAULT };
 }

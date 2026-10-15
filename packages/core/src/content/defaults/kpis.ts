@@ -1,10 +1,10 @@
-export interface KpiMock {
+export interface KpiDefault {
   id: string;
   value: string;
   icon: string;
 }
 
-export const KPIS_MOCK: KpiMock[] = [
+export const KPIS_DEFAULT: KpiDefault[] = [
   { id: "kpi-soil-health", value: "88/100", icon: "leaf" },
   { id: "kpi-water-stress", value: "0.18", icon: "droplet" },
   { id: "kpi-soil-moisture", value: "31%", icon: "gauge" },

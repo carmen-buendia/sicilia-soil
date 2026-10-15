@@ -1,17 +1,17 @@
 "use client";
 
 import {
-  WATER_READINGS_MOCK,
-  WATER_CLIMATE_MOCK,
-  WATER_CONTROL_MOCK,
-  WATER_FORECAST_MOCK,
+  WATER_READINGS_DEFAULT,
+  WATER_CLIMATE_DEFAULT,
+  WATER_CONTROL_DEFAULT,
+  WATER_FORECAST_DEFAULT,
   WATER_LAST_READING_MINUTES,
 } from "@sicilia-soil/core";
 import { getZones, getIrrigationTargets } from "@sicilia-soil/core/site";
 
 export function useWaterData() {
   const zones = getZones().map((config) => {
-    const reading = WATER_READINGS_MOCK.find(
+    const reading = WATER_READINGS_DEFAULT.find(
       (r) => r.sensorId === config.sensorId,
     );
     const targets = getIrrigationTargets(config.id);
@@ -46,9 +46,9 @@ export function useWaterData() {
 
   return {
     zones,
-    climate: WATER_CLIMATE_MOCK,
-    waterControl: WATER_CONTROL_MOCK,
-    forecast: WATER_FORECAST_MOCK,
+    climate: WATER_CLIMATE_DEFAULT,
+    waterControl: WATER_CONTROL_DEFAULT,
+    forecast: WATER_FORECAST_DEFAULT,
     lastReadingMinutes: WATER_LAST_READING_MINUTES,
     average,
     criticalZones,

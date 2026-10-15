@@ -1,4 +1,4 @@
-export interface WaterReadingMock {
+export interface WaterReadingDefault {
   sensorId: string;
   current: number;
   history: number[];
@@ -6,7 +6,7 @@ export interface WaterReadingMock {
   lastWateringHoursAgo: number | "auto";
 }
 
-export const WATER_READINGS_MOCK: WaterReadingMock[] = [
+export const WATER_READINGS_DEFAULT: WaterReadingDefault[] = [
   {
     sensorId: "sensor-01",
     current: 78,
@@ -51,18 +51,18 @@ export const WATER_READINGS_MOCK: WaterReadingMock[] = [
   },
 ];
 
-export const WATER_CLIMATE_MOCK = {
+export const WATER_CLIMATE_DEFAULT = {
   temperature: { value: 28, unit: "°C", feelsLike: 26 },
   ambientHumidity: { value: 65, unit: "%", windKmh: 12 },
   evapotranspiration: { value: 4.2, unit: "mm/día", irrigationHint: 5 },
 };
 
-export const WATER_CONTROL_MOCK = {
+export const WATER_CONTROL_DEFAULT = {
   autoIrrigation: { enabled: true, nextInHours: 2, durationMinutes: 15 },
   consumption: { current: 124, limit: 200, unit: "L", periodHours: 24 },
 };
 
-export const WATER_FORECAST_MOCK = {
+export const WATER_FORECAST_DEFAULT = {
   airTempC: 30,
   irrigationIncreasePercent: 15,
 };

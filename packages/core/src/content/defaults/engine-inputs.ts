@@ -4,7 +4,7 @@
  *
  * No text, no zone names — those come from site config + locale.
  */
-export interface RecommendationInputMock {
+export interface RecommendationInputDefault {
   soilMoisture: number;
   soilTemperature: number;
   airTemperature: number;
@@ -15,7 +15,7 @@ export interface RecommendationInputMock {
   windSpeed: number;
 }
 
-export const RECOMMENDATION_INPUT_MOCK: RecommendationInputMock = {
+export const RECOMMENDATION_INPUT_DEFAULT: RecommendationInputDefault = {
   soilMoisture: 38,
   soilTemperature: 21,
   airTemperature: 30,
