@@ -2,7 +2,7 @@
 
 // ============================================================================
 // Water helpers — pure functions, no data
-// All water mock data lives in content/mock/water.ts
+// All water default data lives in content/defaults/water.ts
 // Zone metadata lives in site/site.config.ts
 // ============================================================================
 

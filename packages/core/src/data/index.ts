@@ -10,11 +10,11 @@ export * from "./soilHealth.data";
 export * from "./groundCover.data";
 export * from "./copernicus.defaults";
 export * from "./recommendation.rules";
-export * from "./sensors.mock";
+export * from "./sensors.defaults";
 export * from "./temperature.data";
 export * from "./light.data";
 export * from "./water.data";
-export * from "./decision.mock";
+export * from "./decision.defaults";
 
 // Dashboard
 export { GARDEN_ZONES, DASHBOARD_KPIS, CARBON_SUMMARY } from "./dashboard.data";

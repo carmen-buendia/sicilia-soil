@@ -4,8 +4,8 @@
 
 import { useMemo } from "react";
 import {
-  MOCK_DECISION_CONTEXT,
-  MOCK_DECISION_EVIDENCE,
+  DECISION_CONTEXT_DEFAULT,
+  DECISION_EVIDENCE_DEFAULT,
 } from "@sicilia-soil/core";
 import type { DecisionContext, DecisionEvidence } from "@sicilia-soil/core";
 import { DecisionOutput } from "../../../packages/decision/src/types";
@@ -19,11 +19,11 @@ export interface UseTodayDecisionReturn {
 
 export function useTodayDecision(): UseTodayDecisionReturn {
   return useMemo(() => {
-    const output = decide(MOCK_DECISION_EVIDENCE);
+    const output = decide(DECISION_EVIDENCE_DEFAULT);
     return {
       output,
-      context: MOCK_DECISION_CONTEXT,
-      evidence: MOCK_DECISION_EVIDENCE,
+      context: DECISION_CONTEXT_DEFAULT,
+      evidence: DECISION_EVIDENCE_DEFAULT,
     };
   }, []);
 }
