@@ -7,7 +7,7 @@ import type { ZoneStatusKey } from "../types/content.types";
  * These objects are the values coming from sensors/backend in production.
  * For the MVP they are hardcoded mock.
  */
-export interface SensorReadingMock {
+export interface SensorReadingDefault {
   sensorId: string;
   moisture: number;
   temperature: number;
@@ -16,7 +16,7 @@ export interface SensorReadingMock {
   statusKey: ZoneStatusKey;
 }
 
-export const SENSOR_READINGS_MOCK: SensorReadingMock[] = [
+export const SENSOR_READINGS_DEFAULT: SensorReadingDefault[] = [
   {
     sensorId: "sensor-01",
     moisture: 65,
