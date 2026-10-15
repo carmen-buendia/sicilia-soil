@@ -1,8 +1,8 @@
-// packages/core/src/data/sensors.mock.ts
+// packages/core/src/data/sensors.default.ts
 
 // ============================================================================
-// MOCK DATA — Sensores por parcela
-// Reemplazar por hook useSensors() cuando IoT esté conectado
+// DEFAULT DATA — Sensores por parcela
+// // Reemplazar por hook useSensors() cuando IoT esté conectado
 // ============================================================================
 
 import type {
@@ -29,7 +29,10 @@ export const PLOT_CROP_TYPE: Record<string, RecommendationCropType> = {
 // Sensores por parcela
 // ----------------------------------------------------------------------------
 
-export const MOCK_SENSORS: Record<string, Partial<RecommendationRuleInput>> = {
+export const SENSORS_DEFAULT: Record<
+  string,
+  Partial<RecommendationRuleInput>
+> = {
   esparto: {
     soilMoisture: 78,
     soilTemperature: 20,
