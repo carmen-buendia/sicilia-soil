@@ -21,11 +21,11 @@ monitoring), a black-box decision is **useless**. You need to know **why**.
 
 `@decision` provides:
 
-- **Transparency** -- every decision shows its evidence
-- **Auditability** -- rules and weights are inspectable
-- **Determinism** -- same inputs produce same output
-- **Offline capability** -- runs without cloud connectivity
-- **Domain-agnostic** -- works for any evidence + rules pair via adapters
+- **Transparency** -- every decision shows its evidence.
+- **Auditability** -- rules and weights are inspectable.
+- **Determinism** -- same inputs produce same output.
+- **Offline capability** -- runs without cloud connectivity.
+- **Domain-agnostic** -- works for any evidence + rules pair via adapters.
 
 ## Design
 ```
