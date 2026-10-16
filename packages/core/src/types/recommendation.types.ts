@@ -1,5 +1,5 @@
 // ============================================================================
-// Recommendation Types – Sicilia Soil Decision Support
+// Recommendation Types – MycoMesh Protocol Decision Support
 // ============================================================================
 
 export type RecommendationTopic = "soil" | "water" | "general";

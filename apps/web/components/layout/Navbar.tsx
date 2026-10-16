@@ -11,20 +11,19 @@ import {
   X,
   User,
   Sprout,
-  Leaf,
-  Flower2,
-  Lightbulb,
+  Brain,
+  Layers,
 } from "lucide-react";
 import { SicilianFlag } from "./SicilianFlag";
 import { Button } from "@sicilia-soil/ui";
 import { NotificationBell } from "@/components/features/notifications";
 
 const navItems = [
-  { id: "/", label: "Dashboard", icon: Home },
-  { id: "/soil-health", label: "Suelo", icon: Leaf },
-  { id: "/humidity", label: "Agua", icon: Droplets },
+  { id: "/dashboard", label: "Panel", icon: Home },
+  { id: "/soil-health", label: "Suelo", icon: Layers },
+  { id: "/water", label: "Agua", icon: Droplets },
   { id: "/ground-cover", label: "Cultivos", icon: Sprout },
-  { id: "/recommendations", label: "Recomendaciones", icon: Lightbulb },
+  { id: "/engine", label: "Motor", icon: Brain },
 ];
 
 export function Navbar() {
@@ -54,7 +53,7 @@ export function Navbar() {
         <div className="flex items-center justify-between h-14 sm:h-16 lg:h-20">
           {/* Logo */}
           <Link
-            href="/"
+            href="/dashboard"
             className="flex items-center gap-2 sm:gap-3 group transition-all duration-300 hover:scale-[1.02]"
           >
             <div className="relative">
@@ -65,15 +64,14 @@ export function Navbar() {
             </div>
             <div className="flex flex-col">
               <h1 className="text-base sm:text-xl font-bold">
-                <span className="text-charcoalGray">Sicilia</span>
-                <span className="text-sicilian-red ml-1">Soil</span>
+                <span className="text-charcoalGray">MycoMesh</span>
+                <span className="text-sicilian-red ml-1">Protocol</span>
               </h1>
               <div className="flex items-center gap-2 mr-2 text-xs text-oliveGreen/70 whitespace-nowrap">
                 <SicilianFlag size="small" className="flex-shrink-0" />
-                <span className="whitespace-nowrap">
-                  Permacultura Sintrópica
+                <span className="whitespace-normal">
+                  Open-source, offline-first soil infrastructure{" "}
                 </span>
-                <Flower2 className="w-3 h-3 flex-shrink-0" />
               </div>
             </div>
           </Link>

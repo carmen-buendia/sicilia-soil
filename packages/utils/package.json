@@ -1,7 +1,7 @@
 {
   "name": "@sicilia-soil/utils",
   "version": "0.0.1",
-  "description": "Utility functions for Sicilia Soil",
+  "description": "Utility functions for MycoMesh Protocol",
   "private": true,
   "main": "./src/index.ts",
   "types": "./src/index.ts",

@@ -44,7 +44,7 @@ const variants = {
 };
 
 // ============================================
-// VARIANTS SICILIA SOIL
+// VARIANTS MycoMesh Protocol
 // ============================================
 const olive = "bg-oliveGreen text-white hover:bg-oliveGreen/90";
 const outlineOlive =
