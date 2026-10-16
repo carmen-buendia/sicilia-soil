@@ -6,15 +6,19 @@ We extracted four reusable, domain-agnostic infrastructure packages from a field
 
 The packages are independently versionable, self-hostable, and depend on no proprietary services.
 
+_Note: the current npm scope (`@sicilia-soil/_`) is domain-specific and will be migrated to a neutral scope upon extraction to the standalone repository.\*
+
 ## Packages
 
 ### 1. @sicilia-soil/decision — Explainable rule engine
+
+_Status: implemented._
 
 A deterministic, auditable rule engine with offline learning.
 
 - **Not AI** — no neural networks, no black boxes, no gradient descent.
 - **Declarative rules** — human-readable, versionable, inspectable.
-- **Adapter-based** — any domain plugs in with a custom EvidenceAdapter.
+- **Adapter-based** — any domain plugs in with a custom `EvidenceAdapter`.
 - **Conflict resolution** — heterogeneous sources vote and are weighted.
 - **Offline capable** — runs without cloud connectivity.
 - **Zero dependencies** — pure TypeScript.
@@ -22,6 +26,8 @@ A deterministic, auditable rule engine with offline learning.
 Reusable for: any field where automated decisions must be transparent and auditable.
 
 ### 2. @sicilia-soil/sync — Offline-first sync layer
+
+_Status: interfaces defined; implementation in progress._
 
 Edge-to-cloud synchronization for constrained devices in environments with intermittent connectivity.
 
@@ -35,6 +41,8 @@ Reusable for: any edge-to-cloud deployment in low-connectivity contexts.
 
 ### 3. @sicilia-soil/edge — Constrained device runtime
 
+_Status: interfaces defined; implementation in progress._
+
 A runtime that executes local rules, polls sensors, and buffers events on constrained hardware.
 
 - **Targets**: Raspberry Pi, ESP32, ESP8266, generic microcontrollers.
@@ -47,9 +55,11 @@ Reusable for: any sensor-driven application on constrained hardware.
 
 ### 4. @sicilia-soil/adapters — Heterogeneous data source abstraction
 
+_Status: mock implementation complete; sensor and satellite adapters are documented stubs._
+
 A domain-agnostic adapter pattern for ingesting data from heterogeneous sources (local mocks, IoT sensors, satellite APIs) through a single generic interface.
 
-- **DataAdapter<T>** — generic contract, no domain knowledge.
+- **`DataAdapter<T>`** — generic contract, no domain knowledge.
 - **Discriminated union config** — type-safe factory via `createAdapter`.
 - **Stub-vs-implementation separation** — honest, documented milestones.
 - **Zero dependencies** — pure TypeScript.
@@ -71,10 +81,7 @@ Reusable for: any project that integrates multiple data sources without vendor l
 
 ```mermaid
 graph TD
-  A[Application layer - domain] --> B[Infrastructure layer - domain-agnostic]
-  A --> UI["@ui/react"]
-  A --> DB["@db/drizzle"]
-  A --> T["@core/types"]
+  A["Application layer<br/>(domain-specific)"] -->|uses| B["Infrastructure layer<br/>(domain-agnostic)"]
   B --> D["@decision"]
   B --> S["@sync"]
   B --> E["@edge"]
