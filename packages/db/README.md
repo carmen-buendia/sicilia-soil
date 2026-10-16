@@ -1,15 +1,15 @@
 # @sicilia-soil/db
 
-Database layer for Sicilia Soil, built with [Drizzle ORM](https://orm.drizzle.team).
+Database layer for MycoMesh Protocol, built with [Drizzle ORM](https://orm.drizzle.team).
 
 ## Stack
 
-| Layer | Technology |
-| :--- | :--- |
-| ORM | Drizzle ORM |
-| Dev DB | SQLite (`better-sqlite3`) |
-| Prod DB | Postgres (planned, 2027) |
-| Migrations | drizzle-kit |
+| Layer      | Technology                |
+| :--------- | :------------------------ |
+| ORM        | Drizzle ORM               |
+| Dev DB     | SQLite (`better-sqlite3`) |
+| Prod DB    | Postgres (planned, 2027)  |
+| Migrations | drizzle-kit               |
 
 ## Scripts
 
@@ -20,6 +20,7 @@ Database layer for Sicilia Soil, built with [Drizzle ORM](https://orm.drizzle.te
 - `pnpm db:seed` — Seed the database with initial data
 
 ## Structure
+
 packages/db/
 ├── data/ ← SQLite file lives here (gitignored)
 ├── src/
@@ -29,7 +30,3 @@ packages/db/
 │ └── seed/ ← Initial data (farm, species)
 ├── drizzle.config.ts ← drizzle-kit configuration
 └── drizzle/ ← Generated SQL migrations
-
-
-
-

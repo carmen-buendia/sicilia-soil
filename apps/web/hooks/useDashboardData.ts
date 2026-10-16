@@ -1,15 +1,30 @@
 "use client";
 
 import {
-  GARDEN_ZONES,
-  DASHBOARD_KPIS,
-  CARBON_SUMMARY,
+  SENSOR_READINGS_DEFAULT,
+  KPIS_DEFAULT,
+  CARBON_DEFAULT,
 } from "@sicilia-soil/core";
+import { getZones } from "@sicilia-soil/core/site";
 
 export function useDashboardData() {
-  return {
-    zones: GARDEN_ZONES,
-    kpis: DASHBOARD_KPIS,
-    carbon: CARBON_SUMMARY,
-  };
+  const zones = getZones().map((config) => {
+    const reading = SENSOR_READINGS_DEFAULT.find(
+      (r) => r.sensorId === config.sensorId,
+    );
+
+    return {
+      id: config.id,
+      sensorId: config.sensorId,
+      location: config.location,
+      currentCropId: config.currentCropId,
+      moisture: reading?.moisture ?? 0,
+      temperature: reading?.temperature ?? 0,
+      light: reading?.light ?? 0,
+      wind: reading?.wind ?? 0,
+      statusKey: reading?.statusKey ?? "offline",
+    };
+  });
+
+  return { zones, kpis: KPIS_DEFAULT, carbon: CARBON_DEFAULT };
 }

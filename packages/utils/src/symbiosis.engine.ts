@@ -14,7 +14,7 @@ import {
 
 // ============================================================================
 // Symbiosis Engine — Mide el ciclo regenerativo entre cubierta vegetal
-// (esparto, cereal, etc.) y la red micorrícica del suelo.
+// y la red micorrícica del suelo.
 //
 // Base científica:
 // - Las plantas producen biomasa → sustrato para hongos
@@ -26,10 +26,10 @@ import {
 // ============================================================================
 
 /**
- * Colonización medida por host (mock hasta tener sensores reales).
+ * Colonización medida por host (valores por defecto hasta tener sensores reales).
  * Cuando haya datos reales, sustituir por el hook de sensores.
  */
-const HOST_COLONISATION_MOCK: Record<string, number> = {
+const HOST_COLONISATION_DEFAULT: Record<string, number> = {
   olivo: 62,
   almendro: 50,
   ciruelo: 45,
@@ -41,7 +41,7 @@ const HOST_COLONISATION_MOCK: Record<string, number> = {
   pino: 60,
 };
 
-const HOST_GLOMALIN_MOCK: Record<string, number> = {
+const HOST_GLOMALIN_DEFAULT: Record<string, number> = {
   olivo: 2.1,
   almendro: 1.9,
   ciruelo: 1.7,
@@ -84,9 +84,9 @@ export function calculateSymbiosisScore(
       Math.min(input.fungalDiversity * 8, 100) * 0.2,
   );
 
-  // 6. Red ECM (solo pinos) — mock hasta tener sensores en los pinos
+  // 6. Red ECM (huéspedes ectomicorrícicos) — valores por defecto hasta tener sensores
   const ecmScore = clamp(
-    (HOST_COLONISATION_MOCK.pino ?? 60) * 0.7 +
+    (HOST_COLONISATION_DEFAULT.pino ?? 60) * 0.7 +
       Math.min(input.fungalDiversity * 8, 100) * 0.3,
   );
 
@@ -105,10 +105,11 @@ export function calculateSymbiosisScore(
 
   // 9. Estado por host
   const hosts: SymbiosisHostState[] = MYCORRHIZA_HOSTS.map((host) => {
-    const colonisation = HOST_COLONISATION_MOCK[host.id] ?? host.colonisation;
+    const colonisation =
+      HOST_COLONISATION_DEFAULT[host.id] ?? host.colonisation;
     const glomalin =
       host.type === "AMF"
-        ? (HOST_GLOMALIN_MOCK[host.id] ?? host.glomalin)
+        ? (HOST_GLOMALIN_DEFAULT[host.id] ?? host.glomalin)
         : undefined;
     const status = evaluateHostStatus(host, colonisation, glomalin);
     return {
