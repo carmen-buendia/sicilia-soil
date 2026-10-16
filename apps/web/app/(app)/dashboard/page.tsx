@@ -1,0 +1,314 @@
+"use client";
+
+import { useState, useEffect, useMemo } from "react";
+import Link from "next/link";
+import dynamic from "next/dynamic";
+import {
+  Trees,
+  Droplet,
+  ThermometerSun,
+  Sun,
+  Sprout,
+  Wind,
+  ArrowRight,
+  AlertTriangle,
+  Gauge,
+  Leaf,
+  Network,
+  Layers,
+} from "lucide-react";
+import { StatsCard } from "@/components/features/dashboard/components/StatsCards";
+import { ZoneCard } from "@/components/features/dashboard/components/ZoneCards";
+import { ServerStatus } from "@/components/features/dashboard/components/ServerStatus";
+import { SystemStatusCard } from "@/components/features/decision";
+import { useRecommendations } from "@/hooks/useRecommendations";
+import { useDashboardData } from "@/hooks/useDashboardData";
+import { useTodayDecision } from "@/hooks/useTodayDecision";
+import { PRIORITY_STYLES } from "@/config/recommendation.styles";
+import { getLocale } from "@sicilia-soil/core";
+
+const ICON_MAP: Record<string, any> = {
+  leaf: Layers,
+  droplet: Droplet,
+  gauge: Gauge,
+  trees: Trees,
+  mycorrhiza: Network,
+  thermometer: ThermometerSun,
+  sun: Sun,
+  wind: Wind,
+};
+
+const CopernicusMapMini = dynamic(
+  () =>
+    import("@/components/features/copernicus/components").then(
+      (m) => m.CopernicusMapMini,
+    ),
+  {
+    ssr: false,
+    loading: () => (
+      <div
+        className="flex items-center justify-center bg-blue-50/40 border border-blue-100 rounded-xl animate-pulse"
+        style={{ height: 260 }}
+      >
+        <p className="text-sm text-oliveGreen/60">Cargando mapa…</p>
+      </div>
+    ),
+  },
+);
+
+export default function HomePage() {
+  const [serverStatus, setServerStatus] = useState<
+    "checking" | "online" | "offline"
+  >("checking");
+  const { zones, kpis, carbon } = useDashboardData();
+  const locale = getLocale("es");
+
+  const {
+    output: decision,
+    context: decisionContext,
+    evidence: decisionEvidence,
+  } = useTodayDecision();
+  const recommendations = useRecommendations();
+
+  const topAlerts = useMemo(
+    () =>
+      recommendations
+        .filter((recommendation) => {
+          return (
+            recommendation.priority === "urgent" ||
+            recommendation.priority === "high"
+          );
+        })
+        .slice(0, 3),
+    [recommendations],
+  );
+
+  useEffect(() => {
+    async function fetchRealData() {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 8000);
+        const response = await fetch(
+          "https://sicilia-soil-backend.onrender.com/api/zones",
+          { signal: controller.signal },
+        );
+        clearTimeout(timeoutId);
+        if (response.ok) setServerStatus("online");
+        else throw new Error();
+      } catch {
+        setServerStatus("offline");
+      }
+    }
+    fetchRealData();
+  }, []);
+
+  return (
+    <div className="max-w-6xl mx-auto">
+      {/* Header */}
+      <div className="mb-8 flex items-center justify-between flex-wrap gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-charcoalGray">
+            🌱 {locale.ui.app.name}
+          </h1>
+          <p className="text-oliveGreen flex items-center gap-2">
+            <Trees className="w-4 h-4" /> {locale.ui.app.subtitle}
+          </p>
+        </div>
+        <ServerStatus status={serverStatus} />
+      </div>
+
+      {/* KPIs */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+        {kpis.map((kpi) => {
+          const Icon = ICON_MAP[kpi.icon] ?? Leaf;
+          const kpiLabels = locale.kpis[kpi.id as keyof typeof locale.kpis];
+          return (
+            <StatsCard
+              key={kpi.id}
+              value={kpi.value}
+              label={kpiLabels?.label ?? kpi.id}
+              icon={
+                typeof Icon === "function" && Icon.name === "" ? (
+                  Icon()
+                ) : (
+                  <Icon className="w-5 h-5" />
+                )
+              }
+              subtext={kpiLabels?.subtext}
+            />
+          );
+        })}
+      </div>
+
+      {/* Mini-mapa */}
+      <div className="mb-8">
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-xl font-bold text-charcoalGray">
+            {locale.ui.dashboard.mapTitle}
+          </h2>
+          <Link
+            href="/water"
+            className="text-sm text-oliveGreen hover:text-sicilian-red transition-colors flex items-center gap-1"
+          >
+            {locale.ui.actions.viewFull} <ArrowRight className="w-3 h-3" />
+          </Link>
+        </div>
+        <CopernicusMapMini
+          height="260px"
+          onExpand={() => (window.location.href = "/water")}
+        />
+      </div>
+
+      {/* ESTADO DEL SISTEMA */}
+      <div className="mb-8">
+        <SystemStatusCard
+          output={decision}
+          context={decisionContext}
+          evidence={decisionEvidence}
+        />
+      </div>
+
+      {/* Zonas + Alertas */}
+      <div className="grid lg:grid-cols-3 gap-8 mb-12">
+        <div className="lg:col-span-2">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-charcoalGray">
+              {locale.ui.dashboard.zonesTitle}
+            </h2>
+            <Link
+              href="/ground-cover"
+              className="text-sm text-oliveGreen hover:text-sicilian-red transition-colors flex items-center gap-1"
+            >
+              {locale.ui.actions.viewCrops} <ArrowRight className="w-3 h-3" />
+            </Link>
+          </div>
+          <div className="grid md:grid-cols-2 gap-6">
+            {zones.map((zone) => (
+              <ZoneCard
+                key={zone.id}
+                zone={{ ...zone, lastUpdate: new Date().toISOString() }}
+                onViewHistory={(id) => console.log("Ver historial:", id)}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-charcoalGray flex items-center gap-2">
+              <AlertTriangle className="w-6 h-6 text-sicilian-red" />
+              {locale.ui.dashboard.alertsTitle}
+            </h2>
+            <Link
+              href="/recommendations"
+              className="text-sm text-oliveGreen hover:text-sicilian-red transition-colors flex items-center gap-1"
+            >
+              {locale.ui.actions.viewAll} <ArrowRight className="w-3 h-3" />
+            </Link>
+          </div>
+
+          <div className="space-y-3">
+            {topAlerts.length === 0 ? (
+              <div className="bg-emerald-50 rounded-xl p-6 border border-emerald-200 text-center">
+                <p className="text-sm text-emerald-700 font-medium">
+                  {locale.ui.dashboard.alertsEmpty}
+                </p>
+              </div>
+            ) : (
+              topAlerts.map((alert) => {
+                const style = PRIORITY_STYLES[alert.priority];
+                return (
+                  <Link
+                    key={alert.id}
+                    href="/recommendations"
+                    className={`block rounded-xl p-4 border-2 ${style.bg} hover:shadow-md transition-all`}
+                  >
+                    <div className="flex items-start gap-3">
+                      <span className="text-2xl">{alert.icon ?? "⚠️"}</span>
+                      <div className="flex-1 min-w-0">
+                        <p
+                          className={`text-xs font-bold ${style.text} uppercase tracking-wide`}
+                        >
+                          {style.label}
+                        </p>
+                        <p className="text-sm font-medium text-charcoalGray mt-0.5">
+                          {alert.title}
+                        </p>
+                        <p className="text-xs text-oliveGreen/70 mt-1">
+                          {alert.zoneName}
+                        </p>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })
+            )}
+          </div>
+
+          {/* Captura de carbono */}
+          <div className="mt-6 bg-gradient-to-r from-emerald-50 via-green-50 to-emerald-50/30 rounded-xl p-4 border border-emerald-200/40">
+            <h4 className="text-xs font-semibold text-emerald-700/80 uppercase tracking-wider flex items-center gap-1 mb-3">
+              <Trees className="w-3.5 h-3.5" />{" "}
+              {locale.ui.dashboard.carbon.title}
+            </h4>
+            <div className="space-y-2 text-xs">
+              <div className="flex justify-between">
+                <span className="text-charcoalGray/70">
+                  {locale.ui.dashboard.carbon.soc}
+                </span>
+                <span className="font-medium text-emerald-700">
+                  {carbon.organicCarbonPercent}%
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-charcoalGray/70">
+                  {locale.ui.dashboard.carbon.bulkDensity}
+                </span>
+                <span className="font-medium text-emerald-700">
+                  {carbon.bulkDensity} g/cm³
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-charcoalGray/70">
+                  {locale.ui.dashboard.carbon.depth}
+                </span>
+                <span className="font-medium text-emerald-700">
+                  {carbon.depth} cm
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-charcoalGray/70">
+                  {locale.ui.dashboard.carbon.co2}
+                </span>
+                <span className="font-medium text-emerald-700">
+                  {carbon.co2Sequestration} t/ha
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* CTA Cultivos */}
+      <div className="bg-gradient-to-r from-oliveGreen/5 to-wheatGold/5 rounded-2xl p-6 border border-oliveGreen/15">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="p-2 bg-oliveGreen/10 rounded-xl">
+            <Sprout className="w-6 h-6 text-oliveGreen" />
+          </div>
+          <h2 className="text-xl font-bold text-charcoalGray">
+            {locale.content.home.cropsCta.title}
+          </h2>
+        </div>
+        <p className="text-oliveGreen/70 mb-4">
+          {locale.content.home.cropsCta.description}
+        </p>
+        <Link
+          href="/ground-cover"
+          className="inline-flex items-center gap-2 text-oliveGreen hover:text-sicilian-red transition-colors font-medium"
+        >
+          {locale.ui.actions.viewCrops} <ArrowRight className="w-4 h-4" />
+        </Link>
+      </div>
+    </div>
+  );
+}

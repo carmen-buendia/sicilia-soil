@@ -1,7 +1,7 @@
 // packages/core/src/types/eo.types.ts
 
 // ============================================================================
-// Sicilia Soil — Earth Observation (EO)
+// MycoMesh Protocol — Earth Observation (EO)
 // ----------------------------------------------------------------------------
 // Two European space programmes converge here:
 //

@@ -1,7 +1,7 @@
 // apps/web/config/recommendation.styles.ts
 
 // ============================================================================
-// Sicilia Soil — Recommendation UI styles
+// MycoMesh Protocol — Recommendation UI styles
 // ----------------------------------------------------------------------------
 // Shared palettes for recommendation priorities (urgent/high/medium/low/info).
 // Used by:

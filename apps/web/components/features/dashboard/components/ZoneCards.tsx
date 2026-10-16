@@ -1,42 +1,54 @@
 "use client";
 
-import Link from "next/link";
 import { Droplets, Thermometer, Sun, Wind } from "lucide-react";
+import { getLocale } from "@sicilia-soil/core";
 import { formatRelativeTime } from "@sicilia-soil/utils";
 import { Button } from "@sicilia-soil/ui";
 
-interface GardenZone {
+interface ZoneData {
   id: string;
-  name: string;
-  type: string;
+  sensorId: string;
   location: string;
   moisture: number;
   temperature: number;
   light: number;
   wind: number;
-  status: string;
-  icon: string;
-  lastUpdate: string;
+  statusKey: string;
+  currentCropId?: string;
+  lastUpdate?: string;
 }
 
 interface ZoneCardProps {
-  zone: GardenZone;
+  zone: ZoneData;
   onViewHistory: (id: string) => void;
 }
 
 export function ZoneCard({ zone, onViewHistory }: ZoneCardProps) {
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "óptimo":
+  const locale = getLocale("es");
+
+  const zoneName =
+    locale.zones[zone.id as keyof typeof locale.zones] ?? zone.id;
+  const zoneStatus =
+    locale.enums.zoneStatus[
+      zone.statusKey as keyof typeof locale.enums.zoneStatus
+    ] ?? zone.statusKey;
+  const currentCrop = zone.currentCropId
+    ? (locale.crops[zone.currentCropId as keyof typeof locale.crops] ??
+      zone.currentCropId)
+    : null;
+
+  const zoneNumber = zone.id.replace(/^zone-/, "");
+
+  const getStatusColor = (statusKey: string) => {
+    switch (statusKey) {
+      case "optimal":
         return "bg-green-100 text-green-700";
-      case "saludable":
-        return "bg-blue-100 text-blue-700";
-      case "necesita riego":
+      case "needsWater":
         return "bg-red-100 text-red-700";
-      case "activo":
+      case "needsAttention":
         return "bg-yellow-100 text-yellow-700";
-      case "lleno":
-        return "bg-cyan-100 text-cyan-700";
+      case "offline":
+        return "bg-gray-100 text-gray-700";
       default:
         return "bg-gray-100 text-gray-700";
     }
@@ -64,23 +76,29 @@ export function ZoneCard({ zone, onViewHistory }: ZoneCardProps) {
     <div className="bg-white rounded-xl p-5 shadow-lg border border-oliveGreen/15 hover:shadow-xl transition-all hover:scale-[1.02]">
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-3">
-          <span className="text-3xl">{zone.icon}</span>
+          <span className="w-10 h-10 rounded-full bg-oliveGreen/10 flex items-center justify-center text-lg font-bold text-oliveGreen">
+            {zoneNumber}
+          </span>
           <div>
-            <h3 className="text-lg font-bold text-charcoalGray">{zone.name}</h3>
-            <p className="text-xs text-oliveGreen/60">{zone.type}</p>
+            <h3 className="text-lg font-bold text-charcoalGray">{zoneName}</h3>
+            <p className="text-xs text-oliveGreen/60">
+              {zone.sensorId} · {zone.location}
+            </p>
           </div>
         </div>
         <span
-          className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(zone.status)}`}
+          className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(zone.statusKey)}`}
         >
-          {zone.status}
+          {zoneStatus}
         </span>
       </div>
 
       <div className="grid grid-cols-2 gap-3 mb-4">
         <div className="flex items-center gap-2">
           <Droplets className="w-4 h-4 text-blue-500" />
-          <span className="text-xs text-oliveGreen/60">Humedad</span>
+          <span className="text-xs text-oliveGreen/60">
+            {locale.ui.dashboard.moisture}
+          </span>
           <span
             className={`text-sm font-semibold ml-auto ${getMoistureColor(zone.moisture)}`}
           >
@@ -89,7 +107,9 @@ export function ZoneCard({ zone, onViewHistory }: ZoneCardProps) {
         </div>
         <div className="flex items-center gap-2">
           <Thermometer className="w-4 h-4 text-red-500" />
-          <span className="text-xs text-oliveGreen/60">Temperatura</span>
+          <span className="text-xs text-oliveGreen/60">
+            {locale.ui.dashboard.temperature}
+          </span>
           <span
             className={`text-sm font-semibold ml-auto ${getTempColor(zone.temperature)}`}
           >
@@ -98,7 +118,9 @@ export function ZoneCard({ zone, onViewHistory }: ZoneCardProps) {
         </div>
         <div className="flex items-center gap-2">
           <Sun className="w-4 h-4 text-yellow-500" />
-          <span className="text-xs text-oliveGreen/60">Luz Solar</span>
+          <span className="text-xs text-oliveGreen/60">
+            {locale.ui.dashboard.light}
+          </span>
           <span
             className={`text-sm font-semibold ml-auto ${getLightColor(zone.light)}`}
           >
@@ -107,19 +129,29 @@ export function ZoneCard({ zone, onViewHistory }: ZoneCardProps) {
         </div>
         <div className="flex items-center gap-2">
           <Wind className="w-4 h-4 text-gray-500" />
-          <span className="text-xs text-oliveGreen/60">Viento</span>
+          <span className="text-xs text-oliveGreen/60">
+            {locale.ui.dashboard.wind}
+          </span>
           <span className="text-sm font-semibold ml-auto">
             {zone.wind} km/h
           </span>
         </div>
       </div>
 
+      {currentCrop && (
+        <div className="mb-3 text-xs text-oliveGreen/50">
+          {locale.ui.dashboard.currentCrop}: {currentCrop}
+        </div>
+      )}
+
       <div className="flex items-center justify-between pt-3 border-t border-oliveGreen/10">
         <div className="flex flex-col">
-          <span className="text-xs text-oliveGreen/50">{zone.location}</span>
-          <span className="text-xs text-oliveGreen/40 mt-0.5">
-            Actualizado: {formatRelativeTime(zone.lastUpdate)}
-          </span>
+          {zone.lastUpdate && (
+            <span className="text-xs text-oliveGreen/40">
+              {locale.ui.dashboard.updated}:{" "}
+              {formatRelativeTime(zone.lastUpdate)}
+            </span>
+          )}
         </div>
         <Button
           type="button"
@@ -127,7 +159,7 @@ export function ZoneCard({ zone, onViewHistory }: ZoneCardProps) {
           onClick={() => onViewHistory(zone.id)}
           className="!text-xs !p-0 hover:!text-sicilian-red hover:!scale-100"
         >
-          Ver histórico →
+          {locale.ui.dashboard.viewHistory} →
         </Button>
       </div>
     </div>

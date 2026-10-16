@@ -8,7 +8,7 @@ import ReactECharts from "echarts-for-react";
 import type { EChartsOption, SeriesOption } from "echarts";
 
 // ============================================================================
-// Paleta Sicilia Soil
+// Paleta MycoMesh Protocol
 // ============================================================================
 
 export const SOIL_COLORS = {

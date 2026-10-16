@@ -1,7 +1,7 @@
 // packages/core/src/types/mycorrhiza.types.ts
 
 // ============================================================================
-// Mycorrhizal network types — Sicilia Soil
+// Mycorrhizal network types — MycoMesh Protocol
 // ============================================================================
 
 export type MycorrhizaType =
