@@ -1,17 +1,5 @@
 // packages/db/src/client.ts
 
-// ============================================================================
-// MycoMesh Protocol — Database client
-// ----------------------------------------------------------------------------
-// sql.js: SQLite compiled to WebAssembly.
-// - Zero native compilation (no Python, no Visual Studio)
-// - ~600 KB download
-// - Works on any Windows/Mac/Linux
-//
-// Trade-off: sql.js keeps the DB in memory; we persist to disk manually
-// via saveDb() after mutations. For dev, this is fine.
-// ============================================================================
-
 import initSqlJs, { type Database } from "sql.js";
 import { drizzle, type SQLJsDatabase } from "drizzle-orm/sql-js";
 import * as schema from "./schema";
@@ -22,7 +10,6 @@ import path from "node:path";
 // Path resolution
 // ---------------------------------------------------------------------------
 
-// Resolve DB path relative to packages/db root
 const DB_DIR = path.resolve(process.cwd(), "data");
 const DB_PATH = path.join(DB_DIR, "sicilia-soil.db");
 
@@ -36,8 +23,47 @@ let _db: SQLJsDatabase<typeof schema> | null = null;
 export async function createDb(): Promise<SQLJsDatabase<typeof schema>> {
   if (_db) return _db;
 
-  // Load sql.js WASM module
-  const SQL = await initSqlJs();
+  // 1. Buscar el archivo .wasm manualmente para evitar que Turbopack rompa la ruta
+  let wasmBinary: ArrayBuffer | undefined;
+
+  // Rutas posibles dependiendo de desde dónde se ejecute Next.js
+  const pathsToTry = [
+    path.resolve(process.cwd(), "public", "sql-wasm.wasm"), // Si corre desde apps/web
+    path.resolve(process.cwd(), "apps", "web", "public", "sql-wasm.wasm"), // Si corre desde la raíz
+    path.resolve(
+      process.cwd(),
+      "node_modules",
+      ".pnpm",
+      "sql.js@1.14.2",
+      "node_modules",
+      "sql.js",
+      "dist",
+      "sql-wasm.wasm",
+    ),
+  ];
+
+  for (const p of pathsToTry) {
+    if (fs.existsSync(p)) {
+      const buffer = fs.readFileSync(p);
+      // Convertimos el Buffer a ArrayBuffer (lo que espera sql.js)
+      wasmBinary = buffer.buffer.slice(
+        buffer.byteOffset,
+        buffer.byteOffset + buffer.byteLength,
+      );
+      break;
+    }
+  }
+
+  if (!wasmBinary) {
+    throw new Error(
+      "No se pudo encontrar sql-wasm.wasm en ninguna ruta conocida.",
+    );
+  }
+
+  // 2. Inicializar SQL pasándole el binario directamente
+  const SQL = await initSqlJs({
+    wasmBinary, // <--- ESTO ES MAGIA
+  });
 
   // Ensure data directory exists
   if (!fs.existsSync(DB_DIR)) {
@@ -80,5 +106,4 @@ export function getSqlite(): Database {
 }
 
 export const DB_FILE_PATH = DB_PATH;
-
 export type Db = SQLJsDatabase<typeof schema>;

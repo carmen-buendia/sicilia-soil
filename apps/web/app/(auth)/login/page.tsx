@@ -1,5 +1,5 @@
 import { getLocale } from "@sicilia-soil/core";
-
+import { login } from "./actions";
 const t = getLocale("es");
 
 export const metadata = {
@@ -14,7 +14,7 @@ export default function LoginPage() {
       </h1>
       <p className="text-sm text-oliveGreen/70 mb-6">{t.ui.auth.subtitle}</p>
 
-      <form className="space-y-4">
+      <form action={login} className="space-y-4">
         <div>
           <label
             htmlFor="email"
