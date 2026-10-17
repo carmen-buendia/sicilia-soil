@@ -7,12 +7,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        oliveGreen: "#5A6B47",
-        wheatGold: "#E6B422",
+        oliveGreen: "#1A3C34",
+        wheatGold: "#D98E32",
         offWhite: "#FDFBF7",
-        charcoalGray: "#1A1A1A",
-        "sicilian-red": "#CD212A",
-        "sicilian-yellow": "#FDB913",
+        charcoalGray: "#2C3E50",
+        "sicilian-red": "#A64B2A",
+        "sicilian-yellow": "#F9F9F6",
       },
     },
   },
