@@ -25,7 +25,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className="min-h-screen bg-offWhite text-charcoalGray">
+      <body className="min-h-screen bg-paper text-ink font-sans antialiased">
         <NotificationsProvider>{children}</NotificationsProvider>
       </body>
     </html>

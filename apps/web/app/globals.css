@@ -1,27 +1,51 @@
+/* 1. Importación de fuentes (debe ir siempre al principio) */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Capa base - estilos globales */
+/* 2. Variables de fuentes para que Tailwind las reconozca */
+:root {
+  --font-sans: "Inter", sans-serif;
+  --font-serif: "Lora", serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+/* 3. Capa base - estilos globales */
 @layer base {
   body {
-    background-color: #fdfbf7;
-    color: #1a1a1a;
+    /* Usamos los nuevos colores: Paper (#F9F6F0) e Ink (#2B363C) */
+    background-color: #f9f6f0;
+    color: #2b363c;
+    @apply font-sans antialiased;
+  }
+
+  /* Los títulos usarán la fuente Serif por defecto */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-serif;
   }
 }
 
-/* Capa de componentes - utilidades personalizadas */
+/* 4. Capa de componentes - utilidades personalizadas */
 @layer components {
+  /* Botón principal: Estilo Eco-Brutalista (Sombra dura y borde) */
   .btn-primary {
-    @apply bg-oliveGreen text-white px-4 py-2 rounded-lg hover:bg-oliveGreen/90 transition-all;
+    @apply flex items-center justify-center gap-2 px-6 py-3 bg-ink text-paper border-2 border-ink font-mono text-sm uppercase tracking-widest font-bold transition-all shadow-[4px_4px_0px_#E69A45] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[6px_6px_0px_#E69A45] active:translate-y-0 active:translate-x-0 active:shadow-none;
   }
 
+  /* Tarjeta: Estilo plano con borde y sombra sólida */
   .card {
-    @apply bg-white rounded-xl p-6 shadow-sm border border-oliveGreen/15 hover:shadow-md transition-all;
+    @apply bg-paper border-2 border-ink p-6 shadow-[4px_4px_0px_#2B363C] transition-all;
   }
 }
 
-/* Capa de utilidades */
+/* 5. Capa de utilidades */
 @layer utilities {
   .text-balance {
     text-wrap: balance;
