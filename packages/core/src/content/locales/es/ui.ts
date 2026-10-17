@@ -7,8 +7,9 @@ export const ui = {
   nav: {
     dashboard: "Panel",
     water: "Agua",
-    soilHealth: "Salud del suelo",
-    groundCover: "Coberturas",
+    soilHealth: "Suelo",
+    groundCover: "Cultivos",
+    engine: "Motor",
     recommendations: "Recomendaciones",
     notifications: "Notificaciones",
     configuration: "Configuración",
@@ -16,12 +17,32 @@ export const ui = {
     manifesto: "Manifiesto",
     login: "Iniciar sesión",
     logout: "Cerrar sesión",
+    backToHome: "Volver al inicio",
+    backToLogin: "Volver al login",
   },
 
   auth: {
     signIn: "Iniciar sesión",
-    subtitle: "Accede al instrumento de recuperación de suelo",
-    noAccount: "¿No tienes cuenta? El registro se abrirá pronto.",
+    subtitle: "Accede a tu cuenta de MycoMesh",
+    noAccount: "¿No tienes cuenta?",
+    registerLink: "Regístrate aquí",
+
+    registerTitle: "Crear cuenta",
+    registerSubtitle: "Únete a MycoMesh Protocol",
+    registerButton: "Registrarse",
+    haveAccount: "¿Ya tienes cuenta?",
+    loginLink: "Inicia sesión",
+
+    errors: {
+      invalidCredentials: "Email o contraseña incorrectos.",
+      missingFields: "Por favor, rellena todos los campos.",
+      userExists:
+        "Este email ya está registrado. Por favor, ve a Iniciar Sesión.",
+      unknown: "Ha ocurrido un error inesperado.",
+    },
+    success: {
+      registered: "Cuenta creada con éxito. Por favor, inicia sesión.",
+    },
   },
 
   dashboard: {
@@ -46,14 +67,38 @@ export const ui = {
   },
 
   landing: {
+    badge: "Open Source Infrastructure",
     pillars: {
       soilHealth: "Salud del suelo",
       waterEfficiency: "Eficiencia hídrica",
       carbonCapture: "Captura de carbono",
     },
     cta: {
-      accessDashboard: "Acceder al panel",
+      start: "Comenzar ahora",
+      accessDashboard: "Acceder a la plataforma",
       viewOnGithub: "Ver en GitHub",
+      github: "Ver en GitHub",
+    },
+    hud: {
+      soilMoisture: "Humedad del suelo",
+      soilMoistureValue: "42.5%",
+      edgeNode: "Nodo Edge",
+      edgeNodeValue: "Online",
+      carbonStored: "Carbono capturado",
+      carbonStoredValue: "1.2 t/ha",
+      mycorrhiza: "Micorriza",
+      mycorrhizaValue: "Óptimo",
+    },
+    techTitle: "Infraestructura Abierta y Descentralizada",
+    tech: {
+      db: "SQLite + Drizzle",
+      edge: "Edge Computing Ready",
+      auth: "Auth Segura (JWT)",
+    },
+    footer: {
+      manifesto: "Manifiesto",
+      about: "Sobre el proyecto",
+      github: "GitHub",
     },
   },
 

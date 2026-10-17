@@ -13,20 +13,31 @@ import {
   Sprout,
   Brain,
   Layers,
+  LogOut,
 } from "lucide-react";
 import { SicilianFlag } from "./SicilianFlag";
 import { Button } from "@sicilia-soil/ui";
 import { NotificationBell } from "@/components/features/notifications";
+import { getLocale } from "@sicilia-soil/core";
+import { logout } from "@/app/(auth)/login/actions";
+
+const t = getLocale("es");
 
 const navItems = [
-  { id: "/dashboard", label: "Panel", icon: Home },
-  { id: "/soil-health", label: "Suelo", icon: Layers },
-  { id: "/water", label: "Agua", icon: Droplets },
-  { id: "/ground-cover", label: "Cultivos", icon: Sprout },
-  { id: "/engine", label: "Motor", icon: Brain },
+  { id: "/dashboard", label: t.ui.nav.dashboard, icon: Home },
+  { id: "/soil-health", label: t.ui.nav.soilHealth, icon: Layers },
+  { id: "/water", label: t.ui.nav.water, icon: Droplets },
+  { id: "/ground-cover", label: t.ui.nav.groundCover, icon: Sprout },
+  { id: "/engine", label: t.ui.nav.engine || "Motor", icon: Brain },
 ];
 
-export function Navbar() {
+export function Navbar({
+  userName,
+  userEmail,
+}: {
+  userName: string;
+  userEmail: string;
+}) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
@@ -40,6 +51,11 @@ export function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Para cerrar el menú móvil al cambiar de ruta
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [pathname]);
 
   return (
     <nav
@@ -67,11 +83,9 @@ export function Navbar() {
                 <span className="text-charcoalGray">MycoMesh</span>
                 <span className="text-sicilian-red ml-1">Protocol</span>
               </h1>
-              <div className="flex items-center gap-2 mr-2 text-xs text-oliveGreen/70 whitespace-nowrap">
+              <div className="hidden sm:flex items-center gap-2 mr-2 text-xs text-oliveGreen/70 whitespace-nowrap">
                 <SicilianFlag size="small" className="flex-shrink-0" />
-                <span className="whitespace-normal">
-                  Open-source, offline-first soil infrastructure{" "}
-                </span>
+                <span className="whitespace-normal">{t.ui.app.subtitle}</span>
               </div>
             </div>
           </Link>
@@ -109,21 +123,38 @@ export function Navbar() {
                   ? "bg-oliveGreen text-offWhite shadow-md"
                   : "text-oliveGreen/70 hover:bg-oliveGreen/10 hover:text-oliveGreen"
               }`}
-              aria-label="Configuración"
-              title="Configuración"
+              aria-label={t.ui.nav.configuration}
+              title={t.ui.nav.configuration}
             >
               <Settings className="w-5 h-5" />
             </Link>
 
-            <div className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-oliveGreen/10 to-wheatGold/10 rounded-full pl-2 pr-4 py-1 border border-oliveGreen/20">
+            {/* Perfil de Usuario (Desktop) */}
+            <div className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-oliveGreen/10 to-wheatGold/10 rounded-full pl-2 pr-1 py-1 border border-oliveGreen/20">
               <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-oliveGreen to-wheatGold rounded-full flex items-center justify-center flex-shrink-0">
                 <User className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-offWhite" />
               </div>
-              <p className="text-xs sm:text-sm font-semibold text-charcoalGray whitespace-nowrap">
-                Carmen Buendía
-              </p>
+              <div className="flex flex-col mr-2">
+                <p className="text-xs sm:text-sm font-semibold text-charcoalGray whitespace-nowrap leading-tight">
+                  {userName}
+                </p>
+                <p className="text-[10px] text-oliveGreen/60 whitespace-nowrap leading-tight">
+                  {userEmail}
+                </p>
+              </div>
+              {/* Botón de Logout */}
+              <form action={logout}>
+                <button
+                  type="submit"
+                  className="p-1.5 text-red-500/70 hover:text-red-600 hover:bg-red-50 rounded-full transition-colors"
+                  title={t.ui.nav.logout}
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </form>
             </div>
 
+            {/* Botón Menú Móvil */}
             <Button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="md:hidden p-1.5 sm:p-2 rounded-xl text-oliveGreen hover:text-wheatGold transition-all duration-300 hover:bg-oliveGreen/10"
@@ -140,7 +171,31 @@ export function Navbar() {
         {/* Mobile Menu */}
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-oliveGreen/15 max-h-[80vh] overflow-y-auto">
-            <div className="space-y-2">
+            {/* Perfil de Usuario (Móvil) */}
+            <div className="flex items-center justify-between bg-gradient-to-r from-oliveGreen/5 to-wheatGold/5 p-3 rounded-xl border border-oliveGreen/10 mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-oliveGreen to-wheatGold rounded-full flex items-center justify-center">
+                  <User className="w-5 h-5 text-offWhite" />
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-charcoalGray">
+                    {userName}
+                  </p>
+                  <p className="text-xs text-oliveGreen/70">{userEmail}</p>
+                </div>
+              </div>
+              <form action={logout}>
+                <button
+                  type="submit"
+                  className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                  title={t.ui.nav.logout}
+                >
+                  <LogOut className="w-5 h-5" />
+                </button>
+              </form>
+            </div>
+
+            <div className="space-y-1">
               {navItems.map((item) => {
                 const Icon = item.icon;
                 const active = isActive(item.id);
@@ -148,7 +203,6 @@ export function Navbar() {
                   <Link
                     key={item.id}
                     href={item.id}
-                    onClick={() => setIsMenuOpen(false)}
                     className={`flex items-center gap-3 w-full px-4 py-3 rounded-xl transition-all duration-300 ${
                       active
                         ? "bg-oliveGreen text-offWhite shadow-md"
@@ -167,7 +221,6 @@ export function Navbar() {
               {/* Configuración en mobile menu */}
               <Link
                 href="/configuration"
-                onClick={() => setIsMenuOpen(false)}
                 className={`flex items-center gap-3 w-full px-4 py-3 rounded-xl transition-all duration-300 ${
                   pathname === "/configuration"
                     ? "bg-oliveGreen text-offWhite shadow-md"
@@ -175,7 +228,7 @@ export function Navbar() {
                 }`}
               >
                 <Settings className="w-5 h-5" />
-                <span className="font-medium">Configuración</span>
+                <span className="font-medium">{t.ui.nav.configuration}</span>
                 {pathname === "/configuration" && (
                   <div className="ml-auto w-1.5 h-1.5 bg-wheatGold rounded-full animate-pulse" />
                 )}

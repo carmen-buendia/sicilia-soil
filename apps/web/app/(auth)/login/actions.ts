@@ -4,7 +4,6 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { verifyPassword } from "@/lib/auth/hash";
 import { createSession, COOKIE_NAME } from "@/lib/auth/session";
-// Importamos nuestras funciones personalizadas del paquete DB
 import {
   getUserWithCredentialsByEmail,
   updateLastLogin,
@@ -19,10 +18,10 @@ export async function login(formData: FormData) {
     redirect("/login?error=missing_fields");
   }
 
-  // 1. Buscar usuario usando la función del paquete db
+  // 1. Search user used function in package db.
   const user = await getUserWithCredentialsByEmail(email);
 
-  // 2. Verificar credenciales
+  // 2. Credentials verify.
   if (!user || user.status !== "active") {
     redirect("/login?error=invalid_credentials");
   }
@@ -32,7 +31,7 @@ export async function login(formData: FormData) {
     redirect("/login?error=invalid_credentials");
   }
 
-  // 3. Actualizar lastLoginAt y guardar en disco
+  // 3. Actualizar lastLoginAt and save in disk.
   await updateLastLogin(user.id);
   saveDb(); // Importante para sql.js
 
@@ -48,4 +47,12 @@ export async function login(formData: FormData) {
   });
 
   redirect("/dashboard");
+}
+
+export async function logout() {
+  // 1. Borramos la cookie de sesión
+  (await cookies()).delete(COOKIE_NAME);
+
+  // 2. Redirigimos al login
+  redirect("/login");
 }
