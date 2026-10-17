@@ -10,7 +10,7 @@
     "build:core": "pnpm --filter @sicilia-soil/core build",
     "build:ui": "pnpm --filter @sicilia-soil/ui build",
     "build:utils": "pnpm --filter @sicilia-soil/utils build",
-    "lint": "pnpm run --parallel lint",
+    "lint": "pnpm -r --if-present lint",
     "type-check": "pnpm run --parallel type-check",
     "test": "pnpm -r test",
     "clean": "pnpm store prune && rimraf node_modules **/node_modules"
