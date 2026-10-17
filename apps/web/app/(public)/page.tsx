@@ -6,13 +6,9 @@ import {
   Github,
   Leaf,
   Droplets,
-  Mountain,
+  Wind,
   LogIn,
   LayoutDashboard,
-  ShieldCheck,
-  Database,
-  Cpu,
-  Activity,
 } from "lucide-react";
 import { getLocale } from "@sicilia-soil/core";
 import { verifySession, COOKIE_NAME } from "@/lib/auth/session";
@@ -28,35 +24,49 @@ export default async function LandingPage() {
   const session = token ? await verifySession(token) : null;
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#fcfbf9] overflow-hidden">
-      {/* HEADER PÚBLICO */}
-      <header className="w-full border-b border-oliveGreen/10 bg-white/50 backdrop-blur-md sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="p-2 bg-gradient-to-br from-oliveGreen to-wheatGold rounded-lg shadow-sm">
-              <Sprout className="w-5 h-5 text-white" />
+    <div className="min-h-screen flex flex-col bg-paper text-ink font-sans relative overflow-hidden">
+      {/* 1. FONDO CON MARCAS (Rejilla técnica) */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[0.04]"
+        style={{
+          backgroundImage:
+            "linear-gradient(#2B363C 1px, transparent 1px), linear-gradient(90deg, #2B363C 1px, transparent 1px)",
+          backgroundSize: "40px 40px",
+        }}
+      />
+
+      {/* 2. Degradado suave (Solarpunk/Journey) para iluminar el fondo */}
+      <div className="absolute top-[-20%] left-[-10%] w-[60vw] h-[60vw] bg-[#E69A45]/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-[-20%] right-[-10%] w-[50vw] h-[50vw] bg-[#4F7A5C]/10 rounded-full blur-[120px] pointer-events-none" />
+
+      {/* HEADER (Línea fina inferior) */}
+      <header className="w-full border-b border-ink/10 bg-paper/70 backdrop-blur-md sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="p-2 bg-chloro text-paper rounded-lg shadow-sm group-hover:bg-solar transition-colors">
+              <Sprout className="w-5 h-5" />
             </div>
-            <span className="font-bold text-xl text-charcoalGray tracking-tight">
-              MycoMesh<span className="text-sicilian-red">·</span>Protocol
+            <span className="font-serif font-bold text-2xl tracking-tight text-ink">
+              MycoMesh<span className="text-solar">.</span>Protocol
             </span>
           </Link>
 
-          <nav className="flex items-center gap-4">
+          <nav className="flex items-center gap-6">
             {session ? (
               <Link
                 href="/dashboard"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-oliveGreen/10 text-oliveGreen rounded-lg font-medium hover:bg-oliveGreen/20 transition-colors"
+                className="flex items-center gap-2 text-sm font-semibold text-ink hover:text-solar transition-colors"
               >
                 <LayoutDashboard className="w-4 h-4" />
-                {locale.ui.nav.dashboard}
+                Dashboard
               </Link>
             ) : (
               <Link
                 href="/login"
-                className="inline-flex items-center gap-2 text-sm font-medium text-charcoalGray hover:text-oliveGreen transition-colors"
+                className="flex items-center gap-2 text-sm font-semibold text-ink hover:text-solar transition-colors"
               >
                 <LogIn className="w-4 h-4" />
-                {locale.ui.auth.signIn}
+                Iniciar Sesión
               </Link>
             )}
           </nav>
@@ -64,270 +74,240 @@ export default async function LandingPage() {
       </header>
 
       {/* HERO SECTION */}
-      <main className="flex-1 flex items-center justify-center px-6 py-20">
-        <div className="max-w-6xl w-full grid lg:grid-cols-2 gap-12 items-center">
-          {/* Columna Izquierda: Texto y CTA */}
-          <div className="text-center lg:text-left relative z-10">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-oliveGreen/10 text-oliveGreen text-xs font-semibold mb-6">
-              <ShieldCheck className="w-3 h-3" />
-              {locale.ui.landing.badge}
-            </div>
-
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-charcoalGray mb-6 leading-tight tracking-tight">
-              {locale.content.landing.headline}
-            </h1>
-
-            <p className="text-lg text-oliveGreen/80 mb-10 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-              {locale.content.landing.intro}
-            </p>
-
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4">
-              {session ? (
-                <Link
-                  href="/dashboard"
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-oliveGreen text-white rounded-xl font-bold text-lg hover:bg-oliveGreen/90 transition-transform hover:scale-105 shadow-lg shadow-oliveGreen/20"
-                >
-                  {locale.ui.landing.cta.accessDashboard}{" "}
-                  <ArrowRight className="w-5 h-5" />
-                </Link>
-              ) : (
-                <Link
-                  href="/register"
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-oliveGreen text-white rounded-xl font-bold text-lg hover:bg-oliveGreen/90 transition-transform hover:scale-105 shadow-lg shadow-oliveGreen/20"
-                >
-                  {locale.ui.landing.cta.start}{" "}
-                  <ArrowRight className="w-5 h-5" />
-                </Link>
-              )}
-
-              <a
-                href="https://github.com/carmen-buendia/sicilia-soil"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-8 py-4 border-2 border-oliveGreen/20 text-charcoalGray rounded-xl font-bold text-lg hover:bg-oliveGreen/5 transition-colors"
-              >
-                <Github className="w-5 h-5" />{" "}
-                {locale.ui.landing.cta.viewOnGithub}
-              </a>
-            </div>
+      <main className="flex-1 max-w-6xl mx-auto w-full px-6 py-24 lg:py-32 grid lg:grid-cols-2 gap-16 items-center relative z-10">
+        {/* Texto (Izquierda) */}
+        <div>
+          <div className="inline-flex items-center gap-2 border border-ink/20 rounded-full px-4 py-1.5 text-xs font-mono uppercase tracking-widest font-bold mb-8 bg-paper/50 backdrop-blur-sm shadow-sm">
+            <span className="w-2 h-2 bg-solar rounded-full animate-pulse" />
+            {locale.ui.landing.badge}
           </div>
 
-          {/* Columna Derecha: VISUALIZACIÓN DE RED (CSS y SVG) */}
-          <div className="hidden lg:flex items-center justify-center relative min-h-[500px]">
-            {/* Resplandor de fondo */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-oliveGreen/20 via-transparent to-wheatGold/20 blur-3xl rounded-full animate-pulse" />
+          <h1 className="text-5xl sm:text-6xl font-serif font-bold leading-[1.1] mb-6 text-ink">
+            {locale.content.landing.headline}
+          </h1>
 
-            <div className="relative w-full max-w-[450px] aspect-square">
-              {/* Anillos orbitales */}
-              <div className="absolute inset-4 border-2 border-dashed border-oliveGreen/20 rounded-full animate-[spin_40s_linear_infinite]" />
-              <div className="absolute inset-16 border border-oliveGreen/30 rounded-full animate-[spin_25s_linear_infinite_reverse]" />
-              <div className="absolute inset-28 border border-oliveGreen/10 rounded-full" />
+          <p className="text-lg text-ink/70 mb-10 leading-relaxed max-w-lg border-l-2 border-solar/50 pl-4">
+            {locale.content.landing.intro}
+          </p>
 
-              {/* Líneas de conexión (Simulan el micelio/red) */}
-              <svg
-                className="absolute inset-0 w-full h-full pointer-events-none"
-                viewBox="0 0 400 400"
+          <div className="flex flex-wrap items-center gap-4">
+            <Link
+              href={session ? "/dashboard" : "/register"}
+              className="flex items-center gap-2 px-8 py-4 bg-ink text-paper rounded-lg font-semibold hover:bg-chloro transition-colors shadow-lg shadow-ink/10"
+            >
+              {session
+                ? locale.ui.landing.cta.accessDashboard
+                : locale.ui.landing.cta.start}
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+
+            <a
+              href="https://github.com/carmen-buendia/sicilia-soil"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-8 py-4 bg-paper/50 backdrop-blur-sm border border-ink/20 text-ink rounded-lg font-semibold hover:bg-ink/5 transition-colors shadow-sm"
+            >
+              <Github className="w-4 h-4" /> GitHub
+            </a>
+          </div>
+        </div>
+
+        {/* MAPA BOTÁNICO (Derecha) */}
+        <div className="relative">
+          {/* Halo de luz */}
+          <div className="absolute inset-0 bg-solar/15 blur-3xl rounded-full translate-y-4" />
+
+          <div className="relative bg-paper/80 backdrop-blur-sm border border-ink/10 p-8 rounded-2xl shadow-xl shadow-ink/5 aspect-square flex flex-col justify-between overflow-hidden">
+            <div className="flex justify-between items-start relative z-10">
+              <div className="font-mono text-[10px] uppercase tracking-widest font-bold text-ink/50">
+                Fig 01.
+                <br />
+                Topografía Sintrópica
+              </div>
+              <div className="border border-chloro/30 rounded px-2 py-1 font-mono text-[10px] uppercase bg-chloro/10 text-chloro flex items-center gap-1">
+                <div className="w-1.5 h-1.5 rounded-full bg-chloro animate-pulse" />
+                Live
+              </div>
+            </div>
+
+            {/* SVG Topográfico */}
+            <svg
+              viewBox="0 0 200 200"
+              className="w-full h-full max-h-[250px] my-auto relative z-10"
+            >
+              {/* Líneas topográficas (marcas de nivel) */}
+              <path
+                d="M20,100 Q60,40 100,100 T180,100"
+                fill="none"
+                stroke="#2B363C"
+                strokeWidth="1"
+                opacity="0.1"
+              />
+              <path
+                d="M10,120 Q60,60 100,120 T190,120"
+                fill="none"
+                stroke="#2B363C"
+                strokeWidth="1"
+                opacity="0.15"
+              />
+              <path
+                d="M0,140 Q60,80 100,140 T200,140"
+                fill="none"
+                stroke="#2B363C"
+                strokeWidth="1"
+                opacity="0.2"
+              />
+
+              {/* Líneas punteadas de guía */}
+              <line
+                x1="100"
+                y1="0"
+                x2="100"
+                y2="200"
+                stroke="#2B363C"
+                strokeWidth="1"
+                strokeDasharray="2 4"
+                opacity="0.2"
+              />
+              <line
+                x1="0"
+                y1="100"
+                x2="200"
+                y2="100"
+                stroke="#2B363C"
+                strokeWidth="1"
+                strokeDasharray="2 4"
+                opacity="0.2"
+              />
+
+              {/* Red de micelio (curvas) */}
+              <path
+                d="M100,20 Q100,100 100,180"
+                fill="none"
+                stroke="#2B363C"
+                strokeWidth="1.5"
+              />
+              <path
+                d="M100,60 Q60,80 40,60"
+                fill="none"
+                stroke="#4F7A5C"
+                strokeWidth="1.5"
+              />
+              <path
+                d="M100,60 Q140,80 160,60"
+                fill="none"
+                stroke="#4F7A5C"
+                strokeWidth="1.5"
+              />
+              <path
+                d="M100,110 Q50,130 30,110"
+                fill="none"
+                stroke="#E69A45"
+                strokeWidth="1.5"
+              />
+              <path
+                d="M100,110 Q150,130 170,110"
+                fill="none"
+                stroke="#E69A45"
+                strokeWidth="1.5"
+              />
+
+              {/* Nodos */}
+              <circle cx="40" cy="60" r="3" fill="#4F7A5C" />
+              <circle cx="160" cy="60" r="3" fill="#4F7A5C" />
+              <circle cx="30" cy="110" r="3" fill="#E69A45" />
+              <circle cx="170" cy="110" r="3" fill="#E69A45" />
+
+              {/* Coordenadas de texto */}
+              <text
+                x="105"
+                y="15"
+                className="font-mono text-[8px] fill-ink opacity-40"
               >
-                <path
-                  d="M200 200 L 340 120"
-                  stroke="#556B2F"
-                  strokeWidth="2"
-                  strokeDasharray="5 5"
-                  className="opacity-40"
-                />
-                <path
-                  d="M200 200 L 60 140"
-                  stroke="#556B2F"
-                  strokeWidth="2"
-                  strokeDasharray="5 5"
-                  className="opacity-40"
-                />
-                <path
-                  d="M200 200 L 120 330"
-                  stroke="#556B2F"
-                  strokeWidth="2"
-                  strokeDasharray="5 5"
-                  className="opacity-40"
-                />
-                <path
-                  d="M200 200 L 310 320"
-                  stroke="#556B2F"
-                  strokeWidth="2"
-                  strokeDasharray="5 5"
-                  className="opacity-40"
-                />
-              </svg>
+                00°00'N
+              </text>
+              <text
+                x="105"
+                y="195"
+                className="font-mono text-[8px] fill-ink opacity-40"
+              >
+                00°00'S
+              </text>
+            </svg>
 
-              {/* Nodo Central */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-gradient-to-br from-oliveGreen to-[#3a4a1c] rounded-2xl flex items-center justify-center shadow-[0_0_50px_rgba(107,142,35,0.5)] z-10 rotate-45 border border-white/20">
-                <Sprout className="w-12 h-12 text-white -rotate-45" />
+            <div className="flex justify-between items-end border-t border-ink/10 pt-4 relative z-10">
+              <div>
+                <p className="font-serif text-2xl font-bold text-ink">42.5%</p>
+                <p className="font-mono text-[10px] uppercase tracking-wider text-chloro font-bold">
+                  Humedad Suelo
+                </p>
               </div>
-
-              {/* Tarjeta HUD 1: Humedad del suelo */}
-              <div className="absolute top-4 right-0 bg-white/70 backdrop-blur-md p-4 rounded-2xl border border-oliveGreen/10 shadow-xl z-20 flex items-center gap-3 transform hover:scale-105 transition-transform duration-300">
-                <div className="p-2 bg-blue-50 rounded-lg shadow-inner">
-                  <Droplets className="w-5 h-5 text-blue-500" />
-                </div>
-                <div>
-                  <p className="text-[10px] uppercase tracking-wider text-gray-500 font-bold">
-                    {locale.ui.landing.hud.soilMoisture}
-                  </p>
-                  <p className="text-lg font-black text-gray-800">
-                    {locale.ui.landing.hud.soilMoistureValue}
-                  </p>
-                </div>
-              </div>
-
-              {/* Tarjeta HUD 2: Estado del nodo edge */}
-              <div className="absolute top-32 left-0 bg-white/70 backdrop-blur-md p-4 rounded-2xl border border-oliveGreen/10 shadow-xl z-20 flex items-center gap-3 transform hover:scale-105 transition-transform duration-300">
-                <div className="p-2 bg-purple-50 rounded-lg shadow-inner">
-                  <Cpu className="w-5 h-5 text-purple-600" />
-                </div>
-                <div>
-                  <p className="text-[10px] uppercase tracking-wider text-gray-500 font-bold">
-                    {locale.ui.landing.hud.edgeNode}
-                  </p>
-                  <div className="flex items-center gap-2">
-                    <p className="text-lg font-black text-gray-800">
-                      {locale.ui.landing.hud.edgeNodeValue}
-                    </p>
-                    <span className="flex h-2 w-2 rounded-full bg-green-500 animate-ping" />
-                  </div>
-                </div>
-              </div>
-
-              {/* Tarjeta HUD 3: Captura de Carbono */}
-              <div className="absolute bottom-16 right-4 bg-white/70 backdrop-blur-md p-4 rounded-2xl border border-oliveGreen/10 shadow-xl z-20 flex items-center gap-3 transform hover:scale-105 transition-transform duration-300">
-                <div className="p-2 bg-amber-50 rounded-lg shadow-inner">
-                  <Mountain className="w-5 h-5 text-amber-600" />
-                </div>
-                <div>
-                  <p className="text-[10px] uppercase tracking-wider text-gray-500 font-bold">
-                    {locale.ui.landing.hud.carbonStored}
-                  </p>
-                  <p className="text-lg font-black text-gray-800">
-                    {locale.ui.landing.hud.carbonStoredValue}
-                  </p>
-                </div>
-              </div>
-
-              {/* Tarjeta HUD 4: Actividad de la red */}
-              <div className="absolute bottom-0 left-12 bg-white/70 backdrop-blur-md p-4 rounded-2xl border border-oliveGreen/10 shadow-xl z-20 flex items-center gap-3 transform hover:scale-105 transition-transform duration-300">
-                <div className="p-2 bg-green-50 rounded-lg shadow-inner">
-                  <Activity className="w-5 h-5 text-oliveGreen" />
-                </div>
-                <div>
-                  <p className="text-[10px] uppercase tracking-wider text-gray-500 font-bold">
-                    {locale.ui.landing.hud.mycorrhiza}
-                  </p>
-                  <p className="text-lg font-black text-gray-800">
-                    {locale.ui.landing.hud.mycorrhizaValue}
-                  </p>
-                </div>
-              </div>
+              <Leaf className="w-5 h-5 text-chloro" />
             </div>
           </div>
         </div>
       </main>
 
-      {/* CARACTERÍSTICAS (PILARES) */}
-      <section className="w-full bg-white/40 border-y border-oliveGreen/10 py-20 relative z-10">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-charcoalGray mb-4">
-              {locale.content.landing.featuresTitle}
+      {/* SECCIÓN FILOSOFÍA (Suave y con marco sutil) */}
+      <section className="w-full relative z-10 py-24 border-t border-ink/10 bg-paper/50 backdrop-blur-sm">
+        <div className="max-w-5xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
+          <div>
+            <h2 className="text-4xl font-serif font-bold mb-6 text-ink">
+              {locale.content.landing.philosophyTitle}
             </h2>
-            <p className="text-oliveGreen/70 max-w-2xl mx-auto">
-              {locale.content.landing.featuresSubtitle}
+            <p className="font-sans text-lg text-ink/70 leading-relaxed mb-8">
+              {locale.content.landing.philosophyDesc}
             </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {/* Pilar 1 */}
-            <div className="bg-white/80 backdrop-blur-sm border border-oliveGreen/15 rounded-2xl p-8 hover:shadow-lg transition-shadow">
-              <div className="w-12 h-12 bg-oliveGreen/10 rounded-xl flex items-center justify-center mb-6">
-                <Leaf className="w-6 h-6 text-oliveGreen" />
-              </div>
-              <h3 className="text-xl font-bold text-charcoalGray mb-3">
-                {locale.ui.landing.pillars.soilHealth}
-              </h3>
-              <p className="text-oliveGreen/70 text-sm leading-relaxed">
-                {locale.content.landing.pillar1Desc}
-              </p>
-            </div>
-
-            {/* Pilar 2 */}
-            <div className="bg-white/80 backdrop-blur-sm border border-oliveGreen/15 rounded-2xl p-8 hover:shadow-lg transition-shadow">
-              <div className="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center mb-6">
-                <Droplets className="w-6 h-6 text-blue-500" />
-              </div>
-              <h3 className="text-xl font-bold text-charcoalGray mb-3">
-                {locale.ui.landing.pillars.waterEfficiency}
-              </h3>
-              <p className="text-oliveGreen/70 text-sm leading-relaxed">
-                {locale.content.landing.pillar2Desc}
-              </p>
-            </div>
-
-            {/* Pilar 3 */}
-            <div className="bg-white/80 backdrop-blur-sm border border-oliveGreen/15 rounded-2xl p-8 hover:shadow-lg transition-shadow">
-              <div className="w-12 h-12 bg-amber-600/10 rounded-xl flex items-center justify-center mb-6">
-                <Mountain className="w-6 h-6 text-amber-600" />
-              </div>
-              <h3 className="text-xl font-bold text-charcoalGray mb-3">
-                {locale.ui.landing.pillars.carbonCapture}
-              </h3>
-              <p className="text-oliveGreen/70 text-sm leading-relaxed">
-                {locale.content.landing.pillar3Desc}
-              </p>
+            <div className="flex flex-wrap gap-3 font-mono text-xs uppercase tracking-widest font-bold">
+              <span className="border border-ink/20 rounded-full px-4 py-2 flex items-center gap-2 text-ink/70 bg-paper">
+                <Wind className="w-4 h-4 text-solar" />{" "}
+                {locale.content.landing.energyTag}
+              </span>
+              <span className="border border-ink/20 rounded-full px-4 py-2 flex items-center gap-2 text-ink/70 bg-paper">
+                <Droplets className="w-4 h-4 text-chloro" />{" "}
+                {locale.content.landing.waterTag}
+              </span>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* ARQUITECTURA / TECH STACK */}
-      <section className="py-20 px-6 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-2xl font-bold text-charcoalGray mb-8">
-            {locale.ui.landing.techTitle}
-          </h2>
-          <div className="flex flex-wrap justify-center gap-6">
-            <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-oliveGreen/10 text-sm font-medium text-charcoalGray">
-              <Database className="w-4 h-4 text-oliveGreen" />{" "}
-              {locale.ui.landing.tech.db}
+          <div className="relative">
+            <div className="absolute -top-6 -left-4 text-6xl text-solar/20 font-serif">
+              "
             </div>
-            <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-oliveGreen/10 text-sm font-medium text-charcoalGray">
-              <Cpu className="w-4 h-4 text-oliveGreen" />{" "}
-              {locale.ui.landing.tech.edge}
-            </div>
-            <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-oliveGreen/10 text-sm font-medium text-charcoalGray">
-              <ShieldCheck className="w-4 h-4 text-oliveGreen" />{" "}
-              {locale.ui.landing.tech.auth}
+
+            <div className="bg-paper border border-ink/10 p-8 rounded-2xl shadow-lg shadow-ink/5 relative z-10">
+              <p className="font-serif italic text-xl leading-relaxed text-ink mb-6">
+                {locale.content.landing.philosophyQuote}
+              </p>
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full border border-ink/10 flex items-center justify-center bg-chloro/5">
+                  <Sprout className="w-4 h-4 text-chloro" />
+                </div>
+                <span className="font-mono text-xs uppercase tracking-widest font-bold text-ink/60">
+                  — {locale.content.landing.philosophyAuthor}
+                </span>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer className="w-full border-t border-oliveGreen/10 py-8 px-6 bg-white/30 relative z-10">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-oliveGreen/50">
+      <footer className="w-full py-8 px-6 relative z-10 bg-paper border-t border-ink/10">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+          <p className="font-mono text-xs uppercase tracking-widest text-ink/50">
             {locale.content.landing.footerNote}
           </p>
-          <div className="flex gap-4 text-xs font-medium text-charcoalGray/70">
-            <Link href="/manifesto" className="hover:text-oliveGreen">
+          <div className="flex gap-6 font-mono text-xs uppercase tracking-widest font-bold text-ink/70">
+            <Link
+              href="/manifesto"
+              className="hover:text-solar transition-colors"
+            >
               {locale.ui.landing.footer.manifesto}
             </Link>
-            <Link href="/about" className="hover:text-oliveGreen">
+            <Link href="/about" className="hover:text-solar transition-colors">
               {locale.ui.landing.footer.about}
             </Link>
-            <a
-              href="https://github.com/carmen-buendia/sicilia-soil"
-              target="_blank"
-              className="hover:text-oliveGreen"
-            >
-              {locale.ui.landing.footer.github}
-            </a>
           </div>
         </div>
       </footer>
