@@ -12,9 +12,13 @@ import {
 } from "lucide-react";
 import { MycologyChart } from "@sicilia-soil/ui";
 import { MushroomChip } from "../components/MushroomChip";
-import { MUSHROOMS, DEFAULT_MUSHROOM_ID } from "@sicilia-soil/core";
+import { MUSHROOMS, DEFAULT_MUSHROOM_ID, getLocale } from "@sicilia-soil/core";
+import { DataCard } from "@sicilia-soil/ui"; // <-- Importamos DataCard
 
 export function BioindicatorsTab() {
+  const locale = getLocale("es");
+  const t = locale.content.soilHealthTabs.bioindicators;
+
   const [selectedMushroom, setSelectedMushroom] = useState(DEFAULT_MUSHROOM_ID);
   const current = MUSHROOMS.find((m) => m.id === selectedMushroom);
   if (!current) return null;
@@ -22,16 +26,12 @@ export function BioindicatorsTab() {
   return (
     <div className="space-y-8">
       {/* Intro */}
-      <div className="bg-gradient-to-r from-oliveGreen/10 to-wheatGold/10 rounded-2xl p-6 border border-oliveGreen/20">
-        <h2 className="text-xl font-bold text-charcoalGray mb-2">
-          Bioindicadores estacionales
+      <DataCard className="p-6">
+        <h2 className="text-xl font-serif font-bold text-ink mb-2">
+          {t.title}
         </h2>
-        <p className="text-sm text-charcoalGray/80">
-          Pico en otoño. El micelio trabaja todo el año. Las setas son la{" "}
-          <strong>señal</strong> de que la red fúngica está activa, no el
-          objetivo principal.
-        </p>
-      </div>
+        <p className="font-sans text-sm text-ink/70">{t.description}</p>
+      </DataCard>
 
       {/* Selector */}
       <div className="flex flex-wrap gap-3">
@@ -47,142 +47,137 @@ export function BioindicatorsTab() {
 
       {/* Info de la seta */}
       <div className="grid md:grid-cols-3 gap-6">
-        <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-oliveGreen/15 md:col-span-2">
+        <DataCard className="p-6 md:col-span-2">
           <div className="flex items-center gap-2 mb-4">
-            <Info className="w-5 h-5 text-oliveGreen" />
-            <h3 className="text-lg font-bold text-charcoalGray">Descripción</h3>
+            <Info className="w-5 h-5 text-chloro" />
+            <h3 className="font-serif text-lg font-bold text-ink">
+              {t.descTitle}
+            </h3>
           </div>
-          <p className="text-oliveGreen/70 leading-relaxed">
+          <p className="font-sans text-sm text-ink/80 leading-relaxed mb-4">
             {current.description}
           </p>
-          <div className="mt-4 flex flex-wrap gap-2">
-            <span className="px-3 py-1 bg-oliveGreen/10 text-oliveGreen rounded-full text-xs font-medium">
-              {current.role === "bioindicator" && "🔬 Bioindicador"}
-              {current.role === "cultivation" && "🍽 Subproducto"}
-              {current.role === "both" && "🔬 + 🍽 Ambos"}
+          <div className="flex flex-wrap gap-2 font-mono text-[10px] uppercase tracking-wider font-bold">
+            <span className="px-2 py-1 bg-chloro/10 text-chloro border border-chloro/20">
+              {current.role === "bioindicator" && t.roleBio}
+              {current.role === "cultivation" && t.roleCult}
+              {current.role === "both" && t.roleBoth}
             </span>
-            <span className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-medium">
-              {current.mycorrhizaType === "AMF" && "AMF · Arbuscular"}
-              {current.mycorrhizaType === "ECM" && "ECM · Ectomicorrícica"}
-              {current.mycorrhizaType === "none" && "Saprófita"}
+            <span className="px-2 py-1 bg-solar/10 text-solar border border-solar/20">
+              {current.mycorrhizaType === "AMF" && t.typeAMF}
+              {current.mycorrhizaType === "ECM" && t.typeECM}
+              {current.mycorrhizaType === "none" && t.typeNone}
             </span>
           </div>
-        </div>
+        </DataCard>
 
-        <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-oliveGreen/15">
-          <div className="space-y-3 text-sm">
+        <DataCard className="p-6">
+          <div className="space-y-4 font-mono text-xs text-ink/70">
             <div className="flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-oliveGreen" />
-              <span className="text-oliveGreen/70">Hábitat:</span>
-              <span className="font-medium text-charcoalGray">
+              <MapPin className="w-4 h-4 text-ink/40" />
+              <span>{t.habitat}</span>
+              <span className="font-bold text-ink ml-auto">
                 {current.habitat}
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-oliveGreen" />
-              <span className="text-oliveGreen/70">Temporada:</span>
-              <span className="font-medium text-charcoalGray">
+              <Calendar className="w-4 h-4 text-ink/40" />
+              <span>{t.season}</span>
+              <span className="font-bold text-ink ml-auto">
                 {current.season.join(", ")}
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <Leaf className="w-4 h-4 text-oliveGreen" />
-              <span className="text-oliveGreen/70">Endemismo:</span>
+              <Leaf className="w-4 h-4 text-ink/40" />
+              <span>{t.endemic}</span>
               <span
-                className={`font-medium ${
-                  current.isEndemic ? "text-wheatGold" : "text-oliveGreen/60"
-                }`}
+                className={`font-bold ml-auto ${current.isEndemic ? "text-solar" : "text-ink"}`}
               >
-                {current.isEndemic ? "Endémica de Sicilia 🌍" : "Cosmopolita"}
+                {current.isEndemic ? t.endemicTrue : t.endemicFalse}
               </span>
             </div>
           </div>
-        </div>
+        </DataCard>
       </div>
 
       {/* Gráficos de seguimiento */}
       <div className="space-y-6">
-        <h3 className="text-lg font-bold text-charcoalGray">
-          Seguimiento de condiciones · {current.name}
+        <h3 className="font-serif text-lg font-bold text-ink">
+          {t.trackingTitle.replace("{name}", current.name)}
         </h3>
 
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-oliveGreen/15">
+          <DataCard className="p-6">
             <MycologyChart
               mushroomName={current.name}
               data={current.data.humidity}
               metric="humidity"
               height={320}
             />
-          </div>
-          <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-oliveGreen/15">
+          </DataCard>
+          <DataCard className="p-6">
             <MycologyChart
               mushroomName={current.name}
               data={current.data.temperature}
               metric="temperature"
               height={320}
             />
-          </div>
-          <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-oliveGreen/15 md:col-span-2">
+          </DataCard>
+          <DataCard className="p-6 md:col-span-2">
             <MycologyChart
               mushroomName={current.name}
               data={current.data.co2}
               metric="co2"
               height={320}
             />
-          </div>
+          </DataCard>
         </div>
 
-        <p className="text-xs text-oliveGreen/60">
-          Estas condiciones reflejan la ventana de fructificación
-          (principalmente otoño). El micelio, sin embargo, permanece activo todo
-          el año bajo tierra.
-        </p>
+        <p className="font-sans text-xs text-ink/50">{t.trackingNote}</p>
       </div>
 
       {/* Condiciones óptimas */}
-      <div className="bg-gradient-to-r from-oliveGreen/5 to-wheatGold/5 rounded-2xl p-6 border border-oliveGreen/15">
-        <h3 className="text-lg font-bold text-charcoalGray mb-4 flex items-center gap-2">
-          <Droplets className="w-5 h-5 text-oliveGreen" />
-          Condiciones de fructificación
+      <DataCard className="p-6">
+        <h3 className="font-serif text-lg font-bold text-ink mb-4 flex items-center gap-2">
+          <Droplets className="w-5 h-5 text-chloro" /> {t.optimalTitle}
         </h3>
         <div className="grid md:grid-cols-3 gap-4">
-          <div className="flex items-center gap-3 p-3 bg-white/50 rounded-xl">
-            <div className="w-10 h-10 bg-oliveGreen/20 rounded-full flex items-center justify-center">
-              <Droplets className="w-5 h-5 text-oliveGreen" />
-            </div>
+          <div className="flex items-center gap-3 p-3 bg-paper border border-ink/10">
+            <Droplets className="w-5 h-5 text-chloro" />
             <div>
-              <p className="text-sm text-oliveGreen/60">Humedad ideal</p>
-              <p className="font-medium text-charcoalGray">
+              <p className="font-mono text-[10px] uppercase tracking-wider text-ink/50">
+                {t.idealHumidity}
+              </p>
+              <p className="font-mono text-sm font-bold text-ink">
                 {current.optimal.humidity[0]}% - {current.optimal.humidity[1]}%
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-3 p-3 bg-white/50 rounded-xl">
-            <div className="w-10 h-10 bg-sicilian-red/20 rounded-full flex items-center justify-center">
-              <Thermometer className="w-5 h-5 text-sicilian-red" />
-            </div>
+          <div className="flex items-center gap-3 p-3 bg-paper border border-ink/10">
+            <Thermometer className="w-5 h-5 text-solar" />
             <div>
-              <p className="text-sm text-oliveGreen/60">Temperatura ideal</p>
-              <p className="font-medium text-charcoalGray">
+              <p className="font-mono text-[10px] uppercase tracking-wider text-ink/50">
+                {t.idealTemp}
+              </p>
+              <p className="font-mono text-sm font-bold text-ink">
                 {current.optimal.temperature[0]}°C -{" "}
                 {current.optimal.temperature[1]}°C
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-3 p-3 bg-white/50 rounded-xl">
-            <div className="w-10 h-10 bg-wheatGold/20 rounded-full flex items-center justify-center">
-              <Wind className="w-5 h-5 text-wheatGold" />
-            </div>
+          <div className="flex items-center gap-3 p-3 bg-paper border border-ink/10">
+            <Wind className="w-5 h-5 text-ink/60" />
             <div>
-              <p className="text-sm text-oliveGreen/60">CO₂ ideal</p>
-              <p className="font-medium text-charcoalGray">
+              <p className="font-mono text-[10px] uppercase tracking-wider text-ink/50">
+                {t.idealCO2}
+              </p>
+              <p className="font-mono text-sm font-bold text-ink">
                 {current.optimal.co2[0]} - {current.optimal.co2[1]} ppm
               </p>
             </div>
           </div>
         </div>
-      </div>
+      </DataCard>
     </div>
   );
 }

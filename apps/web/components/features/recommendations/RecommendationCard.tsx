@@ -16,52 +16,14 @@ import type {
   RecommendationPriority,
   RecommendationCategory,
 } from "@sicilia-soil/core";
+import { getLocale } from "@sicilia-soil/core";
+import { Button, DataCard } from "@sicilia-soil/ui";
 
 interface RecommendationCardProps {
   recommendation: RecommendationItem;
   onAction?: (id: string) => void;
+  highlightId?: string | null; // <-- AÑADIDO
 }
-
-const PRIORITY_STYLES: Record<
-  RecommendationPriority,
-  { bg: string; border: string; text: string; badge: string; label: string }
-> = {
-  urgent: {
-    bg: "bg-red-50",
-    border: "border-red-200",
-    text: "text-red-700",
-    badge: "bg-red-100 text-red-800 border-red-200",
-    label: "Urgente",
-  },
-  high: {
-    bg: "bg-orange-50",
-    border: "border-orange-200",
-    text: "text-orange-700",
-    badge: "bg-orange-100 text-orange-800 border-orange-200",
-    label: "Alta",
-  },
-  medium: {
-    bg: "bg-yellow-50",
-    border: "border-yellow-200",
-    text: "text-yellow-700",
-    badge: "bg-yellow-100 text-yellow-800 border-yellow-200",
-    label: "Media",
-  },
-  low: {
-    bg: "bg-blue-50",
-    border: "border-blue-200",
-    text: "text-blue-700",
-    badge: "bg-blue-100 text-blue-800 border-blue-200",
-    label: "Baja",
-  },
-  info: {
-    bg: "bg-green-50",
-    border: "border-green-200",
-    text: "text-green-700",
-    badge: "bg-green-100 text-green-800 border-green-200",
-    label: "Info",
-  },
-};
 
 const CATEGORY_ICONS: Record<RecommendationCategory, typeof Droplets> = {
   irrigation: Droplets,
@@ -75,97 +37,111 @@ const CATEGORY_ICONS: Record<RecommendationCategory, typeof Droplets> = {
   general: Activity,
 };
 
-const TOPIC_LABELS: Record<string, string> = {
-  soil: "Suelo",
-  water: "Agua",
-  general: "General",
-};
-
-const TOPIC_BADGES: Record<string, string> = {
-  soil: "bg-oliveGreen/10 text-oliveGreen border-oliveGreen/20",
-  water: "bg-blue-100 text-blue-700 border-blue-200",
-  general: "bg-gray-100 text-gray-700 border-gray-200",
-};
-
 export function RecommendationCard({
   recommendation,
   onAction,
+  highlightId, // <-- AÑADIDO
 }: RecommendationCardProps) {
-  const style = PRIORITY_STYLES[recommendation.priority];
+  const locale = getLocale("es");
+  const t = locale.ui.recommendations;
   const Icon = CATEGORY_ICONS[recommendation.category];
-  const topicClass = TOPIC_BADGES[recommendation.topic] ?? TOPIC_BADGES.general;
-  const topicLabel = TOPIC_LABELS[recommendation.topic] ?? recommendation.topic;
+
+  const isHighlighted = recommendation.id === highlightId; // <-- COMPROBAMOS
+
+  const variantMap: Record<RecommendationPriority, any> = {
+    urgent: "critical",
+    high: "warning",
+    medium: "warning",
+    low: "info",
+    info: "success",
+  };
+  const colorMap: Record<RecommendationPriority, string> = {
+    urgent: "text-red-500",
+    high: "text-solar",
+    medium: "text-solar",
+    low: "text-ink/70",
+    info: "text-chloro",
+  };
 
   return (
-    <div
-      className={`rounded-xl p-5 border shadow-sm hover:shadow-md transition-all ${style.bg} ${style.border}`}
-    >
-      {/* Header */}
-      <div className="flex items-start justify-between gap-3 mb-3">
-        <div className="flex items-start gap-3">
-          <div className={`p-2 rounded-lg bg-white/70 ${style.text}`}>
-            <Icon className="w-5 h-5" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2 flex-wrap mb-1">
-              <span
-                className={`text-xs px-2 py-0.5 rounded-full border font-medium ${topicClass}`}
-              >
-                {topicLabel}
-              </span>
-              <span
-                className={`text-xs px-2 py-0.5 rounded-full border font-medium ${style.badge}`}
-              >
-                {style.label}
-              </span>
-              {recommendation.zoneName && (
-                <span className="text-xs text-oliveGreen/70">
-                  · {recommendation.zoneName}
-                </span>
-              )}
+    // Añadimos el ID aquí para que el scroll funcione
+    <div id={recommendation.id} className="h-full">
+      <DataCard
+        variant={variantMap[recommendation.priority]}
+        // Añadimos las clases de resaltado si isHighlighted es true
+        className={`flex flex-col h-full bg-card transition-all duration-500 ${
+          isHighlighted
+            ? "ring-2 ring-solar ring-offset-4 ring-offset-paper shadow-xl scale-[1.02]"
+            : ""
+        }`}
+      >
+        {/* Header */}
+        <div className="flex items-start justify-between gap-3 mb-3 border-b border-ink/10 pb-3">
+          <div className="flex items-start gap-3">
+            <div
+              className={`p-2 border border-ink/10 bg-paper ${colorMap[recommendation.priority]}`}
+            >
+              <Icon className="w-5 h-5" />
             </div>
-            <h3 className={`text-base font-bold ${style.text}`}>
-              {recommendation.title}
-            </h3>
+            <div>
+              <div className="flex items-center gap-2 flex-wrap mb-1 font-mono text-[10px] uppercase tracking-wider font-bold">
+                <span className="px-2 py-0.5 border border-ink/20 text-ink/60">
+                  {t[recommendation.topic as keyof typeof t] || t.general}
+                </span>
+                <span className={colorMap[recommendation.priority]}>
+                  {t[recommendation.priority as keyof typeof t]}
+                </span>
+                {recommendation.zoneName && (
+                  <span className="text-ink/40">
+                    · {recommendation.zoneName}
+                  </span>
+                )}
+              </div>
+              <h3
+                className={`font-serif text-lg font-bold ${colorMap[recommendation.priority]}`}
+              >
+                {recommendation.title}
+              </h3>
+            </div>
+          </div>
+          <div className="font-mono text-sm font-bold text-ink/60">
+            {recommendation.confidence}%
           </div>
         </div>
-        <div className={`text-xs font-medium ${style.text}`}>
-          {recommendation.confidence}%
+
+        {/* Description */}
+        <p className="font-sans text-sm text-ink/70 mb-4 leading-relaxed flex-1">
+          {recommendation.description}
+        </p>
+
+        {/* Action */}
+        <div className="bg-paper/50 border border-ink/10 p-3 mb-4">
+          <p className="font-mono text-[10px] text-ink/50 uppercase tracking-wider mb-1 font-bold">
+            {t.action}
+          </p>
+          <p className="font-sans text-sm font-bold text-ink flex items-start gap-2">
+            <Zap className="w-4 h-4 text-solar flex-shrink-0 mt-0.5" />
+            {recommendation.action}
+          </p>
         </div>
-      </div>
 
-      {/* Description */}
-      <p className="text-sm text-charcoalGray/80 mb-3 leading-relaxed">
-        {recommendation.description}
-      </p>
-
-      {/* Action */}
-      <div className="bg-white/60 rounded-lg p-3 mb-3 border border-white/80">
-        <p className="text-xs text-oliveGreen/60 mb-1 font-medium uppercase tracking-wider">
-          Acción recomendada
-        </p>
-        <p className="text-sm font-semibold text-charcoalGray flex items-start gap-2">
-          <Zap className="w-4 h-4 text-wheatGold flex-shrink-0 mt-0.5" />
-          {recommendation.action}
-        </p>
-      </div>
-
-      {/* Footer */}
-      <div className="flex items-center justify-between text-xs text-oliveGreen/60">
-        <span className="flex items-center gap-1">
-          <Activity className="w-3 h-3" />
-          Fuente: {recommendation.dataSource}
-        </span>
-        {onAction && (
-          <button
-            type="button"
-            onClick={() => onAction(recommendation.id)}
-            className="text-oliveGreen hover:text-sicilian-red font-medium transition-colors"
-          >
-            Marcar como hecho →
-          </button>
-        )}
-      </div>
+        {/* Footer */}
+        <div className="flex items-center justify-between font-mono text-[10px] text-ink/50 mt-auto pt-3 border-t border-ink/10">
+          <span className="flex items-center gap-1 uppercase tracking-wider">
+            <Activity className="w-3 h-3" />
+            {t.source}: {recommendation.dataSource}
+          </span>
+          {onAction && (
+            <Button
+              type="button"
+              onClick={() => onAction(recommendation.id)}
+              className="text-solar hover:text-ink font-bold uppercase tracking-wider transition-colors"
+            >
+              {t.markDone} →
+            </Button>
+          )}
+        </div>
+      </DataCard>
     </div>
   );
 }

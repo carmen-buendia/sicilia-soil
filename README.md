@@ -56,7 +56,7 @@ sicilia-soil/
 
 - **Data** (types, mock data, constants) → `packages/core`
 - **Logic** (engines, calculations) → `packages/utils`
-- **Reusable UI** (buttons, charts, badges) → `packages/ui`
+- **Reusable UI** (Buttons, charts, badges) → `packages/ui`
 - **App-specific code** (pages, hooks, feature components) → `apps/web`
 - **Backend logic** (API, DB, integrations) → `apps/backend`
 

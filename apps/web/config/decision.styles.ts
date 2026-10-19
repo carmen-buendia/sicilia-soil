@@ -51,8 +51,8 @@ export const DECISION_STATE_THEME: Record<DecisionState, StateStyle> = {
   unknown: {
     bg: "bg-gradient-to-br from-gray-50 via-gray-50/70 to-white",
     border: "border-gray-200",
-    text: "text-gray-800",
-    badge: "bg-gray-100 text-gray-700 border-gray-200",
+    text: "text-ink-800",
+    badge: "bg-gray-100 text-ink-700 border-gray-200",
     dot: "bg-gray-400",
     label: "Sin datos",
   },

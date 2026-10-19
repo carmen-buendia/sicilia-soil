@@ -16,5 +16,11 @@ export const forms = {
   },
   password: {
     label: "Contraseña",
+    placeholder: "••••••••",
+    newPlaceholder: "Crea una contraseña segura",
+  },
+  name: {
+    label: "Nombre completo",
+    placeholder: "Tu nombre",
   },
 } as const;

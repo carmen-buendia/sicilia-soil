@@ -42,7 +42,7 @@ export function CycleDiagram({
             className="flex-1 flex flex-col md:flex-row md:items-center gap-2"
           >
             <div
-              className="flex-1 rounded-xl p-4 border bg-white/60 backdrop-blur-sm hover:shadow-md transition-all"
+              className="flex-1 rounded-xl p-4 border bg-card/60 backdrop-blur-sm hover:shadow-md transition-all"
               style={{ borderColor: `${stage.color}40` }}
             >
               <div
@@ -78,7 +78,7 @@ export function CycleDiagram({
 
       {/* Closing note */}
       {closingNote && (
-        <div className="mt-6 p-4 bg-white/60 rounded-xl border border-oliveGreen/10 text-sm text-oliveGreen/70">
+        <div className="mt-6 p-4 bg-card/60 rounded-xl border border-oliveGreen/10 text-sm text-oliveGreen/70">
           <p>{closingNote}</p>
         </div>
       )}
