@@ -12,14 +12,14 @@ import {
 } from "lucide-react";
 import { SoilChart, SOIL_COLORS } from "@/components/features/shared";
 import { usePolycultureData } from "@/hooks/usePolycultureData";
+import { DataCard } from "@sicilia-soil/ui";
 
-// Mapa string → componente Lucide
 const ICON_MAP: Record<string, any> = {
   tree: TreeDeciduous,
   droplet: Droplets,
   thermometer: Thermometer,
   recycle: Recycle,
-  leaf: TreeDeciduous, // fallback
+  leaf: TreeDeciduous,
 };
 
 export function PolycultureTab() {
@@ -32,98 +32,90 @@ export function PolycultureTab() {
         {kpis.map((kpi) => {
           const Icon = ICON_MAP[kpi.icon] ?? TreeDeciduous;
           return (
-            <div
-              key={kpi.label}
-              className="bg-white/70 backdrop-blur-sm rounded-2xl p-5 border border-oliveGreen/15"
-            >
+            <DataCard key={kpi.label} className="p-5">
               <div className="flex items-start justify-between mb-2">
-                <span className="text-xs text-oliveGreen/60">{kpi.label}</span>
+                <span className="font-mono text-[10px] uppercase tracking-wider text-ink/50">
+                  {kpi.label}
+                </span>
                 <Icon className={`w-4 h-4 ${kpi.color}`} />
               </div>
-              <p className="text-2xl font-bold text-charcoalGray">
+              <p className="font-mono text-2xl font-bold text-ink">
                 {kpi.value}
               </p>
-              <p className="text-xs text-oliveGreen/60 mt-1">{kpi.note}</p>
-            </div>
+              <p className="font-sans text-xs text-ink/50 mt-1">{kpi.note}</p>
+            </DataCard>
           );
         })}
       </div>
 
       {/* Árboles */}
       <section>
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xl font-bold text-charcoalGray flex items-center gap-2">
-            <TreeDeciduous className="w-5 h-5 text-oliveGreen" />
+        <div className="flex items-center justify-between mb-4 border-b border-ink/20 pb-2">
+          <h3 className="text-xl font-serif font-bold text-ink flex items-center gap-2">
+            <TreeDeciduous className="w-5 h-5 text-chloro" />
             Árboles frutales
           </h3>
-          <span className="text-xs text-oliveGreen/60">
-            {trees.length} parcelas monitorizadas
+          <span className="font-mono text-[10px] uppercase tracking-wider text-ink/50">
+            {trees.length} parcelas
           </span>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
           {trees.map((tree) => (
-            <div
-              key={tree.id}
-              className="bg-white/60 backdrop-blur-sm rounded-2xl p-5 border border-oliveGreen/15 hover:shadow-lg transition-all"
-            >
+            <DataCard key={tree.id} className="p-5 flex flex-col">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-3xl">{tree.icon}</span>
                 <span
-                  className={`text-xs px-2 py-0.5 rounded-full font-medium ${tree.statusColor}`}
+                  className={`font-mono text-[10px] px-2 py-0.5 border font-bold uppercase tracking-wider ${tree.statusColor}`}
                 >
                   {tree.status}
                 </span>
               </div>
-              <h4 className="font-bold text-charcoalGray mb-3">{tree.name}</h4>
+              <h4 className="font-serif font-bold text-ink mb-3">
+                {tree.name}
+              </h4>
 
-              <div className="space-y-2 text-sm">
+              <div className="space-y-2 font-mono text-xs flex-1">
                 <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1.5 text-oliveGreen/60">
+                  <span className="flex items-center gap-1.5 text-ink/50">
                     <Droplets className="w-3.5 h-3.5" /> Humedad
                   </span>
-                  <span className="font-medium text-charcoalGray">
-                    {tree.moisture}%
-                  </span>
+                  <span className="font-bold text-ink">{tree.moisture}%</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1.5 text-oliveGreen/60">
-                    <Thermometer className="w-3.5 h-3.5" /> Temperatura
+                  <span className="flex items-center gap-1.5 text-ink/50">
+                    <Thermometer className="w-3.5 h-3.5" /> Temp.
                   </span>
-                  <span className="font-medium text-charcoalGray">
+                  <span className="font-bold text-ink">
                     {tree.temperature}°C
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1.5 text-oliveGreen/60">
+                  <span className="flex items-center gap-1.5 text-ink/50">
                     <Sun className="w-3.5 h-3.5" /> Luz
                   </span>
-                  <span className="font-medium text-charcoalGray">
-                    {tree.light}%
-                  </span>
+                  <span className="font-bold text-ink">{tree.light}%</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1.5 text-oliveGreen/60">
+                  <span className="flex items-center gap-1.5 text-ink/50">
                     <Wind className="w-3.5 h-3.5" /> Viento
                   </span>
-                  <span className="font-medium text-charcoalGray">
-                    {tree.wind} km/h
-                  </span>
+                  <span className="font-bold text-ink">{tree.wind} km/h</span>
                 </div>
               </div>
 
-              <div className="mt-3 pt-3 border-t border-oliveGreen/10 text-xs text-oliveGreen/60 space-y-1">
+              <div className="mt-3 pt-3 border-t border-ink/10 font-mono text-[10px] text-ink/60 space-y-1">
                 <p>🍄 {tree.mycorrhiza}</p>
                 <p>⏱ {tree.stage}</p>
               </div>
-            </div>
+            </DataCard>
           ))}
         </div>
       </section>
 
       {/* Comparador árboles */}
-      <section className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 border border-oliveGreen/15">
-        <h3 className="text-lg font-bold text-charcoalGray mb-4 flex items-center gap-2">
-          <TrendingUp className="w-5 h-5 text-oliveGreen" />
+      <DataCard className="p-6">
+        <h3 className="text-lg font-serif font-bold text-ink mb-4 flex items-center gap-2">
+          <TrendingUp className="w-5 h-5 text-chloro" />
           Comparador de condiciones por árbol
         </h3>
         <SoilChart
@@ -138,12 +130,12 @@ export function PolycultureTab() {
             {
               name: "Temperatura (°C)",
               data: trees.map((t) => t.temperature),
-              color: SOIL_COLORS.terracotta,
+              color: SOIL_COLORS.solar,
             },
             {
               name: "Luz (%)",
               data: trees.map((t) => t.light),
-              color: SOIL_COLORS.wheat,
+              color: SOIL_COLORS.chloro,
             },
             {
               name: "Viento (km/h)",
@@ -155,20 +147,22 @@ export function PolycultureTab() {
           height={320}
           legend
         />
-      </section>
+      </DataCard>
 
       {/* Hortalizas */}
       <section>
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xl font-bold text-charcoalGray flex items-center gap-2">
-            <Carrot className="w-5 h-5 text-oliveGreen" />
+        <div className="flex items-center justify-between mb-4 border-b border-ink/20 pb-2">
+          <h3 className="text-xl font-serif font-bold text-ink flex items-center gap-2">
+            <Carrot className="w-5 h-5 text-chloro" />
             Hortalizas para consumo propio
           </h3>
-          <span className="text-xs text-oliveGreen/60">30 m² cultivados</span>
+          <span className="font-mono text-[10px] uppercase tracking-wider text-ink/50">
+            30 m²
+          </span>
         </div>
 
-        <div className="bg-white/60 backdrop-blur-sm rounded-2xl border border-oliveGreen/15 overflow-hidden mb-6">
-          <div className="grid grid-cols-5 gap-2 p-3 bg-oliveGreen/5 text-xs font-medium text-oliveGreen/70">
+        <DataCard className="p-0 overflow-hidden mb-6">
+          <div className="grid grid-cols-5 gap-2 p-3 bg-paper/50 border-b border-ink/10 text-[10px] font-mono uppercase tracking-wider text-ink/50 font-bold">
             <span>Cultivo</span>
             <span>Área</span>
             <span>Cosecha</span>
@@ -178,22 +172,21 @@ export function PolycultureTab() {
           {vegetables.map((veg) => (
             <div
               key={veg.id}
-              className="grid grid-cols-5 gap-2 p-3 border-t border-oliveGreen/10 text-sm"
+              className="grid grid-cols-5 gap-2 p-3 border-t border-ink/10 text-sm font-mono items-center hover:bg-paper/30 transition-colors"
             >
-              <span className="flex items-center gap-2 font-medium text-charcoalGray">
-                <span className="text-lg">{veg.icon}</span>
-                {veg.name}
+              <span className="flex items-center gap-2 font-serif font-bold text-ink">
+                <span className="text-lg">{veg.icon}</span> {veg.name}
               </span>
-              <span className="text-oliveGreen/70">{veg.area}</span>
-              <span className="text-oliveGreen/70">{veg.harvest}</span>
-              <span className="text-amber-700">{veg.residue} kg/sem</span>
-              <span className="text-blue-600">{veg.water} L/sem</span>
+              <span className="text-ink/60">{veg.area}</span>
+              <span className="text-ink/60">{veg.harvest}</span>
+              <span className="text-solar">{veg.residue} kg/sem</span>
+              <span className="text-blue">{veg.water} L/sem</span>
             </div>
           ))}
-        </div>
+        </DataCard>
 
-        <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 border border-oliveGreen/15">
-          <h4 className="font-bold text-charcoalGray mb-4">
+        <DataCard className="p-6">
+          <h4 className="font-serif font-bold text-ink mb-4">
             Balance hídrico y residuos por cultivo
           </h4>
           <SoilChart
@@ -208,65 +201,44 @@ export function PolycultureTab() {
               {
                 name: "Residuos (kg/semana)",
                 data: vegetables.map((v) => v.residue),
-                color: SOIL_COLORS.terracotta,
+                color: SOIL_COLORS.solar,
               },
             ]}
             yAxisLabel="Cantidad"
             height={280}
             legend
           />
-        </div>
+        </DataCard>
       </section>
 
       {/* Ciclo compost */}
-      <section className="bg-gradient-to-r from-oliveGreen/5 to-wheatGold/5 rounded-2xl p-6 border border-oliveGreen/15">
-        <h3 className="text-xl font-bold text-charcoalGray mb-4 flex items-center gap-2">
-          <Recycle className="w-5 h-5 text-oliveGreen" />
+      <DataCard className="p-6">
+        <h3 className="text-xl font-serif font-bold text-ink mb-4 flex items-center gap-2">
+          <Recycle className="w-5 h-5 text-chloro" />
           Ciclo cerrado: hortalizas → compost → suelo
         </h3>
         <div className="grid md:grid-cols-4 gap-4">
           {compostCycle.map((step, idx) => (
-            <div key={idx} className="text-center bg-white/50 rounded-xl p-4">
+            <div
+              key={idx}
+              className="text-center bg-paper border border-ink/10 p-4"
+            >
               <div className="text-4xl mb-2">{step.icon}</div>
-              <p className="font-medium text-charcoalGray text-sm">
+              <p className="font-serif font-bold text-ink text-sm">
                 {step.stage}
               </p>
-              <p className="text-xs text-oliveGreen/70 mt-1">{step.amount}</p>
+              <p className="font-mono text-[10px] text-ink/50 mt-1 uppercase">
+                {step.amount}
+              </p>
             </div>
           ))}
         </div>
-        <div className="mt-4 p-4 bg-white/50 rounded-xl text-sm text-oliveGreen/70">
-          <strong className="text-charcoalGray">Balance semanal:</strong> 6.5 kg
-          de restos → 4 kg de compost maduro → 16 kg/mes aplicados al suelo.
-          Cierra el ciclo sin insumos externos.
+        <div className="mt-4 p-4 bg-paper border border-ink/10 font-sans text-sm text-ink/70">
+          <strong className="text-ink">Balance semanal:</strong> 6.5 kg de
+          restos → 4 kg de compost maduro → 16 kg/mes aplicados al suelo. Cierra
+          el ciclo sin insumos externos.
         </div>
-      </section>
-
-      {/* Recomendaciones */}
-      <section className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 border border-oliveGreen/15">
-        <h3 className="text-lg font-bold text-charcoalGray mb-3 flex items-center gap-2">
-          <TrendingUp className="w-5 h-5 text-oliveGreen" />
-          Recomendaciones activas
-        </h3>
-        <ul className="space-y-2 text-sm text-oliveGreen/70">
-          <li>
-            ⚠️ <strong>Olivar:</strong> humedad al 62%, por debajo del óptimo
-            (65%). Riego en 12 h.
-          </li>
-          <li>
-            ✓ <strong>Almendro:</strong> post-cosecha estable. Poda de formación
-            en 2 semanas.
-          </li>
-          <li>
-            ✓ <strong>Compost:</strong> fase termófila activa. Voltear en 3
-            días.
-          </li>
-          <li>
-            💧 <strong>Hortalizas:</strong> consumo total de 103 L/semana.
-            Optimizar goteo en calabacín.
-          </li>
-        </ul>
-      </section>
+      </DataCard>
     </div>
   );
 }

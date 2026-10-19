@@ -3,21 +3,23 @@
 import { BarChart3 } from "lucide-react";
 import { SoilChart, SOIL_COLORS } from "@/components/features/shared";
 import { useAnalysisData } from "@/hooks/useAnalysisData";
+import { getLocale } from "@sicilia-soil/core";
+import { DataCard } from "@sicilia-soil/ui";
 
 export function AnalysisTab() {
   const { coverComparison } = useAnalysisData();
+  const locale = getLocale("es");
+  const t = locale.content.cropsPage.analysis;
 
   return (
     <div className="space-y-6">
-      <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 border border-oliveGreen/15">
-        <h3 className="text-lg font-bold text-charcoalGray mb-4 flex items-center gap-2">
-          <BarChart3 className="w-5 h-5 text-oliveGreen" />
-          Comparador de cultivos y coberturas
+      <DataCard className="p-6">
+        <h3 className="text-lg font-serif font-bold text-ink mb-4 flex items-center gap-2">
+          <BarChart3 className="w-5 h-5 text-chloro" />
+          {t.title}
         </h3>
-        <p className="text-sm text-oliveGreen/70 mb-6">
-          Misma metodología (SHI, colonización micorrícica, glomalina) aplicada
-          a todos los componentes del sistema. Evidencia del enfoque{" "}
-          <strong>crop-agnostic soil infrastructure</strong>.
+        <p className="font-sans text-sm text-ink/70 mb-6 leading-relaxed">
+          {t.desc}
         </p>
 
         <SoilChart
@@ -25,68 +27,50 @@ export function AnalysisTab() {
           categories={coverComparison.map((c) => c.cover)}
           series={[
             {
-              name: "SHI (0-100)",
+              name: t.series.shi,
               data: coverComparison.map((c) => c.shi),
-              color: SOIL_COLORS.olive,
+              color: SOIL_COLORS.chloro,
             },
             {
-              name: "Colonización AMF (%)",
+              name: t.series.colonisation,
               data: coverComparison.map((c) => c.colonisation),
-              color: SOIL_COLORS.green,
+              color: SOIL_COLORS.solar,
             },
             {
-              name: "Glomalina (mg/g × 10)",
+              name: t.series.glomalin,
               data: coverComparison.map((c) => c.glomalin * 10),
-              color: SOIL_COLORS.wheat,
+              color: SOIL_COLORS.ink,
             },
           ]}
           yAxisLabel="Valor"
           height={360}
           legend
         />
-      </div>
+      </DataCard>
 
       {/* Interpretación */}
-      <div className="bg-gradient-to-r from-oliveGreen/5 to-wheatGold/5 rounded-2xl p-6 border border-oliveGreen/15">
-        <h3 className="text-lg font-bold text-charcoalGray mb-3">
-          Interpretación
+      <DataCard className="p-6">
+        <h3 className="text-lg font-serif font-bold text-ink mb-4">
+          {t.interpretationTitle}
         </h3>
-        <ul className="space-y-2 text-sm text-oliveGreen/70">
-          <li>
-            ✓ El <strong>esparto</strong> muestra el SHI más alto por su sistema
-            radical profundo y su larga simbiosis con hongos.
-          </li>
-          <li>
-            ✓ Los <strong>árboles</strong> mantienen valores altos por su
-            micorrización estable y aporte de hojarasca.
-          </li>
-          <li>
-            ✓ Las <strong>hortalizas</strong> tienen SHI medio, pero cierran el
-            ciclo vía compost.
-          </li>
-          <li>
-            ✓ El <strong>cereal</strong> tiene menor colonización por el ciclo
-            corto, pero es clave como cultivo de cobertura y rotación.
-          </li>
-          <li>
-            ✓ El <strong>barbecho</strong> está en recuperación: se espera que
-            suba tras el período de reposo.
-          </li>
+        <ul className="space-y-3 font-sans text-sm text-ink/70">
+          {t.interpretationList.map((text, i) => (
+            <li key={i} className="flex items-start gap-2">
+              <span className="text-chloro mt-0.5">✓</span>
+              <span>{text}</span>
+            </li>
+          ))}
         </ul>
-      </div>
+      </DataCard>
 
-      <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 border border-oliveGreen/15">
-        <h3 className="text-lg font-bold text-charcoalGray mb-3">
-          Ciclo regenerativo del sistema
+      <DataCard className="p-6">
+        <h3 className="text-lg font-serif font-bold text-ink mb-3">
+          {t.cycleTitle}
         </h3>
-        <p className="text-sm text-oliveGreen/70">
-          Todos los cultivos comparten la misma red subterránea de micorrizas.
-          El esparto y el cereal alimentan el micelio con su biomasa. Los
-          árboles aportan hojarasca y sombra. Las hortalizas cierran el ciclo
-          vía compost. El barbecho permite que la red fúngica se recupere y
-          expanda antes del siguiente ciclo de siembra.
+        <p className="font-sans text-sm text-ink/70 leading-relaxed">
+          {t.cycleDesc}
         </p>
-      </div>
+      </DataCard>
     </div>
   );
 }

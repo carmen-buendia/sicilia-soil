@@ -2,7 +2,10 @@
 
 import { Bell, CheckCheck, Trash2 } from "lucide-react";
 import type { Notification } from "@sicilia-soil/core";
+import { getLocale } from "@sicilia-soil/core";
 import { NotificationItem } from "./NotificationItem";
+import Link from "next/link";
+import { Button } from "@sicilia-soil/ui";
 
 interface NotificationPanelProps {
   notifications: Notification[];
@@ -21,54 +24,61 @@ export function NotificationPanel({
   onClearAll,
   onClose,
 }: NotificationPanelProps) {
+  const locale = getLocale("es");
+  const t = locale.ui.notifications;
+
   return (
     <div
-      className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-xl shadow-2xl border border-oliveGreen/15 overflow-hidden z-50"
+      className="absolute right-0 mt-2 w-80 sm:w-96 bg-card border border-ink/20 shadow-xl overflow-hidden z-50 !rounded-none"
       onClick={(e) => e.stopPropagation()}
     >
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-oliveGreen/10 bg-gradient-to-r from-oliveGreen/5 to-wheatGold/5">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-ink/10 bg-paper/50">
         <div className="flex items-center gap-2">
-          <Bell className="w-4 h-4 text-oliveGreen" />
-          <span className="font-bold text-charcoalGray text-sm">
-            Notificaciones
+          <Bell className="w-4 h-4 text-chloro" />
+          <span className="font-serif font-bold text-ink text-sm">
+            {t.title}
           </span>
           {unreadCount > 0 && (
-            <span className="text-xs bg-blue-500 text-white px-2 py-0.5 rounded-full font-medium">
+            <span className="font-mono text-[10px] bg-solar text-ink px-2 py-0.5 font-bold">
               {unreadCount}
             </span>
           )}
         </div>
         <div className="flex items-center gap-1">
           {unreadCount > 0 && (
-            <button
+            <Button
               type="button"
+              variant="bare"
               onClick={onMarkAllAsRead}
-              className="p-1.5 rounded-lg hover:bg-oliveGreen/10 text-oliveGreen/60 hover:text-oliveGreen transition-colors"
-              title="Marcar todas como leídas"
+              className="p-1.5 text-ink/50 hover:text-chloro transition-colors"
+              title={t.markAllAsRead}
             >
               <CheckCheck className="w-4 h-4" />
-            </button>
+            </Button>
           )}
           {notifications.length > 0 && (
-            <button
+            <Button
               type="button"
+              variant="bare"
               onClick={onClearAll}
-              className="p-1.5 rounded-lg hover:bg-red-50 text-oliveGreen/60 hover:text-red-600 transition-colors"
-              title="Limpiar todo"
+              className="p-1.5 text-ink/50 hover:text-red-500 transition-colors"
+              title={t.clearAll}
             >
               <Trash2 className="w-4 h-4" />
-            </button>
+            </Button>
           )}
         </div>
       </div>
 
       {/* List */}
-      <div className="max-h-96 overflow-y-auto p-3 space-y-2">
+      <div className="max-h-96 overflow-y-auto p-3 space-y-2 bg-paper/30">
         {notifications.length === 0 ? (
-          <div className="text-center py-8">
-            <Bell className="w-12 h-12 text-oliveGreen/20 mx-auto mb-2" />
-            <p className="text-sm text-oliveGreen/60">No hay notificaciones</p>
+          <div className="text-center py-10">
+            <Bell className="w-10 h-10 text-ink/10 mx-auto mb-3" />
+            <p className="font-mono text-xs uppercase tracking-widest text-ink/40">
+              {t.empty}
+            </p>
           </div>
         ) : (
           notifications.map((notif) => (
@@ -83,14 +93,14 @@ export function NotificationPanel({
 
       {/* Footer */}
       {notifications.length > 0 && (
-        <div className="px-4 py-2 border-t border-oliveGreen/10 bg-oliveGreen/5">
-          <a
+        <div className="px-4 py-3 border-t border-ink/10 bg-paper/50 text-center">
+          <Link
             href="/notifications"
             onClick={onClose}
-            className="block text-center text-xs text-oliveGreen font-medium hover:text-sicilian-red transition-colors"
+            className="font-mono text-[10px] uppercase tracking-widest font-bold text-solar hover:text-ink transition-colors"
           >
-            Ver todas las notificaciones →
-          </a>
+            {t.viewAll} →
+          </Link>
         </div>
       )}
     </div>
