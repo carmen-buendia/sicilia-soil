@@ -3,6 +3,7 @@
 import { Wheat, TrendingUp, BarChart3 } from "lucide-react";
 import { SoilChart, SOIL_COLORS } from "@/components/features/shared";
 import { useCerealData } from "@/hooks/useCerealData";
+import { DataCard } from "@sicilia-soil/ui";
 
 export function CerealTab() {
   const { kpis, growth, comparison, plotInfo } = useCerealData();
@@ -12,47 +13,48 @@ export function CerealTab() {
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {kpis.map((kpi) => (
-          <div
-            key={kpi.label}
-            className="bg-white/70 backdrop-blur-sm rounded-2xl p-5 border border-oliveGreen/15"
-          >
-            <p className="text-xs text-oliveGreen/60 mb-1">{kpi.label}</p>
-            <p className="text-2xl font-bold text-charcoalGray">{kpi.value}</p>
-            <p className="text-xs text-oliveGreen/60 mt-1">{kpi.note}</p>
-          </div>
+          <DataCard key={kpi.label} className="p-5">
+            <p className="font-mono text-[10px] uppercase tracking-wider text-ink/50 mb-1">
+              {kpi.label}
+            </p>
+            <p className="font-mono text-2xl font-bold text-ink">{kpi.value}</p>
+            <p className="font-sans text-xs text-ink/50 mt-1">{kpi.note}</p>
+          </DataCard>
         ))}
       </div>
 
       {/* Parcela */}
-      <div className="bg-gradient-to-r from-amber-50 to-yellow-50 rounded-2xl p-6 border border-amber-200">
+      <DataCard className="p-6">
         <div className="flex items-start gap-4">
-          <div className="p-3 bg-white/60 rounded-xl">
-            <Wheat className="w-8 h-8 text-amber-600" />
+          <div className="p-3 bg-solar/10 border border-solar/20">
+            <Wheat className="w-8 h-8 text-solar" />
           </div>
           <div className="flex-1">
-            <h3 className="text-xl font-bold text-charcoalGray mb-1">
+            <h3 className="text-xl font-serif font-bold text-ink mb-1">
               {plotInfo.name}
             </h3>
-            <p className="text-sm text-oliveGreen/70 mb-3">{plotInfo.role}</p>
-            <div className="flex flex-wrap gap-2">
-              <span className="px-3 py-1 bg-white/70 rounded-full text-xs">
+            <p className="font-sans text-sm text-ink/70 mb-3">
+              {plotInfo.role}
+            </p>
+            <div className="flex flex-wrap gap-2 font-mono text-[10px] uppercase tracking-wider font-bold">
+              <span className="px-2 py-1 bg-paper border border-ink/20">
                 📐 {plotInfo.area}
               </span>
-              <span className="px-3 py-1 bg-white/70 rounded-full text-xs">
+              <span className="px-2 py-1 bg-paper border border-ink/20">
                 🌱 {plotInfo.crops.join(" · ")}
               </span>
-              <span className="px-3 py-1 bg-white/70 rounded-full text-xs font-medium text-amber-700">
+              <span className="px-2 py-1 bg-solar/10 border border-solar/20 text-solar">
                 ⏱ {plotInfo.stage}
               </span>
             </div>
           </div>
         </div>
-      </div>
+      </DataCard>
 
       {/* Evolución NDVI + humedad */}
-      <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 border border-oliveGreen/15">
-        <h3 className="text-lg font-bold text-charcoalGray mb-4 flex items-center gap-2">
-          <TrendingUp className="w-5 h-5 text-oliveGreen" />
+      <DataCard className="p-6">
+        <h3 className="text-lg font-serif font-bold text-ink mb-4 flex items-center gap-2">
+          <TrendingUp className="w-5 h-5 text-chloro" />
           Evolución NDVI y humedad
         </h3>
         <SoilChart
@@ -62,7 +64,7 @@ export function CerealTab() {
             {
               name: "NDVI",
               data: growth.map((g) => g.ndvi),
-              color: SOIL_COLORS.green,
+              color: SOIL_COLORS.chloro,
               yAxis: 0,
             },
             {
@@ -77,12 +79,12 @@ export function CerealTab() {
           height={320}
           legend
         />
-      </div>
+      </DataCard>
 
       {/* Comparación cereal vs esparto */}
-      <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 border border-oliveGreen/15">
-        <h3 className="text-lg font-bold text-charcoalGray mb-4 flex items-center gap-2">
-          <BarChart3 className="w-5 h-5 text-oliveGreen" />
+      <DataCard className="p-6">
+        <h3 className="text-lg font-serif font-bold text-ink mb-4 flex items-center gap-2">
+          <BarChart3 className="w-5 h-5 text-chloro" />
           Comparación interna: Cereal vs Esparto
         </h3>
         <SoilChart
@@ -92,26 +94,26 @@ export function CerealTab() {
             {
               name: "Cereal",
               data: comparison.map((c) => c.cereal),
-              color: SOIL_COLORS.wheat,
+              color: SOIL_COLORS.solar,
             },
             {
               name: "Esparto",
               data: comparison.map((c) => c.esparto),
-              color: SOIL_COLORS.olive,
+              color: SOIL_COLORS.chloro,
             },
           ]}
           yAxisLabel="Valor"
           height={300}
           legend
         />
-      </div>
+      </DataCard>
 
       {/* Recomendaciones */}
-      <div className="bg-gradient-to-r from-oliveGreen/5 to-wheatGold/5 rounded-2xl p-6 border border-oliveGreen/15">
-        <h3 className="text-lg font-bold text-charcoalGray mb-3">
+      <DataCard className="p-6">
+        <h3 className="text-lg font-serif font-bold text-ink mb-3">
           Recomendaciones activas
         </h3>
-        <ul className="space-y-2 text-sm text-oliveGreen/70">
+        <ul className="space-y-2 font-sans text-sm text-ink/70">
           <li>
             💧 Riego programado en 3 días (humedad 58%, por debajo del óptimo).
           </li>
@@ -126,7 +128,7 @@ export function CerealTab() {
             la red micorrícica activa.
           </li>
         </ul>
-      </div>
+      </DataCard>
     </div>
   );
 }

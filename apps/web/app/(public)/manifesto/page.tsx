@@ -1,16 +1,17 @@
 import Link from "next/link";
 import { getLocale } from "@sicilia-soil/core";
 import {
-  Sprout,
   ArrowLeft,
+  ArrowRight,
+  Sprout,
   Leaf,
   Globe,
   Heart,
   Code,
   WifiOff,
   ShieldCheck,
-  ArrowRight,
 } from "lucide-react";
+import { BrandLogo, Button, DataCard, MycoMeshLogo } from "@sicilia-soil/ui";
 
 const t = getLocale("es");
 
@@ -40,12 +41,8 @@ export default function ManifestoPage() {
           >
             <ArrowLeft className="w-4 h-4" /> Volver a la Home
           </Link>
-          <div className="flex items-center gap-2">
-            <Sprout className="w-5 h-5 text-chloro" />
-            <span className="font-serif font-bold tracking-tight text-ink">
-              MycoMesh.
-            </span>
-          </div>
+
+          <BrandLogo href="/" size="sm" LinkComponent={Link} />
         </div>
       </header>
 
@@ -53,7 +50,7 @@ export default function ManifestoPage() {
         {/* Hero del Manifiesto */}
         <div className="mb-20 text-center">
           <div className="inline-flex items-center justify-center p-3 bg-chloro/10 rounded-2xl mb-6">
-            <Sprout className="w-10 h-10 text-chloro" />
+            <MycoMeshLogo size={40} className="text-chloro" />
           </div>
           <h1 className="text-5xl sm:text-6xl font-serif font-bold mb-6 text-ink">
             {t.content.manifesto.heroTitle}
@@ -76,13 +73,13 @@ export default function ManifestoPage() {
           </p>
         </section>
 
-        {/* Lo que creemos */}
+        {/* Lo que creemos — ahora con <DataCard> */}
         <section className="mb-20">
           <h2 className="text-3xl font-serif font-bold mb-8 text-ink">
             {t.content.manifesto.beliefsTitle}
           </h2>
           <div className="grid sm:grid-cols-2 gap-6">
-            <div className="bg-paper border border-ink/10 p-6 rounded-2xl shadow-sm">
+            <DataCard className="p-6 bg-paper border-ink/10">
               <Sprout className="w-6 h-6 text-chloro mb-4" />
               <h3 className="font-bold text-lg text-ink mb-2">
                 {t.content.manifesto.belief1Title}
@@ -90,9 +87,9 @@ export default function ManifestoPage() {
               <p className="text-ink/70 text-sm leading-relaxed">
                 {t.content.manifesto.belief1Desc}
               </p>
-            </div>
+            </DataCard>
 
-            <div className="bg-paper border border-ink/10 p-6 rounded-2xl shadow-sm">
+            <DataCard className="p-6 bg-paper border-ink/10">
               <Leaf className="w-6 h-6 text-chloro mb-4" />
               <h3 className="font-bold text-lg text-ink mb-2">
                 {t.content.manifesto.belief2Title}
@@ -100,9 +97,9 @@ export default function ManifestoPage() {
               <p className="text-ink/70 text-sm leading-relaxed">
                 {t.content.manifesto.belief2Desc}
               </p>
-            </div>
+            </DataCard>
 
-            <div className="bg-paper border border-ink/10 p-6 rounded-2xl shadow-sm">
+            <DataCard className="p-6 bg-paper border-ink/10">
               <Globe className="w-6 h-6 text-chloro mb-4" />
               <h3 className="font-bold text-lg text-ink mb-2">
                 {t.content.manifesto.belief3Title}
@@ -110,9 +107,9 @@ export default function ManifestoPage() {
               <p className="text-ink/70 text-sm leading-relaxed">
                 {t.content.manifesto.belief3Desc}
               </p>
-            </div>
+            </DataCard>
 
-            <div className="bg-paper border border-ink/10 p-6 rounded-2xl shadow-sm">
+            <DataCard className="p-6 bg-paper border-ink/10">
               <Heart className="w-6 h-6 text-chloro mb-4" />
               <h3 className="font-bold text-lg text-ink mb-2">
                 {t.content.manifesto.belief4Title}
@@ -120,13 +117,12 @@ export default function ManifestoPage() {
               <p className="text-ink/70 text-sm leading-relaxed">
                 {t.content.manifesto.belief4Desc}
               </p>
-            </div>
+            </DataCard>
           </div>
         </section>
 
         {/* Infraestructura (Dark block para contraste) */}
-        <section className="mb-20 bg-ink text-paper p-8 sm:p-12 rounded-3xl relative overflow-hidden">
-          {/* Brillo de fondo */}
+        <DataCard className="mb-20 bg-ink text-paper p-8 sm:p-12 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-chloro/20 blur-3xl rounded-full" />
 
           <h2 className="text-3xl font-serif font-bold mb-8 text-solar relative z-10">
@@ -167,7 +163,7 @@ export default function ManifestoPage() {
               </div>
             </div>
           </div>
-        </section>
+        </DataCard>
 
         {/* El compromiso */}
         <section className="mb-20">
@@ -189,23 +185,43 @@ export default function ManifestoPage() {
         </section>
 
         {/* Futuro */}
-        <section className="mb-20 bg-paper-dark/30 p-8 rounded-2xl border border-ink/5">
+        <DataCard className="p-6 bg-paper border-ink/10">
           <h2 className="text-2xl font-serif font-bold mb-4 text-ink">
             {t.content.manifesto.futureTitle}
           </h2>
           <p className="text-ink/70 leading-relaxed">
             {t.content.manifesto.futureDesc}
           </p>
-        </section>
+        </DataCard>
 
-        {/* Cita final */}
+        {/* Cita final + CTA */}
         <section className="text-center py-16 border-t border-ink/10">
           <p className="text-2xl md:text-3xl font-serif font-bold text-ink mb-6 leading-relaxed italic">
             {t.content.manifesto.quoteText}
           </p>
-          <p className="font-mono text-xs uppercase tracking-widest text-solar font-bold">
+          <p className="font-mono text-xs uppercase tracking-widest text-solar font-bold mb-10">
             — {t.content.manifesto.quoteAuthor}
           </p>
+
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <Button
+              href="/register"
+              LinkComponent={Link}
+              variant="cta"
+              className="px-8 py-4 font-mono text-xs uppercase tracking-widest font-bold transition-colors"
+            >
+              {t.ui.landing.cta.start} <ArrowRight className="w-4 h-4" />
+            </Button>
+            <Button
+              href="/"
+              LinkComponent={Link}
+              variant="bare"
+              size="none"
+              className="!!rounded-none hover:scale-100 flex items-center gap-2 px-8 py-4 border border-ink/20 text-ink font-mono text-xs uppercase tracking-widest font-bold hover:bg-ink/5 transition-colors"
+            >
+              Volver al inicio
+            </Button>
+          </div>
         </section>
       </main>
 

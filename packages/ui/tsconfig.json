@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "noEmit": true,
+    "types": ["node"],
     "paths": {
       "@sicilia-soil/core": ["./../core/src"],
       "@sicilia-soil/core/*": ["./../core/src/*"],
@@ -9,10 +10,6 @@
       "@sicilia-soil/utils/*": ["./../utils/src/*"]
     }
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "../../apps/web/components/features/analysis/components/CopernicusWidget.tsx"
-  ],
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["node_modules", "dist"]
 }
