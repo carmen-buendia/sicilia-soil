@@ -10,21 +10,11 @@ export * from "./soilHealth.data";
 export * from "./groundCover.data";
 export * from "./copernicus.defaults";
 export * from "./recommendation.rules";
-export * from "./sensors.mock";
+export * from "./sensors.defaults";
 export * from "./temperature.data";
 export * from "./light.data";
-export * from "./humidity.data";
-export * from "./decision.mock";
-
-// Humidity: exporta datos + helpers, no el tipo
-export {
-  HUMIDITY_DATA,
-  getAverageHumidity,
-  getCriticalZones,
-  getOptimalZones,
-  getZoneStatus,
-  getZoneColor,
-} from "./humidity.data";
+export * from "./water.data";
+export * from "./decision.defaults";
 
 // Dashboard
 export { GARDEN_ZONES, DASHBOARD_KPIS, CARBON_SUMMARY } from "./dashboard.data";

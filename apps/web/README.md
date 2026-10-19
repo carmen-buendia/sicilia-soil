@@ -1,6 +1,6 @@
 # @sicilia-soil/web
 
-> Next.js frontend — the Sicilia Soil DSS.
+> Next.js frontend — the MycoMesh Protocol DSS.
 
 ---
 
@@ -13,7 +13,7 @@ apps/web/
 │   ├── soil-health/              Soil biology (T2)
 │   │   ├── page.tsx
 │   │   └── tabs/                 Resumen · Biorremediación · Redes · Bioindicadores
-│   ├── humidity/                 Water efficiency (T3)
+│   ├── water/                    Water efficiency (T3)
 │   ├── ground-cover/             Crops
 │   │   └── tabs/                 Esparto · Policultivo · Cereal · Cubiertas · Análisis
 │   ├── recommendations/          Actionable recommendations
@@ -39,7 +39,7 @@ apps/web/
 │   ├── useCoverFallowData.ts
 │   ├── useDashboardData.ts
 │   ├── useEspartoData.ts
-│   ├── useHumidityData.ts
+│   ├── useWaterData.ts
 │   ├── useLightData.ts
 │   ├── useNotifications.ts
 │   ├── usePolycultureData.ts
@@ -58,7 +58,7 @@ apps/web/
 | :----------------- | :------------------------------------------------------------ |
 | `/`                | Dashboard with mini-map, KPIs and alerts                      |
 | `/soil-health`     | Soil biology: symbiosis, bioremediation, mycorrhizal networks |
-| `/humidity`        | Water efficiency: soil moisture, irrigation, drought          |
+| `/water`           | Water efficiency: soil moisture, irrigation, drought          |
 | `/ground-cover`    | Crops: esparto, polyculture, cereal, covers, fallow           |
 | `/recommendations` | Actionable recommendations                                    |
 | `/notifications`   | Alerts and history                                            |
