@@ -1,9 +1,9 @@
 "use client";
 
-import { Droplets, Thermometer, Sun, Wind } from "lucide-react";
+import { Droplets, Thermometer, Sun, Wind, ArrowRight } from "lucide-react";
 import { getLocale } from "@sicilia-soil/core";
 import { formatRelativeTime } from "@sicilia-soil/utils";
-import { Button } from "@sicilia-soil/ui";
+import { Button, DataCard } from "@sicilia-soil/ui"; // <-- Importamos el componente inteligente
 
 interface ZoneData {
   id: string;
@@ -25,6 +25,7 @@ interface ZoneCardProps {
 
 export function ZoneCard({ zone, onViewHistory }: ZoneCardProps) {
   const locale = getLocale("es");
+  const t = locale.ui.dashboard;
 
   const zoneName =
     locale.zones[zone.id as keyof typeof locale.zones] ?? zone.id;
@@ -42,126 +43,143 @@ export function ZoneCard({ zone, onViewHistory }: ZoneCardProps) {
   const getStatusColor = (statusKey: string) => {
     switch (statusKey) {
       case "optimal":
-        return "bg-green-100 text-green-700";
+        return "text-chloro border-chloro/30 bg-chloro/5";
       case "needsWater":
-        return "bg-red-100 text-red-700";
+        return "text-solar border-solar/30 bg-solar/5";
       case "needsAttention":
-        return "bg-yellow-100 text-yellow-700";
+        return "text-amber-600 border-amber-600/30 bg-amber-600/5";
       case "offline":
-        return "bg-gray-100 text-gray-700";
+        return "text-ink/50 border-ink/20 bg-ink/5";
       default:
-        return "bg-gray-100 text-gray-700";
+        return "text-ink/50 border-ink/20 bg-ink/5";
     }
   };
 
-  const getMoistureColor = (value: number) => {
-    if (value >= 70) return "text-green-600";
-    if (value >= 50) return "text-yellow-600";
-    return "text-red-600";
-  };
-
-  const getTempColor = (value: number) => {
-    if (value >= 20 && value <= 25) return "text-green-600";
-    if (value >= 15 && value <= 30) return "text-yellow-600";
-    return "text-red-600";
-  };
-
-  const getLightColor = (value: number) => {
-    if (value >= 60) return "text-green-600";
-    if (value >= 40) return "text-yellow-600";
-    return "text-red-600";
+  const getValueColor = (
+    value: number,
+    type: "moisture" | "temp" | "light",
+  ) => {
+    if (type === "moisture") {
+      if (value >= 70) return "text-chloro";
+      if (value >= 50) return "text-solar";
+      return "text-red-500";
+    }
+    if (type === "temp") {
+      if (value >= 20 && value <= 25) return "text-chloro";
+      if (value >= 15 && value <= 30) return "text-solar";
+      return "text-red-500";
+    }
+    if (type === "light") {
+      if (value >= 60) return "text-chloro";
+      if (value >= 40) return "text-solar";
+      return "text-red-500";
+    }
+    return "text-ink";
   };
 
   return (
-    <div className="bg-white rounded-xl p-5 shadow-lg border border-oliveGreen/15 hover:shadow-xl transition-all hover:scale-[1.02]">
-      <div className="flex items-start justify-between mb-4">
+    <DataCard className="p-0 flex flex-col group hover:bg-paper/30 overflow-hidden">
+      {/* HEADER */}
+      <div className="flex items-center justify-between p-4 border-b">
         <div className="flex items-center gap-3">
-          <span className="w-10 h-10 rounded-full bg-oliveGreen/10 flex items-center justify-center text-lg font-bold text-oliveGreen">
+          <div className="w-10 h-10 border flex items-center justify-center font-mono text-sm font-bold text-ink group-hover:bg-solar group-hover:text-ink transition-colors">
             {zoneNumber}
-          </span>
+          </div>
           <div>
-            <h3 className="text-lg font-bold text-charcoalGray">{zoneName}</h3>
-            <p className="text-xs text-oliveGreen/60">
-              {zone.sensorId} · {zone.location}
+            <h3 className="font-serif text-lg font-bold text-ink leading-tight">
+              {zoneName}
+            </h3>
+            <p className="font-mono text-[10px] uppercase tracking-wider text-ink/50 mt-0.5">
+              {zone.sensorId}
             </p>
           </div>
         </div>
         <span
-          className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(zone.statusKey)}`}
+          className={`px-2 py-0.5 border font-mono text-[10px] uppercase tracking-widest font-bold ${getStatusColor(zone.statusKey)}`}
         >
           {zoneStatus}
         </span>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 mb-4">
-        <div className="flex items-center gap-2">
-          <Droplets className="w-4 h-4 text-blue-500" />
-          <span className="text-xs text-oliveGreen/60">
-            {locale.ui.dashboard.moisture}
-          </span>
+      {/* DATOS */}
+      <div className="p-4 flex-1 grid grid-cols-2 gap-4">
+        <div className="flex flex-col">
+          <div className="flex items-center gap-2 mb-1">
+            <Droplets className="w-3.5 h-3.5 text-chloro/70" />
+            <span className="font-mono text-[10px] uppercase tracking-wider text-ink/60">
+              {t.moisture}
+            </span>
+          </div>
           <span
-            className={`text-sm font-semibold ml-auto ${getMoistureColor(zone.moisture)}`}
+            className={`font-mono text-xl font-bold ${getValueColor(zone.moisture, "moisture")}`}
           >
             {zone.moisture}%
           </span>
         </div>
-        <div className="flex items-center gap-2">
-          <Thermometer className="w-4 h-4 text-red-500" />
-          <span className="text-xs text-oliveGreen/60">
-            {locale.ui.dashboard.temperature}
-          </span>
+
+        <div className="flex flex-col">
+          <div className="flex items-center gap-2 mb-1">
+            <Thermometer className="w-3.5 h-3.5 text-solar/70" />
+            <span className="font-mono text-[10px] uppercase tracking-wider text-ink/60">
+              {t.temperature}
+            </span>
+          </div>
           <span
-            className={`text-sm font-semibold ml-auto ${getTempColor(zone.temperature)}`}
+            className={`font-mono text-xl font-bold ${getValueColor(zone.temperature, "temp")}`}
           >
             {zone.temperature}°C
           </span>
         </div>
-        <div className="flex items-center gap-2">
-          <Sun className="w-4 h-4 text-yellow-500" />
-          <span className="text-xs text-oliveGreen/60">
-            {locale.ui.dashboard.light}
-          </span>
+
+        <div className="flex flex-col">
+          <div className="flex items-center gap-2 mb-1">
+            <Sun className="w-3.5 h-3.5 text-solar/70" />
+            <span className="font-mono text-[10px] uppercase tracking-wider text-ink/60">
+              {t.light}
+            </span>
+          </div>
           <span
-            className={`text-sm font-semibold ml-auto ${getLightColor(zone.light)}`}
+            className={`font-mono text-xl font-bold ${getValueColor(zone.light, "light")}`}
           >
             {zone.light}%
           </span>
         </div>
-        <div className="flex items-center gap-2">
-          <Wind className="w-4 h-4 text-gray-500" />
-          <span className="text-xs text-oliveGreen/60">
-            {locale.ui.dashboard.wind}
-          </span>
-          <span className="text-sm font-semibold ml-auto">
-            {zone.wind} km/h
+
+        <div className="flex flex-col">
+          <div className="flex items-center gap-2 mb-1">
+            <Wind className="w-3.5 h-3.5 text-ink/40" />
+            <span className="font-mono text-[10px] uppercase tracking-wider text-ink/60">
+              {t.wind}
+            </span>
+          </div>
+          <span className="font-mono text-xl font-bold text-ink">
+            {zone.wind}{" "}
+            <span className="text-xs text-ink/50 font-sans">km/h</span>
           </span>
         </div>
       </div>
 
-      {currentCrop && (
-        <div className="mb-3 text-xs text-oliveGreen/50">
-          {locale.ui.dashboard.currentCrop}: {currentCrop}
-        </div>
-      )}
-
-      <div className="flex items-center justify-between pt-3 border-t border-oliveGreen/10">
-        <div className="flex flex-col">
-          {zone.lastUpdate && (
-            <span className="text-xs text-oliveGreen/40">
-              {locale.ui.dashboard.updated}:{" "}
-              {formatRelativeTime(zone.lastUpdate)}
-            </span>
+      {/* FOOTER */}
+      <div className="px-4 py-3 border-t border-ink/10 flex items-center justify-between bg-card mt-auto">
+        <div>
+          {currentCrop ? (
+            <div className="font-mono text-[10px] uppercase tracking-wider text-ink/70">
+              {currentCrop}
+            </div>
+          ) : (
+            <div className="font-mono text-[10px] text-ink/30">---</div>
           )}
         </div>
+
         <Button
           type="button"
-          variant="link"
+          variant="bare"
           onClick={() => onViewHistory(zone.id)}
-          className="!text-xs !p-0 hover:!text-sicilian-red hover:!scale-100"
+          className="font-mono text-[10px] uppercase tracking-widest font-bold text-solar hover:text-ink transition-colors flex items-center gap-1"
         >
-          {locale.ui.dashboard.viewHistory} →
+          {t.viewHistory} <ArrowRight className="w-3 h-3" />
         </Button>
       </div>
-    </div>
+    </DataCard>
   );
 }

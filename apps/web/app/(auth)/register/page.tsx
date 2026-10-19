@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getLocale } from "@sicilia-soil/core";
 import { Sprout, ShieldCheck, UserPlus, ArrowLeft } from "lucide-react";
 import { register } from "./actions";
+import { Button } from "@sicilia-soil/ui";
 
 const t = getLocale("es");
 
@@ -17,15 +18,23 @@ export default async function RegisterPage({
   const params = await searchParams;
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-[#fcfbf9] p-4 sm:p-8 relative overflow-hidden">
-      <div className="absolute top-[-10%] left-[-10%] w-72 h-72 sm:w-96 sm:h-96 bg-oliveGreen/20 blur-3xl rounded-full z-0" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-72 h-72 sm:w-96 sm:h-96 bg-wheatGold/20 blur-3xl rounded-full z-0" />
+    <div className="min-h-screen w-full flex items-center justify-center bg-paper p-4 sm:p-8 relative overflow-hidden">
+      {/* Rejilla de fondo sutil */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[0.03]"
+        style={{
+          backgroundImage:
+            "linear-gradient(#2B363C 1px, transparent 1px), linear-gradient(90deg, #2B363C 1px, transparent 1px)",
+          backgroundSize: "40px 40px",
+        }}
+      />
 
-      <div className="w-full max-w-md md:max-w-5xl bg-white/90 backdrop-blur-xl border border-white/40 shadow-2xl rounded-3xl overflow-hidden flex flex-col md:flex-row relative z-10 md:h-[650px]">
+      <div className="w-full max-w-md md:max-w-5xl bg-card border border-ink/20 shadow-sm flex flex-col md:flex-row relative z-10 md:h-[650px]">
+        {/* LADO IZQUIERDO: Formulario */}
         <div className="w-full md:w-1/2 p-8 sm:p-10 md:p-12 flex flex-col justify-center h-full relative">
           <Link
             href="/login"
-            className="absolute top-6 left-6 sm:top-8 sm:left-8 inline-flex items-center gap-2 text-sm font-medium text-oliveGreen/60 hover:text-oliveGreen transition-colors"
+            className="absolute top-6 left-6 sm:top-8 sm:left-8 inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest font-bold text-ink/50 hover:text-ink transition-colors"
           >
             <ArrowLeft className="w-4 h-4" /> {t.ui.nav.backToLogin}
           </Link>
@@ -35,33 +44,39 @@ export default async function RegisterPage({
               href="/"
               className="inline-flex items-center gap-2 mb-6 group"
             >
-              <div className="p-2.5 bg-gradient-to-br from-oliveGreen to-wheatGold rounded-xl shadow-sm group-hover:scale-105 transition-transform">
-                <Sprout className="w-6 h-6 text-white" />
+              <div className="p-2 bg-chloro text-paper group-hover:bg-solar transition-colors">
+                <Sprout className="w-5 h-5" />
               </div>
-              <span className="font-bold text-xl text-charcoalGray tracking-tight">
-                MycoMesh<span className="text-sicilian-red">·</span>Protocol
+              <span className="font-serif font-bold text-2xl tracking-tight text-ink">
+                MycoMesh<span className="text-solar">.</span>Protocol
               </span>
             </Link>
 
-            <h1 className="text-3xl font-bold text-charcoalGray mb-2">
+            <h1 className="text-3xl font-serif font-bold text-ink mb-2">
               {t.ui.auth.registerTitle}
             </h1>
-            <p className="text-sm text-oliveGreen/70">
+            <p className="font-mono text-xs uppercase tracking-widest text-ink/50">
               {t.ui.auth.registerSubtitle}
             </p>
           </div>
 
           {params.error === "user_exists" ? (
-            <div className="mb-5 p-3 bg-amber-50 border border-amber-200 text-amber-800 text-sm rounded-xl">
+            <div className="mb-5 p-3 bg-solar/5 border border-solar/20 text-solar font-mono text-[10px] uppercase tracking-wider font-bold">
               Este email ya está registrado.{" "}
-              <Link href="/login" className="font-bold underline">
+              <Link
+                href="/login"
+                className="underline hover:text-ink transition-colors"
+              >
                 Ve a Iniciar Sesión
               </Link>
             </div>
           ) : params.error ? (
-            <div className="mb-5 p-3 bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl">
-              {(t.ui.auth.errors as Record<string, string>)[params.error] ||
-                t.ui.auth.errors.unknown}
+            <div className="mb-5 p-3 bg-red-500/5 border border-red-500/20 text-red-500 font-mono text-[10px] uppercase tracking-wider font-bold flex items-start gap-2">
+              <ShieldCheck className="w-4 h-4 flex-shrink-0 mt-0.5" />
+              <span>
+                {(t.ui.auth.errors as Record<string, string>)[params.error] ||
+                  t.ui.auth.errors.unknown}
+              </span>
             </div>
           ) : null}
 
@@ -69,7 +84,7 @@ export default async function RegisterPage({
             <div>
               <label
                 htmlFor="name"
-                className="block text-sm font-medium text-charcoalGray mb-1.5"
+                className="block font-mono text-[10px] uppercase tracking-widest font-bold text-ink/70 mb-1.5"
               >
                 {t.forms.name.label}
               </label>
@@ -78,7 +93,7 @@ export default async function RegisterPage({
                 name="name"
                 type="text"
                 required
-                className="w-full px-4 py-3 border border-oliveGreen/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-oliveGreen/40 bg-white transition-all text-base"
+                className="w-full px-4 py-3 border border-ink/20 focus:outline-none focus:border-ink bg-paper font-mono text-sm transition-colors"
                 placeholder={t.forms.name.placeholder}
               />
             </div>
@@ -86,7 +101,7 @@ export default async function RegisterPage({
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-charcoalGray mb-1.5"
+                className="block font-mono text-[10px] uppercase tracking-widest font-bold text-ink/70 mb-1.5"
               >
                 {t.forms.email.label}
               </label>
@@ -96,7 +111,7 @@ export default async function RegisterPage({
                 type="email"
                 autoComplete="email"
                 required
-                className="w-full px-4 py-3 border border-oliveGreen/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-oliveGreen/40 bg-white transition-all text-base"
+                className="w-full px-4 py-3 border border-ink/20 focus:outline-none focus:border-ink bg-paper font-mono text-sm transition-colors"
                 placeholder={t.forms.email.placeholder}
               />
             </div>
@@ -104,7 +119,7 @@ export default async function RegisterPage({
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-charcoalGray mb-1.5"
+                className="block font-mono text-[10px] uppercase tracking-widest font-bold text-ink/70 mb-1.5"
               >
                 {t.forms.password.label}
               </label>
@@ -114,47 +129,50 @@ export default async function RegisterPage({
                 type="password"
                 autoComplete="new-password"
                 required
-                className="w-full px-4 py-3 border border-oliveGreen/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-oliveGreen/40 bg-white transition-all text-base"
+                className="w-full px-4 py-3 border border-ink/20 focus:outline-none focus:border-ink bg-paper font-mono text-sm transition-colors"
                 placeholder={t.forms.password.newPlaceholder}
               />
             </div>
 
-            <button
+            <Button
               type="submit"
-              className="w-full py-3.5 bg-oliveGreen text-white rounded-xl font-bold text-lg hover:bg-oliveGreen/90 transition-all active:scale-[0.98] shadow-lg shadow-oliveGreen/20 flex items-center justify-center gap-2 mt-2"
+              variant="bare"
+              size="none"
+              className="!!rounded-none flex items-center justify-center gap-2 w-full px-8 py-4 bg-ink text-paper font-mono text-xs uppercase tracking-widest font-bold hover:bg-chloro hover:!scale-100 transition-colors"
             >
-              {t.ui.auth.registerButton} <UserPlus className="w-5 h-5" />
-            </button>
+              {t.ui.auth.registerButton} <UserPlus className="w-4 h-4" />
+            </Button>
           </form>
 
-          <p className="mt-6 text-sm text-center text-oliveGreen/70">
+          <p className="mt-6 font-mono text-xs text-ink/60 text-center font-bold uppercase tracking-wider">
             {t.ui.auth.haveAccount}{" "}
             <Link
               href="/login"
-              className="text-oliveGreen font-bold hover:underline"
+              className="text-solar hover:text-ink transition-colors"
             >
               {t.ui.auth.loginLink}
             </Link>
           </p>
         </div>
 
-        <div className="hidden md:flex w-1/2 bg-gradient-to-br from-oliveGreen/10 to-wheatGold/10 relative items-center justify-center overflow-hidden border-l border-white/20 h-full">
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-[500px] h-[500px] border border-oliveGreen/20 rounded-full animate-[spin_60s_linear_infinite]" />
-            <div className="absolute w-[350px] h-[350px] border-2 border-dashed border-oliveGreen/30 rounded-full animate-[spin_40s_linear_infinite_reverse]" />
-            <div className="absolute w-[200px] h-[200px] border border-oliveGreen/40 rounded-full" />
+        {/* LADO DERECHO: Visualización */}
+        <div className="hidden md:flex w-1/2 bg-ink relative items-center justify-center overflow-hidden border-l border-ink h-full">
+          <div className="absolute inset-0 flex items-center justify-center opacity-20">
+            <div className="w-[500px] h-[500px] border border-paper rounded-full animate-[spin_60s_linear_infinite]" />
+            <div className="absolute w-[350px] h-[350px] border-2 border-dashed border-chloro rounded-full animate-[spin_40s_linear_infinite_reverse]" />
+            <div className="absolute w-[200px] h-[200px] border border-solar rounded-full" />
           </div>
 
-          <div className="relative z-10 w-32 h-32 bg-white/40 backdrop-blur-md rounded-3xl rotate-45 border border-white/50 shadow-2xl flex items-center justify-center">
-            <Sprout className="w-16 h-16 text-oliveGreen -rotate-45" />
+          <div className="relative z-10 w-32 h-32 bg-ink border-2 border-chloro rotate-45 flex items-center justify-center">
+            <Sprout className="w-16 h-16 text-chloro -rotate-45" />
           </div>
 
           <div className="absolute bottom-10 left-8 right-8 text-center">
-            <div className="bg-white/60 backdrop-blur-md border border-white/50 p-6 rounded-2xl shadow-xl">
-              <p className="text-charcoalGray font-medium italic mb-2">
+            <div className="bg-ink/80 border border-ink/20 p-6">
+              <p className="text-paper font-serif italic text-lg leading-relaxed mb-3">
                 "{t.content.auth.quotes.register.text}"
               </p>
-              <p className="text-xs text-oliveGreen font-bold uppercase tracking-wider">
+              <p className="font-mono text-[10px] uppercase tracking-widest text-solar font-bold">
                 — {t.content.auth.quotes.register.author}
               </p>
             </div>

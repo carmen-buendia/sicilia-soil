@@ -3,13 +3,18 @@
 import { useState, useEffect, useRef } from "react";
 import { Bell } from "lucide-react";
 import { useNotifications } from "@/hooks/useNotifications";
+import { getLocale } from "@sicilia-soil/core";
 import { NotificationPanel } from "./NotificationPanel";
+import { Button } from "@sicilia-soil/ui";
 
 export function NotificationBell() {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const { notifications, unreadCount, markAsRead, markAllAsRead, clearAll } =
     useNotifications();
+
+  const locale = getLocale("es");
+  const t = locale.ui.notifications;
 
   // Cerrar al hacer clic fuera
   useEffect(() => {
@@ -28,19 +33,21 @@ export function NotificationBell() {
 
   return (
     <div className="relative" ref={containerRef}>
-      <button
+      <Button
         type="button"
+        variant="bare"
+        size="none"
         onClick={() => setIsOpen((v) => !v)}
-        className="relative p-1.5 ml-3 sm:p-2 rounded-full text-oliveGreen/60 hover:text-sicilian-red transition-all duration-300 hover:bg-oliveGreen/10"
-        aria-label="Notificaciones"
+        className="!rounded-none hover:scale-100 relative p-2 ml-2 border border-transparent text-ink/60 hover:text-solar hover:bg-paper hover:border-ink/10 transition-all"
+        aria-label={t.title}
       >
-        <Bell className="w-4 h-4 sm:w-5 sm:h-5" />
+        <Bell className="w-5 h-5" />
         {unreadCount > 0 && (
-          <span className="absolute top-0 right-0 min-w-[18px] h-[18px] flex items-center justify-center bg-sicilian-red text-white text-[10px] font-bold rounded-full ring-2 ring-offWhite px-1">
+          <span className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] flex items-center justify-center bg-red-500 text-white text-[10px] font-mono font-bold border border-ink px-1">
             {unreadCount > 9 ? "9+" : unreadCount}
           </span>
         )}
-      </button>
+      </Button>
 
       {isOpen && (
         <NotificationPanel
