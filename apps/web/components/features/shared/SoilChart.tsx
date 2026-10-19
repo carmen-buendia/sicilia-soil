@@ -8,21 +8,27 @@ import ReactECharts from "echarts-for-react";
 import type { EChartsOption, SeriesOption } from "echarts";
 
 // ============================================================================
-// Paleta Sicilia Soil
+// Paleta MycoMesh Protocol (Sintropic UI)
 // ============================================================================
 
 export const SOIL_COLORS = {
-  olive: "#8B9D6B",
-  oliveDark: "#6B8E23",
-  wheat: "#D4A574",
-  terracotta: "#E07A5F",
-  blue: "#3E7CB1",
-  green: "#10b981",
-  amber: "#eab308",
-  orange: "#f97316",
-  red: "#ef4444",
-  stone: "#B8B8B8",
-  charcoal: "#3A3A3A",
+  chloro: "#4F7A5C", // Verde salvia
+  solar: "#E69A45", // Naranja dorado
+  ink: "#2C352C", // Verde muy oscuro (texto)
+  paper: "#F8F7F2", // Fondo crema
+  border: "#E8E2D6", // Color de bordes
+  red: "#ef4444", // Rojo alerta
+  blue: "#3E7CB1", // Azul apagado (para datos de agua)
+  stone: "#B8B8B8", // Gris neutro
+  // ── Alias legacy (pendiente de migrar YearCycleChart en refactor/ui-cleanup) ──
+  /** @deprecated usa `chloro` */
+  olive: "#4F7A5C",
+  /** @deprecated usa `blue` */
+  green: "#3E7CB1",
+  /** @deprecated usa `solar` */
+  wheat: "#E69A45",
+  /** @deprecated usa `red` */
+  terracotta: "#ef4444",
 } as const;
 
 // ============================================================================
@@ -90,6 +96,21 @@ function toCartesianSeriesType(t: SoilChartType): "line" | "bar" {
   }
 }
 
+// Estilo base para los ejes (Tipografía monoespaciada y colores de borde)
+const axisStyle = {
+  axisLine: { show: true, lineStyle: { color: SOIL_COLORS.border } },
+  axisTick: { show: true, lineStyle: { color: SOIL_COLORS.border } },
+  axisLabel: {
+    color: SOIL_COLORS.ink,
+    fontFamily: "'JetBrains Mono', monospace",
+    fontSize: 11,
+    opacity: 0.7,
+  },
+  splitLine: {
+    lineStyle: { color: SOIL_COLORS.border, type: "dashed" as const },
+  },
+};
+
 // ============================================================================
 // Componente
 // ============================================================================
@@ -116,44 +137,48 @@ export function SoilChart({
   const isSpline = type === "spline";
 
   // ---------------------------------------------------------------------------
-  // Y axes (only for cartesian charts)
+  // Y axes (solo para gráficos cartesianos)
   // ---------------------------------------------------------------------------
-
   const yAxes: any[] = [];
   if (!isPie && !isRadar) {
     const primaryAxis: any = {
       type: "value",
       name: yAxisLabel,
-      nameTextStyle: { color: "#6b7280", fontSize: 11 },
+      nameTextStyle: {
+        color: SOIL_COLORS.ink,
+        fontFamily: "'JetBrains Mono', monospace",
+        fontSize: 10,
+        opacity: 0.6,
+        padding: [0, 0, 8, 0],
+      },
       max: yAxisMax,
       min: yAxisMin,
-      axisLine: { show: true, lineStyle: { color: "#e5e7eb" } },
+      ...axisStyle,
       axisLabel: {
-        color: "#6b7280",
-        fontSize: 11,
+        ...axisStyle.axisLabel,
         formatter: `{value}${yAxisUnit}`,
       },
-      splitLine: { lineStyle: { color: "#f3f4f6" } },
     };
-
-    // Threshold line (as markLine on the axis — ECharts doesn't support directly)
-    // We attach it via markLine on each series below instead.
-
     yAxes.push(primaryAxis);
 
     if (secondaryYAxis) {
       yAxes.push({
         type: "value",
         name: secondaryYAxis.label,
-        nameTextStyle: { color: "#6b7280", fontSize: 11 },
+        nameTextStyle: {
+          color: SOIL_COLORS.ink,
+          fontFamily: "'JetBrains Mono', monospace",
+          fontSize: 10,
+          opacity: 0.6,
+          padding: [0, 0, 8, 0],
+        },
         position: secondaryYAxis.opposite === false ? "left" : "right",
-        axisLine: { show: true, lineStyle: { color: "#e5e7eb" } },
+        ...axisStyle,
+        splitLine: { show: false },
         axisLabel: {
-          color: "#6b7280",
-          fontSize: 11,
+          ...axisStyle.axisLabel,
           formatter: `{value}${secondaryYAxis.unit ?? ""}`,
         },
-        splitLine: { show: false },
       });
     }
   }
@@ -161,7 +186,6 @@ export function SoilChart({
   // ---------------------------------------------------------------------------
   // Series
   // ---------------------------------------------------------------------------
-
   const echartsSeries: SeriesOption[] = series.map((s, i) => {
     const color = s.color ?? COLOR_VALUES[i % COLOR_VALUES.length];
     const chartType = s.type ?? type;
@@ -177,8 +201,12 @@ export function SoilChart({
           name: cat,
           value: s.data[idx] ?? 0,
         })),
-        itemStyle: { borderColor: "#ffffff", borderWidth: 2 },
-        label: { fontSize: 11 },
+        itemStyle: { borderColor: SOIL_COLORS.paper, borderWidth: 2 },
+        label: {
+          fontSize: 11,
+          fontFamily: "'JetBrains Mono', monospace",
+          color: SOIL_COLORS.ink,
+        },
       } as SeriesOption;
     }
 
@@ -205,7 +233,6 @@ export function SoilChart({
     const echartsType = toCartesianSeriesType(chartType);
     const yAxisIndex = s.yAxis ?? 0;
 
-    // Threshold line as markLine on this series
     const markLine =
       thresholdLine && i === 0
         ? {
@@ -219,6 +246,7 @@ export function SoilChart({
             label: {
               formatter: thresholdLine.label ?? `Umbral ${thresholdLine.value}`,
               color: thresholdLine.color ?? SOIL_COLORS.red,
+              fontFamily: "'JetBrains Mono', monospace",
               fontSize: 10,
               position: "end",
             },
@@ -233,11 +261,12 @@ export function SoilChart({
       yAxisIndex,
       stack: stacked ? "total" : undefined,
       smooth: isSpline,
-      areaStyle: isArea ? { opacity: 0.2 } : undefined,
+      areaStyle: isArea ? { opacity: 0.15 } : undefined,
       lineStyle: { width: 2, color },
       itemStyle: { color },
       showSymbol: series.length <= 2,
-      barMaxWidth: 40,
+      symbolSize: 6,
+      barMaxWidth: 32,
       markLine,
     } as SeriesOption;
   });
@@ -245,19 +274,22 @@ export function SoilChart({
   // ---------------------------------------------------------------------------
   // Option
   // ---------------------------------------------------------------------------
-
   const option: EChartsOption = {
     animation: false,
+    textStyle: {
+      fontFamily: "'Inter', sans-serif",
+    },
     title: title
       ? {
           text: title,
           subtext: subtitle,
           textStyle: {
-            color: SOIL_COLORS.charcoal,
+            color: SOIL_COLORS.ink,
             fontSize: 14,
             fontWeight: 600,
+            fontFamily: "'Lora', serif",
           },
-          subtextStyle: { color: "#6b7280", fontSize: 11 },
+          subtextStyle: { color: SOIL_COLORS.ink, opacity: 0.6, fontSize: 11 },
           left: 8,
           top: 4,
         }
@@ -268,22 +300,35 @@ export function SoilChart({
         : {
             left: 56,
             right: secondaryYAxis ? 56 : 24,
-            top: title ? 48 : 24,
+            top: title ? 56 : 32,
             bottom: legend ? 40 : 24,
+            containLabel: true,
           },
     legend:
       legend && !isPie && !isRadar
         ? {
             bottom: 0,
-            textStyle: { color: SOIL_COLORS.charcoal, fontSize: 11 },
-            icon: "circle",
+            textStyle: {
+              color: SOIL_COLORS.ink,
+              fontSize: 11,
+              fontFamily: "'JetBrains Mono', monospace",
+              opacity: 0.8,
+            },
+            icon: "rect",
+            itemWidth: 12,
+            itemHeight: 12,
           }
         : undefined,
     tooltip: {
       trigger: isPie ? "item" : isRadar ? "item" : "axis",
-      backgroundColor: "rgba(255,255,255,0.98)",
-      borderColor: "#e5e7eb",
-      textStyle: { fontSize: 12 },
+      backgroundColor: SOIL_COLORS.paper,
+      borderColor: SOIL_COLORS.border,
+      borderWidth: 1,
+      textStyle: {
+        fontSize: 12,
+        color: SOIL_COLORS.ink,
+        fontFamily: "'JetBrains Mono', monospace",
+      },
       valueFormatter:
         isPie || isRadar ? undefined : (value) => `${value}${yAxisUnit}`,
     },
@@ -295,9 +340,16 @@ export function SoilChart({
               max: yAxisMax ?? 100,
               min: yAxisMin ?? 0,
             })),
-            axisName: { color: "#6b7280", fontSize: 11 },
-            splitLine: { lineStyle: { color: "#f3f4f6" } },
-            splitArea: { areaStyle: { color: ["#ffffff", "#fafafa"] } },
+            axisName: {
+              color: SOIL_COLORS.ink,
+              opacity: 0.7,
+              fontSize: 11,
+              fontFamily: "'JetBrains Mono', monospace",
+            },
+            splitLine: { lineStyle: { color: SOIL_COLORS.border } },
+            splitArea: {
+              areaStyle: { color: [SOIL_COLORS.paper, "transparent"] },
+            },
             radius: "65%",
             center: ["50%", "55%"],
           },
@@ -308,8 +360,7 @@ export function SoilChart({
             xAxis: {
               type: "category",
               data: categories,
-              axisLine: { lineStyle: { color: "#e5e7eb" } },
-              axisLabel: { color: "#6b7280", fontSize: 11 },
+              ...axisStyle,
               boundaryGap: type === "bar" || type === "column",
             },
             yAxis: yAxes,

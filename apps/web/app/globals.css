@@ -1,27 +1,51 @@
+/* 1. Importación de fuentes (Soluciona el error de Turbopack) */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Capa base - estilos globales */
+/* 2. Variables de fuentes para que Tailwind las reconozca */
+:root {
+  --font-sans: "Inter", sans-serif;
+  --font-serif: "Lora", serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+/* 3. Capa base - estilos globales */
 @layer base {
   body {
-    background-color: #fdfbf7;
-    color: #1a1a1a;
+    /* Fondo Paper (#F8F7F2) y texto Ink (#2C352C) */
+    background-color: #f8f7f2;
+    color: #2c352c;
+    @apply font-sans antialiased;
+  }
+
+  /* Los títulos usarán la fuente Serif por defecto para darles elegancia */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-serif;
   }
 }
 
-/* Capa de componentes - utilidades personalizadas */
+/* 4. Capa de componentes - utilidades personalizadas */
 @layer components {
+  /* Botón principal: Estilo técnico y limpio */
   .btn-primary {
-    @apply bg-oliveGreen text-white px-4 py-2 rounded-lg hover:bg-oliveGreen/90 transition-all;
+    @apply flex items-center justify-center gap-2 px-6 py-2.5 bg-ink text-paper border border-ink font-mono text-xs uppercase tracking-widest font-bold transition-colors hover:bg-chloro hover:border-chloro;
   }
 
+  /* Tarjeta: Estilo plano, borde fino y sombra sutil (Journey) */
   .card {
-    @apply bg-white rounded-xl p-6 shadow-sm border border-oliveGreen/15 hover:shadow-md transition-all;
+    @apply bg-card border border-ink/20 p-6 shadow-sm transition-all;
   }
 }
 
-/* Capa de utilidades */
+/* 5. Capa de utilidades */
 @layer utilities {
   .text-balance {
     text-wrap: balance;

@@ -75,5 +75,5 @@ export const getStatusColor = (status: string): string => {
     activo: "bg-yellow-100 text-yellow-700",
     lleno: "bg-cyan-100 text-cyan-700",
   };
-  return statusMap[status] || "bg-gray-100 text-gray-800";
+  return statusMap[status] || "bg-gray-100 text-ink-800";
 };

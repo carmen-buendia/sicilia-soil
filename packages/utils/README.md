@@ -2,7 +2,7 @@
 
 > Pure logic, domain engines and calculations.
 
-This package contains the **business logic** of Sicilia Soil. It has no React and no side effects. It can run in the browser, on the server or in a Node script.
+This package contains the **business logic** of MycoMesh Protocol. It has no React and no side effects. It can run in the browser, on the server or in a Node script.
 
 ---
 
