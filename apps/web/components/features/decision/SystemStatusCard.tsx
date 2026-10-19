@@ -25,6 +25,7 @@ import {
   Sparkles,
   XCircle,
 } from "lucide-react";
+import { Button, DataCard } from "@sicilia-soil/ui";
 
 interface SystemStatusCardProps {
   output: DecisionOutput;
@@ -53,100 +54,97 @@ export function SystemStatusCard({
   const confidencePct = Math.round(output.confidence * 100);
   const moreRulesCount = output.firedRules.length - 4;
 
+  const getIconColor = () => {
+    switch (output.state) {
+      case "green":
+        return "text-chloro";
+      case "yellow":
+        return "text-solar";
+      case "red":
+        return "text-red-500";
+      default:
+        return "text-ink/40";
+    }
+  };
+
   return (
-    <div
-      className={`rounded-2xl border ${stateStyle.border} ${stateStyle.bg} shadow-sm hover:shadow-md transition-all overflow-hidden`}
-    >
+    <DataCard className="p-0 flex flex-col bg-card">
       {/* HEADER */}
-      <div className="flex items-center justify-between px-5 pt-4 pb-2">
-        <div className="flex items-center gap-2 text-xs text-charcoalGray/70">
-          <span className="font-semibold tracking-wide uppercase">
-            {locale.systemStatus.header}
-          </span>
-          <span className="w-1 h-1 rounded-full bg-charcoalGray/30" />
+      <div className="flex items-center justify-between px-6 py-4 border-b border-ink/10 bg-paper/50">
+        <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-widest text-ink/60 font-bold">
+          <span>{locale.systemStatus.header}</span>
+          <span className="w-1.5 h-1.5 rounded-full bg-ink/20" />
           <span>{context.scopeName}</span>
         </div>
         <span
-          className={`text-[10px] px-2 py-0.5 rounded-full border font-semibold uppercase tracking-wider ${stateStyle.badge}`}
+          className={`text-[10px] px-2 py-1 border font-mono font-bold uppercase tracking-widest ${stateStyle.badge}`}
         >
           {stateStyle.label}
         </span>
       </div>
 
       {/* HERO */}
-      <div className="px-5 pb-4">
-        <div className="flex items-start gap-4">
+      <div className="px-6 py-6">
+        <div className="flex items-start gap-5">
           <div className="shrink-0 mt-1">
             <StateIcon
-              className={`w-12 h-12 ${
-                output.state === "green"
-                  ? "text-emerald-500"
-                  : output.state === "yellow"
-                    ? "text-amber-500"
-                    : output.state === "red"
-                      ? "text-red-500"
-                      : "text-gray-400"
-              }`}
-              strokeWidth={1.8}
+              className={`w-12 h-12 ${getIconColor()}`}
+              strokeWidth={1.5}
             />
           </div>
 
           <div className="flex-1 min-w-0">
-            <h2
-              className={`text-2xl font-bold ${stateStyle.text} leading-tight mb-1`}
-            >
+            <h2 className="text-2xl font-serif font-bold text-ink leading-tight mb-2">
               {locale.systemStatus.phase[output.state]}
             </h2>
-
-            <p
-              className={`text-sm ${stateStyle.text} opacity-90 font-medium mb-2`}
-            >
+            <p className="font-mono text-sm uppercase tracking-widest font-bold text-ink/60 mb-4">
               {locale.systemStatus.action[output.state]}
             </p>
-
-            <p
-              className={`text-sm ${stateStyle.text} opacity-80 leading-relaxed`}
-            >
+            <p className="text-base text-ink/80 leading-relaxed font-sans mb-5">
               {locale.systemStatus.explanationIntro[output.state]}
             </p>
 
             {output.firedRules.length > 0 && (
-              <ul
-                className={`mt-2 text-sm ${stateStyle.text} opacity-80 space-y-0.5`}
-              >
+              <ul className="text-sm text-ink/70 space-y-1.5 font-mono mb-5 bg-paper/50 p-4 border border-ink/10">
                 {output.firedRules
                   .slice()
                   .sort((ruleA, ruleB) => ruleB.weight - ruleA.weight)
                   .slice(0, 3)
                   .map((firedRule) => (
-                    <li key={firedRule.ruleId}>• {firedRule.ruleId}</li>
+                    <li
+                      key={firedRule.ruleId}
+                      className="flex items-center gap-3"
+                    >
+                      <span className="w-2 h-2 bg-solar rounded-full" />
+                      {firedRule.ruleId}
+                    </li>
                   ))}
               </ul>
             )}
 
             {evidence?.weather && (
-              <div className="mt-3 flex items-center gap-3 text-xs text-charcoalGray/60 flex-wrap">
+              <div className="mb-5 flex items-center gap-4 font-mono text-xs uppercase tracking-wider text-ink/70 flex-wrap border border-ink/10 p-3.5 bg-paper/40">
                 <span>
                   🌡️ {evidence.weather.tempMaxC}° / {evidence.weather.tempMinC}°
                 </span>
-                <span className="w-1 h-1 rounded-full bg-charcoalGray/30" />
+                <span className="w-px h-3 bg-ink/20" />
                 <span>💧 Lluvia 72h: {evidence.weather.rainNext72hMm} mm</span>
               </div>
             )}
 
             {output.impact && (
-              <div className="mt-3 inline-flex items-center gap-2 px-3 py-1.5 bg-white/60 backdrop-blur-sm border border-emerald-200 rounded-lg">
-                <Sparkles className="w-4 h-4 text-emerald-600" />
-                <span className="text-xs font-semibold text-emerald-800">
+              <div className="mb-4 inline-flex items-center gap-2 px-3 py-2 bg-chloro/10 border border-chloro/20">
+                <Sparkles className="w-4 h-4 text-chloro" />
+                <span className="font-mono text-[10px] uppercase tracking-wider font-bold text-chloro">
                   {output.impact}
                 </span>
               </div>
             )}
 
             {output.suggestedAction && (
-              <div className="mt-3 flex items-start gap-2 px-3 py-2 bg-white/60 backdrop-blur-sm border border-amber-200 rounded-lg">
-                <ArrowRight className="w-4 h-4 text-amber-600 mt-0.5 shrink-0" />
-                <span className="text-xs font-medium text-amber-900">
+              <div className="flex items-start gap-3 px-4 py-3 bg-solar/10 border border-solar/20">
+                <ArrowRight className="w-4 h-4 text-solar mt-0.5 shrink-0" />
+                <span className="font-mono text-[10px] uppercase tracking-wider font-bold text-ink leading-relaxed">
                   {output.suggestedAction}
                 </span>
               </div>
@@ -156,17 +154,15 @@ export function SystemStatusCard({
       </div>
 
       {/* CONFIDENCE + CONFLICT */}
-      <div className="px-5 pb-4 space-y-3">
-        <div className="space-y-1">
-          <div className="flex justify-between text-[11px]">
-            <span className="text-charcoalGray/60 font-medium">
+      <div className="px-6 pb-6 space-y-4">
+        <div>
+          <div className="flex justify-between font-mono text-[10px] uppercase tracking-widest font-bold mb-2">
+            <span className="text-ink/60">
               {locale.systemStatus.confidence}
             </span>
-            <span className="font-bold text-charcoalGray">
-              {confidencePct}%
-            </span>
+            <span className="text-ink">{confidencePct}%</span>
           </div>
-          <div className="w-full h-1.5 bg-charcoalGray/8 rounded-full overflow-hidden">
+          <div className="w-full h-2 bg-ink/10 border border-ink/20 overflow-hidden">
             <div
               className={`h-full ${stateStyle.dot} transition-all duration-700 ease-out`}
               style={{ width: `${confidencePct}%` }}
@@ -175,10 +171,10 @@ export function SystemStatusCard({
         </div>
 
         {output.conflicts.length > 0 && (
-          <div className="flex items-start gap-2 px-3 py-2 bg-amber-50/80 border border-amber-200 rounded-lg">
+          <div className="flex items-start gap-3 px-4 py-3 bg-amber-500/10 border border-amber-500/20">
             <AlertTriangle className="w-4 h-4 text-amber-600 mt-0.5 shrink-0" />
-            <div className="text-xs text-amber-900">
-              <span className="font-semibold">
+            <div className="font-mono text-[10px] uppercase tracking-wider text-amber-900 leading-relaxed">
+              <span className="font-bold">
                 {locale.systemStatus.sourcesInConflict}:
               </span>{" "}
               {output.conflicts[0].description}
@@ -188,25 +184,23 @@ export function SystemStatusCard({
       </div>
 
       {/* RULE BADGES */}
-      <div className="px-5 pb-3 flex flex-wrap gap-1.5">
+      <div className="px-6 pb-5 flex flex-wrap gap-2">
         {output.firedRules.slice(0, 4).map((firedRule) => (
           <div
             key={firedRule.ruleId}
-            className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-white/70 border border-oliveGreen/10 rounded-full text-[10px]"
+            className="inline-flex items-center gap-2 px-2.5 py-1 bg-paper border border-ink/20 text-[10px] font-mono"
           >
             <span
               className={`w-1.5 h-1.5 rounded-full ${VOTE_DOT_COLOR[firedRule.vote]}`}
             />
-            <code className="font-mono text-charcoalGray/70">
-              {firedRule.ruleId}
-            </code>
+            <span className="text-ink/80">{firedRule.ruleId}</span>
             <span className={`font-bold ${weightTextColor(firedRule.weight)}`}>
               ×{firedRule.weight.toFixed(1)}
             </span>
           </div>
         ))}
         {output.firedRules.length > 4 && (
-          <div className="inline-flex items-center px-2 py-0.5 bg-white/70 border border-oliveGreen/10 rounded-full text-[10px] text-charcoalGray/60">
+          <div className="inline-flex items-center px-2.5 py-1 bg-paper border border-ink/20 text-[10px] font-mono text-ink/60">
             {locale.systemStatus.moreRules.replace(
               "{count}",
               String(moreRulesCount),
@@ -216,7 +210,7 @@ export function SystemStatusCard({
       </div>
 
       {/* FOOTER */}
-      <div className="border-t border-oliveGreen/10 bg-white/40 backdrop-blur-sm px-5 py-3 flex flex-wrap items-center justify-between gap-3">
+      <div className="border-t border-ink/10 bg-paper/30 px-6 py-4 flex flex-wrap items-center justify-between gap-4 mt-auto">
         <div className="flex items-center gap-2 flex-wrap">
           {output.sourcesUsed.map((source) => {
             const sourceMeta = SOURCE_META[source] ?? DEFAULT_SOURCE_META;
@@ -224,20 +218,21 @@ export function SystemStatusCard({
             return (
               <span
                 key={source}
-                className="inline-flex items-center gap-1 px-2 py-0.5 bg-oliveGreen/5 rounded text-[10px] text-charcoalGray/70"
+                className="inline-flex items-center gap-2 px-2.5 py-1.5 bg-card border border-ink/10 font-mono text-[10px] uppercase tracking-wider text-ink/60"
                 title={sourceMeta.label}
               >
-                <SourceIcon className="w-3 h-3" />
+                <SourceIcon className="w-3.5 h-3.5 text-ink/40" />
                 {sourceMeta.label}
               </span>
             );
           })}
         </div>
 
-        <button
+        <Button
           type="button"
+          variant="bare"
           onClick={() => setWhyOpen((isOpen) => !isOpen)}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-oliveGreen hover:text-oliveGreen/80 hover:bg-oliveGreen/5 rounded-md transition-colors"
+          className="!rounded-none inline-flex items-center gap-2 px-3 py-1.5 font-mono text-[10px] uppercase tracking-widest font-bold text-solar hover:text-ink hover:bg-paper transition-colors"
         >
           {locale.systemStatus.why}
           {whyOpen ? (
@@ -245,18 +240,22 @@ export function SystemStatusCard({
           ) : (
             <ChevronDown className="w-3.5 h-3.5" />
           )}
-        </button>
+        </Button>
       </div>
 
-      {whyOpen && <WhyPanel output={output} />}
+      {whyOpen && (
+        <div className="border-t border-ink/10 bg-paper/10">
+          <WhyPanel output={output} />
+        </div>
+      )}
 
       {/* AUTO-LEARNING FOOTER */}
-      <div className="px-5 py-2 bg-oliveGreen/5 border-t border-oliveGreen/10 flex items-center gap-2">
-        <Brain className="w-3.5 h-3.5 text-oliveGreen" />
-        <span className="text-[10px] text-oliveGreen/80 italic">
+      <div className="px-6 py-3 bg-ink/5 flex items-center gap-2">
+        <Brain className="w-3.5 h-3.5 text-chloro" />
+        <span className="font-mono text-[10px] uppercase tracking-widest text-ink/60">
           {locale.systemStatus.autoLearning}
         </span>
       </div>
-    </div>
+    </DataCard>
   );
 }
