@@ -2,7 +2,6 @@ import Link from "next/link";
 import { getLocale } from "@sicilia-soil/core";
 import {
   ArrowLeft,
-  Sprout,
   Satellite,
   Cpu,
   Leaf,
@@ -14,7 +13,7 @@ import {
   BookOpen,
   MapPin,
 } from "lucide-react";
-import { SicilianFlag } from "@/components/layout/SicilianFlag";
+import { BrandLogo, Button, DataCard } from "@sicilia-soil/ui";
 
 const t = getLocale("es");
 
@@ -35,7 +34,7 @@ export default function AboutPage() {
         }}
       />
 
-      {/* Header simple (como en el manifiesto) */}
+      {/* Header */}
       <header className="w-full border-b border-ink/10 bg-paper/80 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link
@@ -44,12 +43,8 @@ export default function AboutPage() {
           >
             <ArrowLeft className="w-4 h-4" /> Volver a la Home
           </Link>
-          <div className="flex items-center gap-2">
-            <Sprout className="w-5 h-5 text-chloro" />
-            <span className="font-serif font-bold tracking-tight text-ink">
-              MycoMesh.
-            </span>
-          </div>
+
+          <BrandLogo href="/" size="sm" LinkComponent={Link} />
         </div>
       </header>
 
@@ -65,7 +60,7 @@ export default function AboutPage() {
         </div>
 
         {/* Misión */}
-        <section className="bg-paper-dark/30 rounded-2xl p-8 mb-16 border border-ink/5">
+        <DataCard className="bg-paper-dark/30 border-ink/5 p-8 mb-16">
           <h2 className="text-2xl font-serif font-bold text-ink mb-4">
             {t.content.about.missionTitle}
           </h2>
@@ -75,7 +70,7 @@ export default function AboutPage() {
           <p className="text-ink/80 leading-relaxed">
             {t.content.about.missionText2}
           </p>
-        </section>
+        </DataCard>
 
         {/* Qué hacemos */}
         <section className="mb-16">
@@ -83,7 +78,7 @@ export default function AboutPage() {
             {t.content.about.whatWeDoTitle}
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-paper border border-ink/10 rounded-2xl p-6 shadow-sm">
+            <DataCard className="bg-paper border-ink/10 p-6">
               <Satellite className="w-8 h-8 text-solar mb-4" />
               <h3 className="font-bold text-ink mb-2">
                 {t.content.about.eoTitle}
@@ -91,8 +86,9 @@ export default function AboutPage() {
               <p className="text-sm text-ink/70 leading-relaxed">
                 {t.content.about.eoDesc}
               </p>
-            </div>
-            <div className="bg-paper border border-ink/10 rounded-2xl p-6 shadow-sm">
+            </DataCard>
+
+            <DataCard className="bg-paper border-ink/10 p-6">
               <Cpu className="w-8 h-8 text-chloro mb-4" />
               <h3 className="font-bold text-ink mb-2">
                 {t.content.about.iotTitle}
@@ -100,8 +96,9 @@ export default function AboutPage() {
               <p className="text-sm text-ink/70 leading-relaxed">
                 {t.content.about.iotDesc}
               </p>
-            </div>
-            <div className="bg-paper border border-ink/10 rounded-2xl p-6 shadow-sm">
+            </DataCard>
+
+            <DataCard className="bg-paper border-ink/10 p-6">
               <Leaf className="w-8 h-8 text-chloro mb-4" />
               <h3 className="font-bold text-ink mb-2">
                 {t.content.about.shiTitle}
@@ -109,16 +106,16 @@ export default function AboutPage() {
               <p className="text-sm text-ink/70 leading-relaxed">
                 {t.content.about.shiDesc}
               </p>
-            </div>
+            </DataCard>
           </div>
         </section>
 
-        {/* Dónde validamos */}
+        {/* Dónde validamos — sin SicilianFlag */}
         <section className="mb-16">
           <h2 className="text-2xl font-serif font-bold text-ink mb-6">
             {t.content.about.validateTitle}
           </h2>
-          <div className="bg-paper border border-ink/10 rounded-2xl p-6 shadow-sm flex flex-col md:flex-row items-start md:items-center gap-6">
+          <DataCard className="bg-paper border-ink/10 p-6 flex flex-col md:flex-row items-start md:items-center gap-6">
             <div className="p-4 bg-solar/10 rounded-full flex-shrink-0">
               <MapPin className="w-8 h-8 text-solar" />
             </div>
@@ -126,14 +123,14 @@ export default function AboutPage() {
               <p className="font-mono text-xs uppercase tracking-wider text-ink/50 mb-1">
                 {t.content.about.livingLab}
               </p>
-              <h3 className="font-bold text-xl text-ink mb-2 flex items-center gap-2">
-                {t.content.about.location} <SicilianFlag size="small" />
+              <h3 className="font-bold text-xl text-ink mb-2">
+                {t.content.about.location}
               </h3>
               <p className="text-ink/70 text-sm leading-relaxed">
                 {t.content.about.locationDesc}
               </p>
             </div>
-          </div>
+          </DataCard>
         </section>
 
         {/* Alineación con la UE */}
@@ -142,7 +139,7 @@ export default function AboutPage() {
             {t.content.about.euTitle}
           </h2>
           <div className="grid md:grid-cols-2 gap-4">
-            <div className="bg-paper border border-ink/10 rounded-xl p-5 shadow-sm">
+            <DataCard className="bg-paper border-ink/10 p-5">
               <Target className="w-5 h-5 text-chloro mb-3" />
               <h3 className="font-bold text-ink mb-1">
                 {t.content.about.euGreenDeal}
@@ -150,8 +147,9 @@ export default function AboutPage() {
               <p className="text-sm text-ink/70">
                 {t.content.about.euGreenDealDesc}
               </p>
-            </div>
-            <div className="bg-paper border border-ink/10 rounded-xl p-5 shadow-sm">
+            </DataCard>
+
+            <DataCard className="bg-paper border-ink/10 p-5">
               <Leaf className="w-5 h-5 text-chloro mb-3" />
               <h3 className="font-bold text-ink mb-1">
                 {t.content.about.euFarmToFork}
@@ -159,8 +157,9 @@ export default function AboutPage() {
               <p className="text-sm text-ink/70">
                 {t.content.about.euFarmToForkDesc}
               </p>
-            </div>
-            <div className="bg-paper border border-ink/10 rounded-xl p-5 shadow-sm">
+            </DataCard>
+
+            <DataCard className="bg-paper border-ink/10 p-5">
               <Lightbulb className="w-5 h-5 text-chloro mb-3" />
               <h3 className="font-bold text-ink mb-1">
                 {t.content.about.euFoodSecurity}
@@ -168,8 +167,9 @@ export default function AboutPage() {
               <p className="text-sm text-ink/70">
                 {t.content.about.euFoodSecurityDesc}
               </p>
-            </div>
-            <div className="bg-paper border border-ink/10 rounded-xl p-5 shadow-sm">
+            </DataCard>
+
+            <DataCard className="bg-paper border-ink/10 p-5">
               <Satellite className="w-5 h-5 text-chloro mb-3" />
               <h3 className="font-bold text-ink mb-1">
                 {t.content.about.euCopernicus}
@@ -177,7 +177,7 @@ export default function AboutPage() {
               <p className="text-sm text-ink/70">
                 {t.content.about.euCopernicusDesc}
               </p>
-            </div>
+            </DataCard>
           </div>
         </section>
 
@@ -188,8 +188,7 @@ export default function AboutPage() {
             {t.content.about.teamTitle}
           </h2>
           <div className="grid md:grid-cols-2 gap-6">
-            {/* Carmen */}
-            <div className="bg-paper border border-ink/10 rounded-2xl p-6 shadow-sm">
+            <DataCard className="bg-paper border-ink/10 p-6">
               <div className="flex items-center gap-4 mb-4">
                 <div className="w-12 h-12 bg-chloro text-paper rounded-full flex items-center justify-center font-bold text-lg shadow-sm">
                   C
@@ -206,9 +205,9 @@ export default function AboutPage() {
               <p className="text-sm text-ink/70 leading-relaxed">
                 {t.content.about.teamCarmenDesc}
               </p>
-            </div>
-            {/* Domenico */}
-            <div className="bg-paper border border-ink/10 rounded-2xl p-6 shadow-sm">
+            </DataCard>
+
+            <DataCard className="bg-paper border-ink/10 p-6">
               <div className="flex items-center gap-4 mb-4">
                 <div className="w-12 h-12 bg-solar text-paper rounded-full flex items-center justify-center font-bold text-lg shadow-sm">
                   D
@@ -223,12 +222,12 @@ export default function AboutPage() {
               <p className="text-sm text-ink/70 leading-relaxed">
                 {t.content.about.teamDomenicoDesc}
               </p>
-            </div>
+            </DataCard>
           </div>
         </section>
 
         {/* Open Source */}
-        <section className="bg-paper-dark/30 rounded-2xl p-8 border border-ink/5 mb-12">
+        <DataCard className="bg-paper-dark/30 border-ink/5 p-8 mb-12">
           <h2 className="text-2xl font-serif font-bold text-ink mb-3">
             {t.content.about.openSourceTitle}
           </h2>
@@ -236,31 +235,34 @@ export default function AboutPage() {
             {t.content.about.openSourceDesc}
           </p>
           <div className="flex flex-wrap gap-3">
-            <a
+            <Button
               href="https://github.com/carmen-buendia/sicilia-soil"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-ink text-paper rounded-lg hover:bg-chloro transition-colors text-sm font-semibold shadow-sm"
+              external
+              variant="dark"
+              className="!!rounded-none hover:scale-100 px-5 py-2.5 text-sm"
+              icon={<Github className="w-4 h-4" />}
             >
-              <Github className="w-4 h-4" />
               {t.content.about.btnGithub}
-            </a>
-            <a
+            </Button>
+            <Button
               href="mailto:carmenbuendiafullstack@gmail.com"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-transparent border border-ink/20 text-ink rounded-lg hover:bg-ink/5 transition-colors text-sm font-semibold"
+              variant="outline"
+              className="!!rounded-none hover:scale-100 px-5 py-2.5 text-sm border-ink/20 text-ink hover:bg-ink/5"
+              icon={<Mail className="w-4 h-4" />}
             >
-              <Mail className="w-4 h-4" />
               {t.content.about.btnContact}
-            </a>
-            <Link
+            </Button>
+            <Button
               href="/manifesto"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-transparent border border-ink/20 text-ink rounded-lg hover:bg-ink/5 transition-colors text-sm font-semibold"
+              LinkComponent={Link}
+              variant="outline"
+              className="!!rounded-none hover:scale-100 px-5 py-2.5 text-sm border-ink/20 text-ink hover:bg-ink/5"
+              icon={<BookOpen className="w-4 h-4" />}
             >
-              <BookOpen className="w-4 h-4" />
               {t.content.about.btnManifesto}
-            </Link>
+            </Button>
           </div>
-        </section>
+        </DataCard>
       </main>
 
       {/* Footer */}

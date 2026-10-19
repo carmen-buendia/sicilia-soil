@@ -5,7 +5,9 @@ import type {
   RecommendationItem,
   RecommendationPriority,
 } from "@sicilia-soil/core";
+import { getLocale } from "@sicilia-soil/core";
 import { RecommendationCard } from "./RecommendationCard";
+import { Button, DataCard } from "@sicilia-soil/ui";
 
 type TopicFilter = "all" | "soil" | "water";
 type PriorityFilter = "all" | RecommendationPriority;
@@ -13,6 +15,7 @@ type PriorityFilter = "all" | RecommendationPriority;
 interface RecommendationsListProps {
   recommendations: RecommendationItem[];
   onAction?: (id: string) => void;
+  highlightId?: string | null; // <-- AÑADIDO
 }
 
 const PRIORITY_ORDER: Record<RecommendationPriority, number> = {
@@ -23,25 +26,13 @@ const PRIORITY_ORDER: Record<RecommendationPriority, number> = {
   info: 1,
 };
 
-const TOPIC_LABELS: Record<TopicFilter, string> = {
-  all: "Todos",
-  soil: "Suelo",
-  water: "Agua",
-};
-
-const PRIORITY_LABELS: Record<PriorityFilter, string> = {
-  all: "Todas",
-  urgent: "Urgente",
-  high: "Alta",
-  medium: "Media",
-  low: "Baja",
-  info: "Info",
-};
-
 export function RecommendationsList({
   recommendations,
   onAction,
+  highlightId, // <-- AÑADIDO
 }: RecommendationsListProps) {
+  const locale = getLocale("es");
+  const t = locale.ui.recommendations;
   const [topicFilter, setTopicFilter] = useState<TopicFilter>("all");
   const [priorityFilter, setPriorityFilter] = useState<PriorityFilter>("all");
 
@@ -51,49 +42,54 @@ export function RecommendationsList({
       .filter((r) => priorityFilter === "all" || r.priority === priorityFilter)
       .sort((a, b) => {
         const p = PRIORITY_ORDER[b.priority] - PRIORITY_ORDER[a.priority];
-        if (p !== 0) return p;
-        return b.confidence - a.confidence;
+        return p !== 0 ? p : b.confidence - a.confidence;
       });
   }, [recommendations, topicFilter, priorityFilter]);
 
-  const counts = useMemo(() => {
-    return {
+  const counts = useMemo(
+    () => ({
       total: recommendations.length,
       urgent: recommendations.filter((r) => r.priority === "urgent").length,
       soil: recommendations.filter((r) => r.topic === "soil").length,
       water: recommendations.filter((r) => r.topic === "water").length,
-    };
-  }, [recommendations]);
+    }),
+    [recommendations],
+  );
 
   return (
     <div className="space-y-6">
       {/* Filters */}
-      <div className="bg-white rounded-xl p-4 border border-oliveGreen/15 shadow-sm flex flex-wrap items-center gap-4">
+      <DataCard className="p-4 flex flex-wrap items-center gap-6">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-medium text-oliveGreen/60 uppercase tracking-wider">
-            Tema:
+          <span className="font-mono text-[10px] font-bold text-ink/50 uppercase tracking-wider">
+            {t.topic}:
           </span>
-          {(["all", "soil", "water"] as TopicFilter[]).map((t) => (
-            <button
-              key={t}
-              type="button"
-              onClick={() => setTopicFilter(t)}
-              className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
-                topicFilter === t
-                  ? "bg-oliveGreen text-offWhite"
-                  : "bg-oliveGreen/10 text-oliveGreen hover:bg-oliveGreen/20"
+          {(["all", "soil", "water"] as TopicFilter[]).map((topic) => (
+            <Button
+              key={topic}
+              variant="bare"
+              size="none"
+              onClick={() => setTopicFilter(topic)}
+              className={`!rounded-none hover:!scale-100 px-3 py-1 font-mono text-xs uppercase tracking-wider font-bold border transition-colors ${
+                topicFilter === topic
+                  ? "bg-ink text-paper border-ink"
+                  : "bg-transparent text-ink/60 border-ink/20 hover:bg-paper"
               }`}
             >
-              {t === "all"
-                ? `${TOPIC_LABELS[t]} (${counts.total})`
-                : `${TOPIC_LABELS[t]} (${counts[t]})`}
-            </button>
+              {t[topic as keyof typeof t]} (
+              {topic === "all"
+                ? counts.total
+                : topic === "soil"
+                  ? counts.soil
+                  : counts.water}
+              )
+            </Button>
           ))}
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-xs font-medium text-oliveGreen/60 uppercase tracking-wider">
-            Prioridad:
+          <span className="font-mono text-[10px] font-bold text-ink/50 uppercase tracking-wider">
+            {t.priority}:
           </span>
           {(
             [
@@ -105,42 +101,44 @@ export function RecommendationsList({
               "info",
             ] as PriorityFilter[]
           ).map((p) => (
-            <button
+            <Button
               key={p}
-              type="button"
+              variant="bare"
+              size="none"
               onClick={() => setPriorityFilter(p)}
-              className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
+              className={`!rounded-none hover:!scale-100 px-3 py-1 font-mono text-xs uppercase tracking-wider font-bold border transition-colors ${
                 priorityFilter === p
-                  ? "bg-oliveGreen text-offWhite"
-                  : "bg-oliveGreen/10 text-oliveGreen hover:bg-oliveGreen/20"
+                  ? "bg-ink text-paper border-ink"
+                  : "bg-transparent text-ink/60 border-ink/20 hover:bg-paper"
               }`}
             >
-              {PRIORITY_LABELS[p]}
-            </button>
+              {t[p as keyof typeof t]}
+            </Button>
           ))}
         </div>
 
         {counts.urgent > 0 && (
-          <span className="ml-auto text-xs font-medium text-red-600 flex items-center gap-1">
-            ⚠️ {counts.urgent} urgente{counts.urgent > 1 ? "s" : ""}
+          <span className="ml-auto font-mono text-xs font-bold text-red-500 uppercase tracking-wider flex items-center gap-1 bg-red-500/10 px-2 py-1 border border-red-500/20">
+            ⚠️ {t.urgentCount.replace("{count}", String(counts.urgent))}
           </span>
         )}
-      </div>
+      </DataCard>
 
       {/* List */}
       {filtered.length === 0 ? (
-        <div className="bg-white rounded-xl p-12 border border-oliveGreen/15 text-center">
-          <p className="text-oliveGreen/60">
-            No hay recomendaciones que coincidan con los filtros seleccionados.
+        <DataCard className="p-12 text-center bg-card">
+          <p className="font-mono text-sm uppercase tracking-widest text-ink/40">
+            {t.empty}
           </p>
-        </div>
+        </DataCard>
       ) : (
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="grid md:grid-cols-2 gap-6">
           {filtered.map((rec) => (
             <RecommendationCard
               key={rec.id}
               recommendation={rec}
               onAction={onAction}
+              highlightId={highlightId} // <-- LO PASAMOS AQUÍ
             />
           ))}
         </div>

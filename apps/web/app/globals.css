@@ -1,4 +1,4 @@
-/* 1. Importación de fuentes (debe ir siempre al principio) */
+/* 1. Importación de fuentes (Soluciona el error de Turbopack) */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap");
 
 @tailwind base;
@@ -15,13 +15,13 @@
 /* 3. Capa base - estilos globales */
 @layer base {
   body {
-    /* Usamos los nuevos colores: Paper (#F9F6F0) e Ink (#2B363C) */
-    background-color: #f9f6f0;
-    color: #2b363c;
+    /* Fondo Paper (#F8F7F2) y texto Ink (#2C352C) */
+    background-color: #f8f7f2;
+    color: #2c352c;
     @apply font-sans antialiased;
   }
 
-  /* Los títulos usarán la fuente Serif por defecto */
+  /* Los títulos usarán la fuente Serif por defecto para darles elegancia */
   h1,
   h2,
   h3,
@@ -34,14 +34,14 @@
 
 /* 4. Capa de componentes - utilidades personalizadas */
 @layer components {
-  /* Botón principal: Estilo Eco-Brutalista (Sombra dura y borde) */
+  /* Botón principal: Estilo técnico y limpio */
   .btn-primary {
-    @apply flex items-center justify-center gap-2 px-6 py-3 bg-ink text-paper border-2 border-ink font-mono text-sm uppercase tracking-widest font-bold transition-all shadow-[4px_4px_0px_#E69A45] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[6px_6px_0px_#E69A45] active:translate-y-0 active:translate-x-0 active:shadow-none;
+    @apply flex items-center justify-center gap-2 px-6 py-2.5 bg-ink text-paper border border-ink font-mono text-xs uppercase tracking-widest font-bold transition-colors hover:bg-chloro hover:border-chloro;
   }
 
-  /* Tarjeta: Estilo plano con borde y sombra sólida */
+  /* Tarjeta: Estilo plano, borde fino y sombra sutil (Journey) */
   .card {
-    @apply bg-paper border-2 border-ink p-6 shadow-[4px_4px_0px_#2B363C] transition-all;
+    @apply bg-card border border-ink/20 p-6 shadow-sm transition-all;
   }
 }
 

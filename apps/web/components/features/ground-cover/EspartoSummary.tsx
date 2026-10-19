@@ -1,13 +1,6 @@
 import { Sprout, Leaf, Droplets, Calendar } from "lucide-react";
-import { Badge } from "@sicilia-soil/ui";
+import { getLocale } from "@sicilia-soil/core";
 
-/**
- * Esparto plant summary component
- * Displays key metrics for esparto grass (Stipa tenacissima) cultivation
- *
- * @example
- * <EspartoSummary data={espartoData} />
- */
 interface EspartoData {
   general: {
     scientificName: string;
@@ -38,93 +31,115 @@ interface EspartoSummaryProps {
   data: EspartoData;
 }
 
-/**
- * Returns text color based on health percentage
- */
 const getHealthColor = (health: number): string => {
-  if (health >= 80) return "text-green-600";
-  if (health >= 60) return "text-yellow-600";
-  return "text-red-600";
+  if (health >= 80) return "text-chloro";
+  if (health >= 60) return "text-solar";
+  return "text-red-500";
 };
 
 export const EspartoSummary = ({ data }: EspartoSummaryProps) => {
+  const locale = getLocale("es");
+  const t = locale.ui.espartoSummary;
+
   return (
-    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
       {/* Health Card */}
-      <div className="bg-white rounded-xl p-6 shadow-lg border border-amber-200 hover:shadow-xl transition-all">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="p-2 bg-amber-100 rounded-lg">
-            <Sprout className="w-5 h-5 text-amber-700" />
+      <div className="bg-card border border-ink/20 p-5 flex flex-col justify-between">
+        <div className="flex items-center gap-3 mb-4 border-b border-ink/10 pb-3">
+          <div className="p-2 bg-chloro/10 border border-chloro/20 text-chloro">
+            <Sprout className="w-5 h-5" />
           </div>
-          <h3 className="font-bold text-gray-900">Plant Health</h3>
+          <h3 className="font-serif font-bold text-ink">{t.plantHealth}</h3>
         </div>
-        <p
-          className={`text-3xl font-bold ${getHealthColor(data.general.health)} mb-2`}
-        >
-          {data.general.health}%
-        </p>
-        <p className="text-sm text-gray-600 italic">
-          {data.general.scientificName}
-        </p>
-        <p className="text-xs text-gray-500 mt-2">
-          Next harvest: {data.general.nextHarvest}
-        </p>
+        <div>
+          <p
+            className={`font-mono text-4xl font-bold ${getHealthColor(data.general.health)} mb-1`}
+          >
+            {data.general.health}%
+          </p>
+          <p className="font-serif text-sm italic text-ink/60">
+            {data.general.scientificName}
+          </p>
+          <p className="font-mono text-[10px] uppercase tracking-wider text-ink/50 mt-3 pt-2 border-t border-ink/10">
+            {t.nextHarvest}: {data.general.nextHarvest}
+          </p>
+        </div>
       </div>
 
       {/* Growth Card */}
-      <div className="bg-white rounded-xl p-6 shadow-lg border border-amber-200 hover:shadow-xl transition-all">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="p-2 bg-amber-100 rounded-lg">
-            <Leaf className="w-5 h-5 text-amber-700" />
+      <div className="bg-card border border-ink/20 p-5 flex flex-col justify-between">
+        <div className="flex items-center gap-3 mb-4 border-b border-ink/10 pb-3">
+          <div className="p-2 bg-chloro/10 border border-chloro/20 text-chloro">
+            <Leaf className="w-5 h-5" />
           </div>
-          <h3 className="font-bold text-gray-900">Growth Status</h3>
+          <h3 className="font-serif font-bold text-ink">{t.growthStatus}</h3>
         </div>
-        <p className="text-lg font-bold text-gray-900">{data.growth.phase}</p>
-        <p className="text-sm text-gray-600">Height: {data.growth.height}</p>
-        <p className="text-sm text-gray-600">Density: {data.growth.density}</p>
-        <p className="text-sm text-amber-600 mt-2">
-          {data.growth.newShoots} new shoots
-        </p>
+        <div>
+          <p className="font-mono text-lg font-bold text-ink mb-2">
+            {data.growth.phase}
+          </p>
+          <div className="space-y-1 font-mono text-xs text-ink/70">
+            <p>
+              {t.height}: {data.growth.height}
+            </p>
+            <p>
+              {t.density}: {data.growth.density}
+            </p>
+          </div>
+          <p className="font-mono text-xs text-chloro font-bold mt-3 pt-2 border-t border-ink/10">
+            +{data.growth.newShoots} {t.newShoots}
+          </p>
+        </div>
       </div>
 
       {/* Soil Card */}
-      <div className="bg-white rounded-xl p-6 shadow-lg border border-amber-200 hover:shadow-xl transition-all">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="p-2 bg-amber-100 rounded-lg">
-            <Droplets className="w-5 h-5 text-amber-700" />
+      <div className="bg-card border border-ink/20 p-5 flex flex-col justify-between">
+        <div className="flex items-center gap-3 mb-4 border-b border-ink/10 pb-3">
+          <div className="p-2 bg-chloro/10 border border-chloro/20 text-chloro">
+            <Droplets className="w-5 h-5" />
           </div>
-          <h3 className="font-bold text-gray-900">Soil Condition</h3>
+          <h3 className="font-serif font-bold text-ink">{t.soilCondition}</h3>
         </div>
-        <p className="text-lg font-bold text-gray-900">{data.soil.type}</p>
-        <p className="text-sm text-gray-600">
-          pH: {data.soil.ph} • Moisture: {data.soil.moisture}%
-        </p>
-        <p className="text-sm text-green-600 mt-2">
-          Nutrients: {data.soil.nutrients}
-        </p>
+        <div>
+          <p className="font-mono text-lg font-bold text-ink mb-2">
+            {data.soil.type}
+          </p>
+          <div className="font-mono text-xs text-ink/70">
+            <p>
+              {t.ph}: {data.soil.ph} • {t.moisture}: {data.soil.moisture}%
+            </p>
+          </div>
+          <p className="font-mono text-xs text-chloro font-bold mt-3 pt-2 border-t border-ink/10">
+            {t.nutrients}: {data.soil.nutrients}
+          </p>
+        </div>
       </div>
 
       {/* Harvest Card */}
-      <div className="bg-white rounded-xl p-6 shadow-lg border border-amber-200 hover:shadow-xl transition-all">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="p-2 bg-amber-100 rounded-lg">
-            <Calendar className="w-5 h-5 text-amber-700" />
+      <div className="bg-card border border-ink/20 p-5 flex flex-col justify-between">
+        <div className="flex items-center gap-3 mb-4 border-b border-ink/10 pb-3">
+          <div className="p-2 bg-chloro/10 border border-chloro/20 text-chloro">
+            <Calendar className="w-5 h-5" />
           </div>
-          <h3 className="font-bold text-gray-900">Harvest</h3>
+          <h3 className="font-serif font-bold text-ink">{t.harvest}</h3>
         </div>
-        <p className="text-lg font-bold text-amber-700">
-          {data.harvest.nextDate}
-        </p>
-        <p className="text-sm text-gray-600">
-          Yield: {data.harvest.estimatedYield}
-        </p>
-        <p className="text-sm text-gray-600">
-          Stock: {data.harvest.currentStock}
-        </p>
-        <div className="ml-2">
-          <Badge variant="success" size="sm">
-            Quality: {data.harvest.quality}
-          </Badge>
+        <div>
+          <p className="font-mono text-lg font-bold text-solar mb-2">
+            {data.harvest.nextDate}
+          </p>
+          <div className="space-y-1 font-mono text-xs text-ink/70">
+            <p>
+              {t.yield}: {data.harvest.estimatedYield}
+            </p>
+            <p>
+              {t.stock}: {data.harvest.currentStock}
+            </p>
+          </div>
+          <div className="mt-3 pt-2 border-t border-ink/10">
+            <span className="inline-block px-2 py-0.5 border border-chloro/30 bg-chloro/5 text-chloro font-mono text-[10px] uppercase font-bold">
+              {t.quality}: {data.harvest.quality}
+            </span>
+          </div>
         </div>
       </div>
     </div>

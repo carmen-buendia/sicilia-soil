@@ -1,16 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, TrendingDown } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { calculateSymbiosisScore } from "@sicilia-soil/utils";
 import { SymbiosisCard } from "@/components/features/shared";
 import {
   MONITORING_ZONES,
   SOIL_CONTAMINATION,
   getRemediationProgress,
+  getLocale,
 } from "@sicilia-soil/core";
+import { DataCard } from "@sicilia-soil/ui"; // <-- Importamos DataCard
 
 export function SoilHealthSummary() {
+  const locale = getLocale("es");
+  const t = locale.content.soilHealthTabs.summary;
+
   const symbiosis = calculateSymbiosisScore({
     espartoHealth: 92,
     coverDensity: 78,
@@ -27,63 +32,58 @@ export function SoilHealthSummary() {
 
   const progress = getRemediationProgress();
   const current = SOIL_CONTAMINATION.measurements.at(-1)!;
+  const amfZones = MONITORING_ZONES.filter((z) => z.mycorrhizaType === "AMF");
   const avgColonisation = Math.round(
-    MONITORING_ZONES.filter((z) => z.mycorrhizaType === "AMF").reduce(
-      (acc, z) => acc + z.colonisation,
-      0,
-    ) / MONITORING_ZONES.filter((z) => z.mycorrhizaType === "AMF").length,
+    amfZones.reduce((acc, z) => acc + z.colonisation, 0) / amfZones.length,
   );
 
   return (
     <div className="space-y-8">
-      {/* Hero corto */}
-      <div className="bg-gradient-to-r from-oliveGreen/10 to-wheatGold/10 rounded-2xl p-6 border border-oliveGreen/20">
-        <h2 className="text-xl font-bold text-charcoalGray mb-2">
-          La red invisible que regenera el suelo
+      {/* Intro */}
+      <DataCard className="p-6">
+        <h2 className="text-xl font-serif font-bold text-ink mb-2">
+          {t.title}
         </h2>
-        <p className="text-sm text-charcoalGray/80">
-          El micelio trabaja todo el año conectando raíces. Las setas son su
-          bioindicador estacional.
-        </p>
-      </div>
+        <p className="font-sans text-sm text-ink/70">{t.description}</p>
+      </DataCard>
 
       {/* 3 métricas grandes */}
       <div className="grid md:grid-cols-3 gap-4">
-        <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-5 border border-oliveGreen/15">
-          <p className="text-xs text-oliveGreen/60 mb-1">
-            Colonización AMF media
+        <DataCard className="p-5">
+          <p className="font-mono text-[10px] uppercase tracking-wider text-ink/60 mb-1">
+            {t.avgColonisation}
           </p>
-          <p className="text-3xl font-bold text-charcoalGray">
+          <p className="font-mono text-3xl font-bold text-ink">
             {avgColonisation}%
           </p>
-          <p className="text-xs text-oliveGreen/60 mt-1">
-            en{" "}
-            {MONITORING_ZONES.filter((z) => z.mycorrhizaType === "AMF").length}{" "}
-            cultivos
+          <p className="font-sans text-xs text-ink/50 mt-1">
+            {t.inCrops.replace("{count}", String(amfZones.length))}
           </p>
-        </div>
+        </DataCard>
 
-        <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-5 border border-oliveGreen/15">
-          <p className="text-xs text-oliveGreen/60 mb-1">Reducción de plomo</p>
-          <p className="text-3xl font-bold text-emerald-700">
+        <DataCard className="p-5">
+          <p className="font-mono text-[10px] uppercase tracking-wider text-ink/60 mb-1">
+            {t.leadReduction}
+          </p>
+          <p className="font-mono text-3xl font-bold text-chloro">
             −{progress.leadReduction}%
           </p>
-          <p className="text-xs text-oliveGreen/60 mt-1">
-            de 15.2 a {current.lead} mg/kg
+          <p className="font-sans text-xs text-ink/50 mt-1">
+            {t.leadFromTo.replace("{to}", String(current.lead))}
           </p>
-        </div>
+        </DataCard>
 
-        <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-5 border border-oliveGreen/15">
-          <p className="text-xs text-oliveGreen/60 mb-1">
-            Reducción hidrocarburos
+        <DataCard className="p-5">
+          <p className="font-mono text-[10px] uppercase tracking-wider text-ink/60 mb-1">
+            {t.hydroReduction}
           </p>
-          <p className="text-3xl font-bold text-emerald-700">
+          <p className="font-mono text-3xl font-bold text-chloro">
             −{progress.hydrocarbonsReduction}%
           </p>
-          <p className="text-xs text-oliveGreen/60 mt-1">
-            de 45 a {current.hydrocarbons} mg/kg
+          <p className="font-sans text-xs text-ink/50 mt-1">
+            {t.hydroFromTo.replace("{to}", String(current.hydrocarbons))}
           </p>
-        </div>
+        </DataCard>
       </div>
 
       {/* Symbiosis */}
@@ -91,46 +91,52 @@ export function SoilHealthSummary() {
 
       {/* CTA a otros tabs */}
       <div className="grid md:grid-cols-3 gap-4">
-        <Link
-          href="#"
-          className="bg-white/50 rounded-xl p-4 border border-oliveGreen/15 hover:shadow-md transition-all"
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-2xl">♻️</span>
-            <ArrowRight className="w-4 h-4 text-oliveGreen" />
-          </div>
-          <p className="font-bold text-charcoalGray text-sm">Biorremediación</p>
-          <p className="text-xs text-oliveGreen/70">
-            Plan de recuperación de la zona noreste
-          </p>
+        <Link href="#" className="group">
+          <DataCard className="p-4 h-full hover:bg-paper transition-colors">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-2xl">♻️</span>
+              <ArrowRight className="w-4 h-4 text-ink/40 group-hover:text-solar transition-colors" />
+            </div>
+            <p className="font-serif font-bold text-ink text-sm">
+              {t.goToRemediation}
+            </p>
+            <p className="font-sans text-xs text-ink/60 mt-1">
+              {t.goToRemediationDesc}
+            </p>
+          </DataCard>
         </Link>
 
-        <Link
-          href="#"
-          className="bg-white/50 rounded-xl p-4 border border-oliveGreen/15 hover:shadow-md transition-all"
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-2xl">🔬</span>
-            <ArrowRight className="w-4 h-4 text-oliveGreen" />
-          </div>
-          <p className="font-bold text-charcoalGray text-sm">Redes activas</p>
-          <p className="text-xs text-oliveGreen/70">
-            {MONITORING_ZONES.length} hosts monitorizados
-          </p>
+        <Link href="#" className="group">
+          <DataCard className="p-4 h-full hover:bg-paper transition-colors">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-2xl">🔬</span>
+              <ArrowRight className="w-4 h-4 text-ink/40 group-hover:text-solar transition-colors" />
+            </div>
+            <p className="font-serif font-bold text-ink text-sm">
+              {t.goToNetworks}
+            </p>
+            <p className="font-sans text-xs text-ink/60 mt-1">
+              {t.goToNetworksDesc.replace(
+                "{count}",
+                String(MONITORING_ZONES.length),
+              )}
+            </p>
+          </DataCard>
         </Link>
 
-        <Link
-          href="#"
-          className="bg-white/50 rounded-xl p-4 border border-oliveGreen/15 hover:shadow-md transition-all"
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-2xl">🍄</span>
-            <ArrowRight className="w-4 h-4 text-oliveGreen" />
-          </div>
-          <p className="font-bold text-charcoalGray text-sm">Bioindicadores</p>
-          <p className="text-xs text-oliveGreen/70">
-            Setas de otoño y seguimiento
-          </p>
+        <Link href="#" className="group">
+          <DataCard className="p-4 h-full hover:bg-paper transition-colors">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-2xl">🍄</span>
+              <ArrowRight className="w-4 h-4 text-ink/40 group-hover:text-solar transition-colors" />
+            </div>
+            <p className="font-serif font-bold text-ink text-sm">
+              {t.goToBioindicators}
+            </p>
+            <p className="font-sans text-xs text-ink/60 mt-1">
+              {t.goToBioindicatorsDesc}
+            </p>
+          </DataCard>
         </Link>
       </div>
     </div>

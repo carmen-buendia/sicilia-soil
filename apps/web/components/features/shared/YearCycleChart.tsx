@@ -25,7 +25,7 @@ export function YearCycleChart({
   height = 360,
 }: YearCycleChartProps) {
   return (
-    <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 border border-oliveGreen/15">
+    <div className="bg-card/50 backdrop-blur-sm rounded-2xl p-6 border border-oliveGreen/15">
       <div className="mb-4">
         <h3 className="text-lg font-bold text-charcoalGray flex items-center gap-2">
           📅 Ciclo anual del sistema

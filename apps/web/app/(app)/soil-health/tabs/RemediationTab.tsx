@@ -8,9 +8,17 @@ import {
   FlaskConical,
 } from "lucide-react";
 import { SoilChart, SOIL_COLORS } from "@/components/features/shared";
-import { SOIL_CONTAMINATION, getRemediationProgress } from "@sicilia-soil/core";
+import {
+  SOIL_CONTAMINATION,
+  getRemediationProgress,
+  getLocale,
+} from "@sicilia-soil/core";
+import { DataCard } from "@sicilia-soil/ui"; // <-- Importamos el wrapper
 
 export function RemediationTab() {
+  const locale = getLocale("es");
+  const t = locale.content.soilHealthTabs.remediation;
+
   const progress = getRemediationProgress();
   const {
     measurements,
@@ -23,77 +31,74 @@ export function RemediationTab() {
   const current = measurements[measurements.length - 1];
   const initial = measurements[0];
 
-  // Comparación actual vs umbral (normalizado a % del umbral)
   const pctOfThreshold = [
     {
-      name: "Plomo",
+      name: t.lead,
       current: Math.round((current.lead / thresholds.lead) * 100),
-      color: SOIL_COLORS.terracotta,
+      color: SOIL_COLORS.chloro,
     },
     {
-      name: "Cadmio",
+      name: t.cadmium,
       current: Math.round((current.cadmium / thresholds.cadmium) * 100),
-      color: SOIL_COLORS.wheat,
+      color: SOIL_COLORS.solar,
     },
     {
-      name: "Mercurio",
+      name: t.mercury,
       current: Math.round((current.mercury / thresholds.mercury) * 100),
       color: SOIL_COLORS.stone,
     },
     {
-      name: "Hidrocarburos",
+      name: t.hydrocarbons,
       current: Math.round(
         (current.hydrocarbons / thresholds.hydrocarbons) * 100,
       ),
-      color: SOIL_COLORS.oliveDark,
+      color: SOIL_COLORS.ink,
     },
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Header */}
-      <div className="bg-gradient-to-r from-amber-50 to-red-50 rounded-2xl p-6 border border-amber-200">
-        <div className="flex items-start gap-4">
-          <div className="p-3 bg-white/60 rounded-xl">
-            <AlertTriangle className="w-8 h-8 text-amber-600" />
-          </div>
-          <div className="flex-1">
-            <h3 className="text-xl font-bold text-charcoalGray mb-1">
-              Contaminación histórica y biorremediación
-            </h3>
-            <p className="text-sm text-oliveGreen/70 mb-3">
-              {strategy.affectedZone} · Inicio {strategy.startYear} · Meta{" "}
-              {strategy.expectedCompletion}
-            </p>
-            <p className="text-sm text-charcoalGray/80">
-              {strategy.description}
-            </p>
-          </div>
+      <DataCard className="p-6 flex items-start gap-4">
+        <div className="p-3 bg-solar/10 border border-solar/20">
+          <AlertTriangle className="w-8 h-8 text-solar" />
         </div>
-      </div>
+        <div className="flex-1">
+          <h3 className="text-xl font-serif font-bold text-ink mb-1">
+            {t.title}
+          </h3>
+          <p className="font-mono text-xs uppercase tracking-wider text-ink/60 mb-3">
+            {strategy.affectedZone} · {t.startYear} {strategy.startYear} ·{" "}
+            {t.expectedCompletion} {strategy.expectedCompletion}
+          </p>
+          <p className="font-sans text-sm text-ink/80">
+            {strategy.description}
+          </p>
+        </div>
+      </DataCard>
 
       {/* Progreso — 4 tarjetas */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <MetricCard
-          label="Plomo (Pb)"
+          label={t.lead}
           reduction={progress.leadReduction}
           from={initial.lead}
           to={current.lead}
         />
         <MetricCard
-          label="Cadmio (Cd)"
+          label={t.cadmium}
           reduction={progress.cadmiumReduction}
           from={initial.cadmium}
           to={current.cadmium}
         />
         <MetricCard
-          label="Mercurio (Hg)"
+          label={t.mercury}
           reduction={progress.mercuryReduction}
           from={initial.mercury}
           to={current.mercury}
         />
         <MetricCard
-          label="Hidrocarburos"
+          label={t.hydrocarbons}
           reduction={progress.hydrocarbonsReduction}
           from={initial.hydrocarbons}
           to={current.hydrocarbons}
@@ -101,34 +106,30 @@ export function RemediationTab() {
       </div>
 
       {/* GRÁFICA 1 — Evolución de contaminantes */}
-      <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 border border-oliveGreen/15">
-        <h4 className="font-bold text-charcoalGray mb-1">
-          1. Evolución de contaminantes
-        </h4>
-        <p className="text-xs text-oliveGreen/60 mb-4">
-          Niveles medidos trimestralmente vs umbral de referencia
-        </p>
+      <DataCard className="p-6">
+        <h4 className="font-serif font-bold text-ink mb-1">{t.chart1Title}</h4>
+        <p className="font-mono text-xs text-ink/60 mb-4">{t.chart1Desc}</p>
         <SoilChart
           type="spline"
           categories={periods}
           series={[
             {
-              name: "Plomo (mg/kg)",
+              name: t.series.lead,
               data: measurements.map((m) => m.lead),
-              color: SOIL_COLORS.terracotta,
+              color: SOIL_COLORS.chloro,
             },
             {
-              name: "Cadmio × 10 (mg/kg)",
+              name: t.series.cadmium,
               data: measurements.map((m) => m.cadmium * 10),
-              color: SOIL_COLORS.wheat,
+              color: SOIL_COLORS.solar,
             },
             {
-              name: "Hidrocarburos (mg/kg)",
+              name: t.series.hydrocarbons,
               data: measurements.map((m) => m.hydrocarbons),
               color: SOIL_COLORS.stone,
             },
             {
-              name: "Umbral Pb",
+              name: t.series.leadThreshold,
               data: measurements.map(() => thresholds.lead),
               color: SOIL_COLORS.red,
               type: "line",
@@ -138,91 +139,77 @@ export function RemediationTab() {
           height={320}
           legend
         />
-        <p className="text-xs text-oliveGreen/60 mt-3">
-          Cadmio mostrado ×10 para visibilidad. Umbral de referencia (Pb):{" "}
-          {thresholds.lead} mg/kg.
+        <p className="font-sans text-xs text-ink/50 mt-4 pt-3 border-t border-ink/10">
+          {t.chart1Note.replace("{lead}", String(thresholds.lead))}
         </p>
-      </div>
+      </DataCard>
 
       {/* GRÁFICA 2 — Actual vs umbral */}
-      <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 border border-oliveGreen/15">
-        <h4 className="font-bold text-charcoalGray mb-1">
-          2. Estado actual vs umbral
-        </h4>
-        <p className="text-xs text-oliveGreen/60 mb-4">
-          Cada contaminante expresado como % del umbral legal. 100% = en el
-          límite, &lt;100% = dentro, &gt;100% = por encima
-        </p>
+      <DataCard className="p-6">
+        <h4 className="font-serif font-bold text-ink mb-1">{t.chart2Title}</h4>
+        <p className="font-mono text-xs text-ink/60 mb-4">{t.chart2Desc}</p>
         <SoilChart
           type="column"
           categories={pctOfThreshold.map((p) => p.name)}
           series={[
             {
-              name: "Actual (% del umbral)",
+              name: t.series.currentPct,
               data: pctOfThreshold.map((p) => p.current),
-              color: SOIL_COLORS.terracotta,
+              color: SOIL_COLORS.chloro,
             },
             {
-              name: "Umbral (100%)",
+              name: t.series.threshold100,
               data: pctOfThreshold.map(() => 100),
               color: SOIL_COLORS.stone,
               type: "line",
             },
           ]}
-          yAxisLabel="% del umbral"
+          yAxisLabel="%"
           yAxisUnit="%"
           height={280}
           legend
         />
-        <div className="mt-3 grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+        <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-2 font-mono text-xs">
           {pctOfThreshold.map((p) => (
             <div
               key={p.name}
-              className={`p-2 rounded-lg ${
-                p.current <= 100
-                  ? "bg-emerald-50 text-emerald-700"
-                  : p.current <= 150
-                    ? "bg-amber-50 text-amber-700"
-                    : "bg-red-50 text-red-700"
-              }`}
+              className={`p-2 border ${p.current <= 100 ? "bg-chloro/5 border-chloro/20 text-chloro" : "bg-solar/5 border-solar/20 text-solar"}`}
             >
-              <span className="font-medium">{p.name}: </span>
-              {p.current}% del umbral
+              <span className="font-bold">{p.name}: </span>
+              {p.current}%
             </div>
           ))}
         </div>
-      </div>
+      </DataCard>
 
       {/* GRÁFICA 3 — Progreso acumulado */}
-      <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 border border-oliveGreen/15">
-        <h4 className="font-bold text-charcoalGray mb-1">
-          3. Progreso acumulado
-        </h4>
-        <p className="text-xs text-oliveGreen/60 mb-4">
-          Porcentaje de reducción respecto al baseline de {initial.period}
+      <DataCard className="p-6">
+        <h4 className="font-serif font-bold text-ink mb-1">{t.chart3Title}</h4>
+        <p className="font-mono text-xs text-ink/60 mb-4">
+          {t.chart3Desc.replace("{period}", initial.period)}
         </p>
         <SoilChart
           type="area"
           categories={periods}
           series={[
             {
-              name: "Plomo reducido (%)",
+              name: t.series.leadReduced,
               data: measurements.map((m) =>
                 Math.round(((initial.lead - m.lead) / initial.lead) * 100),
               ),
-              color: SOIL_COLORS.terracotta,
+              color: SOIL_COLORS.chloro,
             },
             {
-              name: "Cadmio reducido (%)",
+              name: t.series.cadmiumReduced,
               data: measurements.map((m) =>
                 Math.round(
                   ((initial.cadmium - m.cadmium) / initial.cadmium) * 100,
                 ),
               ),
-              color: SOIL_COLORS.wheat,
+              color: SOIL_COLORS.solar,
             },
             {
-              name: "Mercurio reducido (%)",
+              name: t.series.mercuryReduced,
               data: measurements.map((m) =>
                 Math.round(
                   ((initial.mercury - m.mercury) / initial.mercury) * 100,
@@ -231,7 +218,7 @@ export function RemediationTab() {
               color: SOIL_COLORS.stone,
             },
             {
-              name: "Hidrocarburos reducidos (%)",
+              name: t.series.hydrocarbonsReduced,
               data: measurements.map((m) =>
                 Math.round(
                   ((initial.hydrocarbons - m.hydrocarbons) /
@@ -239,58 +226,53 @@ export function RemediationTab() {
                     100,
                 ),
               ),
-              color: SOIL_COLORS.oliveDark,
+              color: SOIL_COLORS.ink,
             },
           ]}
-          yAxisLabel="Reducción acumulada"
+          yAxisLabel="%"
           yAxisUnit="%"
           yAxisMax={100}
           height={300}
           legend
         />
-        <p className="text-xs text-oliveGreen/60 mt-3">
-          Al ritmo actual, se espera alcanzar el umbral de Pb en{" "}
-          {strategy.expectedCompletion}.
+        <p className="font-sans text-xs text-ink/50 mt-4 pt-3 border-t border-ink/10">
+          {t.chart3Note.replace("{date}", strategy.expectedCompletion)}
         </p>
-      </div>
+      </DataCard>
 
-      {/* GRÁFICA 4 — Salud del suelo (solo si hay datos) */}
+      {/* GRÁFICA 4 — Salud del suelo */}
       {soilHealth.length > 0 && (
-        <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 border border-oliveGreen/15">
-          <h4 className="font-bold text-charcoalGray mb-1 flex items-center gap-2">
-            <FlaskConical className="w-5 h-5 text-oliveGreen" />
-            4. Salud del suelo en la zona contaminada
+        <DataCard className="p-6">
+          <h4 className="font-serif font-bold text-ink mb-1 flex items-center gap-2">
+            <FlaskConical className="w-5 h-5 text-chloro" /> {t.chart4Title}
           </h4>
-          <p className="text-xs text-oliveGreen/60 mb-4">
-            El pH, la biomasa fúngica y la colonización micorrícica son los
-            motores de la biorremediación
-          </p>
+          <p className="font-mono text-xs text-ink/60 mb-4">{t.chart4Desc}</p>
           <SoilChart
             type="spline"
             categories={soilHealth.map((s) => s.period)}
             series={[
               {
-                name: "Biomasa fúngica (µg/g)",
+                name: t.series.fungalBiomass,
                 data: soilHealth.map((s) => s.fungalBiomass),
-                color: SOIL_COLORS.olive,
+                color: SOIL_COLORS.chloro,
                 yAxis: 0,
               },
               {
-                name: "Glomalina × 10 (mg/g)",
+                name: t.series.glomalin,
                 data: soilHealth.map((s) => s.glomalin * 10),
-                color: SOIL_COLORS.green,
+                color: SOIL_COLORS.solar,
                 yAxis: 0,
               },
               {
-                name: "Colonización AMF (%)",
+                name: t.series.amfColonisation,
                 data: soilHealth.map((s) => s.mycorrhizalColonisation),
-                color: SOIL_COLORS.oliveDark,
+                color: SOIL_COLORS.ink,
                 yAxis: 1,
               },
               {
-                name: "pH × 10",
+                name: t.series.ph,
                 data: soilHealth.map((s) => s.ph * 10),
-                color: SOIL_COLORS.wheat,
+                color: SOIL_COLORS.stone,
                 yAxis: 0,
               },
             ]}
@@ -303,53 +285,45 @@ export function RemediationTab() {
             height={320}
             legend
           />
-          <p className="text-xs text-oliveGreen/60 mt-3">
-            La biomasa fúngica sube de 18 a 38 µg/g, la glomalina de 0.8 a 1.7
-            mg/g y la colonización AMF del 15 al 38%. El pH se acerca a neutro,
-            lo que reduce la movilidad de metales pesados.
+          <p className="font-sans text-xs text-ink/50 mt-4 pt-3 border-t border-ink/10">
+            {t.chart4Note}
           </p>
-        </div>
+        </DataCard>
       )}
 
       {/* Estrategia */}
       <div className="grid md:grid-cols-2 gap-4">
-        <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 border border-oliveGreen/15">
-          <h4 className="font-bold text-charcoalGray mb-3 flex items-center gap-2">
-            <Recycle className="w-5 h-5 text-oliveGreen" />
-            Hongos biorremediadores
+        <DataCard className="p-6">
+          <h4 className="font-serif font-bold text-ink mb-4 flex items-center gap-2">
+            <Recycle className="w-5 h-5 text-chloro" /> {t.fungiTitle}
           </h4>
-          <ul className="space-y-2 text-sm text-oliveGreen/70">
+          <ul className="space-y-2 font-mono text-xs text-ink/70 mb-4">
             {strategy.fungi.map((fungus) => (
               <li key={fungus} className="flex items-center gap-2">
-                <span className="text-lg">🍄</span>
-                <em>{fungus}</em>
+                <span className="text-base">🍄</span> <em>{fungus}</em>
               </li>
             ))}
           </ul>
-          <p className="text-xs text-oliveGreen/60 mt-3">
-            Los hongos saprófitos y micorrícicos acumulan metales pesados en su
-            biomasa y degradan hidrocarburos por vías enzimáticas.
+          <p className="font-sans text-xs text-ink/50 leading-relaxed">
+            {t.fungiDesc}
           </p>
-        </div>
+        </DataCard>
 
-        <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 border border-oliveGreen/15">
-          <h4 className="font-bold text-charcoalGray mb-3 flex items-center gap-2">
-            <Sprout className="w-5 h-5 text-oliveGreen" />
-            Plantas fitorremediadoras
+        <DataCard className="p-6">
+          <h4 className="font-serif font-bold text-ink mb-4 flex items-center gap-2">
+            <Sprout className="w-5 h-5 text-chloro" /> {t.plantsTitle}
           </h4>
-          <ul className="space-y-2 text-sm text-oliveGreen/70">
+          <ul className="space-y-2 font-mono text-xs text-ink/70 mb-4">
             {strategy.plants.map((plant) => (
               <li key={plant} className="flex items-center gap-2">
-                <span className="text-lg">🌱</span>
-                {plant}
+                <span className="text-base">🌱</span> {plant}
               </li>
             ))}
           </ul>
-          <p className="text-xs text-oliveGreen/60 mt-3">
-            El esparto retiene el suelo, la mostaza bioacumula metales y el
-            girasol extrae plomo y cadmio del perfil superficial.
+          <p className="font-sans text-xs text-ink/50 leading-relaxed">
+            {t.plantsDesc}
           </p>
-        </div>
+        </DataCard>
       </div>
     </div>
   );
@@ -367,15 +341,20 @@ function MetricCard({
   to: number;
 }) {
   return (
-    <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-5 border border-oliveGreen/15">
+    <DataCard
+      variant="bare"
+      className="bg-card border border-ink/20 p-5 flex flex-col"
+    >
       <div className="flex items-start justify-between mb-2">
-        <span className="text-xs text-oliveGreen/60">{label}</span>
-        <TrendingDown className="w-4 h-4 text-emerald-600" />
+        <span className="font-mono text-[10px] uppercase tracking-wider text-ink/60">
+          {label}
+        </span>
+        <TrendingDown className="w-4 h-4 text-chloro" />
       </div>
-      <p className="text-2xl font-bold text-emerald-700">−{reduction}%</p>
-      <p className="text-xs text-oliveGreen/60 mt-1">
+      <p className="font-mono text-2xl font-bold text-chloro">−{reduction}%</p>
+      <p className="font-sans text-[10px] text-ink/50 mt-1">
         de {from} a {to} mg/kg
       </p>
-    </div>
+    </DataCard>
   );
 }
