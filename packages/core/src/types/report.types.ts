@@ -1,7 +1,7 @@
 // packages/core/src/types/report.types.ts
 
 // ============================================================================
-// Sicilia Soil — Reports & exports
+// MycoMesh Protocol — Reports & exports
 // ----------------------------------------------------------------------------
 // Reports are aggregates built from KPIs + operations + EO.
 // They serve three audiences:

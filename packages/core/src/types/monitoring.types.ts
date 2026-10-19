@@ -29,7 +29,8 @@ export interface TemperatureZone extends BaseZone {
   hours?: number;
 }
 
-export interface HumidityZone extends BaseZone {
+export interface WaterZone extends BaseZone {
+  sensorId: string;
   lastWatering: string;
 }
 

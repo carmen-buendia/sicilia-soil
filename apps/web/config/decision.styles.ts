@@ -1,7 +1,7 @@
 // apps/web/config/decision.styles.ts
 
 // ============================================================================
-// Sicilia Soil — Decision UI styles
+// MycoMesh Protocol — Decision UI styles
 // ----------------------------------------------------------------------------
 // Tailwind palettes + icon metadata for the Decision layer.
 // Web-specific: lives in apps/web, not in packages.
@@ -23,7 +23,7 @@ export interface StateStyle {
   label: string;
 }
 
-export const STATE_STYLES: Record<DecisionState, StateStyle> = {
+export const DECISION_STATE_THEME: Record<DecisionState, StateStyle> = {
   green: {
     bg: "bg-gradient-to-br from-emerald-50 via-emerald-50/70 to-white",
     border: "border-emerald-200",
@@ -51,8 +51,8 @@ export const STATE_STYLES: Record<DecisionState, StateStyle> = {
   unknown: {
     bg: "bg-gradient-to-br from-gray-50 via-gray-50/70 to-white",
     border: "border-gray-200",
-    text: "text-gray-800",
-    badge: "bg-gray-100 text-gray-700 border-gray-200",
+    text: "text-ink-800",
+    badge: "bg-gray-100 text-ink-700 border-gray-200",
     dot: "bg-gray-400",
     label: "Sin datos",
   },

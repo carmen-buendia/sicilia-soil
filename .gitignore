@@ -1,5 +1,5 @@
 # ============================================================================
-# Sicilia Soil – Git Ignore
+# MycoMesh Protocol – Git Ignore
 # ============================================================================
 
 # Dependencies
@@ -62,3 +62,6 @@ backend/dist/
 
 # Audit outputs (temporales)
 licenses.json
+
+# Local SQLite database
+**/data/*.db

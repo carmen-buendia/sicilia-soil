@@ -1,118 +1,134 @@
-import { ReactNode, ButtonHTMLAttributes } from "react";
+// packages/ui/src/components/Button.tsx
+import type {
+  AnchorHTMLAttributes,
+  ButtonHTMLAttributes,
+  ComponentType,
+  ReactNode,
+} from "react";
 
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  children: ReactNode;
-  variant?:
-    | "primary"
-    | "secondary"
-    | "outline"
-    | "ghost"
-    | "bare"
-    | "chip"
-    | "chip-yellow"
-    | "olive"
-    | "outline-olive"
-    | "gradient"
-    | "gradient-yellow"
-    | "icon"
-    | "icon-glass-yellow"
-    | "tab"
-    | "glass"
-    | "glass-red"
-    | "blue"
-    | "gradient-blue"
-    | "outline-blue"
-    | "toggle-live"
-    | "link";
-  size?: "sm" | "md" | "lg" | "none";
-  isLoading?: boolean;
-  active?: boolean;
-  icon?: ReactNode;
-  align?: "center" | "start";
-}
+// ============================================================================
+// Tipos públicos
+// ============================================================================
 
-// ============================================
-// VARIANTES EXISTENTES — NO TOCAR
-// ============================================
-const variants = {
-  primary:
-    "bg-gradient-to-r from-red-600 to-yellow-500 text-white hover:shadow-lg",
-  secondary: "bg-gray-100 text-gray-700 hover:bg-gray-200",
-  outline: "border-2 border-red-200 text-gray-700 hover:bg-red-50",
-  ghost: "text-gray-600 hover:bg-gray-100",
-  bare: "",
-};
+/** Slot de enlace inyectable (next/link, react-router Link, etc.). */
+export type LinkLike = ComponentType<any>;
 
-// ============================================
-// VARIANTS SICILIA SOIL
-// ============================================
-const olive = "bg-oliveGreen text-white hover:bg-oliveGreen/90";
-const outlineOlive =
-  "border border-oliveGreen/20 text-oliveGreen hover:bg-oliveGreen/5";
-const gradient =
-  "bg-gradient-to-r from-oliveGreen to-wheatGold text-white hover:shadow-lg";
-const iconVariant = "p-2 hover:bg-oliveGreen/10 text-oliveGreen";
+export type ButtonVariant =
+  | "primary"
+  | "gradient"
+  | "dark"
+  | "cta"
+  | "danger"
+  | "secondary"
+  | "outline"
+  | "ghost"
+  | "bare"
+  | "link"
+  | "chip"
+  | "chip-yellow"
+  | "tab"
+  | "toggle-live";
 
-// ============================================
-// VARIANTS HUMEDAD (azul)
-// ============================================
-const glass =
-  "bg-white/50 backdrop-blur-sm border border-oliveGreen/15 hover:bg-white text-charcoalGray";
-const glassRed =
-  "bg-white/50 backdrop-blur-sm border border-red-200 hover:bg-white text-charcoalGray";
-const blue = "bg-blue-600 text-white hover:bg-blue-700";
-const gradientBlue =
-  "bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 hover:shadow-md";
-const outlineBlue = "border-2 border-blue-300 text-blue-700 hover:bg-blue-50";
+export type ButtonSize = "sm" | "md" | "lg" | "none";
 
-// ============================================
-// VARIANTS LUZ (amarillo)
-// ============================================
-const gradientYellow =
-  "bg-gradient-to-r from-yellow-500 to-orange-500 text-white hover:shadow-lg";
-const iconGlassYellow =
-  "p-2 bg-white/50 backdrop-blur-sm rounded-xl border border-yellow-200 hover:bg-yellow-50 text-yellow-600";
+// ============================================================================
+// Estilos
+// ============================================================================
 
-// ============================================
-// CHIP (según active)
-// ============================================
-const chipActive =
-  "bg-gradient-to-r from-oliveGreen to-wheatGold text-white shadow-lg scale-[1.02]";
-const chipInactive =
-  "bg-white text-charcoalGray border border-oliveGreen/20 hover:bg-oliveGreen/5";
-
-const chipYellowActive =
-  "bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-lg scale-[1.02]";
-const chipYellowInactive =
-  "bg-white/50 backdrop-blur-sm text-charcoalGray border border-yellow-200 hover:bg-yellow-50";
-
-// ============================================
-// TAB (según active)
-// ============================================
-const tabActive = "bg-oliveGreen text-white shadow-md";
-const tabInactive = "text-charcoalGray/60 hover:bg-oliveGreen/10";
-
-// ============================================
-// TOGGLE LIVE (según active)
-// ============================================
-const toggleLiveActive = "bg-green-100 text-green-700 border border-green-300";
-const toggleLiveInactive = "bg-gray-100 text-gray-600 border border-gray-200";
-
-// ============================================
-// LINK (texto plano, sin fondo, sin padding)
-// ============================================
-const linkVariant =
-  "text-oliveGreen hover:text-oliveGreen/80 bg-transparent p-0 h-auto rounded-none hover:!scale-100";
-
-const sizes = {
+const SIZES: Record<ButtonSize, string> = {
   sm: "px-3 py-1.5 text-sm",
   md: "px-4 py-2 text-base",
   lg: "px-6 py-3 text-lg",
   none: "",
 };
 
-export const Button = ({
-  children,
+const BASE: Record<
+  Exclude<ButtonVariant, "chip" | "chip-yellow" | "tab" | "toggle-live">,
+  string
+> = {
+  primary: "bg-oliveGreen text-white hover:bg-oliveGreen/90",
+  gradient:
+    "bg-gradient-to-r from-oliveGreen to-wheatGold text-white hover:shadow-lg",
+  dark: "bg-ink text-paper border border-ink/20 hover:bg-chloro hover:border-chloro",
+  cta: "bg-ink text-paper hover:bg-chloro !rounded-none hover:!scale-100",
+  danger:
+    "bg-transparent text-red-500 border border-red-500/30 hover:bg-red-500/10",
+  secondary: "bg-gray-100 text-ink-700 hover:bg-gray-200",
+  outline: "border border-oliveGreen/20 text-oliveGreen hover:bg-oliveGreen/5",
+  ghost: "text-ink-600 hover:bg-gray-100",
+  bare: "",
+  link: "text-oliveGreen hover:text-oliveGreen/80 bg-transparent p-0 h-auto !rounded-none hover:!scale-100",
+};
+
+const CHIP_ACTIVE =
+  "bg-gradient-to-r from-oliveGreen to-wheatGold text-white shadow-lg scale-[1.02]";
+const CHIP_INACTIVE =
+  "bg-card text-charcoalGray border border-oliveGreen/20 hover:bg-oliveGreen/5";
+const CHIP_Y_ACTIVE =
+  "bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-lg scale-[1.02]";
+const CHIP_Y_INACTIVE =
+  "bg-card/50 backdrop-blur-sm text-charcoalGray border border-yellow-200 hover:bg-yellow-50";
+const TAB_ACTIVE = "bg-oliveGreen text-white shadow-md";
+const TAB_INACTIVE = "text-charcoalGray/60 hover:bg-oliveGreen/10";
+const TOGGLE_ACTIVE = "bg-green-100 text-green-700 border border-green-300";
+const TOGGLE_INACTIVE = "bg-gray-100 text-ink-600 border border-gray-200";
+
+function variantClass(variant: ButtonVariant, active: boolean): string {
+  switch (variant) {
+    case "chip":
+      return active ? CHIP_ACTIVE : CHIP_INACTIVE;
+    case "chip-yellow":
+      return active ? CHIP_Y_ACTIVE : CHIP_Y_INACTIVE;
+    case "tab":
+      return active ? TAB_ACTIVE : TAB_INACTIVE;
+    case "toggle-live":
+      return active ? TOGGLE_ACTIVE : TOGGLE_INACTIVE;
+    default:
+      return BASE[variant] ?? "";
+  }
+}
+
+// ============================================================================
+// Props (interface única + href opcional)
+// ============================================================================
+
+interface SharedProps {
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+  isLoading?: boolean;
+  active?: boolean;
+  icon?: ReactNode;
+  align?: "center" | "start";
+  className?: string;
+  children?: ReactNode;
+}
+
+export interface ButtonProps
+  extends
+    SharedProps,
+    // Omitimos `type` para redefinirlo más abajo con más flexibilidad.
+    Omit<ButtonHTMLAttributes<HTMLButtonElement>, keyof SharedProps | "type"> {
+  /**
+   * Tipo de `<button>`. Acepta los valores estándar + cualquier string
+   * (`(string & {})` mantiene autocompletado sin cerrar el tipo).
+   */
+  type?: "submit" | "button" | "reset";
+
+  /** Si se pasa, se renderiza `<a>` o `<Link>` en lugar de `<button>`. */
+  href?: string;
+
+  /** Componente de enlace a inyectar (next/link, etc.). Default: `<a>`. */
+  LinkComponent?: LinkLike;
+
+  /** `true` → `<a target="_blank" rel="noopener noreferrer">`. */
+  external?: boolean;
+}
+
+// ============================================================================
+// Componente
+// ============================================================================
+
+export function Button({
   variant = "primary",
   size = "md",
   isLoading = false,
@@ -120,86 +136,79 @@ export const Button = ({
   icon,
   align = "center",
   className = "",
+  children,
+  href,
+  LinkComponent,
+  external,
+  type = "button",
   disabled,
-  ...props
-}: ButtonProps) => {
-  let variantClass = "";
-  switch (variant) {
-    case "chip":
-      variantClass = active ? chipActive : chipInactive;
-      break;
-    case "chip-yellow":
-      variantClass = active ? chipYellowActive : chipYellowInactive;
-      break;
-    case "tab":
-      variantClass = active ? tabActive : tabInactive;
-      break;
-    case "link":
-      variantClass = linkVariant;
-      break;
-    case "toggle-live":
-      variantClass = active ? toggleLiveActive : toggleLiveInactive;
-      break;
-    case "olive":
-      variantClass = olive;
-      break;
-    case "outline-olive":
-      variantClass = outlineOlive;
-      break;
-    case "gradient":
-      variantClass = gradient;
-      break;
-    case "gradient-yellow":
-      variantClass = gradientYellow;
-      break;
-    case "icon":
-      variantClass = iconVariant;
-      break;
-    case "icon-glass-yellow":
-      variantClass = iconGlassYellow;
-      break;
-    case "glass-red":
-      variantClass = glassRed;
-      break;
-    case "glass":
-      variantClass = glass;
-      break;
-    case "blue":
-      variantClass = blue;
-      break;
-    case "gradient-blue":
-      variantClass = gradientBlue;
-      break;
-    case "outline-blue":
-      variantClass = outlineBlue;
-      break;
-    default:
-      variantClass = variants[variant as keyof typeof variants];
+  ...rest
+}: ButtonProps) {
+  const isDisabled = isLoading || disabled;
+
+  const classes = [
+    "rounded-xl font-semibold transition-all duration-200 inline-flex items-center gap-2",
+    variantClass(variant, active),
+    SIZES[size],
+    align === "start" ? "justify-start" : "justify-center",
+    isDisabled ? "opacity-50 cursor-not-allowed" : "hover:scale-[1.02]",
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  const content = isLoading ? (
+    <>
+      <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+      <span>Loading...</span>
+    </>
+  ) : (
+    <>
+      {icon}
+      {children}
+    </>
+  );
+
+  // ─── Rama enlace ────────────────────────────────────────────────────────
+  if (href) {
+    // `rest` puede arrastrar props button-only (formAction, etc.); el cast
+    // deja pasar las que sí aplican en <a> sin ensuciar el tipo público.
+    const anchorProps = rest as AnchorHTMLAttributes<HTMLAnchorElement>;
+
+    if (external) {
+      return (
+        <a
+          href={href}
+          className={classes}
+          target="_blank"
+          rel="noopener noreferrer"
+          {...anchorProps}
+        >
+          {content}
+        </a>
+      );
+    }
+
+    if (LinkComponent) {
+      const Link = LinkComponent;
+      return (
+        <Link href={href} className={classes} {...(rest as any)}>
+          {content}
+        </Link>
+      );
+    }
+
+    return (
+      <a href={href} className={classes} {...anchorProps}>
+        {content}
+      </a>
+    );
   }
 
-  const alignClass = align === "start" ? "justify-start" : "justify-center";
-
+  // ─── Rama botón ─────────────────────────────────────────────────────────
   return (
-    <button
-      className={`rounded-xl font-semibold transition-all duration-200 inline-flex items-center gap-2 ${variantClass} ${sizes[size]} ${alignClass} ${
-        disabled || isLoading
-          ? "opacity-50 cursor-not-allowed"
-          : "hover:scale-[1.02]"
-      } ${className}`}
-      disabled={disabled || isLoading}
-      {...props}
-    >
-      {isLoading ? (
-        <div className="flex items-center justify-center gap-2">
-          <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-          <span>Loading...</span>
-        </div>
-      ) : (
-        <>
-          {icon}
-          {children}
-        </>
-      )}
+    <button type={type} className={classes} disabled={isDisabled} {...rest}>
+      {content}
     </button>
   );
-};
+}
