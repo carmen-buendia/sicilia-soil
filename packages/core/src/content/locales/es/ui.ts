@@ -295,7 +295,7 @@ export const ui = {
       status: "Estado",
       type: "Tipo",
     },
-    network: "Red: MycoMesh-LoRa",
+    network: "Red: SikeliaSoil-LoRa",
     ping: {
       hoursAgo: "Hace {hours} horas",
       minutesAgo: "Hace {minutes} min",
