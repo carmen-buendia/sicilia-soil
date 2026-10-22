@@ -43,8 +43,8 @@ export async function createDb(): Promise<SQLJsDatabase<typeof schema>> {
   ];
 
   for (const p of pathsToTry) {
-    if (fs.existsSync(p)) {
-      const buffer = fs.readFileSync(p);
+    if (fs.existsSync(/*turbopackIgnore: true*/ p)) {
+      const buffer = fs.readFileSync(/*turbopackIgnore: true*/ p);
       // Convertimos el Buffer a ArrayBuffer (lo que espera sql.js)
       wasmBinary = buffer.buffer.slice(
         buffer.byteOffset,
