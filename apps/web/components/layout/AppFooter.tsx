@@ -1,6 +1,4 @@
 import Link from "next/link";
-import { Sprout } from "lucide-react";
-import { SicilianFlag } from "./SicilianFlag";
 import { getLocale } from "@sicilia-soil/core";
 import { BrandLogo, SikeliaLogo } from "@sicilia-soil/ui";
 
