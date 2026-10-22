@@ -14,8 +14,8 @@
     "agricultura-regenerativa"
   ],
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "next dev --webpack",
+    "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint .",
     "type-check": "tsc --noEmit"
@@ -23,6 +23,7 @@
   "dependencies": {
     "@sicilia-soil/core": "workspace:*",
     "@sicilia-soil/db": "workspace:^",
+    "@sicilia-soil/rule-engine": "workspace:*",
     "@sicilia-soil/ui": "workspace:*",
     "@sicilia-soil/utils": "workspace:*",
     "bcryptjs": "^3.0.3",
@@ -32,11 +33,9 @@
     "lucide-react": "^0.309.0",
     "next": "^16.3.8",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "socket.io-client": "^4.8.3"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@types/bcryptjs": "^3.0.0",
     "@types/node": "^20.11.5",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",

@@ -14,4 +14,4 @@ export type {
   RuleOperator,
   FiredRule,
   InputConflict,
-} from "@sicilia-soil/decision";
+} from "@sicilia-soil/rule-engine";

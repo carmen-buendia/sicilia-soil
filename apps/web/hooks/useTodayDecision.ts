@@ -4,12 +4,15 @@
 
 import { useMemo } from "react";
 import {
+  decide,
   DECISION_CONTEXT_DEFAULT,
   DECISION_EVIDENCE_DEFAULT,
 } from "@sicilia-soil/core";
-import type { DecisionContext, DecisionEvidence } from "@sicilia-soil/core";
-import { DecisionOutput } from "../../../packages/decision/src/types";
-import { decide } from "@sicilia-soil/core/decision";
+import type {
+  DecisionContext,
+  DecisionEvidence,
+  DecisionOutput,
+} from "@sicilia-soil/core";
 
 export interface UseTodayDecisionReturn {
   output: DecisionOutput;
@@ -20,6 +23,7 @@ export interface UseTodayDecisionReturn {
 export function useTodayDecision(): UseTodayDecisionReturn {
   return useMemo(() => {
     const output = decide(DECISION_EVIDENCE_DEFAULT);
+
     return {
       output,
       context: DECISION_CONTEXT_DEFAULT,
