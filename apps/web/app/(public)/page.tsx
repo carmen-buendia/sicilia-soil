@@ -17,7 +17,7 @@ import { BrandLogo, Button, DataCard } from "@sicilia-soil/ui";
 const locale = getLocale("es");
 
 export const metadata = {
-  title: `MycoMesh Protocol — ${locale.ui.app.subtitle}`,
+  title: `SikeliaSoil — ${locale.ui.app.subtitle}`,
 };
 
 export default async function LandingPage() {
