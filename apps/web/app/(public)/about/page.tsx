@@ -110,7 +110,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Dónde validamos — sin SicilianFlag */}
+        {/* Dónde validamos  */}
         <section className="mb-16">
           <h2 className="text-2xl font-serif font-bold text-ink mb-6">
             {t.content.about.validateTitle}
