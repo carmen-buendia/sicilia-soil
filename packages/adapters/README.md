@@ -1,26 +1,22 @@
-// TODO: write.
-
 # @sicilia-soil/adapters
 
-Domain-agnostic adapter pattern for ingesting data from heterogeneous
-sources through a single generic interface.
+> Domain-agnostic adapter pattern for ingesting data from heterogeneous sources.
 
-## Install
+This package provides a unified interface to connect different data sources (IoT sensors, satellite APIs, local mocks) to the rule engine without vendor lock-in.
 
-[pendiente de publicación en npm]
+## Features
 
-## Usage
-
-[ejemplo mínimo con createAdapter]
+- **`DataAdapter<T>`** — Generic contract with zero domain knowledge.
+- **Discriminated union config** — Type-safe factory via `createAdapter`.
+- **Stub-vs-implementation separation** — Honest, documented milestones.
+- **Zero dependencies** — Pure TypeScript.
 
 ## Packages
 
-- `DataAdapter<T>` — generic contract
-- `MockDataAdapter` — in-memory implementation
-- `SensorDataAdapter` — stub for IoT sources
-- `SatelliteDataAdapter` — stub for satellite APIs
-- `createAdapter` — type-safe factory
+- `MockDataAdapter` — In-memory implementation for testing.
+- `SensorDataAdapter` — Stub for IoT sources.
+- `SatelliteDataAdapter` — Stub for satellite APIs (e.g., Copernicus).
 
 ## License
 
-Apache 2.0
+Apache 2.0 — see [LICENSE](../../LICENSE).
