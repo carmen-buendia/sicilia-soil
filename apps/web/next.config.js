@@ -12,9 +12,9 @@ const nextConfig = {
   transpilePackages: [
     "@sicilia-soil/core",
     "@sicilia-soil/db",
-    "@sicilia-soil/rule-engine",
     "@sicilia-soil/ui",
     "@sicilia-soil/utils",
+    "@isola-node/rule-engine",
   ],
   webpack: (config, { isServer }) => {
     if (!isServer) {

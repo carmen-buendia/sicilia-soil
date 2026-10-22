@@ -7,7 +7,7 @@
 // Implements the generic EvidenceAdapter interface from @sicilia-soil/decision
 // with agriculture-specific paths (sensors.soil_moisture, eoIndices.NDVI...).
 // ============================================================================
-import type { EvidenceAdapter, InputConflict } from "@sicilia-soil/rule-engine";
+import type { EvidenceAdapter, InputConflict } from "@isola-node/rule-engine";
 import type { DecisionEvidence } from "../types/decision.types";
 
 export const SiciliaSoilAdapter: EvidenceAdapter<DecisionEvidence> = {

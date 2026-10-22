@@ -15,7 +15,7 @@
     }
   },
   "dependencies": {
-    "@sicilia-soil/rule-engine": "workspace:*"
+    "@isola-node/rule-engine": "workspace:*"
   },
   "peerDependencies": {
     "typescript": "^5.3.3"

@@ -1,4 +1,4 @@
-# @sicilia-soil/sync
+# @isola-node/sync
 
 An **offline-first synchronization layer** for edge-to-cloud deployments in environments with intermittent connectivity.
 
@@ -19,7 +19,7 @@ An **offline-first synchronization layer** for edge-to-cloud deployments in envi
 
 Field deployments (agriculture, environmental monitoring, disaster response, citizen science) often operate in **rural areas with weak or intermittent connectivity**. Commercial sync solutions assume "always connected" or require proprietary cloud services.
 
-`@sicilia-soil/sync` provides a **vendor-neutral, self-hostable** alternative.
+`@isola-node/sync` provides a **vendor-neutral, self-hostable** alternative.
 
 ## Design principles
 
