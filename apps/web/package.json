@@ -14,9 +14,7 @@
     "agricultura-regenerativa"
   ],
   "scripts": {
-    "predev": "node ./scripts/copy-maplibre-workers.mjs",
     "dev": "next dev",
-    "prebuild": "node ./scripts/copy-maplibre-workers.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
@@ -56,5 +54,5 @@
   "bugs": {
     "url": "https://github.com/carmen-buendia/sicilia-soil-web/issues"
   },
-  "homepage": "https://sicilia-soil-web.vercel.app"
+  "homepage": "https://sicilia-soil-web-8wx5.vercel.app/"
 }

@@ -25,7 +25,7 @@ apps/web/
 │
 ├── components/
 │   ├── features/                 Feature-specific components
-│   │   ├── copernicus/           Map + widget (Copernicus EO)
+│   │   ├── copernicus/
 │   │   ├── dashboard/            Dashboard cards + server status
 │   │   ├── ground-cover/         Crops
 │   │   ├── notifications/        Bell + panel

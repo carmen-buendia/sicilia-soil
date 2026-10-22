@@ -1,213 +1,304 @@
+// ============================================================================
+// SikeliaSoil - UI Translations (Spanish)
+// ----------------------------------------------------------------------------
+// Centralized strings for the user interface.
+// Sorted alphabetically by key for maintainability.
+// ============================================================================
+
 export const ui = {
+  // Generic actions used across the app
+  actions: {
+    cancel: "Cancelar",
+    delete: "Eliminar",
+    edit: "Editar",
+    export: "Exportar",
+    save: "Guardar",
+    viewAll: "Ver todas",
+    viewCrops: "Ver cultivos",
+    viewFull: "Ver completo",
+  },
+
+  // Global app metadata
   app: {
     name: "SikeliaSoil",
     subtitle: "Infraestructura open-source para la recuperación de suelo",
   },
 
-  nav: {
-    dashboard: "Panel",
-    water: "Agua",
-    soilHealth: "Suelo",
-    groundCover: "Cultivos",
-    engine: "Motor",
-    recommendations: "Recomendaciones",
-    notifications: "Notificaciones",
-    configuration: "Configuración",
-    about: "Acerca de",
-    manifesto: "Manifiesto",
-    login: "Iniciar sesión",
-    logout: "Cerrar sesión",
-    backToHome: "Volver al inicio",
-    backToLogin: "Volver al login",
-  },
-
+  // Authentication (Login, Register, Errors)
   auth: {
-    signIn: "Iniciar sesión",
-    subtitle: "Accede a tu cuenta de MycoMesh",
-    noAccount: "¿No tienes cuenta?",
-    registerLink: "Regístrate aquí",
-
-    registerTitle: "Crear cuenta",
-    registerSubtitle: "Únete a SikeliaSoil",
-    registerButton: "Registrarse",
-    haveAccount: "¿Ya tienes cuenta?",
-    loginLink: "Inicia sesión",
-
     errors: {
       invalidCredentials: "Email o contraseña incorrectos.",
       missingFields: "Por favor, rellena todos los campos.",
+      unknown: "Ha ocurrido un error inesperado.",
       userExists:
         "Este email ya está registrado. Por favor, ve a Iniciar Sesión.",
-      unknown: "Ha ocurrido un error inesperado.",
     },
+    haveAccount: "¿Ya tienes cuenta?",
+    loginLink: "Inicia sesión",
+    noAccount: "¿No tienes cuenta?",
+    registerButton: "Registrarse",
+    registerLink: "Regístrate aquí",
+    registerSubtitle: "Únete a SikeliaSoil",
+    registerTitle: "Crear cuenta",
+    signIn: "Iniciar sesión",
+    subtitle: "Accede a tu cuenta de SikeliaSoil",
     success: {
       registered: "Cuenta creada con éxito. Por favor, inicia sesión.",
     },
   },
 
+  // Copernicus Earth Observation and Satellite data
+  copernicus: {
+    badge: "Data Cube Engine",
+    cloudCover: "Cobertura de Nubes",
+    droughtDesc:
+      "Fusión en la nube: Sensores IoT in-situ + Retrodispersión Sentinel-1 SAR.",
+    droughtRisk: "Estrés por Sequía (DSI)",
+    lastPass: "Última pasada",
+    lst: "Temp. Superficie (LST)",
+    ndvi: "NDVI (Vigor)",
+    ndwi: "NDWI (Agua Foliar)",
+    resolution: "Resolución",
+    soilHealth: "Salud del Suelo (SHI)",
+    soilHealthDesc:
+      "Nivel de materia orgánica y estructura biológica evaluada por espectrometría.",
+    ssm: "Humedad Suelo (SAR)",
+    subtitle: "Monitoreo Satelital",
+    tabAnalysis: "Análisis",
+    tabIndices: "Índices de Satélite",
+    title: "Copernicus Earth Observation",
+  },
+
+  // Main Dashboard widgets and metrics
   dashboard: {
+    alertsEmpty: "✓ Sin alertas urgentes",
+    alertsTitle: "Alertas",
+    carbon: {
+      bulkDensity: "Densidad aparente",
+      co2: "CO₂ secuestrado",
+      depth: "Profundidad",
+      soc: "COS",
+      title: "Captura de carbono",
+    },
+    currentCrop: "Cultivo actual",
+    light: "Luz Solar",
     moisture: "Humedad",
     temperature: "Temperatura",
-    light: "Luz Solar",
-    wind: "Viento",
     updated: "Actualizado",
     viewHistory: "Ver histórico",
-    currentCrop: "Cultivo actual",
-    mapTitle: "🗺️ Mapa de la finca",
+    wind: "Viento",
     zonesTitle: "Zonas de sensores",
-    alertsTitle: "Alertas",
-    alertsEmpty: "✓ Sin alertas urgentes",
-    carbon: {
-      title: "Captura de carbono",
-      soc: "COS",
-      bulkDensity: "Densidad aparente",
-      depth: "Profundidad",
-      co2: "CO₂ secuestrado",
-    },
   },
 
-  landing: {
-    badge: "Open Source Infrastructure",
-    pillars: {
-      soilHealth: "Salud del suelo",
-      waterEfficiency: "Eficiencia hídrica",
-      carbonCapture: "Captura de carbono",
-    },
-    cta: {
-      start: "Comenzar ahora",
-      accessDashboard: "Acceder a la plataforma",
-      viewOnGithub: "Ver en GitHub",
-      github: "Ver en GitHub",
-    },
-    hud: {
-      soilMoisture: "Humedad del suelo",
-      soilMoistureValue: "42.5%",
-      edgeNode: "Nodo Edge",
-      edgeNodeValue: "Online",
-      carbonStored: "Carbono capturado",
-      carbonStoredValue: "1.2 t/ha",
-      mycorrhiza: "Micorriza",
-      mycorrhizaValue: "Óptimo",
-    },
-    techTitle: "Infraestructura Abierta y Descentralizada",
-    tech: {
-      db: "SQLite + Drizzle",
-      edge: "Edge Computing Ready",
-      auth: "Auth Segura (JWT)",
-    },
+  // Esparto crop specific metrics
+  espartoSummary: {
+    density: "Densidad",
+    growthStatus: "Estado de Crecimiento",
+    harvest: "Cosecha",
+    height: "Altura",
+    moisture: "Humedad",
+    newShoots: "nuevos brotes",
+    nextHarvest: "Próxima cosecha",
+    nutrients: "Nutrientes",
+    ph: "pH",
+    plantHealth: "Salud de la Planta",
+    quality: "Calidad",
+    soilCondition: "Condición del Suelo",
+    stock: "Stock",
+    yield: "Rendimiento",
   },
+
+  // Global footer
   footer: {
     about: "Sobre el proyecto",
-    manifesto: "Manifiesto",
+    createdBy: "Proyecto creado por Carmen María Buendía Sánchez",
     github: "GitHub",
     license: "Apache 2.0",
-    createdBy: "Proyecto creado por Carmen María Buendía Sánchez",
     madeWith: "Hecho con 🌱 en Sicilia",
-  },
-  actions: {
-    viewFull: "Ver completo",
-    viewAll: "Ver todas",
-    viewCrops: "Ver cultivos",
-    save: "Guardar",
-    cancel: "Cancelar",
-    delete: "Eliminar",
-    edit: "Editar",
-    export: "Exportar",
+    manifesto: "Manifiesto",
   },
 
-  states: {
-    loading: "Cargando…",
-    loadingMap: "Cargando mapa…",
-    empty: "Sin datos disponibles",
-    error: "Ha ocurrido un error",
-    offline: "Sin conexión",
-  },
-  soilHealthTabs: {
-    summary: "Resumen",
-    remediation: "Biorremediación",
-    networks: "Redes",
-    bioindicators: "Bioindicadores",
-  },
-  mushroomCard: {
-    status: {
-      optimal: "Óptimo",
-      excellent: "Excelente",
-      good: "Bueno",
-      ready: "Listo",
+  // Public Landing Page
+  landing: {
+    badge: "Open Source Infrastructure",
+    cta: {
+      accessDashboard: "Acceder a la plataforma",
+      github: "Ver en GitHub",
+      start: "Comenzar ahora",
+      viewOnGithub: "Ver en GitHub",
     },
+    hud: {
+      carbonStored: "Carbono capturado",
+      carbonStoredValue: "1.2 t/ha",
+      edgeNode: "Nodo Edge",
+      edgeNodeValue: "Online",
+      mycorrhiza: "Micorriza",
+      mycorrhizaValue: "Óptimo",
+      soilMoisture: "Humedad del suelo",
+      soilMoistureValue: "42.5%",
+    },
+    pillars: {
+      carbonCapture: "Captura de carbono",
+      soilHealth: "Salud del suelo",
+      waterEfficiency: "Eficiencia hídrica",
+    },
+    tech: {
+      auth: "Auth Segura (JWT)",
+      db: "SQLite + Drizzle",
+      edge: "Edge Computing Ready",
+    },
+    techTitle: "Infraestructura Abierta y Descentralizada",
+  },
+
+  // Mycology specific components
+  mushroomCard: {
+    co2: "CO₂",
+    colonisation: "Colonización",
+    fruiting: "Fructificación",
+    glomalin: "Glomalina",
+    humidity: "Humedad",
     mycorrhiza: {
       AMF: "AMF · Arbuscular",
       ECM: "ECM · Ectomicorrícica",
       none: "Sin micorriza",
     },
-    colonisation: "Colonización",
-    glomalin: "Glomalina",
-    humidity: "Humedad",
+    status: {
+      excellent: "Excelente",
+      good: "Bueno",
+      optimal: "Óptimo",
+      ready: "Listo",
+    },
     temperature: "Temperatura",
-    co2: "CO₂",
-    fruiting: "Fructificación",
     viewDetails: "Ver detalles",
   },
-  // ... dentro de export const ui = { ... }
+
+  mushroomChip: {
+    endemicLabel: "Endémica",
+  },
+
+  // Navigation Menu
+  nav: {
+    about: "Acerca de",
+    backToHome: "Volver al inicio",
+    backToLogin: "Volver al login",
+    configuration: "Configuración",
+    dashboard: "Panel",
+    engine: "Motor",
+    groundCover: "Cultivos",
+    login: "Iniciar sesión",
+    logout: "Cerrar sesión",
+    manifesto: "Manifiesto",
+    notifications: "Notificaciones",
+    recommendations: "Recomendaciones",
+    soilHealth: "Suelo",
+    water: "Agua",
+  },
+
+  // Notifications dropdown/widget
+  notifications: {
+    clearAll: "Limpiar todo",
+    empty: "No hay notificaciones",
+    markAllAsRead: "Marcar todas como leídas",
+    system: "Sistema",
+    title: "Notificaciones",
+    viewAll: "Ver todas las notificaciones",
+    viewMore: "Ver más",
+  },
+
+  // Dedicated Notifications Page
+  notificationsPage: {
+    clear: "Limpiar",
+    emptyDesc:
+      "Las notificaciones se generan automáticamente a partir de las recomendaciones urgentes, altas y medias.",
+    emptyTitle: "No hay notificaciones",
+    goToRecs: "Ir a Recomendaciones",
+    infoDesc:
+      "El motor de recomendaciones analiza los datos IoT y Copernicus, y genera notificaciones automáticamente para las recomendaciones de prioridad urgente, alta o media. Las notificaciones se guardan localmente en tu navegador.",
+    infoTitle: "Cómo funciona:",
+    markAll: "Marcar todas",
+    stats: {
+      critical: "Críticas",
+      total: "Total",
+      unread: "Sin leer",
+      warning: "Advertencias",
+    },
+    subtitle: "Alertas de sensores IoT y recomendaciones del sistema",
+    title: "Notificaciones",
+  },
+
+  // Decision Engine Recommendations
+  recommendations: {
+    action: "Acción recomendada",
+    all: "Todos",
+    empty:
+      "No hay recomendaciones que coincidan con los filtros seleccionados.",
+    general: "General",
+    high: "Alta",
+    info: "Info",
+    low: "Baja",
+    markDone: "Marcar como hecho",
+    medium: "Media",
+    priority: "Prioridad",
+    soil: "Suelo",
+    source: "Fuente",
+    topic: "Tema",
+    urgent: "Urgente",
+    urgentCount: "{count} urgente",
+    water: "Agua",
+  },
+
+  // Soil Health Page Tabs
+  soilHealthTabs: {
+    bioindicators: "Bioindicadores",
+    networks: "Redes",
+    remediation: "Biorremediación",
+    summary: "Resumen",
+  },
+
+  // Generic UI states
+  states: {
+    empty: "Sin datos disponibles",
+    error: "Ha ocurrido un error",
+    loading: "Cargando…",
+    offline: "Sin conexión",
+  },
+
+  // Plant-Fungi Symbiosis Widget
   symbiosis: {
-    title: "Simbiosis planta ↔ micelio",
     badge: "Ciclo regenerativo",
-    score: "Score global",
+    carbon: "Carbono",
+    carbonSub: "Glomalina + COS",
+    hostsAmf: "AMF · Arbuscular",
+    hostsEcm: "ECM · Ectomicorrícica",
+    hostsTitle: "Colonización por huésped",
     networkAmf: "Red AMF",
     networkAmfSub: "Arbuscular",
     networkEcm: "Red ECM",
     networkEcmSub: "Ectomicorrícica",
-    carbon: "Carbono",
-    carbonSub: "Glomalina + COS",
-    radarTitle: "Indicadores del ciclo",
-    radarSubstrate: "Sustrato",
-    radarReturn: "Retorno",
     radarCarbon: "Carbono",
+    radarReturn: "Retorno",
     radarStructure: "Estructura",
-    hostsTitle: "Colonización por huésped",
-    hostsAmf: "AMF · Arbuscular",
-    hostsEcm: "ECM · Ectomicorrícica",
+    radarSubstrate: "Sustrato",
+    radarTitle: "Indicadores del ciclo",
+    score: "Score global",
+    title: "Simbiosis planta ↔ micelio",
     updated: "Actualizado",
   },
-  copernicus: {
-    title: "Copernicus Earth Observation",
-    badge: "Data Cube Engine",
-    subtitle: "Monitoreo Satelital",
-    lastPass: "Última pasada",
-    tabIndices: "Índices de Satélite",
-    tabAnalysis: "Análisis",
-    ndvi: "NDVI (Vigor)",
-    ndwi: "NDWI (Agua Foliar)",
-    ssm: "Humedad Suelo (SAR)",
-    lst: "Temp. Superficie (LST)",
-    droughtRisk: "Estrés por Sequía (DSI)",
-    droughtDesc:
-      "Fusión en la nube: Sensores IoT in-situ + Retrodispersión Sentinel-1 SAR.",
-    soilHealth: "Salud del Suelo (SHI)",
-    soilHealthDesc:
-      "Nivel de materia orgánica y estructura biológica evaluada por espectrometría.",
-    cloudCover: "Cobertura de Nubes",
-    resolution: "Resolución",
-    viewMapLink: "Ver mapa de capas en Data Cube Ecosystem →",
 
-    // Map specific
-    mapTitle: "Mapa de Datos Satelitales",
-    mapSubtitle: "Visualización geoespacial",
-    fitToFarm: "Centrar en la finca",
-    plotsCount: "{count} parcelas monitorizadas",
-    activeLayer: "Capa activa",
-    exportGeoJson: "Exportar GeoJSON →",
-  },
+  // IoT Sensor Telemetry
   telemetry: {
-    title: "Telemetría de Sensores",
-    network: "Red: MycoMesh-LoRa",
     headers: {
-      sensorId: "Sensor ID",
-      type: "Tipo",
       battery: "Batería",
-      signal: "Señal",
       lastPing: "Último Ping",
+      sensorId: "Sensor ID",
+      signal: "Señal",
       status: "Estado",
+      type: "Tipo",
+    },
+    network: "Red: MycoMesh-LoRa",
+    ping: {
+      hoursAgo: "Hace {hours} horas",
+      minutesAgo: "Hace {minutes} min",
     },
     sensorTypes: {
       soilMoisture: "Humedad Suelo",
@@ -218,76 +309,6 @@ export const ui = {
       online: "Online",
       unstable: "Inestable",
     },
-    ping: {
-      minutesAgo: "Hace {minutes} min",
-      hoursAgo: "Hace {hours} horas",
-    },
-  },
-  espartoSummary: {
-    plantHealth: "Salud de la Planta",
-    nextHarvest: "Próxima cosecha",
-    growthStatus: "Estado de Crecimiento",
-    height: "Altura",
-    density: "Densidad",
-    newShoots: "nuevos brotes",
-    soilCondition: "Condición del Suelo",
-    ph: "pH",
-    moisture: "Humedad",
-    nutrients: "Nutrientes",
-    harvest: "Cosecha",
-    yield: "Rendimiento",
-    stock: "Stock",
-    quality: "Calidad",
-  },
-  // ... dentro de export const ui = { ... }
-  notifications: {
-    title: "Notificaciones",
-    markAllAsRead: "Marcar todas como leídas",
-    clearAll: "Limpiar todo",
-    empty: "No hay notificaciones",
-    system: "Sistema",
-    viewMore: "Ver más",
-    viewAll: "Ver todas las notificaciones",
-  },
-  recommendations: {
-    topic: "Tema",
-    priority: "Prioridad",
-    all: "Todos",
-    soil: "Suelo",
-    water: "Agua",
-    general: "General",
-    urgent: "Urgente",
-    high: "Alta",
-    medium: "Media",
-    low: "Baja",
-    info: "Info",
-    action: "Acción recomendada",
-    source: "Fuente",
-    markDone: "Marcar como hecho",
-    empty:
-      "No hay recomendaciones que coincidan con los filtros seleccionados.",
-    urgentCount: "{count} urgente",
-  },
-  mushroomChip: {
-    endemicLabel: "Endémica",
-  },
-  notificationsPage: {
-    title: "Notificaciones",
-    subtitle: "Alertas de sensores IoT y recomendaciones del sistema",
-    markAll: "Marcar todas",
-    clear: "Limpiar",
-    stats: {
-      total: "Total",
-      unread: "Sin leer",
-      critical: "Críticas",
-      warning: "Advertencias",
-    },
-    emptyTitle: "No hay notificaciones",
-    emptyDesc:
-      "Las notificaciones se generan automáticamente a partir de las recomendaciones urgentes, altas y medias.",
-    goToRecs: "Ir a Recomendaciones",
-    infoTitle: "Cómo funciona:",
-    infoDesc:
-      "El motor de recomendaciones analiza los datos IoT y Copernicus, y genera notificaciones automáticamente para las recomendaciones de prioridad urgente, alta o media. Las notificaciones se guardan localmente en tu navegador.",
+    title: "Telemetría de Sensores",
   },
 } as const;
