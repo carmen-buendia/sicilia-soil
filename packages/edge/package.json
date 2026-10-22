@@ -13,7 +13,7 @@
     }
   },
   "dependencies": {
-    "@sicilia-soil/decision": "workspace:*",
+    "@sicilia-soil/rule-engine": "workspace:*",
     "@sicilia-soil/sync": "workspace:*"
   },
   "scripts": {
