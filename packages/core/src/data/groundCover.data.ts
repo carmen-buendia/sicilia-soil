@@ -19,7 +19,7 @@ export const GROUND_COVER_INFO: GroundCoverInfo = {
   description:
     "Planta fibrosa tradicional siciliana, utilizada durante siglos para la elaboración de cuerdas, cestas y tejidos. Es un pilar de la economía rural mediterránea.",
   history:
-    "El esparto ha sido cultivado en Sicilia desde la época fenicia. Su fibra resistente al agua salada lo hizo invaluable para la industria naval y agrícola.",
+    "El esparto ha sido cultivado en Sikeliadesde la época fenicia. Su fibra resistente al agua salada lo hizo invaluable para la industria naval y agrícola.",
   benefits: [
     "Fibra natural sostenible",
     "Resistente a la humedad y salinidad",

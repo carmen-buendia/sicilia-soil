@@ -1,4 +1,4 @@
-Write-Host "🚀 Configurando Sicilia Business Suite" -ForegroundColor Cyan
+Write-Host "🚀 Configurando SikeliaBusiness Suite" -ForegroundColor Cyan
 
 # Verificar PNPM
 if (Get-Command pnpm -ErrorAction SilentlyContinue) {

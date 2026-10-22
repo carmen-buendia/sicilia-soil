@@ -1,19 +1,19 @@
-// packages/ui/src/components/MycoMeshLogo.tsx
+// packages/ui/src/components/SikeliaLogo.tsx
 import type { ComponentProps } from "react";
 
-export type MycoMeshLogoProps = ComponentProps<"svg"> & {
+export type SikeliaLogoProps = ComponentProps<"svg"> & {
   /** Tamaño en px (ancho y alto). Default: 32 */
   size?: number;
   /** Si `true`, el nodo central pulsa. Default: true */
   animated?: boolean;
 };
 
-export function MycoMeshLogo({
+export function SikeliaLogo({
   size = 32,
   animated = true,
   className,
   ...props
-}: MycoMeshLogoProps) {
+}: SikeliaLogoProps) {
   return (
     <svg
       viewBox="0 0 100 100"
@@ -21,7 +21,7 @@ export function MycoMeshLogo({
       height={size}
       fill="none"
       className={className}
-      aria-label="MycoMesh Protocol"
+      aria-label="SikeliaSoil"
       role="img"
       {...props}
     >

@@ -1,7 +1,7 @@
 // packages/core/src/types/spatial.types.ts
 
 // ============================================================================
-// MycoMesh Protocol — Spatial hierarchy
+// SikeliaSoil — Spatial hierarchy
 // ----------------------------------------------------------------------------
 // Farm → Zone → Plot → Bed → Plant
 //

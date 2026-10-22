@@ -1,7 +1,7 @@
 // packages/core/src/types/operations.types.ts
 
 // ============================================================================
-// MycoMesh Protocol — Farm operations
+// SikeliaSoil — Farm operations
 // ----------------------------------------------------------------------------
 // Everything that HAPPENS on the farm: observations, inputs, irrigations,
 // harvests, treatments, tasks, resource consumption.
