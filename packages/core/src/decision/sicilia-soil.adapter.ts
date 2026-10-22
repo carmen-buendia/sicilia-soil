@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2026 Carmen María Buendía Sánchez
 // ============================================================================
-// MycoMesh Protocol — Evidence Adapter
+// SikeliaSoil — Evidence Adapter
 // ----------------------------------------------------------------------------
 // Implements the generic EvidenceAdapter interface from @sicilia-soil/decision
 // with agriculture-specific paths (sensors.soil_moisture, eoIndices.NDVI...).

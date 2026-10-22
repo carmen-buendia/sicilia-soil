@@ -8,7 +8,7 @@ import ReactECharts from "echarts-for-react";
 import type { EChartsOption, SeriesOption } from "echarts";
 
 // ============================================================================
-// Paleta MycoMesh Protocol (Sintropic UI)
+// Paleta SikeliaSoil (Sintropic UI)
 // ============================================================================
 
 export const SOIL_COLORS = {

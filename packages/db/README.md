@@ -1,6 +1,6 @@
 # @sicilia-soil/db
 
-Database layer for MycoMesh Protocol, built with [Drizzle ORM](https://orm.drizzle.team).
+Database layer for SikeliaSoil, built with [Drizzle ORM](https://orm.drizzle.team).
 
 ## Stack
 

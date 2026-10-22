@@ -10,10 +10,8 @@
 packages/ui/src/
 ├── components/
 │   ├── Button.tsx              Button with variants
-│   ├── Badge.tsx               Status badge
 │   ├── Chip/
 │   │   └── Chip.tsx            Selectable chip
-│   ├── LoadingSpinner.tsx
 │   └── Charts/
 │       ├── MycologyChart.tsx   ECharts line chart for mushroom conditions
 │       └── index.ts
@@ -25,13 +23,7 @@ packages/ui/src/
 ## Usage
 
 ```tsx
-import {
-  Button,
-  Badge,
-  Chip,
-  LoadingSpinner,
-  MycologyChart,
-} from "@sicilia-soil/ui";
+import { Button, Chip, MycologyChart } from "@sicilia-soil/ui";
 ```
 
 ---
