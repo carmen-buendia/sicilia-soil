@@ -1,5 +1,4 @@
-```markdown
-# @sicilia-soil/decision
+# @sicilia-soil/rule-engine
 
 An **explainable, deterministic rule engine** with offline learning.
 
@@ -10,65 +9,33 @@ An **explainable, deterministic rule engine** with offline learning.
 - **No black boxes**
 - **No machine learning of any kind**
 
-The engine applies **declarative, human-readable rules** and produces
-decisions with full transparency: every decision shows which rules fired
-and their weights.
+The engine applies **declarative, human-readable rules** and produces decisions with full transparency: every decision shows which rules fired and their weights.
 
 ## Why this matters
 
-In critical field deployments (agriculture, disaster response, environmental
-monitoring), a black-box decision is **useless**. You need to know **why**.
+In critical field deployments (agriculture, disaster response, environmental monitoring), a black-box decision is **useless**. You need to know **why**.
 
-`@decision` provides:
+`@sicilia-soil/rule-engine` provides:
 
-- **Transparency** -- every decision shows its evidence.
-- **Auditability** -- rules and weights are inspectable.
-- **Determinism** -- same inputs produce same output.
-- **Offline capability** -- runs without cloud connectivity.
-- **Domain-agnostic** -- works for any evidence + rules pair via adapters.
+- **Transparency**: every decision shows its evidence.
+- **Auditability**: rules and weights are inspectable.
+- **Determinism**: same inputs produce the same output.
+- **Offline capability**: runs without cloud connectivity.
+- **Domain-agnostic**: works for any evidence + rules pair via adapters.
 
-## Design
+## Architecture
+
+```mermaid
+graph TD
+    A[Domain Evidence<br/>sensors, satellite, APIs] -->|implements| B[EvidenceAdapter]
+    B -->|passed to| C[decide function]
+    C -->|evaluates| D[Declarative Rules]
+    D -->|returns| E[DecisionOutput<br/>state, confidence, explanation]
 ```
-
-+--------------------------+
-| Your domain evidence |
-| (sensors, satellite...) |
-+-------------+------------+
-| implements
-v
-+--------------------------+
-| EvidenceAdapter<T> |
-| - read(evidence, path) |
-| - detectConflicts?() |
-| - sourcesUsed?() |
-+-------------+------------+
-| passed to
-v
-+--------------------------+
-| decide<T>(...) |
-| - rule evaluation |
-| - conflict detection |
-| - natural language |
-| - confidence scoring |
-+-------------+------------+
-| returns
-v
-+--------------------------+
-| DecisionOutput |
-| - state: green/yellow/red|
-| - confidence: 0-1 |
-| - firedRules + weights |
-| - explanation |
-| - sourcesUsed |
-+--------------------------+
-
-````
 
 ## Install
 
-```bash
-pnpm add @sicilia-soil/decision
-````
+pnpm add @sicilia-soil/rule-engine
 
 ## Usage
 
@@ -77,7 +44,7 @@ import {
   decide,
   type EvidenceAdapter,
   type DecisionRule,
-} from "@sicilia-soil/decision";
+} from "@sicilia-soil/rule-engine";
 
 // 1. Define your adapter -- one per domain
 const adapter: EvidenceAdapter<MyEvidence> = {
@@ -106,7 +73,7 @@ const output = decide(evidence, rules, adapter);
 console.log(output.headline); // "Act now"
 console.log(output.explanation); // "soil is dry"
 console.log(output.firedRules); // [{ ruleId, weight, vote }]
-```
+
 
 ## API
 
@@ -143,9 +110,7 @@ Aggregates stats for the "learning summary" UI panel.
 
 ## Zero dependencies
 
-`@sicilia-soil/decision` has **no runtime dependencies**. Pure TypeScript.
-Works on Node, Deno, Bun, browsers, and edge runtimes (Cloudflare Workers,
-Vercel Edge, Deno Deploy).
+`@sicilia-soil/rule-engine` has **no runtime dependencies**. Pure TypeScript. Works on Node, Deno, Bun, browsers, and edge runtimes (Cloudflare Workers, Vercel Edge, Deno Deploy).
 
 ## License
 
@@ -153,6 +118,6 @@ Apache 2.0 -- see [LICENSE](../../LICENSE).
 
 Copyright 2026 Carmen Maria Buendia Sanchez.
 
-```
+
 
 ```

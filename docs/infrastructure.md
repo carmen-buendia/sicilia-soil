@@ -4,13 +4,11 @@
 
 We extracted four reusable, domain-agnostic infrastructure packages from a field-deployed decision-support system. Each package solves a concrete problem that recurs across environmental monitoring, edge computing, and any system that operates with intermittent connectivity.
 
-The packages are independently versionable, self-hostable, and depend on no proprietary services.
-
-_Note: the current npm scope (`@sicilia-soil/_`) is domain-specific and will be migrated to a neutral scope upon extraction to the standalone repository.\*
+The packages are independently versionable, self-hostable, and depend on no proprietary services. They are designed to be extracted into a standalone, neutral repository for the Open Internet Stack.
 
 ## Packages
 
-### 1. @sicilia-soil/decision — Explainable rule engine
+### 1. @sicilia-soil/rule-engine — Explainable rule engine
 
 _Status: implemented._
 
@@ -82,10 +80,10 @@ Reusable for: any project that integrates multiple data sources without vendor l
 ```mermaid
 graph TD
   A["Application layer<br/>(domain-specific)"] -->|uses| B["Infrastructure layer<br/>(domain-agnostic)"]
-  B --> D["@decision"]
-  B --> S["@sync"]
-  B --> E["@edge"]
-  B --> AD["@adapters"]
+  B --> D["@sicilia-soil/rule-engine"]
+  B --> S["@sicilia-soil/sync"]
+  B --> E["@sicilia-soil/edge"]
+  B --> AD["@sicilia-soil/adapters"]
 ```
 
 ## What we explicitly do NOT do
