@@ -1,9 +1,11 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { verifySession, COOKIE_NAME } from "@/lib/auth/session";
-import { getUserById } from "../../../../packages/db/src";
-import { Navbar } from "@/components/layout/Navbar"; // Ajusta tus imports
+import { getUserById } from "@sicilia-soil/db";
+import { Navbar } from "@/components/layout/Navbar";
 import { AppFooter } from "@/components/layout/AppFooter";
+
+export const runtime = "nodejs";
 
 export default async function AppLayout({
   children,

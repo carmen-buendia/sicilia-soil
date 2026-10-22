@@ -2,12 +2,13 @@ const path = require("path");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Configuración para el monorepo
   turbopack: {
     root: path.join(__dirname, "../.."),
   },
-
-  // Transpilamos los paquetes internos
+  serverExternalPackages: ["sql.js"],
+  outputFileTracingIncludes: {
+    "/*": ["./public/sql-wasm.wasm"],
+  },
   transpilePackages: [
     "@sicilia-soil/core",
     "@sicilia-soil/db",
@@ -15,6 +16,19 @@ const nextConfig = {
     "@sicilia-soil/ui",
     "@sicilia-soil/utils",
   ],
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.alias["sql.js"] = false;
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        path: false,
+        crypto: false,
+      };
+    }
+    config.externals = [...(config.externals || []), "sql.js"];
+    return config;
+  },
 };
 
 module.exports = nextConfig;

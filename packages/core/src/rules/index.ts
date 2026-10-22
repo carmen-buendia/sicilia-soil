@@ -3,7 +3,6 @@
 // Copyright 2026 Carmen María Buendía Sánchez
 export * from "./rules.v1";
 export * from "./sicilia-soil.adapter";
-export * from "./decide";
 
 // Re-export the generic engine types so consumers only need @sicilia-soil/core
 export type {
