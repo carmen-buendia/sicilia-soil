@@ -15,6 +15,7 @@ export * from "./temperature.data";
 export * from "./light.data";
 export * from "./water.data";
 export * from "./decision.defaults";
+export * from "./telemetry.defaults";
 
 // Dashboard
 export { GARDEN_ZONES, DASHBOARD_KPIS, CARBON_SUMMARY } from "./dashboard.data";
