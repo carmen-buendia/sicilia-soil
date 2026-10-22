@@ -13,7 +13,7 @@ import type {
 // Se añadirán cuando exista el sistema de autenticación (env vars servidas
 // por el backend). Ver TODO.md.
 //
-// Este fallback apunta a un punto genérico en Sicilia para que los mapas
+// Este fallback apunta a un punto genérico en Sikeliapara que los mapas
 // rendericen en desarrollo sin exponer la ubicación real.
 // ============================================================================
 
@@ -68,7 +68,7 @@ export const DEFAULT_COPERNICUS_DATA: CopernicusData = {
 export const FARM_BOUNDARY: MapPlot[] = [
   {
     id: "farm",
-    name: "MycoMesh Protocol",
+    name: "SikeliaSoil",
     color: "#8B9D6B",
     center: FARM_CENTER,
     coordinates: [
@@ -140,4 +140,4 @@ export const COPERNICUS_LAYER_CONFIG: Record<CopernicusLayer, LayerConfig> = {
 // Demo Constants
 // ============================================================================
 
-export const DEFAULT_PLOT_NAME = "MycoMesh Protocol";
+export const DEFAULT_PLOT_NAME = "SikeliaSoil";

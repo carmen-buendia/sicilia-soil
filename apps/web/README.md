@@ -1,6 +1,6 @@
 # @sicilia-soil/web
 
-> Next.js frontend — the MycoMesh Protocol DSS.
+> Next.js frontend — the SikeliaSoil DSS.
 
 ---
 

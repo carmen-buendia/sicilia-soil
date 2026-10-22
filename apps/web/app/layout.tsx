@@ -4,12 +4,12 @@ import { NotificationsProvider } from "@/contexts/NotificationsContext";
 
 export const metadata: Metadata = {
   title: {
-    default: "MycoMesh Protocol — Crop-agnostic soil infrastructure",
-    template: "%s · MycoMesh Protocol",
+    default: "SikeliaSoil — Crop-agnostic soil infrastructure",
+    template: "%s · SikeliaSoil",
   },
   description:
     "Enabling soil recovery, water efficiency and carbon sequestration through sovereign data infrastructure.",
-  applicationName: "MycoMesh Protocol",
+  applicationName: "SikeliaSoil",
   authors: [{ name: "Carmen María Buendía Sánchez" }],
 };
 

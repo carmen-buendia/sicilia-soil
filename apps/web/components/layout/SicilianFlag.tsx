@@ -16,6 +16,6 @@ export const SicilianFlag = ({ size = "small", className = "" }) => {
 
 export const SicilianFlagSimple = () => (
   <span className="font-bold text-[#8B9D6B] bg-[#3A5F2E] px-2 py-1 rounded text-xs">
-    MycoMesh Protocol
+    SikeliaSoil
   </span>
 );

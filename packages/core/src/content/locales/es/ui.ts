@@ -1,6 +1,6 @@
 export const ui = {
   app: {
-    name: "MycoMesh Protocol",
+    name: "SikeliaSoil",
     subtitle: "Infraestructura open-source para la recuperación de suelo",
   },
 
@@ -28,7 +28,7 @@ export const ui = {
     registerLink: "Regístrate aquí",
 
     registerTitle: "Crear cuenta",
-    registerSubtitle: "Únete a MycoMesh Protocol",
+    registerSubtitle: "Únete a SikeliaSoil",
     registerButton: "Registrarse",
     haveAccount: "¿Ya tienes cuenta?",
     loginLink: "Inicia sesión",

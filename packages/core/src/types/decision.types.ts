@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2026 Carmen María Buendía Sánchez
 // ============================================================================
-// MycoMesh Protocol — Domain-specific decision types
+// SikeliaSoil — Domain-specific decision types
 // ----------------------------------------------------------------------------
 // Only the agriculture-specific types live here.
 // Generic engine types (DecisionOutput, DecisionRule, RuleCondition, ...)
