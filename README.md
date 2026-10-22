@@ -53,14 +53,14 @@ sicilia-soil/
 
 ### Package Responsibilities
 
-| Package                         | Responsibility                                                                                                    |
-| :------------------------------ | :---------------------------------------------------------------------------------------------------------------- |
-| **`@sicilia-soil/core`**        | Single source of truth for types, mock data, configuration, and domain-specific rules. No React, no side effects. |
-| **`@sicilia-soil/rule-engine`** | Domain-agnostic, deterministic, and explainable rule engine. Zero dependencies, pure TypeScript.                  |
-| **`@sicilia-soil/utils`**       | Pure logic and engines. No React. Consumable from both client and server.                                         |
-| **`@sicilia-soil/ui`**          | Reusable React components. No domain logic.                                                                       |
-| **`@sicilia-soil/db`**          | Database schema, Drizzle ORM configuration, and local SQLite (sql.js) management.                                 |
-| **`apps/web`**                  | The Next.js application. Routes, Server Actions, hooks, and feature-specific components.                          |
+| Package                       | Responsibility                                                                                                    |
+| :---------------------------- | :---------------------------------------------------------------------------------------------------------------- |
+| **`@sicilia-soil/core`**      | Single source of truth for types, mock data, configuration, and domain-specific rules. No React, no side effects. |
+| **`@isola-node/rule-engine`** | Domain-agnostic, deterministic, and explainable rule engine. Zero dependencies, pure TypeScript.                  |
+| **`@sicilia-soil/utils`**     | Pure logic and engines. No React. Consumable from both client and server.                                         |
+| **`@sicilia-soil/ui`**        | Reusable React components. No domain logic.                                                                       |
+| **`@sicilia-soil/db`**        | Database schema, Drizzle ORM configuration, and local SQLite (sql.js) management.                                 |
+| **`apps/web`**                | The Next.js application. Routes, Server Actions, hooks, and feature-specific components.                          |
 
 ### Rule of thumb
 

@@ -1,4 +1,4 @@
-# @sicilia-soil/edge
+# @isola-node/edge
 
 A runtime for constrained edge devices in field deployments.
 
@@ -7,7 +7,7 @@ A runtime for constrained edge devices in field deployments.
 - Runs local rules without cloud connectivity
 - Polls sensors on a schedule
 - Buffers events locally (flash, SD, SQLite)
-- Syncs to cloud when connectivity is available (via @sicilia-soil/sync)
+- Syncs to cloud when connectivity is available (via @isola-node/sync)
 
 ## Targets
 

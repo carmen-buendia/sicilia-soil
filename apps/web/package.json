@@ -23,7 +23,7 @@
   "dependencies": {
     "@sicilia-soil/core": "workspace:*",
     "@sicilia-soil/db": "workspace:^",
-    "@sicilia-soil/rule-engine": "workspace:*",
+    "@isola-node/rule-engine": "workspace:*",
     "@sicilia-soil/ui": "workspace:*",
     "@sicilia-soil/utils": "workspace:*",
     "bcryptjs": "^3.0.3",

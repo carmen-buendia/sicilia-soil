@@ -1,4 +1,4 @@
-# @sicilia-soil/adapters
+# @isola-node/adapters
 
 > Domain-agnostic adapter pattern for ingesting data from heterogeneous sources.
 
