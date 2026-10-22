@@ -23,13 +23,11 @@ let _db: SQLJsDatabase<typeof schema> | null = null;
 export async function createDb(): Promise<SQLJsDatabase<typeof schema>> {
   if (_db) return _db;
 
-  // 1. Buscar el archivo .wasm manualmente para evitar que Turbopack rompa la ruta
   let wasmBinary: ArrayBuffer | undefined;
 
-  // Rutas posibles dependiendo de desde dónde se ejecute Next.js
   const pathsToTry = [
-    path.resolve(process.cwd(), "public", "sql-wasm.wasm"), // Si corre desde apps/web
-    path.resolve(process.cwd(), "apps", "web", "public", "sql-wasm.wasm"), // Si corre desde la raíz
+    path.resolve(process.cwd(), "public", "sql-wasm.wasm"),
+    path.resolve(process.cwd(), "apps", "web", "public", "sql-wasm.wasm"),
     path.resolve(
       process.cwd(),
       "node_modules",
@@ -45,7 +43,6 @@ export async function createDb(): Promise<SQLJsDatabase<typeof schema>> {
   for (const p of pathsToTry) {
     if (fs.existsSync(/*turbopackIgnore: true*/ p)) {
       const buffer = fs.readFileSync(/*turbopackIgnore: true*/ p);
-      // Convertimos el Buffer a ArrayBuffer (lo que espera sql.js)
       wasmBinary = buffer.buffer.slice(
         buffer.byteOffset,
         buffer.byteOffset + buffer.byteLength,
@@ -60,20 +57,20 @@ export async function createDb(): Promise<SQLJsDatabase<typeof schema>> {
     );
   }
 
-  // 2. Inicializar SQL pasándole el binario directamente
-  const SQL = await initSqlJs({
-    wasmBinary, // <--- ESTO ES MAGIA
-  });
+  const SQL = await initSqlJs({ wasmBinary });
 
-  // Ensure data directory exists
-  if (!fs.existsSync(DB_DIR)) {
-    fs.mkdirSync(DB_DIR, { recursive: true });
-  }
-
-  // Load existing DB or create a fresh one
   let fileBuffer: Buffer | undefined;
-  if (fs.existsSync(DB_PATH)) {
-    fileBuffer = fs.readFileSync(DB_PATH);
+
+  // 🚨 SOLO LEEMOS DEL DISCO EN LOCAL
+  if (process.env.NODE_ENV !== "production") {
+    // Ensure data directory exists
+    if (!fs.existsSync(DB_DIR)) {
+      fs.mkdirSync(DB_DIR, { recursive: true });
+    }
+    // Load existing DB
+    if (fs.existsSync(DB_PATH)) {
+      fileBuffer = fs.readFileSync(DB_PATH);
+    }
   }
 
   _sqlite = fileBuffer ? new SQL.Database(fileBuffer) : new SQL.Database();
@@ -87,6 +84,11 @@ export async function createDb(): Promise<SQLJsDatabase<typeof schema>> {
 // ---------------------------------------------------------------------------
 
 export function saveDb(): void {
+  // 🚨 SI ESTAMOS EN VERCEL, NO HACEMOS NADA (Evitamos el crash)
+  if (process.env.NODE_ENV === "production") {
+    return;
+  }
+
   if (!_sqlite) {
     throw new Error("Database not initialized. Call createDb() first.");
   }
