@@ -27,7 +27,7 @@ import { useRecommendations } from "@/hooks/useRecommendations";
 import { useDashboardData } from "@/hooks/useDashboardData";
 import { useTodayDecision } from "@/hooks/useTodayDecision";
 import { PRIORITY_STYLES } from "@/config/recommendation.styles";
-import { getLocale } from "@sicilia-soil/core";
+import { getLocale, TELEMETRY_MOCK_SENSORS } from "@sicilia-soil/core";
 
 const ICON_MAP: Record<string, any> = {
   leaf: Layers,
@@ -47,41 +47,6 @@ export default function HomePage() {
   const { zones, kpis, carbon } = useDashboardData();
   const locale = getLocale("es");
   const t = locale.ui.telemetry;
-
-  const mockSensors = [
-    {
-      id: "SNS-01",
-      type: t.sensorTypes.soilMoisture,
-      battery: 92,
-      signal: -45,
-      ping: { val: 2, unit: "minutesAgo" },
-      status: "online",
-    },
-    {
-      id: "SNS-02",
-      type: t.sensorTypes.soilTemp,
-      battery: 88,
-      signal: -65,
-      ping: { val: 5, unit: "minutesAgo" },
-      status: "online",
-    },
-    {
-      id: "SNS-03",
-      type: t.sensorTypes.soilMoisture,
-      battery: 12,
-      signal: -110,
-      ping: { val: 2, unit: "hoursAgo" },
-      status: "unstable",
-    },
-    {
-      id: "SNS-04",
-      type: t.sensorTypes.solarRadiation,
-      battery: 100,
-      signal: -40,
-      ping: { val: 1, unit: "minutesAgo" },
-      status: "online",
-    },
-  ];
 
   const {
     output: decision,
@@ -187,13 +152,13 @@ export default function HomePage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-ink/10">
-              {mockSensors.map((sensor) => (
+              {TELEMETRY_MOCK_SENSORS.map((sensor) => (
                 <tr
                   key={sensor.id}
                   className="hover:bg-paper/30 transition-colors"
                 >
                   <td className="px-5 py-4 text-ink font-bold">{sensor.id}</td>
-                  <td className="px-5 py-4 text-ink/70">{sensor.type}</td>
+                  <td className="px-5 py-4 text-ink/70">{sensor.typeKey}</td>
                   <td className="px-5 py-4">
                     <span
                       className={`flex items-center gap-1 ${sensor.battery < 20 ? "text-red-500" : "text-chloro"}`}

@@ -43,6 +43,18 @@
       ],
       "@sicilia-soil/utils/*": [
         "../../packages/utils/src/*"
+      ],
+      "@sicilia-soil/db": [
+        "../../packages/db/src"
+      ],
+      "@sicilia-soil/db/*": [
+        "../../packages/db/src/*"
+      ],
+      "@sicilia-soil/rule-engine": [
+        "../../packages/rule-engine/src"
+      ],
+      "@sicilia-soil/rule-engine/*": [
+        "../../packages/rule-engine/src/*"
       ]
     }
   },

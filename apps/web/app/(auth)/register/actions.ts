@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { hashPassword } from "@/lib/auth/hash";
-import { createUser, saveDb } from "../../../../../packages/db/src";
+import { createUser, saveDb } from "@sicilia-soil/db";
 
 export async function register(formData: FormData) {
   const email = formData.get("email") as string;
