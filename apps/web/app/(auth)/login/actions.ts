@@ -1,4 +1,5 @@
 "use server";
+export const runtime = "nodejs";
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -8,7 +9,7 @@ import {
   getUserWithCredentialsByEmail,
   updateLastLogin,
   saveDb,
-} from "../../../../../packages/db/src";
+} from "@sicilia-soil/db";
 
 export async function login(formData: FormData) {
   const email = formData.get("email") as string;
@@ -18,10 +19,10 @@ export async function login(formData: FormData) {
     redirect("/login?error=missing_fields");
   }
 
-  // 1. Search user used function in package db.
+  // 1. Buscar usuario
   const user = await getUserWithCredentialsByEmail(email);
 
-  // 2. Credentials verify.
+  // 2. Verificar credenciales (¡ESTO DEBE IR ANTES DE HACER NADA CON EL USER!)
   if (!user || user.status !== "active") {
     redirect("/login?error=invalid_credentials");
   }
@@ -31,11 +32,19 @@ export async function login(formData: FormData) {
     redirect("/login?error=invalid_credentials");
   }
 
-  // 3. Actualizar lastLoginAt and save in disk.
+  // 3. Actualizar lastLoginAt
   await updateLastLogin(user.id);
-  saveDb(); // Importante para sql.js
 
-  // 4. Crear sesión JWT y cookie
+  // 4. Guardar en disco SOLO en local (Vercel es de solo lectura)
+  try {
+    if (process.env.NODE_ENV !== "production") {
+      saveDb();
+    }
+  } catch (error) {
+    console.warn("⚠️ No se pudo guardar la BD en disco (entorno Serverless)");
+  }
+
+  // 5. Crear sesión JWT y cookie
   const token = await createSession(user.id);
 
   (await cookies()).set(COOKIE_NAME, token, {
@@ -43,7 +52,7 @@ export async function login(formData: FormData) {
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     path: "/",
-    maxAge: 60 * 60 * 24 * 7, // 7 días
+    maxAge: 60 * 60 * 24 * 7, // 7 days
   });
 
   redirect("/dashboard");

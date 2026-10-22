@@ -14,6 +14,11 @@ const nextConfig = {
     "@sicilia-soil/core",
     "@sicilia-soil/ui",
     "@sicilia-soil/utils",
+    "@sicilia-soil/db",
+    "@sicilia-soil/decision",
+    "@sicilia-soil/sync",
+    "@sicilia-soil/edge",
+    "@sicilia-soil/adapters",
   ],
 };
 
