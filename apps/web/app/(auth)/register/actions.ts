@@ -22,11 +22,14 @@ export async function register(formData: FormData) {
       saveDb();
     }
   } catch (error: any) {
+    console.error("🔥 Error real en el registro:", error);
+
     if (error.message === "El usuario ya existe") {
       redirect("/register?error=user_exists");
     }
-    // Si hay un error real de la base de datos, lo mostramos
-    redirect("/register?error=unknown");
+
+    const errorMessage = error.message || "unknown";
+    redirect(`/register?error=${encodeURIComponent(errorMessage)}`);
   }
 
   // EL REDIRECT VA FUERA DEL TRY/CATCH
