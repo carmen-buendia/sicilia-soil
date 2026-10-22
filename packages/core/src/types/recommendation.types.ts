@@ -1,5 +1,5 @@
 // ============================================================================
-// Recommendation Types – MycoMesh Protocol Decision Support
+// Recommendation Types – SikeliaSoil Decision Support
 // ============================================================================
 
 export type RecommendationTopic = "soil" | "water" | "general";

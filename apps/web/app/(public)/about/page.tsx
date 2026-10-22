@@ -18,7 +18,7 @@ import { BrandLogo, Button, DataCard } from "@sicilia-soil/ui";
 const t = getLocale("es");
 
 export const metadata = {
-  title: "Sobre el proyecto — MycoMesh Protocol",
+  title: "Sobre el proyecto — SikeliaSoil",
 };
 
 export default function AboutPage() {

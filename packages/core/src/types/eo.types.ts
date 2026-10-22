@@ -1,7 +1,7 @@
 // packages/core/src/types/eo.types.ts
 
 // ============================================================================
-// MycoMesh Protocol — Earth Observation (EO)
+// SikeliaSoil — Earth Observation (EO)
 // ----------------------------------------------------------------------------
 // Two European space programmes converge here:
 //
