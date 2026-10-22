@@ -1,7 +1,7 @@
 // packages/core/src/types/mycorrhiza.types.ts
 
 // ============================================================================
-// Mycorrhizal network types — MycoMesh Protocol
+// Mycorrhizal network types — SikeliaSoil
 // ============================================================================
 
 export type MycorrhizaType =
@@ -47,7 +47,7 @@ export type MycorrhizaHost = {
 };
 
 // ============================================================================
-// Hosts de la finca (Sicilia interior, 800 m, colinas mediterráneas)
+// Hosts de la finca (Sikeliainterior, 800 m, colinas mediterráneas)
 // ============================================================================
 
 export const MYCORRHIZA_HOSTS: MycorrhizaHost[] = [
