@@ -64,6 +64,9 @@ importers:
       '@sicilia-soil/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@sicilia-soil/db':
+        specifier: workspace:^
+        version: link:../../packages/db
       '@sicilia-soil/ui':
         specifier: workspace:*
         version: link:../../packages/ui
