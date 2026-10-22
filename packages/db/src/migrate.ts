@@ -11,25 +11,34 @@ const MIGRATION_FILE = path.resolve(
   "drizzle/0000_married_songbird.sql",
 );
 
-// 🚨 PEGA AQUÍ EL CONTENIDO EXACTO DE TU ARCHIVO .SQL
-// (Copia y pega entre los backticks ``)
 const MIGRATION_SQL = `
--- Ejemplo (reemplázalo con tu SQL real):
 CREATE TABLE IF NOT EXISTS users (
   id TEXT PRIMARY KEY,
   email TEXT UNIQUE NOT NULL,
+  email_verified_at TEXT,
   name TEXT NOT NULL,
-  passwordHash TEXT NOT NULL,
+  locale TEXT,
+  timezone TEXT,
+  avatar_url TEXT,
+  role TEXT NOT NULL DEFAULT 'user',
   status TEXT NOT NULL DEFAULT 'active',
-  createdAt INTEGER,
-  lastLoginAt INTEGER
+  last_login_at TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  deleted_at TEXT
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS user_credentials (
+  user_id TEXT PRIMARY KEY,
+  password_hash TEXT NOT NULL,
+  password_updated_at TEXT NOT NULL,
+  mfa_enabled INTEGER NOT NULL DEFAULT 0,
+  mfa_secret TEXT,
+  failed_login_attempts INTEGER NOT NULL DEFAULT 0,
+  locked_until TEXT
+);
 `;
 
-/**
- * Función que se ejecuta en Vercel (en memoria)
- */
 export function runMigrations(sqlite: Database) {
   const statements = MIGRATION_SQL.split("--> statement-breakpoint")
     .map((s) => s.trim())
@@ -39,7 +48,6 @@ export function runMigrations(sqlite: Database) {
     try {
       sqlite.run(statements[i]);
     } catch (err: any) {
-      // Ignoramos errores si la tabla ya existe
       if (!err.message.includes("already exists")) {
         console.warn(
           `⚠️ Aviso en migración (statement ${i + 1}):`,
@@ -63,19 +71,10 @@ async function migrateCli() {
 
   let fileBuffer: Buffer | undefined;
   if (fs.existsSync(DB_PATH)) {
-    console.log("→ DB existente, cargando...");
     fileBuffer = fs.readFileSync(DB_PATH);
-  } else {
-    console.log("→ DB nueva, creando...");
   }
 
   const sqlite = fileBuffer ? new SQL.Database(fileBuffer) : new SQL.Database();
-
-  console.log(`→ Leyendo ${MIGRATION_FILE}...`);
-  if (!fs.existsSync(MIGRATION_FILE)) {
-    console.error(`✗ No se encontró la migración: ${MIGRATION_FILE}`);
-    process.exit(1);
-  }
 
   const sqlContent = fs.readFileSync(MIGRATION_FILE, "utf8");
   const statements = sqlContent
@@ -83,12 +82,9 @@ async function migrateCli() {
     .map((s) => s.trim())
     .filter(Boolean);
 
-  console.log(`→ Aplicando ${statements.length} statements...`);
-
   for (let i = 0; i < statements.length; i++) {
-    const stmt = statements[i];
     try {
-      sqlite.run(stmt);
+      sqlite.run(statements[i]);
     } catch (err: any) {
       if (!err.message.includes("already exists")) {
         console.error(`✗ Error en statement ${i + 1}:`, err.message);
@@ -101,7 +97,6 @@ async function migrateCli() {
   console.log(`✓ Migración aplicada: ${DB_PATH}`);
 }
 
-// Solo ejecuta la CLI si se llama directamente desde la terminal
 if (require.main === module) {
   migrateCli().catch((err) => {
     console.error("✗ Error en migración CLI:", err);
