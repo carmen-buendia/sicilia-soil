@@ -113,7 +113,6 @@ pnpm build
 | :------- | :--------------------------------------- |
 | Frontend | Next.js 16, React, TailwindCSS           |
 | Charts   | ECharts                                  |
-| Maps     | Leaflet, Copernicus tiles                |
 | State    | React hooks, Context                     |
 | Backend  | Express 4                                |
 | Database | SQLite → Postgres (planned)              |
