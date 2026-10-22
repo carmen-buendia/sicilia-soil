@@ -1,6 +1,6 @@
 // packages/ui/src/components/BrandLogo.tsx
 import type { ComponentType, ReactNode } from "react";
-import { MycoMeshLogo } from "./MycoMeshLogo";
+import { SikeliaLogo } from "./SikeliaLogo";
 
 /**
  * Slot de enlace. Acepta `next/link`, `react-router` `Link`,
@@ -45,7 +45,7 @@ export function BrandLogo({
   const content = (
     <>
       <div className={`${s.box} bg-ink text-paper`}>
-        <MycoMeshLogo
+        <SikeliaLogo
           size={s.icon}
           className="text-chloro group-hover:text-solar transition-colors"
         />
@@ -55,7 +55,7 @@ export function BrandLogo({
       >
         {wordmark ?? (
           <>
-            MycoMesh<span className="text-solar">.</span>Protocol
+            Sikelia<span className="text-solar">.</span>Soil
           </>
         )}
       </span>

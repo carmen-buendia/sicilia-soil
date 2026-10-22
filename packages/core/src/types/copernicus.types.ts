@@ -1,5 +1,5 @@
 // ============================================================================
-// Copernicus Types – Shared across MycoMesh Protocol
+// Copernicus Types – Shared across SikeliaSoil
 // ============================================================================
 
 export type CopernicusTabType = "indices" | "analysis";

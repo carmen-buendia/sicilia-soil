@@ -99,7 +99,7 @@ graph TD
 
 ## Origin
 
-These packages were extracted from **MycoMesh Protocol**, a field-deployed decision-support system for regenerative agriculture in Mediterranean environments. The application layer remains domain-specific; the infrastructure layer is published independently for reuse.
+These packages were extracted from **SikeliaSoil**, a field-deployed decision-support system for regenerative agriculture in Mediterranean environments. The application layer remains domain-specific; the infrastructure layer is published independently for reuse.
 
 ## License
 

@@ -1,7 +1,7 @@
 // packages/core/src/types/alerts.types.ts
 
 // ============================================================================
-// MycoMesh Protocol — Alerts engine
+// SikeliaSoil — Alerts engine
 // ----------------------------------------------------------------------------
 // Alerts are the OUTPUT of KPI/EO/sensor evaluation.
 // Flow:  data → rule → alert → notification → (optional) task
