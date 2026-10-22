@@ -4,12 +4,12 @@ Database layer for SikeliaSoil, built with [Drizzle ORM](https://orm.drizzle.tea
 
 ## Stack
 
-| Layer      | Technology                |
-| :--------- | :------------------------ |
-| ORM        | Drizzle ORM               |
-| Dev DB     | SQLite (`better-sqlite3`) |
-| Prod DB    | Postgres (planned, 2027)  |
-| Migrations | drizzle-kit               |
+| Layer      | Technology               |
+| :--------- | :----------------------- |
+| ORM        | Drizzle ORM              |
+| Dev DB     | SQLite (`sql.js`)        |
+| Prod DB    | libSQL / Turso (planned) |
+| Migrations | drizzle-kit              |
 
 ## Scripts
 
