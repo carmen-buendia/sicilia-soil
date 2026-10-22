@@ -32,7 +32,7 @@ apps/web/
 │   │   ├── recommendations/      List + card
 │   │   ├── shared/               Shared domain components (SoilChart, SymbiosisCard, CycleDiagram)
 │   │   └── soil-health/          MushroomCard
-│   └── layout/                   Navbar, Footer, SicilianFlag
+│   └── layout/                   Navbar, Footer
 │
 ├── hooks/                        All React hooks
 │   ├── useCerealData.ts
