@@ -1,5 +1,5 @@
 {
-  "name": "@sicilia-soil/rule-engine",
+  "name": "@isola-node/rule-engine",
   "version": "1.0.0",
   "description": "Agnostic deterministic and explainable rule engine for offline-first systems",
   "main": "src/index.ts",
