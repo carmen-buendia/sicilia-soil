@@ -1,7 +1,7 @@
 // packages/core/src/data/decision.defaults.ts
 
 // ============================================================================
-// MycoMesh Protocol — Decision default data
+// SikeliaSoil — Decision default data
 // ----------------------------------------------------------------------------
 // Real values from the Assoro farm, captured 2026-10-07.
 // Replace with API call once feat/db-crud is available.
@@ -20,7 +20,7 @@ export const DECISION_CONTEXT_DEFAULT: DecisionContext = {
   farmId: "farm-assoro",
   scopeType: "farm",
   scopeId: "farm",
-  scopeName: "MycoMesh Protocol — Assoro",
+  scopeName: "SikeliaSoil — Assoro",
   areaM2: 2240,
   criteria: ["water", "fertilisation", "protection", "efficiency", "decisions"],
 };

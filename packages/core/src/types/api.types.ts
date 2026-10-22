@@ -1,7 +1,7 @@
 // packages/core/src/types/api.types.ts
 
 // ============================================================================
-// MycoMesh Protocol — API contracts
+// SikeliaSoil — API contracts
 // ----------------------------------------------------------------------------
 // Generic DTOs used across every CRUD endpoint.
 // Keeps apps/backend + apps/web aligned without duplicating shapes.

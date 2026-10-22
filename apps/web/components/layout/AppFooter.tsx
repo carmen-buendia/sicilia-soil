@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Sprout } from "lucide-react";
 import { SicilianFlag } from "./SicilianFlag";
 import { getLocale } from "@sicilia-soil/core";
-import { BrandLogo, MycoMeshLogo } from "@sicilia-soil/ui";
+import { BrandLogo, SikeliaLogo } from "@sicilia-soil/ui";
 
 const t = getLocale("es");
 
@@ -54,12 +54,11 @@ export function AppFooter() {
         {/* Copyright y Créditos */}
         <div className="text-center font-mono text-[10px] uppercase tracking-widest text-ink/40 leading-loose">
           <div className="flex items-center justify-center gap-2 mb-1">
-            <MycoMeshLogo />
+            <SikeliaLogo />
             <span>{t.ui.footer.createdBy}</span>
           </div>
           <p>
-            © {new Date().getFullYear()} MycoMesh Protocol ·{" "}
-            {t.ui.footer.madeWith}
+            © {new Date().getFullYear()} SikeliaSoil · {t.ui.footer.madeWith}
           </p>
         </div>
       </div>

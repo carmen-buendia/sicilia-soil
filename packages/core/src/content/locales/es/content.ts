@@ -17,9 +17,9 @@ export const content = {
 
     // Introducción cargada de conceptos técnicos (Open Source, Offline, Datos)
     intro:
-      "MycoMesh Protocol es una infraestructura open source y offline-first para la monitorización ambiental. Diseñada para operar sin depender de la nube, conecta hardware local, datos satelitales y conocimiento del territorio para la regeneración de ecosistemas.",
+      "SikeliaSoil es una infraestructura open source y offline-first para la monitorización ambiental. Diseñada para operar sin depender de la nube, conecta hardware local, datos satelitales y conocimiento del territorio para la regeneración de ecosistemas.",
 
-    footerNote: "© 2026 MycoMesh Protocol. Construido con código abierto.",
+    footerNote: "© 2026 SikeliaSoil. Construido con código abierto.",
 
     featuresTitle: "Arquitectura para la autonomía",
     featuresSubtitle:
@@ -59,13 +59,13 @@ export const content = {
 
   manifesto: {
     heroTitle: "Nuestro Manifiesto",
-    heroSubtitle: "Por qué existe MycoMesh Protocol y hacia dónde va",
+    heroSubtitle: "Por qué existe SikeliaSoil y hacia dónde va",
 
-    introTitle: "Por qué existe MycoMesh Protocol",
+    introTitle: "Por qué existe SikeliaSoil",
     introText1:
       "Durante demasiado tiempo, la tecnología ha estado desconectada de la tierra. Existen sensores, pero están diseñados para la agricultura industrial. Los datos fluyen, pero no hablan el lenguaje de la permacultura. Las herramientas se construyen para la escala, no para el sentido.",
     introText2:
-      "MycoMesh Protocol existe para cambiar eso. No es solo un huerto. Es un ecosistema que se diseña a sí mismo con la ayuda de los hongos y la tecnología.",
+      "SikeliaSoil existe para cambiar eso. No es solo un huerto. Es un ecosistema que se diseña a sí mismo con la ayuda de los hongos y la tecnología.",
 
     beliefsTitle: "Lo que creemos",
     belief1Title: "Sintropía sobre entropía",
@@ -103,20 +103,20 @@ export const content = {
 
     futureTitle: "Futuro: La Isola Latente",
     futureDesc:
-      "MycoMesh Protocol es el primer paso. Si el proyecto crece, nacerá La Isola Latente & Sikelia Lab: un proyecto cultural y agronómico que englobará residencias artísticas, formación en permacultura y producción regenerativa.",
+      "SikeliaSoil es el primer paso. Si el proyecto crece, nacerá La Isola Latente & Sikelia Lab: un proyecto cultural y agronómico que englobará residencias artísticas, formación en permacultura y producción regenerativa.",
 
     quoteText:
-      '"MycoMesh Protocol no es solo un proyecto. Es una propuesta de que el futuro de la tecnología no está en más complejidad, sino en más conexión."',
-    quoteAuthor: "Carmen María Buendía Sánchez, creadora de MycoMesh Protocol",
+      '"SikeliaSoil no es solo un proyecto. Es una propuesta de que el futuro de la tecnología no está en más complejidad, sino en más conexión."',
+    quoteAuthor: "Carmen María Buendía Sánchez, creadora de SikeliaSoil",
   },
   about: {
-    title: "Sobre MycoMesh Protocol",
+    title: "Sobre SikeliaSoil",
     subtitle:
       "Infraestructura de suelo agnóstica al cultivo para la agricultura regenerativa",
 
     missionTitle: "Nuestra misión",
     missionText1:
-      "MycoMesh Protocol es una infraestructura de suelo de código abierto que fusiona sensores IoT locales con datos de observación de la Tierra de Copernicus para optimizar la salud del suelo y la gestión del agua en agroecosistemas mediterráneos.",
+      "SikeliaSoil es una infraestructura de suelo de código abierto que fusiona sensores IoT locales con datos de observación de la Tierra de Copernicus para optimizar la salud del suelo y la gestión del agua en agroecosistemas mediterráneos.",
     missionText2:
       "Ayudamos a pequeñas y medianas explotaciones a traducir datos satelitales y de sensores en decisiones accionables —programación de riego, planificación de fertilización y alerta temprana de sequías— reduciendo insumos mientras mejoramos la fertilidad del suelo y el secuestro de carbono.",
 
@@ -260,7 +260,7 @@ export const content = {
       habitat: "Hábitat:",
       season: "Temporada:",
       endemic: "Endemismo:",
-      endemicTrue: "Endémica de Sicilia 🌍",
+      endemicTrue: "Endémica de Sikelia🌍",
       endemicFalse: "Cosmopolita",
       trackingTitle: "Seguimiento de condiciones · {name}",
       trackingNote:

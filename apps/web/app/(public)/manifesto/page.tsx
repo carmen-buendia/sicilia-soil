@@ -11,12 +11,12 @@ import {
   WifiOff,
   ShieldCheck,
 } from "lucide-react";
-import { BrandLogo, Button, DataCard, MycoMeshLogo } from "@sicilia-soil/ui";
+import { BrandLogo, Button, DataCard, SikeliaLogo } from "@sicilia-soil/ui";
 
 const t = getLocale("es");
 
 export const metadata = {
-  title: "Manifiesto — MycoMesh Protocol",
+  title: "Manifiesto — SikeliaSoil",
 };
 
 export default function ManifestoPage() {
@@ -50,7 +50,7 @@ export default function ManifestoPage() {
         {/* Hero del Manifiesto */}
         <div className="mb-20 text-center">
           <div className="inline-flex items-center justify-center p-3 bg-chloro/10 rounded-2xl mb-6">
-            <MycoMeshLogo size={40} className="text-chloro" />
+            <SikeliaLogo size={40} className="text-chloro" />
           </div>
           <h1 className="text-5xl sm:text-6xl font-serif font-bold mb-6 text-ink">
             {t.content.manifesto.heroTitle}

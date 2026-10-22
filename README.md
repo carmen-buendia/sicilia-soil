@@ -1,16 +1,16 @@
-# MycoMesh Protocol
+# SikeliaSoil
 
 > An open-source, crop-agnostic platform for soil regeneration and water efficiency in Mediterranean and continental agroecosystems.
 
-MycoMesh Protocol is a decision-support system (DSS) that fuses in-situ IoT soil sensors with Copernicus Earth Observation data to help small and medium-sized farms regenerate their soil through the mycorrhizal network.
+SikeliaSoil is a decision-support system (DSS) that fuses in-situ IoT soil sensors with Copernicus Earth Observation data to help small and medium-sized farms regenerate their soil through the mycorrhizal network.
 
 The platform is developed in Sicily (Italy).
 
 ---
 
-## Why MycoMesh Protocol exists
+## Why SikeliaSoil exists
 
-Modern agriculture has spent decades extracting from the soil. MycoMesh Protocol does the opposite: it measures, visualises and acts on the **fungal network** that regenerates soil, retains water and captures carbon.
+Modern agriculture has spent decades extracting from the soil. SikeliaSoil does the opposite: it measures, visualises and acts on the **fungal network** that regenerates soil, retains water and captures carbon.
 
 The platform works with any crop (esparto, cereal, olive, almond, carob, vegetables, cover crops) — it is **crop-agnostic**. It also monitors the **bioremediation** of degraded areas (e.g. historical illegal burning sites) using native fungi and esparto cover.
 
@@ -29,7 +29,7 @@ sicilia-soil/
 │
 ├── packages/
 │ ├── core/ Types, mock data, constants, config
-│ │ └── src/decision/ MycoMesh Protocol's implementation of the decision engine
+│ │ └── src/decision/ SikeliaSoil's implementation of the decision engine
 │ ├── decision/ Generic, domain-agnostic rule engine (reusable)
 │ ├── db/ libSQL + Drizzle ORM + sql.js
 │ ├── edge/ (planned) edge computing layer

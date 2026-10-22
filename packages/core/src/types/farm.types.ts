@@ -1,7 +1,7 @@
 // packages/core/src/types/farm.types.ts
 
 // ============================================================================
-// MycoMesh Protocol — Legacy farm types
+// SikeliaSoil — Legacy farm types
 // ----------------------------------------------------------------------------
 // DEPRECATED. These types are kept for backward compatibility with the
 // /humidity and /ground-cover pages that still consume the old mock shape.
