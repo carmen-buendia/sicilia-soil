@@ -9,30 +9,35 @@ export async function register(formData: FormData) {
   const password = formData.get("password") as string;
   const name = formData.get("name") as string;
 
+  console.log("🟢 1. Iniciando registro para:", email);
+
   if (!email || !password || !name) {
+    console.log("🔴 Error: Faltan campos");
     redirect("/register?error=missing_fields");
   }
 
   try {
+    console.log("🟡 2. Hasheando contraseña...");
     const hash = await hashPassword(password);
+
+    console.log("🟡 3. Creando usuario en la base de datos...");
     await createUser(email, hash, name);
 
-    // Solo guardamos en disco si estamos en local. En Vercel lo ignoramos.
     if (process.env.NODE_ENV !== "production") {
       saveDb();
     }
+    console.log("🟢 4. Usuario creado con éxito.");
   } catch (error: any) {
-    console.error("🔥 Error real en el registro:", error);
+    // ESTO ES LO QUE NECESITAMOS VER
+    console.error("🔥 ERROR CRÍTICO EN EL REGISTRO:", error);
 
     if (error.message === "El usuario ya existe") {
       redirect("/register?error=user_exists");
     }
-
-    const errorMessage = error.message || "unknown";
-    redirect(`/register?error=${encodeURIComponent(errorMessage)}`);
+    redirect("/register?error=unknown");
   }
 
-  // EL REDIRECT VA FUERA DEL TRY/CATCH
-  // Si llegamos aquí, es que el usuario se creó con éxito
+  // Si todo va bien, redirigimos fuera del try/catch
+  console.log("🟢 5. Redirigiendo al login...");
   redirect("/login?registered=true");
 }
