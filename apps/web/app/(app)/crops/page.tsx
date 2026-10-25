@@ -1,41 +1,50 @@
+// apps/web/app/(app)/crops/page.tsx
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getLocale } from "@sicilia-soil/core";
-import {
-  EspartoTab,
-  PolycultureTab,
-  CerealTab,
-  CoverFallowTab,
-  AnalysisTab,
-} from "./tabs";
+import { useCropSystemsContext } from "@/components/features/crops/CropSystemsProvider";
+import { SystemTab } from "@/components/features/crops/tabs/SystemTab";
+import { ObservationsTab } from "@/components/features/crops/tabs/ObservationsTab";
+import { AnalyticsTab } from "@/components/features/crops/tabs/AnalyticsTab";
 import { Button } from "@sicilia-soil/ui";
 
-type TabId = "esparto" | "polyculture" | "cereal" | "cover-fallow" | "analysis";
+const FIXED_TABS = ["observations", "analytics"] as const;
+type FixedTabId = (typeof FIXED_TABS)[number];
 
 export default function CropsPage() {
-  const [activeTab, setActiveTab] = useState<TabId>("esparto");
+  const { systems } = useCropSystemsContext();
   const locale = getLocale("es");
   const t = locale.content.cropsPage;
 
-  const TABS: { id: TabId; label: string; icon: string }[] = [
-    { id: "esparto", label: t.tabs.esparto, icon: "🌾" },
-    { id: "polyculture", label: t.tabs.polyculture, icon: "🌳" },
-    { id: "cereal", label: t.tabs.cereal, icon: "🌾" },
-    { id: "cover-fallow", label: t.tabs.coverFallow, icon: "🌿" },
-    { id: "analysis", label: t.tabs.analysis, icon: "📈" },
+  const [activeTab, setActiveTab] = useState<string>(
+    () => systems[0]?.id ?? "observations",
+  );
+
+  useEffect(() => {
+    if (FIXED_TABS.includes(activeTab as FixedTabId)) return;
+    if (!systems.find((s) => s.id === activeTab)) {
+      setActiveTab(systems[0]?.id ?? "observations");
+    }
+  }, [systems, activeTab]);
+
+  const tabs = [
+    ...systems.map((s) => ({ id: s.id, label: s.name, icon: s.icon })),
+    { id: "observations", label: t.tabs.observations, icon: "🔬" },
+    { id: "analytics", label: t.tabs.analytics, icon: "📈" },
   ];
+
+  const activeSystem = systems.find((s) => s.id === activeTab);
 
   return (
     <div className="max-w-7xl mx-auto space-y-8 pb-12">
-      {/* HEADER */}
       <div className="flex flex-col gap-4 border-b border-ink/20 pb-6">
         <div className="flex items-center gap-4 flex-wrap">
           <div className="w-12 h-12 bg-chloro/10 border border-chloro/20 flex items-center justify-center text-xl">
-            🌾
+            🌱
           </div>
           <div>
-            <h1 className="text-3xl font-serif font-bold text-ink flex items-center gap-3">
+            <h1 className="text-3xl font-serif font-bold text-ink">
               {t.title}
             </h1>
             <p className="font-mono text-xs uppercase tracking-widest text-chloro font-bold mt-1">
@@ -48,9 +57,8 @@ export default function CropsPage() {
         </p>
       </div>
 
-      {/* TABS (Estilo índice de libro) */}
       <div className="flex flex-wrap gap-0 border-b border-ink/20">
-        {TABS.map((tab) => {
+        {tabs.map((tab) => {
           const isActive = activeTab === tab.id;
           return (
             <Button
@@ -71,13 +79,17 @@ export default function CropsPage() {
         })}
       </div>
 
-      {/* CONTENIDO */}
       <div className="pt-2">
-        {activeTab === "esparto" && <EspartoTab />}
-        {activeTab === "polyculture" && <PolycultureTab />}
-        {activeTab === "cereal" && <CerealTab />}
-        {activeTab === "cover-fallow" && <CoverFallowTab />}
-        {activeTab === "analysis" && <AnalysisTab />}
+        {activeSystem && <SystemTab system={activeSystem} />}
+        {activeTab === "observations" && <ObservationsTab />}
+        {activeTab === "analytics" && <AnalyticsTab />}
+        {systems.length === 0 &&
+          activeTab !== "observations" &&
+          activeTab !== "analytics" && (
+            <div className="p-12 text-center border border-dashed border-ink/20">
+              <p className="font-mono text-sm text-ink/50">{t.emptySystems}</p>
+            </div>
+          )}
       </div>
     </div>
   );

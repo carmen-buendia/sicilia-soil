@@ -7,7 +7,6 @@ import { createSession, COOKIE_NAME } from "@/lib/auth/session";
 import {
   getUserWithCredentialsByEmail,
   updateLastLogin,
-  saveDb,
 } from "@sicilia-soil/db";
 
 export async function login(formData: FormData) {
@@ -18,10 +17,10 @@ export async function login(formData: FormData) {
     redirect("/login?error=missing_fields");
   }
 
-  // 1. Buscar usuario
+  // 1. Search user.
   const user = await getUserWithCredentialsByEmail(email);
 
-  // 2. Verificar credenciales (¡ESTO DEBE IR ANTES DE HACER NADA CON EL USER!)
+  // 2. Verify credentials.
   if (!user || user.status !== "active") {
     redirect("/login?error=invalid_credentials");
   }
@@ -31,19 +30,10 @@ export async function login(formData: FormData) {
     redirect("/login?error=invalid_credentials");
   }
 
-  // 3. Actualizar lastLoginAt
+  // 3. Update lastLoginAt.
   await updateLastLogin(user.id);
 
-  // 4. Guardar en disco SOLO en local (Vercel es de solo lectura)
-  try {
-    if (process.env.NODE_ENV !== "production") {
-      saveDb();
-    }
-  } catch (error) {
-    console.warn("⚠️ No se pudo guardar la BD en disco (entorno Serverless)");
-  }
-
-  // 5. Crear sesión JWT y cookie
+  // 5. Create session JWT and cookie.
   const token = await createSession(user.id);
 
   (await cookies()).set(COOKIE_NAME, token, {
@@ -58,9 +48,9 @@ export async function login(formData: FormData) {
 }
 
 export async function logout() {
-  // 1. Borramos la cookie de sesión
+  // 1. Delete session cookie.
   (await cookies()).delete(COOKIE_NAME);
 
-  // 2. Redirigimos al login
+  // 2. Redirect to login.
   redirect("/login");
 }
