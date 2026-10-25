@@ -1,13 +1,6 @@
-Aquí tienes el `README.md` completamente reescrito, actualizado y optimizado para las convocatorias de **Restack** y **Nostradamus**.
-
-He eliminado todas las referencias al backend de Express, he actualizado los nombres a `rule-engine` y `rules`, he mejorado la redacción en inglés para que suene más profesional y he añadido un toque de "infraestructura abierta" que les encantará a los evaluadores.
-
-Copia y pega esto en tu archivo `README.md`:
-
-````markdown
 # SikeliaSoil
 
-> An open-source, crop-agnostic platform for soil regeneration and water efficiency in Mediterranean and continental agroecosystems.
+An open-source, crop-agnostic platform for soil regeneration and water efficiency in Mediterranean and continental agroecosystems.
 
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Next.js](https://img.shields.io/badge/Next.js-16-black)](https://nextjs.org/)
@@ -40,7 +33,7 @@ sicilia-soil/
 │   ├── core/             Types, mock data, constants, and Sikelia domain rules
 │   │   └── src/rules/    Sikelia's specific implementation of the rule engine
 │   ├── rule-engine/      Generic, domain-agnostic, explainable rule engine
-│   ├── db/               libSQL + Drizzle ORM + sql.js (Edge-ready)
+│   ├── db/               libSQL + Drizzle ORM (Edge-ready)
 │   ├── edge/             (Planned) Constrained device runtime
 │   ├── sync/             (Planned) Offline-first sync protocol (MQTT/CoAP)
 │   ├── ui/               Reusable React components (charts, cards, badges)
@@ -49,7 +42,6 @@ sicilia-soil/
 ├── pnpm-workspace.yaml
 └── package.json
 ```
-````
 
 ### Package Responsibilities
 
@@ -59,7 +51,7 @@ sicilia-soil/
 | **`@isola-node/rule-engine`** | Domain-agnostic, deterministic, and explainable rule engine. Zero dependencies, pure TypeScript.                  |
 | **`@sicilia-soil/utils`**     | Pure logic and engines. No React. Consumable from both client and server.                                         |
 | **`@sicilia-soil/ui`**        | Reusable React components. No domain logic.                                                                       |
-| **`@sicilia-soil/db`**        | Database schema, Drizzle ORM configuration, and local SQLite (sql.js) management.                                 |
+| **`@sicilia-soil/db`**        | Database schema, Drizzle ORM configuration, and libSQL/Turso connection management.                               |
 | **`apps/web`**                | The Next.js application. Routes, Server Actions, hooks, and feature-specific components.                          |
 
 ### Rule of thumb
@@ -121,20 +113,23 @@ pnpm build
 | **Frontend**      | Next.js 16 (App Router), React 18, TailwindCSS |
 | **Charts**        | ECharts                                        |
 | **Backend / API** | Next.js Server Actions (Serverless)            |
-| **Database**      | SQLite (sql.js) → libSQL/Turso (planned)       |
+| **Database**      | libSQL / Turso (persistent, edge-ready)        |
 | **EO Data**       | Copernicus (Sentinel-1, 2, 3), NASA GIBS       |
 | **Weather**       | Open-Meteo (planned)                           |
 | **Monorepo**      | pnpm Workspaces                                |
 
 ---
 
-## Open-Source & EU Alignment
+## Database Strategy & Data Sovereignty
 
-SikeliaSoil is built on the principles of the **Open Internet Stack**:
+SikeliaSoil is built on the principles of the **Open Internet Stack**. To ensure **Data Sovereignty**, we avoid proprietary cloud lock-in (such as AWS or Google Cloud).
 
-- **Data Sovereignty**: No vendor lock-in. Farmers and local communities own their data.
-- **Offline-First**: Designed to operate in rural areas with intermittent connectivity.
-- **Transparency**: Deterministic decision-making (no black-box AI) for agricultural audits.
+**Why Turso for the MVP?**
+During the prototyping phase, the platform uses **Turso Cloud** for rapid iteration and high availability. However, Turso is built on **libSQL** (an MIT-licensed, open-source fork of SQLite). This is a strategic choice:
+
+1. **Zero Vendor Lock-in**: The code is 100% portable.
+2. **Path to Self-Hosting**: In the next phase, the database can be migrated to a self-hosted `sqld` instance on a European VPS (e.g., Hetzner) without changing a single line of application code.
+3. **Offline-First Ready**: libSQL is designed to work with embedded replicas, which aligns perfectly with our vision of offline-capable edge devices in rural areas.
 
 ---
 
@@ -150,7 +145,3 @@ Apache License 2.0 — see [LICENSE](./LICENSE).
 Founder & Lead Developer  
 [carmenbuendiafullstack@gmail.com](mailto:carmenbuendiafullstack@gmail.com)  
 [GitHub Profile](https://github.com/carmen-buendia)
-
-```
-
-```

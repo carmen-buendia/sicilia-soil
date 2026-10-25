@@ -118,7 +118,7 @@ export default async function LoginPage({
               type="submit"
               variant="bare"
               size="none"
-              className="!!rounded-none flex items-center justify-center gap-2 w-full px-8 py-4 bg-ink text-paper font-mono text-xs uppercase tracking-widest font-bold hover:bg-chloro hover:!scale-100 transition-colors mt-2"
+              className="!rounded-none flex items-center justify-center gap-2 w-full px-8 py-4 bg-ink text-paper font-mono text-xs uppercase tracking-widest font-bold hover:bg-chloro hover:!scale-100 transition-colors mt-2"
             >
               {t.ui.auth.signIn} <ArrowRight className="w-4 h-4" />
             </Button>

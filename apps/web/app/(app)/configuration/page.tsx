@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -14,12 +14,14 @@ import {
   Lock,
   Monitor,
   Save,
+  Check,
 } from "lucide-react";
 import { Button, DataCard } from "@sicilia-soil/ui";
+import { getLocale } from "@sicilia-soil/core";
 
-// ============================================================================
-// Toggle — switch semántico con role="switch"
-// ============================================================================
+const locale = getLocale("es");
+const t = locale.ui.configuration;
+
 function Toggle({
   checked,
   onChange,
@@ -49,24 +51,50 @@ function Toggle({
   );
 }
 
-// ============================================================================
-// Página
-// ============================================================================
 export default function ConfigurationPage() {
   const [activeTab, setActiveTab] = useState<
     "general" | "alerts" | "sensors" | "account"
   >("general");
-  const [emailAlerts, setEmailAlerts] = useState(true);
-  const [pushAlerts, setPushAlerts] = useState(false);
+
+  // Estados
   const [darkMode, setDarkMode] = useState(false);
   const [autoRefresh, setAutoRefresh] = useState(true);
   const [refreshInterval, setRefreshInterval] = useState("30");
+  const [emailAlerts, setEmailAlerts] = useState(true);
+  const [pushAlerts, setPushAlerts] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
+
+  // Cargar preferencias al montar el componente
+  useEffect(() => {
+    const savedSettings = localStorage.getItem("sikelia_settings");
+    if (savedSettings) {
+      const parsed = JSON.parse(savedSettings);
+      setDarkMode(parsed.darkMode ?? false);
+      setAutoRefresh(parsed.autoRefresh ?? true);
+      setRefreshInterval(parsed.refreshInterval ?? "30");
+      setEmailAlerts(parsed.emailAlerts ?? true);
+      setPushAlerts(parsed.pushAlerts ?? false);
+    }
+  }, []);
+
+  const handleSave = () => {
+    const settings = {
+      darkMode,
+      autoRefresh,
+      refreshInterval,
+      emailAlerts,
+      pushAlerts,
+    };
+    localStorage.setItem("sikelia_settings", JSON.stringify(settings));
+    setIsSaved(true);
+    setTimeout(() => setIsSaved(false), 2000);
+  };
 
   const tabs = [
-    { id: "general", label: "General", icon: Settings },
-    { id: "alerts", label: "Alertas", icon: Bell },
-    { id: "sensors", label: "Sensores", icon: Wifi },
-    { id: "account", label: "Cuenta", icon: User },
+    { id: "general", label: t.tabs.general, icon: Settings },
+    { id: "alerts", label: t.tabs.alerts, icon: Bell },
+    { id: "sensors", label: t.tabs.sensors, icon: Wifi },
+    { id: "account", label: t.tabs.account, icon: User },
   ] as const;
 
   return (
@@ -87,10 +115,10 @@ export default function ConfigurationPage() {
           <div>
             <h1 className="text-3xl md:text-4xl font-serif font-bold text-ink flex items-center gap-3">
               <Settings className="w-6 h-6 text-chloro" />
-              Configuración
+              {t.title}
             </h1>
             <p className="font-mono text-[10px] uppercase tracking-widest text-ink/50 mt-1">
-              Ajusta las preferencias de tu huerto sintrópico
+              {t.subtitle}
             </p>
           </div>
         </div>
@@ -105,7 +133,7 @@ export default function ConfigurationPage() {
                 variant="bare"
                 size="none"
                 onClick={() => setActiveTab(tab.id)}
-                className={`!!rounded-none hover:scale-100 flex items-center gap-2 px-4 py-2 font-mono text-xs uppercase tracking-widest font-bold transition-colors ${
+                className={`!rounded-none hover:scale-100 flex items-center gap-2 px-4 py-2 font-mono text-xs uppercase tracking-widest font-bold transition-colors ${
                   active
                     ? "bg-ink text-paper"
                     : "text-ink/60 hover:text-ink hover:bg-ink/5"
@@ -124,19 +152,19 @@ export default function ConfigurationPage() {
             <DataCard className="p-6">
               <h3 className="text-lg font-bold text-ink mb-4 flex items-center gap-2">
                 <Monitor className="w-5 h-5 text-chloro" />
-                Apariencia
+                {t.general.appearanceTitle}
               </h3>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="font-medium text-ink">Modo oscuro</p>
+                  <p className="font-medium text-ink">{t.general.darkMode}</p>
                   <p className="text-sm text-ink/60">
-                    Alternar entre tema claro y oscuro
+                    {t.general.darkModeDesc}
                   </p>
                 </div>
                 <Toggle
                   checked={darkMode}
                   onChange={() => setDarkMode(!darkMode)}
-                  label="Modo oscuro"
+                  label={t.general.darkMode}
                 />
               </div>
             </DataCard>
@@ -144,37 +172,39 @@ export default function ConfigurationPage() {
             <DataCard className="p-6">
               <h3 className="text-lg font-bold text-ink mb-4 flex items-center gap-2">
                 <RefreshCw className="w-5 h-5 text-chloro" />
-                Datos
+                {t.general.dataTitle}
               </h3>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-medium text-ink">Auto-refresco</p>
+                    <p className="font-medium text-ink">
+                      {t.general.autoRefresh}
+                    </p>
                     <p className="text-sm text-ink/60">
-                      Actualizar datos automáticamente
+                      {t.general.autoRefreshDesc}
                     </p>
                   </div>
                   <Toggle
                     checked={autoRefresh}
                     onChange={() => setAutoRefresh(!autoRefresh)}
-                    label="Auto-refresco"
+                    label={t.general.autoRefresh}
                   />
                 </div>
 
                 {autoRefresh && (
                   <div>
                     <label className="block font-mono text-[10px] uppercase tracking-widest font-bold text-ink/60 mb-2">
-                      Intervalo de refresco
+                      {t.general.interval}
                     </label>
                     <select
                       value={refreshInterval}
                       onChange={(e) => setRefreshInterval(e.target.value)}
                       className="w-full px-3 py-2 border border-ink/20 !rounded-none bg-paper text-ink font-mono text-sm focus:outline-none focus:border-ink"
                     >
-                      <option value="15">Cada 15 segundos</option>
-                      <option value="30">Cada 30 segundos</option>
-                      <option value="60">Cada 1 minuto</option>
-                      <option value="300">Cada 5 minutos</option>
+                      <option value="15">{t.general.interval15}</option>
+                      <option value="30">{t.general.interval30}</option>
+                      <option value="60">{t.general.interval60}</option>
+                      <option value="300">{t.general.interval300}</option>
                     </select>
                   </div>
                 )}
@@ -184,7 +214,7 @@ export default function ConfigurationPage() {
             <DataCard className="p-6">
               <h3 className="text-lg font-bold text-ink mb-4 flex items-center gap-2">
                 <Globe className="w-5 h-5 text-chloro" />
-                Idioma
+                {t.general.languageTitle}
               </h3>
               <select className="w-full px-3 py-2 border border-ink/20 !rounded-none bg-paper text-ink font-mono text-sm focus:outline-none focus:border-ink">
                 <option value="es">Español</option>
@@ -194,11 +224,18 @@ export default function ConfigurationPage() {
             </DataCard>
 
             <Button
+              onClick={handleSave}
               variant="cta"
               className="w-full px-8 py-3 font-mono text-xs uppercase tracking-widest font-bold transition-colors"
-              icon={<Save className="w-4 h-4" />}
+              icon={
+                isSaved ? (
+                  <Check className="w-4 h-4" />
+                ) : (
+                  <Save className="w-4 h-4" />
+                )
+              }
             >
-              Guardar cambios
+              {isSaved ? "¡Guardado!" : t.general.save}
             </Button>
           </div>
         )}
@@ -209,33 +246,29 @@ export default function ConfigurationPage() {
             <DataCard className="p-6">
               <h3 className="text-lg font-bold text-ink mb-4 flex items-center gap-2">
                 <Bell className="w-5 h-5 text-chloro" />
-                Notificaciones
+                {t.alerts.notificationsTitle}
               </h3>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-medium text-ink">Notificaciones push</p>
-                    <p className="text-sm text-ink/60">
-                      Recibir alertas en el navegador
-                    </p>
+                    <p className="font-medium text-ink">{t.alerts.push}</p>
+                    <p className="text-sm text-ink/60">{t.alerts.pushDesc}</p>
                   </div>
                   <Toggle
                     checked={pushAlerts}
                     onChange={() => setPushAlerts(!pushAlerts)}
-                    label="Notificaciones push"
+                    label={t.alerts.push}
                   />
                 </div>
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-medium text-ink">Alertas por email</p>
-                    <p className="text-sm text-ink/60">
-                      Recibir alertas en tu correo
-                    </p>
+                    <p className="font-medium text-ink">{t.alerts.email}</p>
+                    <p className="text-sm text-ink/60">{t.alerts.emailDesc}</p>
                   </div>
                   <Toggle
                     checked={emailAlerts}
                     onChange={() => setEmailAlerts(!emailAlerts)}
-                    label="Alertas por email"
+                    label={t.alerts.email}
                   />
                 </div>
               </div>
@@ -244,12 +277,12 @@ export default function ConfigurationPage() {
             <DataCard className="p-6">
               <h3 className="text-lg font-bold text-ink mb-4 flex items-center gap-2">
                 <Droplets className="w-5 h-5 text-solar" />
-                Umbrales de alerta
+                {t.alerts.thresholdsTitle}
               </h3>
               <div className="space-y-4">
                 <div>
                   <label className="block font-mono text-[10px] uppercase tracking-widest font-bold text-ink/60 mb-1">
-                    Humedad mínima (%)
+                    {t.alerts.minMoisture}
                   </label>
                   <input
                     type="range"
@@ -266,7 +299,7 @@ export default function ConfigurationPage() {
                 </div>
                 <div>
                   <label className="block font-mono text-[10px] uppercase tracking-widest font-bold text-ink/60 mb-1">
-                    Temperatura máxima (°C)
+                    {t.alerts.maxTemp}
                   </label>
                   <input
                     type="range"
@@ -283,7 +316,7 @@ export default function ConfigurationPage() {
                 </div>
                 <div>
                   <label className="block font-mono text-[10px] uppercase tracking-widest font-bold text-ink/60 mb-1">
-                    Luz mínima (%)
+                    {t.alerts.minLight}
                   </label>
                   <input
                     type="range"
@@ -302,11 +335,18 @@ export default function ConfigurationPage() {
             </DataCard>
 
             <Button
+              onClick={handleSave}
               variant="cta"
               className="w-full px-8 py-3 font-mono text-xs uppercase tracking-widest font-bold transition-colors"
-              icon={<Save className="w-4 h-4" />}
+              icon={
+                isSaved ? (
+                  <Check className="w-4 h-4" />
+                ) : (
+                  <Save className="w-4 h-4" />
+                )
+              }
             >
-              Guardar umbrales
+              {isSaved ? "¡Guardado!" : t.alerts.saveThresholds}
             </Button>
           </div>
         )}
@@ -317,63 +357,21 @@ export default function ConfigurationPage() {
             <DataCard className="p-6">
               <h3 className="text-lg font-bold text-ink mb-4 flex items-center gap-2">
                 <Wifi className="w-5 h-5 text-chloro" />
-                Estado de sensores
+                {t.sensors.title}
               </h3>
-              <div className="space-y-2">
-                {[
-                  {
-                    name: "Sensor de humedad - Parcela Norte",
-                    status: "online",
-                    value: "78%",
-                  },
-                  {
-                    name: "Sensor de temperatura - Parcela Sur",
-                    status: "online",
-                    value: "24°C",
-                  },
-                  {
-                    name: "Sensor de luz - Olivar",
-                    status: "offline",
-                    value: "---",
-                  },
-                  {
-                    name: "Sensor de viento - Zona Oeste",
-                    status: "online",
-                    value: "12 km/h",
-                  },
-                ].map((sensor, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center justify-between p-3 bg-paper border border-ink/10"
-                  >
-                    <div>
-                      <p className="font-medium text-ink">{sensor.name}</p>
-                      <p className="font-mono text-xs text-ink/60">
-                        {sensor.value}
-                      </p>
-                    </div>
-                    <span
-                      className={`px-2 py-1 font-mono text-[10px] uppercase tracking-widest font-bold ${
-                        sensor.status === "online"
-                          ? "bg-chloro/10 text-chloro"
-                          : "bg-red-500/10 text-red-500"
-                      }`}
-                    >
-                      {sensor.status === "online"
-                        ? "Conectado"
-                        : "Desconectado"}
-                    </span>
-                  </div>
-                ))}
+              <div className="p-8 text-center border border-dashed border-ink/20 bg-paper/50">
+                <p className="font-mono text-sm text-ink/60">
+                  {t.sensors.noSensors}
+                </p>
               </div>
             </DataCard>
 
             <Button
-              variant="cta"
-              className="w-full px-8 py-3 font-mono text-xs uppercase tracking-widest font-bold transition-colors"
+              variant="outline"
+              className="w-full px-8 py-3 border-ink/20 text-ink hover:bg-ink/5 font-mono text-xs uppercase tracking-widest font-bold transition-colors"
               icon={<RefreshCw className="w-4 h-4" />}
             >
-              Reintentar conexión
+              {t.sensors.retry}
             </Button>
           </div>
         )}
@@ -384,46 +382,46 @@ export default function ConfigurationPage() {
             <DataCard className="p-6">
               <h3 className="text-lg font-bold text-ink mb-4 flex items-center gap-2">
                 <User className="w-5 h-5 text-chloro" />
-                Información personal
+                {t.account.infoTitle}
               </h3>
               <div className="space-y-4">
                 <div>
                   <label className="block font-mono text-[10px] uppercase tracking-widest font-bold text-ink/60 mb-1">
-                    Nombre
+                    {t.account.name}
                   </label>
                   <input
                     type="text"
-                    defaultValue="Carmen Buendía"
+                    placeholder="Tu nombre"
                     className="w-full px-3 py-2 border border-ink/20 !rounded-none bg-paper text-ink font-mono text-sm focus:outline-none focus:border-ink"
                   />
                 </div>
                 <div>
                   <label className="block font-mono text-[10px] uppercase tracking-widest font-bold text-ink/60 mb-1">
-                    Email
+                    {t.account.email}
                   </label>
                   <input
                     type="email"
-                    defaultValue="carmen@example.com"
+                    placeholder="tu@email.com"
                     className="w-full px-3 py-2 border border-ink/20 !rounded-none bg-paper text-ink font-mono text-sm focus:outline-none focus:border-ink"
                   />
                 </div>
                 <div>
                   <label className="block font-mono text-[10px] uppercase tracking-widest font-bold text-ink/60 mb-1">
-                    Teléfono
+                    {t.account.phone}
                   </label>
                   <input
                     type="tel"
-                    defaultValue="+34 123 456 789"
+                    placeholder="+34 000 000 000"
                     className="w-full px-3 py-2 border border-ink/20 !rounded-none bg-paper text-ink font-mono text-sm focus:outline-none focus:border-ink"
                   />
                 </div>
                 <div>
                   <label className="block font-mono text-[10px] uppercase tracking-widest font-bold text-ink/60 mb-1">
-                    Ubicación
+                    {t.account.location}
                   </label>
                   <input
                     type="text"
-                    defaultValue="Sicilia, Italia"
+                    placeholder="Sicilia, Italia"
                     className="w-full px-3 py-2 border border-ink/20 !rounded-none bg-paper text-ink font-mono text-sm focus:outline-none focus:border-ink"
                   />
                 </div>
@@ -433,22 +431,29 @@ export default function ConfigurationPage() {
             <DataCard className="p-6">
               <h3 className="text-lg font-bold text-ink mb-4 flex items-center gap-2">
                 <Lock className="w-5 h-5 text-chloro" />
-                Seguridad
+                {t.account.securityTitle}
               </h3>
               <Button
                 variant="outline"
-                className="!!rounded-none hover:scale-100 w-full px-8 py-3 border-ink/20 text-ink hover:bg-ink/5 font-mono text-xs uppercase tracking-widest font-bold transition-colors"
+                className="!rounded-none hover:scale-100 w-full px-8 py-3 border-ink/20 text-ink hover:bg-ink/5 font-mono text-xs uppercase tracking-widest font-bold transition-colors"
               >
-                Cambiar contraseña
+                {t.account.changePassword}
               </Button>
             </DataCard>
 
             <Button
+              onClick={handleSave}
               variant="cta"
               className="w-full px-8 py-3 font-mono text-xs uppercase tracking-widest font-bold transition-colors"
-              icon={<Save className="w-4 h-4" />}
+              icon={
+                isSaved ? (
+                  <Check className="w-4 h-4" />
+                ) : (
+                  <Save className="w-4 h-4" />
+                )
+              }
             >
-              Guardar cambios
+              {isSaved ? "¡Guardado!" : t.account.save}
             </Button>
           </div>
         )}
