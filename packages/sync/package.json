@@ -1,5 +1,5 @@
 {
-  "name": "@sicilia-soil/sync",
+  "name": "@isola-node/sync",
   "version": "0.0.1",
   "private": true,
   "description": "Offline-first edge-to-cloud synchronization layer for constrained devices. Domain-agnostic, standards-compliant (MQTT, CoAP).",

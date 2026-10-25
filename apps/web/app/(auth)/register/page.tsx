@@ -138,7 +138,7 @@ export default async function RegisterPage({
               type="submit"
               variant="bare"
               size="none"
-              className="!!rounded-none flex items-center justify-center gap-2 w-full px-8 py-4 bg-ink text-paper font-mono text-xs uppercase tracking-widest font-bold hover:bg-chloro hover:!scale-100 transition-colors"
+              className="!rounded-none flex items-center justify-center gap-2 w-full px-8 py-4 bg-ink text-paper font-mono text-xs uppercase tracking-widest font-bold hover:bg-chloro hover:!scale-100 transition-colors"
             >
               {t.ui.auth.registerButton} <UserPlus className="w-4 h-4" />
             </Button>

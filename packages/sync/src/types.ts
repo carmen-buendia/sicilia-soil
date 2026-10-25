@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2026 Carmen María Buendía Sánchez
 // ============================================================================
-// @sicilia-soil/sync — Generic types
+// @isola-node/sync — Generic types
 // ----------------------------------------------------------------------------
 // Domain-agnostic. Works for any edge-to-cloud deployment in environments
 // with intermittent connectivity (agriculture, environmental monitoring,

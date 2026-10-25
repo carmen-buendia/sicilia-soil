@@ -8,7 +8,7 @@ The packages are independently versionable, self-hostable, and depend on no prop
 
 ## Packages
 
-### 1. @sicilia-soil/rule-engine — Explainable rule engine
+### 1. @isola-node/rule-engine — Explainable rule engine
 
 _Status: implemented._
 
@@ -23,7 +23,7 @@ A deterministic, auditable rule engine with offline learning.
 
 Reusable for: any field where automated decisions must be transparent and auditable.
 
-### 2. @sicilia-soil/sync — Offline-first sync layer
+### 2. @isola-node/sync — Offline-first sync layer
 
 _Status: interfaces defined; implementation in progress._
 
@@ -37,7 +37,7 @@ Edge-to-cloud synchronization for constrained devices in environments with inter
 
 Reusable for: any edge-to-cloud deployment in low-connectivity contexts.
 
-### 3. @sicilia-soil/edge — Constrained device runtime
+### 3. @isola-node/edge — Constrained device runtime
 
 _Status: interfaces defined; implementation in progress._
 
@@ -51,7 +51,7 @@ A runtime that executes local rules, polls sensors, and buffers events on constr
 
 Reusable for: any sensor-driven application on constrained hardware.
 
-### 4. @sicilia-soil/adapters — Heterogeneous data source abstraction
+### 4. @isola-node/adapters — Heterogeneous data source abstraction
 
 _Status: mock implementation complete; sensor and satellite adapters are documented stubs._
 
@@ -80,10 +80,10 @@ Reusable for: any project that integrates multiple data sources without vendor l
 ```mermaid
 graph TD
   A["Application layer<br/>(domain-specific)"] -->|uses| B["Infrastructure layer<br/>(domain-agnostic)"]
-  B --> D["@sicilia-soil/rule-engine"]
-  B --> S["@sicilia-soil/sync"]
-  B --> E["@sicilia-soil/edge"]
-  B --> AD["@sicilia-soil/adapters"]
+  B --> D["@isola-node/rule-engine"]
+  B --> S["@isola-node/sync"]
+  B --> E["@isola-node/edge"]
+  B --> AD["@isola-node/adapters"]
 ```
 
 ## What we explicitly do NOT do
