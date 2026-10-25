@@ -18,14 +18,14 @@
       "@sicilia-soil/utils/*": ["./packages/utils/src/*"],
       "@sicilia-soil/db": ["./packages/db/src"],
       "@sicilia-soil/db/*": ["./packages/db/src/*"],
-      "@sicilia-soil/rule-engine": ["./packages/rule-engine/src"],
-      "@sicilia-soil/rule-engine/*": ["./packages/rule-engine/src/*"],
-      "@sicilia-soil/sync": ["./packages/sync/src"],
-      "@sicilia-soil/sync/*": ["./packages/sync/src/*"],
-      "@sicilia-soil/edge": ["./packages/edge/src"],
-      "@sicilia-soil/edge/*": ["./packages/edge/src/*"],
-      "@sicilia-soil/adapters": ["./packages/adapters/src"],
-      "@sicilia-soil/adapters/*": ["./packages/adapters/src/*"]
+      "@isola-node/rule-engine": ["./packages/rule-engine/src"],
+      "@isola-node/rule-engine/*": ["./packages/rule-engine/src/*"],
+      "@isola-node/sync": ["./packages/sync/src"],
+      "@isola-node/sync/*": ["./packages/sync/src/*"],
+      "@isola-node/edge": ["./packages/edge/src"],
+      "@isola-node/edge/*": ["./packages/edge/src/*"],
+      "@isola-node/adapters": ["./packages/adapters/src"],
+      "@isola-node/adapters/*": ["./packages/adapters/src/*"]
     }
   },
   "exclude": ["node_modules", "apps/*/node_modules", "packages/*/node_modules"]

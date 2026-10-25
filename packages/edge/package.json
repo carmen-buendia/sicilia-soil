@@ -1,5 +1,5 @@
 {
-  "name": "@sicilia-soil/edge",
+  "name": "@isola-node/edge",
   "version": "0.0.1",
   "private": true,
   "description": "Runtime for constrained edge devices. Local rule execution, sensor polling, offline buffering. Runs on Raspberry Pi, ESP32.",
@@ -13,8 +13,8 @@
     }
   },
   "dependencies": {
-    "@sicilia-soil/rule-engine": "workspace:*",
-    "@sicilia-soil/sync": "workspace:*"
+    "@isola-node/rule-engine": "workspace:*",
+    "@isola-node/sync": "workspace:*"
   },
   "scripts": {
     "type-check": "tsc --noEmit"

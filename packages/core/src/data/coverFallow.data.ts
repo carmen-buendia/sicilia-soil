@@ -1,6 +1,6 @@
 // ============================================================================
-// MOCK DATA — Coberturas vegetales y barbecho
-// Reemplazar por hook useCoverFallowData() cuando IoT/Data Cube estén listos
+// DEMO DATA — Cover crops and fallow land (Focus: Ecological monitoring)
+// Replace with useCoverFallowData() hook when IoT/Data Cube are ready
 // ============================================================================
 
 export type CoverKpi = {
@@ -13,30 +13,30 @@ export type CoverKpi = {
 
 export const COVER_KPIS: CoverKpi[] = [
   {
-    label: "Cobertura del suelo",
+    label: "Coverage index", // Previously: Soil coverage
     value: "78%",
-    note: "↑ Óptimo",
+    note: "NDVI + in-situ fusion",
     icon: "leaf",
     color: "text-emerald-600",
   },
   {
-    label: "Biomasa aérea",
+    label: "Above-ground biomass",
     value: "2.4 t/ha",
-    note: "Estimada por NDVI",
+    note: "Spectral estimation",
     icon: "trending-up",
     color: "text-oliveGreen",
   },
   {
-    label: "N fijado (leguminosas)",
+    label: "Biological N fixation",
     value: "18 kg/ha",
-    note: "Trébol + veza",
+    note: "Active legumes",
     icon: "leaf",
     color: "text-green-600",
   },
   {
-    label: "Ahorro de agua",
+    label: "Water retention", // Previously: Water savings
     value: "22%",
-    note: "vs. suelo desnudo",
+    note: "Vs. bare soil",
     icon: "droplet",
     color: "text-blue-500",
   },
@@ -50,49 +50,49 @@ export type CoverSpecies = {
   biomass: number; // t/ha
   n: number; // kg/ha
   season: string;
-  status: "Activo" | "Terminando";
+  status: "High density" | "Senescence" | "Emergence"; // Biological states, not tasks
 };
 
 export const COVER_SPECIES: CoverSpecies[] = [
   {
     id: "trebol",
-    name: "Trébol subterráneo",
+    name: "Subterranean clover",
     icon: "🍀",
     cover: 82,
     biomass: 2.8,
     n: 22,
-    season: "Otoño-invierno",
-    status: "Activo",
+    season: "Autumn-winter",
+    status: "High density",
   },
   {
     id: "veza",
-    name: "Veza",
+    name: "Vetch",
     icon: "🌿",
     cover: 76,
     biomass: 2.5,
     n: 20,
-    season: "Otoño-invierno",
-    status: "Activo",
+    season: "Autumn-winter",
+    status: "High density",
   },
   {
     id: "avena",
-    name: "Avena",
+    name: "Oats",
     icon: "🌾",
     cover: 85,
     biomass: 3.1,
     n: 0,
-    season: "Otoño",
-    status: "Activo",
+    season: "Autumn",
+    status: "High density",
   },
   {
     id: "mostaza",
-    name: "Mostaza",
+    name: "Mustard",
     icon: "🌼",
     cover: 68,
     biomass: 2.0,
     n: 0,
-    season: "Otoño",
-    status: "Terminando",
+    season: "Autumn",
+    status: "Senescence", // Scientific term for "ending its cycle"
   },
 ];
 
@@ -103,10 +103,10 @@ export type FallowKpi = {
 };
 
 export const FALLOW_KPIS: FallowKpi[] = [
-  { label: "Duración", value: "6 meses", note: "rotación planificada" },
-  { label: "Humedad del suelo", value: "45%", note: "recuperando" },
-  { label: "Materia orgánica", value: "1.8%", note: "↑ 0.2 este ciclo" },
-  { label: "Próxima siembra", value: "Marzo", note: "cereal de primavera" },
+  { label: "Rest period", value: "6 months", note: "Planned cycle" },
+  { label: "Soil moisture", value: "45%", note: "Recovering" },
+  { label: "Organic matter", value: "1.8%", note: "↑ 0.2% this cycle" },
+  { label: "Phenological window", value: "March", note: "Next cycle" },
 ];
 
 export type FallowTimelineStep = {
@@ -116,11 +116,11 @@ export type FallowTimelineStep = {
 };
 
 export const FALLOW_TIMELINE: FallowTimelineStep[] = [
-  { month: "Sep", stage: "Terminación cereal", state: "done" },
-  { month: "Oct", stage: "Reposo inicial", state: "done" },
-  { month: "Nov", stage: "Recuperación humedad", state: "active" },
-  { month: "Dic", stage: "Recuperación nutrientes", state: "pending" },
-  { month: "Ene", stage: "Reposo profundo", state: "pending" },
-  { month: "Feb", stage: "Preparación siembra", state: "pending" },
-  { month: "Mar", stage: "Siembra cereal", state: "pending" },
+  { month: "Sep", stage: "Initial decomposition", state: "done" },
+  { month: "Oct", stage: "Microbial latency", state: "done" },
+  { month: "Nov", stage: "Aquifer recharge", state: "active" },
+  { month: "Dec", stage: "N mineralization", state: "pending" },
+  { month: "Jan", stage: "Edaphic rest", state: "pending" },
+  { month: "Feb", stage: "Enzymatic activity", state: "pending" },
+  { month: "Mar", stage: "Crop emergence", state: "pending" },
 ];

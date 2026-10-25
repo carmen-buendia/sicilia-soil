@@ -1,98 +1,52 @@
 // packages/db/src/client.ts
-
-import initSqlJs, { type Database } from "sql.js";
-import { drizzle, type SQLJsDatabase } from "drizzle-orm/sql-js";
+import { drizzle } from "drizzle-orm/libsql";
+import { createClient } from "@libsql/client";
+import type { LibSQLDatabase } from "drizzle-orm/libsql";
 import * as schema from "./schema";
-import fs from "node:fs";
-import path from "node:path";
-import { runMigrations } from "./migrate"; // <-- Importamos la función
 
-const DB_DIR = path.resolve(process.cwd(), "data");
-const DB_PATH = path.join(DB_DIR, "sicilia-soil.db");
+// Keep a single in-memory instance to avoid exhausting connections
+let _db: LibSQLDatabase<typeof schema> | null = null;
 
-let _sqlite: Database | null = null;
-let _db: SQLJsDatabase<typeof schema> | null = null;
-
-export async function createDb(): Promise<SQLJsDatabase<typeof schema>> {
+function initDb(): LibSQLDatabase<typeof schema> {
   if (_db) return _db;
 
-  let wasmBinary: ArrayBuffer | undefined;
+  const url = process.env.TURSO_DATABASE_URL;
+  const authToken = process.env.TURSO_AUTH_TOKEN;
 
-  const pathsToTry = [
-    path.resolve(process.cwd(), "public", "sql-wasm.wasm"),
-    path.resolve(process.cwd(), "apps", "web", "public", "sql-wasm.wasm"),
-    path.resolve(
-      process.cwd(),
-      "node_modules",
-      ".pnpm",
-      "sql.js@1.14.2",
-      "node_modules",
-      "sql.js",
-      "dist",
-      "sql-wasm.wasm",
-    ),
-  ];
-
-  for (const p of pathsToTry) {
-    if (fs.existsSync(/*turbopackIgnore: true*/ p)) {
-      const buffer = fs.readFileSync(/*turbopackIgnore: true*/ p);
-      wasmBinary = buffer.buffer.slice(
-        buffer.byteOffset,
-        buffer.byteOffset + buffer.byteLength,
-      );
-      break;
-    }
-  }
-
-  if (!wasmBinary) {
+  if (!url) {
     throw new Error(
-      "No se pudo encontrar sql-wasm.wasm en ninguna ruta conocida.",
+      "❌ TURSO_DATABASE_URL is not defined. Check your .env.local or Vercel environment variables.",
     );
   }
 
-  const SQL = await initSqlJs({ wasmBinary });
-
-  let fileBuffer: Buffer | undefined;
-
-  // Solo leemos del disco en local
-  if (process.env.NODE_ENV !== "production") {
-    if (!fs.existsSync(DB_DIR)) {
-      fs.mkdirSync(DB_DIR, { recursive: true });
-    }
-    if (fs.existsSync(DB_PATH)) {
-      fileBuffer = fs.readFileSync(DB_PATH);
-    }
-  }
-
-  _sqlite = fileBuffer ? new SQL.Database(fileBuffer) : new SQL.Database();
-
-  // 🚨 AQUÍ SE CREAN LAS TABLAS EN MEMORIA (PARA VERCEL)
-  runMigrations(_sqlite);
-
-  _db = drizzle(_sqlite, { schema });
-
+  const turso = createClient({ url, authToken });
+  _db = drizzle(turso, { schema });
   return _db;
 }
 
-export function saveDb(): void {
-  // Si estamos en producción, no escribimos en disco
-  if (process.env.NODE_ENV === "production") {
-    return;
-  }
+// ─── Backward compatibility exports ─────────────────────────────────
 
-  if (!_sqlite) {
-    throw new Error("Database not initialized. Call createDb() first.");
-  }
-  const data = _sqlite.export();
-  fs.writeFileSync(DB_PATH, Buffer.from(data));
+// Async factory expected by some legacy queries
+export async function createDb() {
+  return initDb();
 }
 
-export function getSqlite(): Database {
-  if (!_sqlite) {
-    throw new Error("Database not initialized. Call createDb() first.");
-  }
-  return _sqlite;
+// Getter to lazily access the database instance
+export function getDb() {
+  return initDb();
 }
 
-export const DB_FILE_PATH = DB_PATH;
-export type Db = SQLJsDatabase<typeof schema>;
+// Turso persists changes automatically, so this "save" is a no-op
+export function saveDb() {
+  // No-op
+}
+
+// Legacy stub to prevent old imports from breaking
+export function getSqlite() {
+  throw new Error(
+    "getSqlite is no longer available. Use `createDb()` or `getDb()` instead.",
+  );
+}
+
+export const DB_FILE_PATH = ":turso:";
+export type Db = LibSQLDatabase<typeof schema>;

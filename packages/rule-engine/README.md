@@ -1,4 +1,4 @@
-# @sicilia-soil/rule-engine
+# @isola-node/rule-engine
 
 An **explainable, deterministic rule engine** with offline learning.
 
@@ -15,7 +15,7 @@ The engine applies **declarative, human-readable rules** and produces decisions 
 
 In critical field deployments (agriculture, disaster response, environmental monitoring), a black-box decision is **useless**. You need to know **why**.
 
-`@sicilia-soil/rule-engine` provides:
+`@isola-node/rule-engine` provides:
 
 - **Transparency**: every decision shows its evidence.
 - **Auditability**: rules and weights are inspectable.
@@ -35,7 +35,7 @@ graph TD
 
 ## Install
 
-pnpm add @sicilia-soil/rule-engine
+pnpm add @isola-node/rule-engine
 
 ## Usage
 
@@ -44,7 +44,7 @@ import {
   decide,
   type EvidenceAdapter,
   type DecisionRule,
-} from "@sicilia-soil/rule-engine";
+} from "@isola-node/rule-engine";
 
 // 1. Define your adapter -- one per domain
 const adapter: EvidenceAdapter<MyEvidence> = {
@@ -110,7 +110,7 @@ Aggregates stats for the "learning summary" UI panel.
 
 ## Zero dependencies
 
-`@sicilia-soil/rule-engine` has **no runtime dependencies**. Pure TypeScript. Works on Node, Deno, Bun, browsers, and edge runtimes (Cloudflare Workers, Vercel Edge, Deno Deploy).
+`@isola-node/rule-engine` has **no runtime dependencies**. Pure TypeScript. Works on Node, Deno, Bun, browsers, and edge runtimes (Cloudflare Workers, Vercel Edge, Deno Deploy).
 
 ## License
 

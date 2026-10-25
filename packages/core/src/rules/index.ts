@@ -13,4 +13,4 @@ export type {
   RuleOperator,
   FiredRule,
   InputConflict,
-} from "@sicilia-soil/rule-engine";
+} from "@isola-node/rule-engine";
