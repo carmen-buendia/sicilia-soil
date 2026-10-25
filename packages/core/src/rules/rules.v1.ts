@@ -8,7 +8,7 @@
 // The engine applies them. The learner adjusts weights over time.
 // ============================================================================
 
-import { DecisionRule } from "@sicilia-soil/rule-engine";
+import { DecisionRule } from "@isola-node/rule-engine";
 
 export const DECISION_RULES_V1: DecisionRule[] = [
   // -------------------------------------------------------------------------

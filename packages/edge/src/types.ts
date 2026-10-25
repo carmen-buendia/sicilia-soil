@@ -6,8 +6,8 @@ import type {
   BufferedEvent,
   SyncConfig,
   SyncTransport,
-} from "@sicilia-soil/sync";
-import type { DecisionRule, DecisionOutput } from "@sicilia-soil/decision";
+} from "@isola-node/sync";
+import type { DecisionRule, DecisionOutput } from "@sicilia-soil/rule-engine";
 
 export type DeviceClass = "rpi" | "esp32" | "esp8266" | "generic";
 

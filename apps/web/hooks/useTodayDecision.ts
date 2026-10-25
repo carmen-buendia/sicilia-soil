@@ -14,8 +14,8 @@ import type {
   DecisionEvidence,
   DecisionOutput,
 } from "@sicilia-soil/core";
-// El motor genérico
-import { decide } from "@sicilia-soil/rule-engine";
+// Generic motor
+import { decide } from "@isola-node/rule-engine";
 
 export interface UseTodayDecisionReturn {
   output: DecisionOutput;
