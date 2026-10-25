@@ -26,7 +26,7 @@ const navItems = [
   { id: "/dashboard", label: t.ui.nav.dashboard, icon: Home },
   { id: "/soil-health", label: t.ui.nav.soilHealth, icon: Layers },
   { id: "/water", label: t.ui.nav.water, icon: Droplets },
-  { id: "/ground-cover", label: t.ui.nav.groundCover, icon: Sprout },
+  { id: "/crops", label: t.ui.nav.groundCover, icon: Sprout },
   { id: "/engine", label: t.ui.nav.engine || "Motor", icon: Brain },
 ];
 

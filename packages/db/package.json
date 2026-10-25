@@ -26,12 +26,10 @@
   "dependencies": {
     "@libsql/client": "^0.14.0",
     "@sicilia-soil/core": "workspace:*",
-    "drizzle-orm": "^0.45.2",
-    "sql.js": "^1.14.2"
+    "drizzle-orm": "^0.45.4"
   },
   "devDependencies": {
     "@types/node": "^22.10.1",
-    "@types/sql.js": "^1.4.9",
     "drizzle-kit": "^0.31.10",
     "tsx": "^4.19.2",
     "typescript": "^5.8.2"

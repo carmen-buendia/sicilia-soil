@@ -75,126 +75,203 @@ export const content = {
 
   // Crops and ground cover detailed pages
   cropsPage: {
-    // Multi-crop analysis and comparison
-    analysis: {
+    // ─────────────────────────────────────────────────────────────
+    // Analytics tab (comparator across all systems)
+    // ─────────────────────────────────────────────────────────────
+    analytics: {
       cycleDesc:
-        "Todos los cultivos comparten la misma red subterránea de micorrizas. El esparto y el cereal alimentan el micelio con su biomasa. Los árboles aportan hojarasca y sombra. Las hortalizas cierran el ciclo vía compost. El barbecho permite que la red fúngica se recupere y expanda antes del siguiente ciclo de siembra.",
+        "Todos los sistemas comparten la misma red subterránea de micorrizas. Las cubiertas aportan biomasa al micelio; las leñosas, hojarasca y sombra; las herbáceas, raíz profunda. El barbecho permite que la red fúngica se recupere y expanda antes del siguiente ciclo de siembra.",
       cycleTitle: "Ciclo regenerativo del sistema",
-      desc: "Misma metodología (SHI, colonización micorrícica, glomalina) aplicada a todos los componentes del sistema. Evidencia del enfoque crop-agnostic soil infrastructure.",
-      interpretationList: [
-        "El esparto muestra el SHI más alto por su sistema radical profundo y su larga simbiosis con hongos.",
-        "Los árboles mantienen valores altos por su micorrización estable y aporte de hojarasca.",
-        "Las hortalizas tienen SHI medio, pero cierran el ciclo vía compost.",
-        "El cereal tiene menor colonización por el ciclo corto, pero es clave como cultivo de cobertura y rotación.",
-        "El barbecho está en recuperación: se espera que suba tras el período de reposo.",
-      ],
+      desc: "Misma metodología (SHI, colonización micorrícica, glomalina) aplicada a todos los sistemas del registro. Evidencia del enfoque crop-agnostic soil infrastructure.",
+      empty: "Añade al menos un sistema para comparar.",
+      // Interpretation is generated at runtime by useAnalyticsData()
+      // using the real system names — no hard-coded species here.
+      interpretationTemplates: {
+        "cover-fallow":
+          "{name}: en recuperación fúngica; ascenso esperado tras el reposo.",
+        herbaceous:
+          "{name}: ciclo corto, colonización AMF moderada; relevante como rotación.",
+        mixed: "{name}: sinergia entre estratos; cierre de ciclo vía compost.",
+        woody:
+          "{name}: micorrización estable y aporte de hojarasca; SHI alto sostenido.",
+      },
       interpretationTitle: "Interpretación",
       series: {
         colonisation: "Colonización AMF (%)",
         glomalin: "Glomalina (mg/g × 10)",
         shi: "SHI (0-100)",
       },
-      title: "Comparador de cultivos y coberturas",
-    },
-    badge: "Regeneración del suelo",
-
-    // Cereal crop specifics
-    cereal: {
-      chart1Title: "Evolución NDVI y humedad",
-      chart2Title: "Comparación interna: Cereal vs Esparto",
-      plotRole: "Cultivo de prueba y rotación",
-      recs: [
-        "💧 Riego programado en 3 días (humedad 58%, por debajo del óptimo).",
-        "✓ NDVI en curva ascendente: crecimiento normal para la semana 6.",
-        "🍄 Colonización micorrícica al 30%. Aplicar inóculo tras la cosecha.",
-        "🌾 Tras la cosecha, sembrar cubierta de trébol o veza para mantener la red micorrícica activa.",
-      ],
-      recsTitle: "Recomendaciones activas",
+      thresholds: {
+        shiHigh: "SHI ≥ 75 · red micorrícica consolidada",
+        shiLow: "SHI < 50 · red en recuperación",
+        shiMid: "SHI 50–74 · red en desarrollo",
+      },
+      thresholdsTitle: "Umbrales de referencia",
+      title: "Comparador de sistemas",
     },
 
-    // Cover crops and fallow land specifics
+    // ─────────────────────────────────────────────────────────────
+    // Page metadata
+    // ─────────────────────────────────────────────────────────────
+    badge: "Infraestructura de suelo",
+    description:
+      "Registro de sistemas de cultivo y coberturas. Cada sistema se define en el CRUD y aporta sus propias métricas, sin presuponer especie ni región.",
+    emptySystems:
+      "Aún no hay sistemas de cultivo definidos. Créalos en el registro para ver sus métricas.",
+    title: "Sistemas de cultivo",
+
+    // ─────────────────────────────────────────────────────────────
+    // Renderer: cover / fallow (SystemTemplate = "cover-fallow")
+    // ─────────────────────────────────────────────────────────────
     coverFallow: {
-      comparatorTitle: "Comparador de cubiertas",
-      coverTitle: "Cubiertas vegetales entre árboles",
+      addCover: "Añadir cubierta",
+      cancelEdit: "Cancelar",
+      comparatorTitle: "Comparativa de cubiertas",
+      coverTitle: "Cubierta vegetal",
+      editRotation: "Editar rotación",
+      editRotationDesc: "Define la secuencia de barbecho para este sistema.",
+      editRotationTitle: "Configurar rotación",
       fallowTitle: "Barbecho",
-      recs: [
-        "🌼 Mostaza: terminando. Incorporar como abono verde en 5 días.",
-        "🍀 Trébol: cobertura al 82%. Excelente para fijación de N.",
-        "🪨 Barbecho: humedad recuperándose (45%). Sin intervención por 3 semanas.",
-        "📅 Próxima siembra de cereal de primavera: mediados de marzo.",
+      noData: "Sin datos para este sistema.",
+      noObservations: "Sin observaciones registradas.",
+      observationsTitle: "Observaciones del sistema",
+
+      // Demo observations shipped with the "Barbecho mediterráneo" preset.
+      // `date` is a placeholder resolved by the preset loader at runtime
+      // (content.ts must stay static and serializable).
+      presetObservations: [
+        {
+          id: "preset-barbecho-obs-north",
+          key: "north-zone",
+          level: "success",
+          meta: { source: "muestreo de campo", date: "{date}" },
+          systemId: "preset-barbecho-mediterraneo",
+          text: "Zona norte: cobertura consolidada",
+        },
+        {
+          id: "preset-barbecho-obs-south",
+          key: "south-fallow",
+          level: "warning",
+          meta: { source: "muestreo de campo", date: "{date}" },
+          systemId: "preset-barbecho-mediterraneo",
+          text: "Barbecho sur: recuperación en curso",
+        },
+        {
+          id: "preset-barbecho-obs-clover",
+          key: "clover-nitrogen",
+          level: "info",
+          meta: { source: "análisis de suelo", date: "{date}" },
+          systemId: "preset-barbecho-mediterraneo",
+          text: "Trébol: fijación de N dentro del rango esperado",
+        },
       ],
-      recsTitle: "Recomendaciones activas",
-      rotationLabel: "Estado del ciclo",
-      rotationTitle: "Rotación planificada",
+
+      rotationLabel: "Progreso",
+      rotationTitle: "Cronograma de rotación",
+      saveRotation: "Guardar rotación",
       series: {
         biomass: "Biomasa (t/ha)",
         cover: "Cobertura (%)",
         nitrogen: "N fijado (kg/ha)",
       },
+      statusLabels: {
+        emergence: "Emergencia",
+        highDensity: "Alta densidad",
+        senescence: "Senescencia",
+      },
       tableHeaders: [
         "Especie",
         "Cobertura",
         "Biomasa",
-        "N fijado",
-        "Temporada",
+        "N",
+        "Estación",
         "Estado",
       ],
     },
 
-    description:
-      "Esparto · Policultivo · Cereal · Cubiertas · Barbecho — gestión regenerativa en clima mediterráneo",
+    // ─────────────────────────────────────────────────────────────
+    // Renderer: herbaceous (SystemTemplate = "herbaceous")
+    // ─────────────────────────────────────────────────────────────
+    herbaceous: {
+      chart1Title: "Evolución NDVI y humedad edáfica",
+      chart2Title: "Comparación interna: {name} vs {reference}",
+      observationsTitle: "Observaciones de campo",
+      role: "Cultivo de prueba y rotación",
+    },
 
-    // Esparto crop specifics
-    esparto: {
-      awardsBadges: ["🏆 Denominación de origen", "🌿 Producto ecológico"],
-      awardsDesc:
-        "El esparto siciliano es reconocido como patrimonio cultural inmaterial por la UNESCO.",
-      awardsTitle: "Reconocimientos",
-      avgLabel: "media",
-      benefitsTitle: "Beneficios",
-      chartNote:
-        "Series temporales de humedad, temperatura, luz y viento. La red micorrícica mantiene la actividad biológica incluso cuando bajan las condiciones ambientales.",
-      chartTitle: "Evolución de condiciones (últimos 14 días)",
-      cycleSubtitle:
-        "De la biomasa al bioindicador, pasando por la red micorrícica",
-      cycleTitle: "Ciclo regenerativo del esparto",
-      heroDesc:
-        "El esparto es una planta milenaria que ha moldeado la cultura siciliana. Su fibra, resistente y versátil, representa un modelo de agricultura regenerativa y sostenible.",
-      heroSubtitle: "Símbolo de resistencia",
-      heroTitle: "🌾 El Tesoro Fibroso del Mediterráneo",
-      historyTitle: "Historia y tradición",
-      monitoringTitle: "📊 Monitoreo del esparto",
-      tags: [
-        "Sostenible",
-        "Bajo consumo hídrico",
-        "Tradición siciliana",
-        "Economía circular",
+    // ─────────────────────────────────────────────────────────────
+    // Renderer: mixed (SystemTemplate = "mixed")
+    // ─────────────────────────────────────────────────────────────
+    mixed: {
+      balanceTitle: "Flujo hídrico y de biomasa",
+      compostDesc:
+        "Flujo de retorno: {input} kg/sem de biomasa vegetal se transforman en {output} kg de compost maduro, devolviendo {om} kg/mes de materia orgánica al suelo.",
+      compostTitle: "Cierre del ciclo biogeoquímico",
+      role: "Sistema agroforestal mixto",
+      samplingArea: "Área de muestreo: {area}",
+      seriesResidue: "Biomasa (kg/semana)",
+      seriesWater: "Agua (L/semana)",
+      tableHeaders: [
+        "Cultivo",
+        "Área",
+        "Extracción",
+        "Biomasa residual",
+        "Agua",
       ],
-      usesTitle: "Usos tradicionales y modernos",
+      vegTitle: "Subsistema hortícola",
     },
 
-    // Polyculture (trees + veggies) specifics
-    polyculture: {
-      balanceTitle: "Balance hídrico y residuos por cultivo",
-      balanceWeekly:
-        "Balance semanal: 6.5 kg de restos → 4 kg de compost maduro → 16 kg/mes aplicados al suelo. Cierra el ciclo sin insumos externos.",
-      comparatorTitle: "Comparador de condiciones por árbol",
-      compostTitle: "Ciclo cerrado: hortalizas → compost → suelo",
-      tableHeaders: ["Cultivo", "Área", "Cosecha", "Desecho", "Agua"],
-      treesCount: "{count} parcelas",
-      treesTitle: "Árboles frutales",
-      vegArea: "30 m²",
-      vegTitle: "Hortalizas para consumo propio",
+    // ─────────────────────────────────────────────────────────────
+    // Observations tab (aggregated across all systems)
+    // ─────────────────────────────────────────────────────────────
+    observations: {
+      desc: "Registro factual de mediciones, con fuente y fecha. Sin prescripciones: la interpretación es del operador.",
+      empty: "No hay observaciones registradas.",
+      levelLabels: {
+        info: "Informativo",
+        success: "Dentro de rango",
+        warning: "Umbral superado",
+      },
+      title: "Observaciones de campo",
     },
 
+    // ─────────────────────────────────────────────────────────────
+    // Shared labels across renderers
+    // ─────────────────────────────────────────────────────────────
+    shared: {
+      loading: "Cargando…",
+      noData: "Sin datos",
+      yAxisProgress: "Progreso",
+      yAxisValue: "Valor",
+    },
+
+    // ─────────────────────────────────────────────────────────────
+    // Universal tab labels (other tabs come from the user's CRUD)
+    // ─────────────────────────────────────────────────────────────
     tabs: {
-      analysis: "Análisis",
-      cereal: "Cereal",
-      coverFallow: "Cubiertas y barbecho",
-      esparto: "Esparto",
-      polyculture: "Policultivo",
+      analytics: "Analítica",
+      observations: "Observaciones",
     },
-    title: "Cultivos",
+
+    // ─────────────────────────────────────────────────────────────
+    // Renderer: woody (SystemTemplate = "woody")
+    // ─────────────────────────────────────────────────────────────
+    woody: {
+      comparatorTitle: "Comparativa de microclimas",
+      light: "Radiación solar",
+      moisture: "Humedad edáfica",
+      mycorrhiza: "Micorrizas",
+      parcelsCount: "{count} parcelas monitoreadas",
+      role: "Sistema arbóreo",
+      seriesHumidity: "Humedad (%)",
+      seriesLight: "Radiación (%)",
+      seriesTemp: "Temperatura (°C)",
+      seriesWind: "Viento (km/h)",
+      stage: "Fase fenológica",
+      temperature: "Temperatura",
+      title: "Sistema arbóreo",
+      wind: "Velocidad del viento",
+    },
   },
 
   // Home page global sections (dashboard/private)
