@@ -1,7 +1,7 @@
 // apps/web/app/(app)/crops/page.tsx
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { getLocale } from "@sicilia-soil/core";
 import { useCropSystemsContext } from "@/components/features/crops/CropSystemsProvider";
 import { SystemTab } from "@/components/features/crops/tabs/SystemTab";
@@ -17,16 +17,18 @@ export default function CropsPage() {
   const locale = getLocale("es");
   const t = locale.content.cropsPage;
 
-  const [activeTab, setActiveTab] = useState<string>(
-    () => systems[0]?.id ?? "observations",
-  );
+  const [selectedTab, setSelectedTab] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (FIXED_TABS.includes(activeTab as FixedTabId)) return;
-    if (!systems.find((s) => s.id === activeTab)) {
-      setActiveTab(systems[0]?.id ?? "observations");
-    }
-  }, [systems, activeTab]);
+  // Derivamos la pestaña activa sin usar useEffect
+  const isFixedTab =
+    selectedTab && FIXED_TABS.includes(selectedTab as FixedTabId);
+  const isValidSystemTab =
+    selectedTab && systems.some((s) => s.id === selectedTab);
+
+  const activeTab =
+    isFixedTab || isValidSystemTab
+      ? selectedTab!
+      : (systems[0]?.id ?? "observations");
 
   const tabs = [
     ...systems.map((s) => ({ id: s.id, label: s.name, icon: s.icon })),
@@ -65,7 +67,7 @@ export default function CropsPage() {
               key={tab.id}
               variant="bare"
               size="none"
-              onClick={() => setActiveTab(tab.id)}
+              onClick={() => setSelectedTab(tab.id)}
               className={`!rounded-none hover:!scale-100 flex items-center gap-2 px-5 py-3 font-mono text-xs uppercase tracking-widest font-bold transition-colors border-t border-x border-transparent -mb-[1px] ${
                 isActive
                   ? "bg-card text-ink border-ink/20 border-b-card z-10"
