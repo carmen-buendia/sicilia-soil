@@ -15,7 +15,7 @@
     "test": "pnpm -r test",
     "clean": "pnpm store prune && rimraf node_modules **/node_modules"
   },
-  "packageManager": "pnpm@8.15.0",
+  "packageManager": "pnpm@9.15.0",
   "devDependencies": {
     "rimraf": "^5.0.5",
     "typescript": "^5.8.2",

@@ -11,7 +11,6 @@ import {
   Thermometer,
   Wind,
   Sun,
-  ArrowRight,
   Activity,
   AlertTriangle,
 } from "lucide-react";

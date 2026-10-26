@@ -5,7 +5,11 @@
 // Copyright 2026 Carmen Maria Buendia Sanchez
 
 import ReactECharts from "echarts-for-react";
-import type { EChartsOption, SeriesOption } from "echarts";
+import type {
+  EChartsOption,
+  SeriesOption,
+  YAXisComponentOption,
+} from "echarts";
 
 // ============================================================================
 // Paleta SikeliaSoil (Sintropic UI)
@@ -46,7 +50,7 @@ export type SoilChartType =
 
 export type SoilChartSeries = {
   name: string;
-  data: any[];
+  data: (number | string | null)[];
   color?: string;
   type?: SoilChartType;
   yAxis?: number;
@@ -139,9 +143,9 @@ export function SoilChart({
   // ---------------------------------------------------------------------------
   // Y axes (solo para gráficos cartesianos)
   // ---------------------------------------------------------------------------
-  const yAxes: any[] = [];
+  const yAxes: YAXisComponentOption[] = [];
   if (!isPie && !isRadar) {
-    const primaryAxis: any = {
+    const primaryAxis: YAXisComponentOption = {
       type: "value",
       name: yAxisLabel,
       nameTextStyle: {
