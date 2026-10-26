@@ -2,7 +2,6 @@
 
 import { Droplets, Thermometer, Sun, Wind, ArrowRight } from "lucide-react";
 import { getLocale } from "@sicilia-soil/core";
-import { formatRelativeTime } from "@sicilia-soil/utils";
 import { Button, DataCard } from "@sicilia-soil/ui"; // <-- Importamos el componente inteligente
 
 interface ZoneData {
