@@ -1,74 +1,36 @@
+// apps/web/components/features/recommendations/RecommendationCard.tsx
 "use client";
 
-import {
-  AlertTriangle,
-  Droplets,
-  Leaf,
-  Sprout,
-  Activity,
-  TrendingUp,
-  ShieldCheck,
-  Zap,
-  Recycle,
-} from "lucide-react";
-import type {
-  RecommendationItem,
-  RecommendationPriority,
-  RecommendationCategory,
-} from "@sicilia-soil/core";
+import { Zap, Activity } from "lucide-react";
+import type { RecommendationItem } from "@sicilia-soil/core";
 import { getLocale } from "@sicilia-soil/core";
 import { Button, DataCard } from "@sicilia-soil/ui";
+import { PRIORITY_STYLES } from "@/config/recommendation.styles";
+import { RECOMMENDATION_ICONS } from "@/config/icon-map"; 
 
 interface RecommendationCardProps {
   recommendation: RecommendationItem;
   onAction?: (id: string) => void;
-  highlightId?: string | null; // <-- AÑADIDO
+  highlightId?: string | null;
 }
-
-const CATEGORY_ICONS: Record<RecommendationCategory, typeof Droplets> = {
-  irrigation: Droplets,
-  fertilization: Sprout,
-  "soil-health": Leaf,
-  "pest-control": AlertTriangle,
-  "erosion-control": ShieldCheck,
-  "carbon-sequestration": TrendingUp,
-  harvest: Sprout,
-  regeneration: Recycle,
-  general: Activity,
-};
 
 export function RecommendationCard({
   recommendation,
   onAction,
-  highlightId, // <-- AÑADIDO
+  highlightId,
 }: RecommendationCardProps) {
   const locale = getLocale("es");
   const t = locale.ui.recommendations;
-  const Icon = CATEGORY_ICONS[recommendation.category];
 
-  const isHighlighted = recommendation.id === highlightId; // <-- COMPROBAMOS
-
-  const variantMap: Record<RecommendationPriority, any> = {
-    urgent: "critical",
-    high: "warning",
-    medium: "warning",
-    low: "info",
-    info: "success",
-  };
-  const colorMap: Record<RecommendationPriority, string> = {
-    urgent: "text-red-500",
-    high: "text-solar",
-    medium: "text-solar",
-    low: "text-ink/70",
-    info: "text-chloro",
-  };
+  // Usamos el mapa importado
+  const Icon = RECOMMENDATION_ICONS[recommendation.category] || Activity;
+  const isHighlighted = recommendation.id === highlightId;
+  const style = PRIORITY_STYLES[recommendation.priority];
 
   return (
-    // Añadimos el ID aquí para que el scroll funcione
     <div id={recommendation.id} className="h-full">
       <DataCard
-        variant={variantMap[recommendation.priority]}
-        // Añadimos las clases de resaltado si isHighlighted es true
+        variant={style.variant}
         className={`flex flex-col h-full bg-card transition-all duration-500 ${
           isHighlighted
             ? "ring-2 ring-solar ring-offset-4 ring-offset-paper shadow-xl scale-[1.02]"
@@ -78,9 +40,7 @@ export function RecommendationCard({
         {/* Header */}
         <div className="flex items-start justify-between gap-3 mb-3 border-b border-ink/10 pb-3">
           <div className="flex items-start gap-3">
-            <div
-              className={`p-2 border border-ink/10 bg-paper ${colorMap[recommendation.priority]}`}
-            >
+            <div className={`p-2 border border-ink/10 bg-paper ${style.text}`}>
               <Icon className="w-5 h-5" />
             </div>
             <div>
@@ -88,7 +48,7 @@ export function RecommendationCard({
                 <span className="px-2 py-0.5 border border-ink/20 text-ink/60">
                   {t[recommendation.topic as keyof typeof t] || t.general}
                 </span>
-                <span className={colorMap[recommendation.priority]}>
+                <span className={style.text}>
                   {t[recommendation.priority as keyof typeof t]}
                 </span>
                 {recommendation.zoneName && (
@@ -97,9 +57,7 @@ export function RecommendationCard({
                   </span>
                 )}
               </div>
-              <h3
-                className={`font-serif text-lg font-bold ${colorMap[recommendation.priority]}`}
-              >
+              <h3 className={`font-serif text-lg font-bold ${style.text}`}>
                 {recommendation.title}
               </h3>
             </div>

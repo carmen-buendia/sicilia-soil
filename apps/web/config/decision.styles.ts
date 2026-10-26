@@ -8,7 +8,7 @@
 // ============================================================================
 
 import { Satellite, Wifi, Cloud, History, Info } from "lucide-react";
-import type { DecisionState, EvidenceSource } from "@sicilia-soil/core";
+import type { DecisionState } from "@sicilia-soil/core";
 
 // ---------------------------------------------------------------------------
 // State palettes (green / yellow / red / unknown)

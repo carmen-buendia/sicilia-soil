@@ -1,23 +1,18 @@
+// apps/web/app/(app)/dashboard/page.tsx
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import {
   Trees,
-  Droplet,
-  ThermometerSun,
-  Sun,
   Sprout,
-  Wind,
   ArrowRight,
   AlertTriangle,
-  Gauge,
   Leaf,
-  Network,
-  Layers,
   Activity,
   Battery,
   Signal,
+  type LucideIcon,
 } from "lucide-react";
 import { StatsCard } from "@/components/features/dashboard/components/StatsCards";
 import { ZoneCard } from "@/components/features/dashboard/components/ZoneCards";
@@ -27,18 +22,8 @@ import { useRecommendations } from "@/hooks/useRecommendations";
 import { useDashboardData } from "@/hooks/useDashboardData";
 import { useTodayDecision } from "@/hooks/useTodayDecision";
 import { PRIORITY_STYLES } from "@/config/recommendation.styles";
+import { DASHBOARD_ICONS } from "@/config/icon-map";
 import { getLocale, TELEMETRY_MOCK_SENSORS } from "@sicilia-soil/core";
-
-const ICON_MAP: Record<string, any> = {
-  leaf: Layers,
-  droplet: Droplet,
-  gauge: Gauge,
-  trees: Trees,
-  mycorrhiza: Network,
-  thermometer: ThermometerSun,
-  sun: Sun,
-  wind: Wind,
-};
 
 export default function HomePage() {
   const [serverStatus, setServerStatus] = useState<
@@ -106,20 +91,14 @@ export default function HomePage() {
       <div className="bg-card border border-ink/20">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 divide-x divide-y md:divide-y-0 divide-ink/10">
           {kpis.map((kpi) => {
-            const Icon = ICON_MAP[kpi.icon] ?? Leaf;
+            const Icon = (DASHBOARD_ICONS[kpi.icon] ?? Leaf) as LucideIcon;
             const kpiLabels = locale.kpis[kpi.id as keyof typeof locale.kpis];
             return (
               <StatsCard
                 key={kpi.id}
                 value={kpi.value}
                 label={kpiLabels?.label ?? kpi.id}
-                icon={
-                  typeof Icon === "function" && Icon.name === "" ? (
-                    Icon()
-                  ) : (
-                    <Icon className="w-5 h-5" />
-                  )
-                }
+                icon={<Icon className="w-5 h-5" />}
                 subtext={kpiLabels?.subtext}
               />
             );
@@ -214,7 +193,7 @@ export default function HomePage() {
               {locale.ui.dashboard.zonesTitle}
             </h2>
             <Link
-              href="/ground-cover"
+              href="/crops" // 👈 CAMBIADO DE /ground-cover a /crops
               className="font-mono text-xs uppercase tracking-widest font-bold text-solar hover:text-ink transition-colors flex items-center gap-1"
             >
               {locale.ui.actions.viewCrops} <ArrowRight className="w-3 h-3" />
@@ -342,7 +321,7 @@ export default function HomePage() {
           </p>
         </div>
         <Link
-          href="/ground-cover"
+          href="/crops" // 👈 CAMBIADO DE /ground-cover a /crops
           className="relative z-10 whitespace-nowrap flex items-center gap-2 bg-solar text-ink px-6 py-3 font-mono text-sm uppercase tracking-widest font-bold hover:bg-paper transition-colors"
         >
           {locale.ui.actions.viewCrops} <ArrowRight className="w-4 h-4" />
