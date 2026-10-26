@@ -15,7 +15,7 @@
     "test": "pnpm -r test",
     "clean": "pnpm store prune && rimraf node_modules **/node_modules"
   },
-  "packageManager": "pnpm@8.15.0",
+  "packageManager": "pnpm@9.15.0",
   "devDependencies": {
     "rimraf": "^5.0.5",
     "typescript": "^5.8.2",
@@ -30,8 +30,7 @@
       "minimatch@9": ">=9.0.7",
       "source-map-js": ">=1.2.2",
       "sharp": ">=0.35.5",
-      "postcss-selector-parser": ">=7.1.6",
-      "eslint": "^9.0.0"
+      "postcss-selector-parser": ">=7.1.6"
     }
   }
 }
