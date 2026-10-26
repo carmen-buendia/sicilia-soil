@@ -25,18 +25,18 @@ function readFromStorage(): CropSystem[] | null {
 }
 
 export function useCropSystems() {
-  // 1. Estado inicial idéntico en servidor y cliente → sin hydration mismatch
   const [systems, setSystems] = useState<CropSystem[]>(getDefaultState);
   const [hydrated, setHydrated] = useState(false);
 
-  // 2. Tras montar, carga lo persistido (solo cliente)
   useEffect(() => {
     const stored = readFromStorage();
-    if (stored) setSystems(stored);
+    if (stored) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setSystems(stored);
+    }
     setHydrated(true);
   }, []);
 
-  // 3. Persiste solo después de hidratar → no machaca localStorage con defaults
   useEffect(() => {
     if (!hydrated) return;
     try {
@@ -75,6 +75,6 @@ export function useCropSystems() {
     updateSystem,
     removeSystem,
     getSystem,
-    hydrated, // opcional: útil para mostrar skeleton hasta que cargue
+    hydrated,
   };
 }
