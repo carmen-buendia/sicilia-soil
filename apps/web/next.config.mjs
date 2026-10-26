@@ -1,4 +1,9 @@
-const path = require("path");
+// apps/web/next.config.mjs
+import { fileURLToPath } from "url";
+import path from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -6,7 +11,6 @@ const nextConfig = {
     root: path.join(__dirname, "../.."),
   },
 
-  // Le dice a Next.js que no empaquete estas librerías nativas
   serverExternalPackages: ["@libsql/client", "libsql"],
 
   async headers() {
@@ -30,12 +34,10 @@ const nextConfig = {
     "@isola-node/rule-engine",
   ],
 
-  //FUERZA BRUTA PARA WEBPACK
   webpack: (config, { isServer }) => {
     if (isServer) {
       config.externals.push("@libsql/client", "libsql");
     } else {
-      // Si por algún motivo intenta cargarse en el cliente, lo sustituimos por un objeto vacío
       config.resolve.alias = {
         ...config.resolve.alias,
         "@libsql/client": false,
@@ -46,4 +48,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;

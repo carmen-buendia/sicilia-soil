@@ -39,9 +39,9 @@ export function ObservationsTab() {
         <ul className="divide-y divide-ink/10">
           {observations.map((obs) => {
             const Icon = LEVEL_ICON[obs.level];
-            const date = new Date(
-              obs.meta?.date ?? Date.now(),
-            ).toLocaleDateString("es-IT");
+            const date = obs.meta?.date
+              ? new Date(obs.meta.date).toLocaleDateString("es-IT")
+              : "—";
             return (
               <li
                 key={obs.id}

@@ -63,6 +63,10 @@ export function buildCoverFallowPreset(): CropSystem {
       organicMatterDelta: 0.2,
       restPeriodMonths: 6,
       phenologicalWindowMonth: 3,
+
+      shi: 72,
+      amf: 65,
+      glomalin: 1.2,
     },
 
     attributes: {

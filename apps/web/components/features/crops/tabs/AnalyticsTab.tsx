@@ -17,7 +17,7 @@ const TEMPLATE_ICON: Record<SystemTemplate, React.ElementType> = {
 
 export function AnalyticsTab() {
   const t = getLocale("es").content.cropsPage.analytics;
-  const { rows, hasData, series, thresholds, cycle } = useAnalyticsData();
+  const { rows, hasData, series, thresholds } = useAnalyticsData();
 
   if (!hasData) {
     return (

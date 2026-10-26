@@ -170,7 +170,7 @@ export default async function RegisterPage({
           <div className="absolute bottom-10 left-8 right-8 text-center">
             <div className="bg-ink/80 border border-ink/20 p-6">
               <p className="text-paper font-serif italic text-lg leading-relaxed mb-3">
-                "{t.content.auth.quotes.register.text}"
+                {t.content.auth.quotes.register.text}
               </p>
               <p className="font-mono text-[10px] uppercase tracking-widest text-solar font-bold">
                 — {t.content.auth.quotes.register.author}
