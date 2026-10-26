@@ -21,9 +21,9 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@isola-node/rule-engine": "workspace:*",
     "@sicilia-soil/core": "workspace:*",
     "@sicilia-soil/db": "workspace:^",
-    "@isola-node/rule-engine": "workspace:*",
     "@sicilia-soil/ui": "workspace:*",
     "@sicilia-soil/utils": "workspace:*",
     "bcryptjs": "^3.0.3",
@@ -42,6 +42,8 @@
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
     "autoprefixer": "^10.4.16",
+    "eslint": "^9",
+    "eslint-config-next": "^16",
     "postcss": "^8.4.33",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.3.3"

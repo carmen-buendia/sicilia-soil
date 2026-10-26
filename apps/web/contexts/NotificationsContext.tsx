@@ -42,6 +42,7 @@ export function NotificationsProvider({ children }: { children: ReactNode }) {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setNotifications(JSON.parse(stored) as Notification[]);
       }
     } catch {
