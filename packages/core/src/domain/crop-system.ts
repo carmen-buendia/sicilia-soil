@@ -6,7 +6,17 @@ export type ObservationLevel = "success" | "warning" | "info";
 export interface CropSensor {
   id: string;
   label: string;
-  type: "soil-moisture" | "temperature" | "radiation" | "wind";
+  type:
+    | "multiparameter"
+    | "soil-moisture"
+    | "temperature"
+    | "radiation"
+    | "wind"
+    | "contamination"
+    | "soil-respiration" // CO2
+    | "npk" // Nitrógeno, Fósforo, Potasio
+    | "ph-ec" // pH y Conductividad Eléctrica
+    | "bioelectricity"; // Señales eléctricas (Ecoshroom)
 }
 
 export interface CropObservation {
@@ -15,6 +25,7 @@ export interface CropObservation {
   key: string;
   text: string;
   level: ObservationLevel;
+  category?: "fungi" | "pest" | "weather" | "other";
   value?: number;
   threshold?: number;
   meta?: {
@@ -40,7 +51,7 @@ export interface Crop {
 export interface MetricSeries {
   key: string;
   name: string;
-  data: number[];
+  data: (number | null)[];
   categories?: string[];
 }
 
@@ -60,9 +71,16 @@ export interface CropSystem {
   region?: string;
   description?: string;
 
+  location?: {
+    lat: number;
+    lng: number;
+    address?: string;
+  };
+
   metrics: {
     shi?: number;
     amf?: number;
+    ecm?: number; // Añadido por si usas ectomicorrizas
     glomalin?: number;
     moisture?: number;
     moistureThreshold?: number;
@@ -70,7 +88,10 @@ export interface CropSystem {
     light?: number;
     wind?: number;
     ndvi?: number;
-    [k: string]: number | undefined;
+    lead?: number;
+    cadmium?: number;
+    hydrocarbons?: number;
+    [k: string]: number | undefined; // Permite cualquier otra métrica extra
   };
 
   attributes?: Record<string, string | number>;

@@ -1,4 +1,4 @@
-// apps/web/app/(app)/crops/page.tsx (o components/features/crops/CropsView.tsx)
+// apps/web/app/(app)/crops/page.tsx
 "use client";
 
 import { useState } from "react";
@@ -7,9 +7,9 @@ import { useCropSystemsContext } from "@/components/features/crops/CropSystemsPr
 import { SystemTab } from "@/components/features/crops/tabs/SystemTab";
 import { ObservationsTab } from "@/components/features/crops/tabs/ObservationsTab";
 import { AnalyticsTab } from "@/components/features/crops/tabs/AnalyticsTab";
-import { CreateSystemModal } from "@/components/features/crops/CreateSystemModal";
+// 👇 Importamos el nuevo modal y el icono del lápiz
+import { SystemFormModal } from "@/components/features/crops/SystemFormModal";
 import { Button, DataCard } from "@sicilia-soil/ui";
-// 👇 Añadimos ChevronRight a los iconos
 import {
   ArrowLeft,
   Plus,
@@ -17,18 +17,23 @@ import {
   Droplets,
   Activity,
   ChevronRight,
+  Pencil,
 } from "lucide-react";
+import type { CropSystem } from "@sicilia-soil/core";
 
 export default function CropsPage() {
   const { systems } = useCropSystemsContext();
   const locale = getLocale("es");
   const t = locale.content.cropsPage;
 
-  // Estados para controlar la vista
   const [viewMode, setViewMode] = useState<"directory" | "detail">("directory");
   const [activeTab, setActiveTab] = useState<string>("observations");
 
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  // 👇 Estados para el modal (Crear / Editar)
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [systemToEdit, setSystemToEdit] = useState<CropSystem | undefined>(
+    undefined,
+  );
 
   const handleOpenSystem = (id: string) => {
     setActiveTab(id);
@@ -40,11 +45,22 @@ export default function CropsPage() {
     setActiveTab("observations");
   };
 
+  const handleCreate = () => {
+    setSystemToEdit(undefined); // Nos aseguramos de que es modo creación
+    setIsModalOpen(true);
+  };
+
+  const handleEdit = (e: React.MouseEvent, system: CropSystem) => {
+    e.stopPropagation(); // 👈 Evita que al pulsar el lápiz se abra el detalle
+    setSystemToEdit(system);
+    setIsModalOpen(true);
+  };
+
   // --- VISTA 1: DIRECTORIO DE ZONAS ---
   if (viewMode === "directory") {
     return (
       <div className="max-w-7xl mx-auto space-y-8 pb-12">
-        {/* Header del Directorio */}
+        {/* Header */}
         <div className="flex flex-col gap-4 border-b border-ink/20 pb-6">
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div className="flex items-center gap-4">
@@ -60,11 +76,10 @@ export default function CropsPage() {
                 </p>
               </div>
             </div>
-
             <Button
               variant="cta"
               className="flex items-center gap-2"
-              onClick={() => setIsCreateModalOpen(true)}
+              onClick={handleCreate}
             >
               <Plus className="w-4 h-4" /> Añadir Zona
             </Button>
@@ -84,16 +99,24 @@ export default function CropsPage() {
             {systems.map((system) => (
               <DataCard
                 key={system.id}
-                // 👇 Añadimos relative, shadow y transiciones
                 className="p-6 flex flex-col hover:border-chloro/50 hover:shadow-md transition-all cursor-pointer group relative"
                 onClick={() => handleOpenSystem(system.id)}
               >
-                {/* 👇 Flecha indicadora en la esquina superior derecha */}
-                <div className="absolute top-4 right-4 text-ink/30 group-hover:text-chloro group-hover:translate-x-1 transition-all">
+                {/* Flecha indicadora */}
+                <div className="absolute top-4 right-12 text-ink/30 group-hover:text-chloro group-hover:translate-x-1 transition-all">
                   <ChevronRight className="w-5 h-5" />
                 </div>
 
-                <div className="flex items-center gap-3 mb-4 pr-6">
+                {/* 👇 Botón de Editar (Lápiz) */}
+                <button
+                  onClick={(e) => handleEdit(e, system)}
+                  className="absolute top-4 right-4 p-1 text-ink/30 hover:text-solar transition-colors"
+                  title="Editar zona"
+                >
+                  <Pencil className="w-4 h-4" />
+                </button>
+
+                <div className="flex items-center gap-3 mb-4 pr-14">
                   <span className="text-3xl">{system.icon}</span>
                   <div>
                     <h3 className="font-serif text-lg font-bold text-ink group-hover:text-chloro transition-colors">
@@ -105,7 +128,6 @@ export default function CropsPage() {
                   </div>
                 </div>
 
-                {/* Mini KPIs en la tarjeta */}
                 <div className="grid grid-cols-2 gap-2 mt-auto pt-4 border-t border-ink/10">
                   <div className="flex flex-col">
                     <span className="font-mono text-[10px] uppercase text-ink/50 flex items-center gap-1">
@@ -127,7 +149,6 @@ export default function CropsPage() {
                   </div>
                 </div>
 
-                {/* 👇 Texto de acción inferior */}
                 <div className="mt-4 pt-3 border-t border-ink/10 flex items-center justify-between">
                   <span className="font-mono text-[10px] uppercase tracking-wider text-ink/40">
                     Ver analíticas
@@ -141,9 +162,12 @@ export default function CropsPage() {
           </div>
         )}
 
-        {/* Modal */}
-        {isCreateModalOpen && (
-          <CreateSystemModal onClose={() => setIsCreateModalOpen(false)} />
+        {/* Modal (Crear / Editar) */}
+        {isModalOpen && (
+          <SystemFormModal
+            systemToEdit={systemToEdit}
+            onClose={() => setIsModalOpen(false)}
+          />
         )}
       </div>
     );
@@ -160,7 +184,6 @@ export default function CropsPage() {
 
   return (
     <div className="max-w-7xl mx-auto space-y-8 pb-12">
-      {/* Header del Detalle con botón de volver */}
       <div className="flex flex-col gap-4 border-b border-ink/20 pb-6">
         <div className="flex items-center gap-4 flex-wrap">
           <Button
@@ -189,7 +212,6 @@ export default function CropsPage() {
         </p>
       </div>
 
-      {/* TABS del Detalle */}
       <div className="flex flex-wrap gap-0 border-b border-ink/20">
         {tabs.map((tab) => {
           const isActive = activeTab === tab.id;
@@ -212,7 +234,6 @@ export default function CropsPage() {
         })}
       </div>
 
-      {/* CONTENIDO del Detalle */}
       <div className="pt-2">
         {activeSystem && <SystemTab system={activeSystem} />}
         {activeTab === "observations" && <ObservationsTab />}
