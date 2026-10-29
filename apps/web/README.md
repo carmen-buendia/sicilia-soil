@@ -31,7 +31,7 @@ apps/web/
 │   │   ├── notifications/        Bell + panel
 │   │   ├── recommendations/      List + card
 │   │   ├── shared/               Shared domain components (SoilChart, SymbiosisCard, CycleDiagram)
-│   │   └── soil-health/          MushroomCard
+│   │   └── soil-health/
 │   └── layout/                   Navbar, Footer
 │
 ├── hooks/                        All React hooks

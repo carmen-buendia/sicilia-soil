@@ -1,5 +1,7 @@
+// apps/web/components/features/notifications/NotificationItem.tsx
 "use client";
 
+import type { ComponentProps } from "react";
 import { AlertTriangle, CheckCircle2, Info, XCircle } from "lucide-react";
 import Link from "next/link";
 import type { Notification, NotificationSeverity } from "@sicilia-soil/core";
@@ -11,9 +13,11 @@ interface NotificationItemProps {
   onMarkAsRead: (id: string) => void;
 }
 
+type DataCardVariant = ComponentProps<typeof DataCard>["variant"];
+
 const SEVERITY_MAP: Record<
   NotificationSeverity,
-  { icon: typeof Info; color: string; variant: any }
+  { icon: typeof Info; color: string; variant: DataCardVariant }
 > = {
   critical: { icon: XCircle, color: "text-red-500", variant: "critical" },
   warning: { icon: AlertTriangle, color: "text-solar", variant: "warning" },
