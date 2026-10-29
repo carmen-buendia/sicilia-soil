@@ -66,6 +66,7 @@ export function buildCoverFallowPreset(): CropSystem {
 
       shi: 72,
       amf: 65,
+      moisture: 45,
       glomalin: 1.2,
     },
 
