@@ -306,9 +306,7 @@ export default async function LandingPage() {
           </div>
 
           <div className="relative">
-            <div className="absolute -top-6 -left-4 text-6xl text-solar/20 font-serif">
-              "
-            </div>
+            <div className="absolute -top-6 -left-4 text-6xl text-solar/20 font-serif"></div>
             <div className="bg-paper border border-ink/20 p-8 relative z-10 shadow-sm">
               <p className="font-serif italic text-xl leading-relaxed text-ink mb-6">
                 {locale.content.landing.philosophyQuote}

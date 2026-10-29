@@ -13,10 +13,8 @@ export function CoverFallowRenderer({ system }: { system: CropSystem }) {
   const t = locale.content.cropsPage.coverFallow;
   const shared = locale.content.cropsPage.shared;
 
-  // Local UI state for the rotation editor
   const [isEditingRotation, setIsEditingRotation] = useState(false);
 
-  // Map biological states to locale keys and visual styles
   const COVER_STATUS_CONFIG: Record<string, { key: string; style: string }> = {
     "High density": {
       key: "highDensity",
@@ -34,7 +32,6 @@ export function CoverFallowRenderer({ system }: { system: CropSystem }) {
 
   const FALLBACK_STATUS_STYLE = "bg-solar/10 border-solar/20 text-solar";
 
-  // Extract data from the system prop
   const subCrops = system.subCrops ?? [];
   const fallowSeries = system.series?.find((s) => s.key === "rotation");
 
@@ -74,17 +71,17 @@ export function CoverFallowRenderer({ system }: { system: CropSystem }) {
                 series={[
                   {
                     name: t.series.cover,
-                    data: subCrops.map((c) => c.water ?? 0), // Water maps to cover % in this context
+                    data: subCrops.map((c) => c.water ?? 0),
                     color: SOIL_COLORS.chloro,
                   },
                   {
                     name: t.series.biomass,
-                    data: subCrops.map((c) => c.residue ?? 0), // Residue maps to biomass t/ha
+                    data: subCrops.map((c) => c.residue ?? 0),
                     color: SOIL_COLORS.solar,
                   },
                   {
                     name: t.series.nitrogen,
-                    data: subCrops.map((c) => c.extraction ?? 0), // Extraction maps to N kg/ha
+                    data: subCrops.map((c) => c.extraction ?? 0),
                     color: SOIL_COLORS.ink,
                   },
                 ]}
@@ -95,52 +92,58 @@ export function CoverFallowRenderer({ system }: { system: CropSystem }) {
             </DataCard>
 
             {/* Table: Cover species details */}
-            <DataCard className="p-0 overflow-hidden">
-              <div className="grid grid-cols-6 gap-2 p-3 bg-paper/50 border-b border-ink/10 font-mono text-[10px] uppercase tracking-wider text-ink/60 font-bold">
-                {t.tableHeaders.map((h, i) => (
-                  <span key={i}>{h}</span>
-                ))}
-              </div>
-              {subCrops.map((crop) => {
-                const statusCfg = COVER_STATUS_CONFIG[crop.stage ?? ""];
-                const statusLabel = statusCfg
-                  ? t.statusLabels[
-                      statusCfg.key as
-                        | "highDensity"
-                        | "emergence"
-                        | "senescence"
-                    ]
-                  : (crop.stage ?? "—");
-                const statusStyle = statusCfg?.style ?? FALLBACK_STATUS_STYLE;
+            <DataCard className="p-0 overflow-x-auto">
+              {/* Forzamos un ancho mínimo mayor y repartimos mejor las columnas */}
+              <div className="min-w-[850px] w-full">
+                <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1.5fr_1.5fr] gap-2 p-3 bg-paper/50 border-b border-ink/10 font-mono text-[10px] uppercase tracking-wider text-ink/60 font-bold">
+                  {t.tableHeaders.map((h, i) => (
+                    <span key={i} className="whitespace-nowrap">
+                      {h}
+                    </span>
+                  ))}
+                </div>
+                {subCrops.map((crop) => {
+                  const statusCfg = COVER_STATUS_CONFIG[crop.stage ?? ""];
+                  const statusLabel = statusCfg
+                    ? t.statusLabels[
+                        statusCfg.key as
+                          | "highDensity"
+                          | "emergence"
+                          | "senescence"
+                      ]
+                    : (crop.stage ?? "—");
+                  const statusStyle = statusCfg?.style ?? FALLBACK_STATUS_STYLE;
 
-                return (
-                  <div
-                    key={crop.id}
-                    className="grid grid-cols-6 gap-2 p-3 border-t border-ink/10 text-sm items-center hover:bg-paper/30 transition-colors"
-                  >
-                    <span className="flex items-center gap-2 font-serif font-bold text-ink">
-                      <span className="text-lg">{crop.icon}</span> {crop.name}
-                    </span>
-                    <span className="font-mono text-ink/70">
-                      {crop.water ?? 0}%
-                    </span>
-                    <span className="font-mono text-ink/70">
-                      {crop.residue ?? 0} t/ha
-                    </span>
-                    <span className="font-mono text-chloro font-bold">
-                      {crop.extraction ?? 0} kg/ha
-                    </span>
-                    <span className="font-mono text-[10px] uppercase tracking-wider text-ink/50">
-                      {crop.season ?? "—"}
-                    </span>
-                    <span
-                      className={`font-mono text-[10px] px-2 py-0.5 border uppercase tracking-wider font-bold ${statusStyle}`}
+                  return (
+                    <div
+                      key={crop.id}
+                      className="grid grid-cols-[2fr_1fr_1fr_1fr_1.5fr_1.5fr] gap-2 p-3 border-t border-ink/10 text-sm items-center hover:bg-paper/30 transition-colors"
                     >
-                      {statusLabel}
-                    </span>
-                  </div>
-                );
-              })}
+                      {/* Añadimos whitespace-nowrap a todos los textos para que no se rompan */}
+                      <span className="flex items-center gap-2 font-serif font-bold text-ink whitespace-nowrap">
+                        <span className="text-lg">{crop.icon}</span> {crop.name}
+                      </span>
+                      <span className="font-mono text-ink/70 whitespace-nowrap">
+                        {crop.water ?? 0}%
+                      </span>
+                      <span className="font-mono text-ink/70 whitespace-nowrap">
+                        {crop.residue ?? 0} t/ha
+                      </span>
+                      <span className="font-mono text-chloro font-bold whitespace-nowrap">
+                        {crop.extraction ?? 0} kg/ha
+                      </span>
+                      <span className="font-mono text-[10px] uppercase tracking-wider text-ink/50 whitespace-nowrap">
+                        {crop.season ?? "—"}
+                      </span>
+                      <span
+                        className={`font-mono text-[10px] px-2 py-0.5 border uppercase tracking-wider font-bold whitespace-nowrap text-center ${statusStyle}`}
+                      >
+                        {statusLabel}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
             </DataCard>
           </>
         )}
@@ -164,7 +167,6 @@ export function CoverFallowRenderer({ system }: { system: CropSystem }) {
           </Button>
         </div>
 
-        {/* Edit Rotation Inline Form (UI only) */}
         {isEditingRotation && (
           <DataCard className="p-6 mb-6 border-solar/30 bg-solar/5">
             <h4 className="font-serif font-bold text-ink mb-4 text-sm">
@@ -177,7 +179,6 @@ export function CoverFallowRenderer({ system }: { system: CropSystem }) {
           </DataCard>
         )}
 
-        {/* Fallow Timeline Chart */}
         {fallowSeries && (
           <DataCard className="p-6">
             <h4 className="font-serif font-bold text-ink mb-4">

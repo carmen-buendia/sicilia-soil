@@ -64,16 +64,19 @@ export default function ConfigurationPage() {
   const [pushAlerts, setPushAlerts] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
 
-  // Cargar preferencias al montar el componente
   useEffect(() => {
-    const savedSettings = localStorage.getItem("sikelia_settings");
+    const savedSettings = localStorage.getItem("settings");
     if (savedSettings) {
       const parsed = JSON.parse(savedSettings);
+
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setDarkMode(parsed.darkMode ?? false);
+
       setAutoRefresh(parsed.autoRefresh ?? true);
+
       setRefreshInterval(parsed.refreshInterval ?? "30");
+
       setEmailAlerts(parsed.emailAlerts ?? true);
-      setPushAlerts(parsed.pushAlerts ?? false);
     }
   }, []);
 

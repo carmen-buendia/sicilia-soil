@@ -84,16 +84,12 @@ export function SymbiosisCard({
   const hostSeries = [
     {
       name: "AMF",
-      data: allHosts.map((h) =>
-        h.type === "AMF" ? h.colonisation : null,
-      ) as any[],
+      data: allHosts.map((h) => (h.type === "AMF" ? h.colonisation : null)),
       color: SOIL_COLORS.chloro,
     },
     {
       name: "ECM",
-      data: allHosts.map((h) =>
-        h.type === "ECM" ? h.colonisation : null,
-      ) as any[],
+      data: allHosts.map((h) => (h.type === "ECM" ? h.colonisation : null)),
       color: SOIL_COLORS.solar,
     },
   ];

@@ -1,27 +1,60 @@
+// apps/web/components/features/soil-health/tabs/SoilHealthSummary.tsx
 "use client";
 
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { calculateSymbiosisScore } from "@sicilia-soil/utils";
 import { SymbiosisCard } from "@/components/features/shared";
-import {
-  MONITORING_ZONES,
-  SOIL_CONTAMINATION,
-  getRemediationProgress,
-  getLocale,
-} from "@sicilia-soil/core";
-import { DataCard } from "@sicilia-soil/ui"; // <-- Importamos DataCard
+import type { CropSystem } from "@sicilia-soil/core";
+import { getLocale } from "@sicilia-soil/core";
+import { DataCard } from "@sicilia-soil/ui";
 
-export function SoilHealthSummary() {
+export function SoilHealthSummary({ systems }: { systems: CropSystem[] }) {
   const locale = getLocale("es");
   const t = locale.content.soilHealthTabs.summary;
 
+  const totalSystems = systems.length;
+
+  if (totalSystems === 0) {
+    return (
+      <DataCard className="p-12 text-center border-dashed border-ink/20">
+        <p className="font-mono text-sm text-ink/50">
+          No hay sistemas registrados. Añade un cultivo en el CRUD para ver el
+          resumen de salud del suelo.
+        </p>
+      </DataCard>
+    );
+  }
+
+  // 1. Calculamos las medias de las métricas de los sistemas
+  const avgAmf = Math.round(
+    systems.reduce((acc, s) => acc + (s.metrics.amf ?? 0), 0) / totalSystems,
+  );
+  const avgShi = Math.round(
+    systems.reduce((acc, s) => acc + (s.metrics.shi ?? 0), 0) / totalSystems,
+  );
+  const avgMoisture = Math.round(
+    systems.reduce((acc, s) => acc + (s.metrics.moisture ?? 0), 0) /
+      totalSystems,
+  );
+  const avgGlomalin = Number(
+    (
+      systems.reduce((acc, s) => acc + (s.metrics.glomalin ?? 0), 0) /
+      totalSystems
+    ).toFixed(1),
+  );
+
+  // 2. Buscamos datos de remediación (si el usuario los ha registrado en algún sistema)
+  const lead = systems[0]?.metrics.lead ?? 0;
+  const hydrocarbons = systems[0]?.metrics.hydrocarbons ?? 0;
+
+  // 3. Calculamos el índice de simbiosis con los datos reales
   const symbiosis = calculateSymbiosisScore({
-    espartoHealth: 92,
+    espartoHealth: avgShi,
     coverDensity: 78,
-    soilMoisture: 69,
-    mycorrhizalColonisation: 45,
-    glomalin: 2.1,
+    soilMoisture: avgMoisture,
+    mycorrhizalColonisation: avgAmf,
+    glomalin: avgGlomalin,
     fungalDiversity: 4,
     soilRespiration: 3.2,
     cosPercent: 2.5,
@@ -29,13 +62,6 @@ export function SoilHealthSummary() {
     mushroomOccurrence: 2,
     mushroomSeason: "otono",
   });
-
-  const progress = getRemediationProgress();
-  const current = SOIL_CONTAMINATION.measurements.at(-1)!;
-  const amfZones = MONITORING_ZONES.filter((z) => z.mycorrhizaType === "AMF");
-  const avgColonisation = Math.round(
-    amfZones.reduce((acc, z) => acc + z.colonisation, 0) / amfZones.length,
-  );
 
   return (
     <div className="space-y-8">
@@ -53,11 +79,9 @@ export function SoilHealthSummary() {
           <p className="font-mono text-[10px] uppercase tracking-wider text-ink/60 mb-1">
             {t.avgColonisation}
           </p>
-          <p className="font-mono text-3xl font-bold text-ink">
-            {avgColonisation}%
-          </p>
+          <p className="font-mono text-3xl font-bold text-ink">{avgAmf}%</p>
           <p className="font-sans text-xs text-ink/50 mt-1">
-            {t.inCrops.replace("{count}", String(amfZones.length))}
+            {t.inCrops.replace("{count}", String(totalSystems))}
           </p>
         </DataCard>
 
@@ -66,10 +90,12 @@ export function SoilHealthSummary() {
             {t.leadReduction}
           </p>
           <p className="font-mono text-3xl font-bold text-chloro">
-            −{progress.leadReduction}%
+            {lead > 0 ? `−${Math.round(lead)}%` : "—"}
           </p>
           <p className="font-sans text-xs text-ink/50 mt-1">
-            {t.leadFromTo.replace("{to}", String(current.lead))}
+            {lead > 0
+              ? t.leadFromTo.replace("{to}", String(lead))
+              : "Sin datos de plomo"}
           </p>
         </DataCard>
 
@@ -78,10 +104,12 @@ export function SoilHealthSummary() {
             {t.hydroReduction}
           </p>
           <p className="font-mono text-3xl font-bold text-chloro">
-            −{progress.hydrocarbonsReduction}%
+            {hydrocarbons > 0 ? `−${Math.round(hydrocarbons)}%` : "—"}
           </p>
           <p className="font-sans text-xs text-ink/50 mt-1">
-            {t.hydroFromTo.replace("{to}", String(current.hydrocarbons))}
+            {hydrocarbons > 0
+              ? t.hydroFromTo.replace("{to}", String(hydrocarbons))
+              : "Sin datos de hidrocarburos"}
           </p>
         </DataCard>
       </div>
@@ -116,10 +144,7 @@ export function SoilHealthSummary() {
               {t.goToNetworks}
             </p>
             <p className="font-sans text-xs text-ink/60 mt-1">
-              {t.goToNetworksDesc.replace(
-                "{count}",
-                String(MONITORING_ZONES.length),
-              )}
+              {t.goToNetworksDesc.replace("{count}", String(totalSystems))}
             </p>
           </DataCard>
         </Link>
