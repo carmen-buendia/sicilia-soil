@@ -7,9 +7,17 @@ import { useCropSystemsContext } from "@/components/features/crops/CropSystemsPr
 import { SystemTab } from "@/components/features/crops/tabs/SystemTab";
 import { ObservationsTab } from "@/components/features/crops/tabs/ObservationsTab";
 import { AnalyticsTab } from "@/components/features/crops/tabs/AnalyticsTab";
-import { CreateSystemModal } from "@/components/features/crops/CreateSystemModal"; // 👈 Importamos el modal
+import { CreateSystemModal } from "@/components/features/crops/CreateSystemModal";
 import { Button, DataCard } from "@sicilia-soil/ui";
-import { ArrowLeft, Plus, LayoutGrid, Droplets, Activity } from "lucide-react";
+// 👇 Añadimos ChevronRight a los iconos
+import {
+  ArrowLeft,
+  Plus,
+  LayoutGrid,
+  Droplets,
+  Activity,
+  ChevronRight,
+} from "lucide-react";
 
 export default function CropsPage() {
   const { systems } = useCropSystemsContext();
@@ -20,7 +28,6 @@ export default function CropsPage() {
   const [viewMode, setViewMode] = useState<"directory" | "detail">("directory");
   const [activeTab, setActiveTab] = useState<string>("observations");
 
-  // 👇 Estado para controlar el modal
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const handleOpenSystem = (id: string) => {
@@ -54,7 +61,6 @@ export default function CropsPage() {
               </div>
             </div>
 
-            {/* 👇 Botón conectado al modal */}
             <Button
               variant="cta"
               className="flex items-center gap-2"
@@ -78,10 +84,16 @@ export default function CropsPage() {
             {systems.map((system) => (
               <DataCard
                 key={system.id}
-                className="p-6 flex flex-col hover:border-chloro/50 transition-colors cursor-pointer group"
+                // 👇 Añadimos relative, shadow y transiciones
+                className="p-6 flex flex-col hover:border-chloro/50 hover:shadow-md transition-all cursor-pointer group relative"
                 onClick={() => handleOpenSystem(system.id)}
               >
-                <div className="flex items-center gap-3 mb-4">
+                {/* 👇 Flecha indicadora en la esquina superior derecha */}
+                <div className="absolute top-4 right-4 text-ink/30 group-hover:text-chloro group-hover:translate-x-1 transition-all">
+                  <ChevronRight className="w-5 h-5" />
+                </div>
+
+                <div className="flex items-center gap-3 mb-4 pr-6">
                   <span className="text-3xl">{system.icon}</span>
                   <div>
                     <h3 className="font-serif text-lg font-bold text-ink group-hover:text-chloro transition-colors">
@@ -114,12 +126,22 @@ export default function CropsPage() {
                     </span>
                   </div>
                 </div>
+
+                {/* 👇 Texto de acción inferior */}
+                <div className="mt-4 pt-3 border-t border-ink/10 flex items-center justify-between">
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-ink/40">
+                    Ver analíticas
+                  </span>
+                  <span className="font-mono text-[10px] font-bold text-chloro uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity">
+                    Entrar
+                  </span>
+                </div>
               </DataCard>
             ))}
           </div>
         )}
 
-        {/* 👇 Renderizamos el Modal aquí */}
+        {/* Modal */}
         {isCreateModalOpen && (
           <CreateSystemModal onClose={() => setIsCreateModalOpen(false)} />
         )}
