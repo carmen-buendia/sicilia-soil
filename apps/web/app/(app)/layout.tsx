@@ -5,7 +5,7 @@ import { verifySession, COOKIE_NAME } from "@/lib/auth/session";
 import { getUserById } from "@sicilia-soil/db";
 import { Navbar } from "@/components/layout/Navbar";
 import { AppFooter } from "@/components/layout/AppFooter";
-import { CropSystemsProvider } from "@/components/features/crops/CropSystemsProvider"; // ← Importamos el Provider
+import { CropSystemsProvider } from "@/components/features/crops/CropSystemsProvider";
 
 export const runtime = "nodejs";
 
@@ -23,9 +23,8 @@ export default async function AppLayout({
   if (!user) redirect("/login");
 
   return (
-    // Envolvemos todo el layout con el Provider
     <CropSystemsProvider>
-      <div className="min-h-screen bg-[#F5F2EA] text-ink font-sans relative overflow-hidden">
+      <div className="flex-1 flex flex-col bg-[#F5F2EA] text-ink font-sans relative">
         {/* CUADRÍCULA GLOBAL */}
         <div
           className="absolute inset-0 pointer-events-none opacity-[0.03]"
@@ -35,7 +34,7 @@ export default async function AppLayout({
             backgroundSize: "40px 40px",
           }}
         />
-        {/* 2. Resplandor Solar (Solarpunk) */}
+        {/* Resplandores */}
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-solar/5 blur-[120px] rounded-full pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-chloro/5 blur-[120px] rounded-full pointer-events-none" />
 
@@ -43,7 +42,7 @@ export default async function AppLayout({
           <Navbar userName={user.name} userEmail={user.email} />
         </div>
 
-        <main className="pt-24 pb-12 px-4 sm:px-6 max-w-7xl mx-auto relative z-10">
+        <main className="pt-24 pb-12 px-4 sm:px-6 max-w-7xl mx-auto w-full relative z-10 flex-1">
           {children}
         </main>
 

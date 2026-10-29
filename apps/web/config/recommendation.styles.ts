@@ -10,7 +10,11 @@
 //   • /features/recommendations/RecommendationsList (filters)
 // ============================================================================
 
+import type { ComponentProps } from "react";
 import type { RecommendationPriority } from "@sicilia-soil/core";
+import { DataCard } from "@sicilia-soil/ui";
+
+type DataCardVariant = ComponentProps<typeof DataCard>["variant"];
 
 /**
  * Full palette — includes all fields any consumer might need.
@@ -21,6 +25,7 @@ export interface PriorityStyle {
   text: string;
   badge: string;
   label: string;
+  variant: DataCardVariant;
 }
 
 export const PRIORITY_STYLES: Record<RecommendationPriority, PriorityStyle> = {
@@ -30,6 +35,7 @@ export const PRIORITY_STYLES: Record<RecommendationPriority, PriorityStyle> = {
     text: "text-red-700",
     badge: "bg-red-100 text-red-800 border-red-200",
     label: "Urgente",
+    variant: "critical",
   },
   high: {
     bg: "bg-orange-50",
@@ -37,6 +43,7 @@ export const PRIORITY_STYLES: Record<RecommendationPriority, PriorityStyle> = {
     text: "text-orange-700",
     badge: "bg-orange-100 text-orange-800 border-orange-200",
     label: "Alta",
+    variant: "warning",
   },
   medium: {
     bg: "bg-amber-50",
@@ -44,6 +51,7 @@ export const PRIORITY_STYLES: Record<RecommendationPriority, PriorityStyle> = {
     text: "text-amber-700",
     badge: "bg-amber-100 text-amber-800 border-amber-200",
     label: "Media",
+    variant: "warning",
   },
   low: {
     bg: "bg-blue-50",
@@ -51,6 +59,7 @@ export const PRIORITY_STYLES: Record<RecommendationPriority, PriorityStyle> = {
     text: "text-blue-700",
     badge: "bg-blue-100 text-blue-800 border-blue-200",
     label: "Baja",
+    variant: "info",
   },
   info: {
     bg: "bg-emerald-50",
@@ -58,5 +67,6 @@ export const PRIORITY_STYLES: Record<RecommendationPriority, PriorityStyle> = {
     text: "text-emerald-700",
     badge: "bg-emerald-100 text-emerald-800 border-emerald-200",
     label: "Info",
+    variant: "success",
   },
 };

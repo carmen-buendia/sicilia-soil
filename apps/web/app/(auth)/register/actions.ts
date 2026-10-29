@@ -16,11 +16,13 @@ export async function register(formData: FormData) {
   try {
     const hash = await hashPassword(password);
     await createUser(email, hash, name);
-  } catch (error: any) {
-    if (error.message === "El usuario ya existe") {
-      redirect("/register?error=user_exists");
-    }
-    console.error("🔥 Error en registro:", error);
+  } catch (error: unknown) {
+    const message =
+      error instanceof Error ? error.message : "Error desconocido";
+
+    console.error("🔥 Error en registro:", message);
+
+    // Redirigimos con el error
     redirect("/register?error=unknown");
   }
 

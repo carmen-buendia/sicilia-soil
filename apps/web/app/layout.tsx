@@ -1,3 +1,4 @@
+// apps/web/app/layout.tsx
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { NotificationsProvider } from "@/contexts/NotificationsContext";
@@ -25,7 +26,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className="min-h-screen bg-paper text-ink font-sans antialiased">
+      <body className="min-h-screen flex flex-col bg-[#F5F2EA] text-ink font-sans antialiased overflow-x-hidden">
+        {" "}
         <NotificationsProvider>{children}</NotificationsProvider>
       </body>
     </html>
