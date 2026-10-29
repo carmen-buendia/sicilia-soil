@@ -1,28 +1,40 @@
 # SikeliaSoil
 
-An open-source, crop-agnostic platform for soil regeneration and water efficiency in Mediterranean and continental agroecosystems.
+An open-source, **crop-agnostic** data infrastructure for soil regeneration and water efficiency in Mediterranean and continental agroecosystems.
 
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Next.js](https://img.shields.io/badge/Next.js-16-black)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-18.3.1-blue)](https://react.dev/)
 [![pnpm](https://img.shields.io/badge/maintained%20with-pnpm-cc00ff.svg)](https://pnpm.io/)
 
-SikeliaSoil is a decision-support system (DSS) that fuses in-situ IoT soil sensors with Copernicus Earth Observation data to help small and medium-sized farms regenerate their soil through the mycorrhizal network.
+SikeliaSoil is a **decision-support system (DSS) and data middleware** that fuses in-situ IoT soil sensors with Copernicus Earth Observation data. It provides a sovereign, offline-first infrastructure that helps farmers, cooperatives, and researchers regenerate their soil through the mycorrhizal network.
 
-The platform is developed in Sicily (Italy) and is designed to be **offline-first** and **data-sovereign**, ensuring that farmers own their environmental data.
+Designed with the principles of the **Open Internet Stack**, the platform ensures that users own their environmental data without proprietary cloud lock-in.
 
 ---
 
 ## Why SikeliaSoil exists
 
-Modern agriculture has spent decades extracting from the soil. SikeliaSoil does the opposite: it measures, visualises and acts on the **fungal network** that regenerates soil, retains water and captures carbon.
+Modern agriculture has spent decades extracting from the soil. SikeliaSoil does the opposite: it measures, visualises, and acts on the **fungal network** that regenerates soil, retains water, and captures carbon.
 
-The platform works with any crop (esparto, cereal, olive, almond, carob, vegetables, cover crops) — it is **crop-agnostic**. It also monitors the **bioremediation** of degraded areas (e.g., historical illegal burning sites) using native fungi and esparto cover.
+Unlike traditional agritech ERPs that force users into rigid, crop-specific workflows, SikeliaSoil is built on a **schema-driven architecture**. The system does not know what an olive tree or esparto grass is. It only understands **Crop Systems** (Zones) and **Biological Metrics** (SHI, Mycorrhizal Colonisation, Glomalin).
+
+It is the user who defines their agricultural systems (woody, herbaceous, mixed, cover/fallow) via a CRUD interface. The UI then dynamically renders the appropriate charts, tables, and alerts based on the system's template. This makes the infrastructure infinitely adaptable to any crop, region, or scale (from 1 zone to 100).
+
+---
+
+## Core Architectural Pillars
+
+1. **Schema-Driven Rendering (Crop-Agnostic):** The frontend dynamically maps UI components (`HerbaceousRenderer`, `WoodyRenderer`, etc.) based on the data type, eliminating hardcoded crop logic.
+2. **Data Sovereignty & Local-First:** Built on libSQL/SQLite, allowing for offline-first edge deployment and zero vendor lock-in. The user's data stays with the user.
+3. **Open Data Aggregation:** A planned middleware layer to seamlessly normalise and ingest Copernicus (Sentinel-1, 2, 3) and IoT sensor data.
+4. **Explainable Analytics:** Goes beyond raw numbers, providing context and actionable insights through a generic rule engine.
 
 ---
 
 ## Monorepo Architecture
 
-This repository is a **pnpm workspace**. It is organised so that each package has a clear responsibility, ensuring modularity, testability, and reusability across applications.
+This repository is a **pnpm workspace**, organised to ensure modularity, testability, and reusability.
 
 ```text
 sicilia-soil/
@@ -30,12 +42,11 @@ sicilia-soil/
 │   └── web/              Next.js 16 application (DSS UI & Server Actions)
 │
 ├── packages/
-│   ├── core/             Types, mock data, constants, and Sikelia domain rules
-│   │   └── src/rules/    Sikelia's specific implementation of the rule engine
+│   ├── core/             Types, domain rules, presets (e.g., cover-fallow), and locale
 │   ├── rule-engine/      Generic, domain-agnostic, explainable rule engine
 │   ├── db/               libSQL + Drizzle ORM (Edge-ready)
-│   ├── edge/             (Planned) Constrained device runtime
 │   ├── sync/             (Planned) Offline-first sync protocol (MQTT/CoAP)
+│   ├── edge/             (Planned) Constrained device runtime
 │   ├── ui/               Reusable React components (charts, cards, badges)
 │   └── utils/            Pure domain engines (recommendations, symbiosis)
 │
@@ -45,21 +56,14 @@ sicilia-soil/
 
 ### Package Responsibilities
 
-| Package                       | Responsibility                                                                                                    |
-| :---------------------------- | :---------------------------------------------------------------------------------------------------------------- |
-| **`@sicilia-soil/core`**      | Single source of truth for types, mock data, configuration, and domain-specific rules. No React, no side effects. |
-| **`@isola-node/rule-engine`** | Domain-agnostic, deterministic, and explainable rule engine. Zero dependencies, pure TypeScript.                  |
-| **`@sicilia-soil/utils`**     | Pure logic and engines. No React. Consumable from both client and server.                                         |
-| **`@sicilia-soil/ui`**        | Reusable React components. No domain logic.                                                                       |
-| **`@sicilia-soil/db`**        | Database schema, Drizzle ORM configuration, and libSQL/Turso connection management.                               |
-| **`apps/web`**                | The Next.js application. Routes, Server Actions, hooks, and feature-specific components.                          |
-
-### Rule of thumb
-
-- **Data & Domain Rules** (types, constants, Sikelia rules) → `packages/core`
-- **Generic Infrastructure** (rule engines, sync protocols) → `packages/rule-engine`, `packages/sync`
-- **Reusable UI** (Buttons, charts, badges) → `packages/ui`
-- **App-specific code** (pages, hooks, Server Actions) → `apps/web`
+| Package                       | Responsibility                                                                                                            |
+| :---------------------------- | :------------------------------------------------------------------------------------------------------------------------ |
+| **`@sicilia-soil/core`**      | Single source of truth for types (`CropSystem`, `CropObservation`), mock data, configuration, and i18n locales. No React. |
+| **`@isola-node/rule-engine`** | Domain-agnostic, deterministic rule engine. Zero dependencies, pure TypeScript.                                           |
+| **`@sicilia-soil/utils`**     | Pure logic and engines (e.g., Symbiosis score calculation). Consumable from both client and server.                       |
+| **`@sicilia-soil/ui`**        | Reusable React components (ECharts wrappers, data cards). No domain logic.                                                |
+| **`@sicilia-soil/db`**        | Database schema, Drizzle ORM configuration, and libSQL/Turso connection management.                                       |
+| **`apps/web`**                | The Next.js App Router application. Features (Crops, Soil Health), Context Providers, and Server Actions.                 |
 
 ---
 
@@ -80,56 +84,50 @@ pnpm install
 
 ### Development
 
-To start the Next.js application (which includes both the UI and the backend logic via Server Actions):
+To start the Next.js application:
 
 ```bash
 pnpm --filter web dev
 ```
 
-_(Note: Turbopack has been disabled in the dev script by default on Windows to prevent internal memory panics. Webpack is used for stability)._
+_(Note: Turbopack is currently disabled in the dev script on Windows to prevent internal memory panics. Webpack is used for stability)._
 
-### Build
+### Linting & Type Checking
+
+We use ESLint 9 with the new Flat Config and strict TypeScript rules to ensure code quality.
 
 ```bash
-pnpm build
+pnpm --filter web lint
+pnpm --filter web type-check
 ```
-
----
-
-## Documentation
-
-- [`packages/core/README.md`](packages/core/README.md) — Types, mock data, and domain rules
-- [`packages/rule-engine/README.md`](packages/rule-engine/README.md) — Explainable rule engine
-- [`packages/utils/README.md`](packages/utils/README.md) — Domain engines
-- [`packages/ui/README.md`](packages/ui/README.md) — Reusable components
-- [`apps/web/README.md`](apps/web/README.md) — Frontend application
 
 ---
 
 ## Tech Stack
 
-| Layer             | Technology                                     |
-| :---------------- | :--------------------------------------------- |
-| **Frontend**      | Next.js 16 (App Router), React 18, TailwindCSS |
-| **Charts**        | ECharts                                        |
-| **Backend / API** | Next.js Server Actions (Serverless)            |
-| **Database**      | libSQL / Turso (persistent, edge-ready)        |
-| **EO Data**       | Copernicus (Sentinel-1, 2, 3), NASA GIBS       |
-| **Weather**       | Open-Meteo (planned)                           |
-| **Monorepo**      | pnpm Workspaces                                |
+| Layer                | Technology                                                            |
+| :------------------- | :-------------------------------------------------------------------- |
+| **Frontend**         | Next.js 16 (App Router, Server Components), React 18.3.1, TailwindCSS |
+| **State Management** | React Context + custom hooks (local-first via `localStorage`)         |
+| **Charts**           | Apache ECharts                                                        |
+| **Backend / API**    | Next.js Server Actions (Serverless)                                   |
+| **Database**         | libSQL / Turso (persistent, edge-ready)                               |
+| **EO Data**          | Copernicus (Sentinel-1, 2, 3), NASA GIBS                              |
+| **Monorepo**         | pnpm Workspaces                                                       |
+
+> **Note on React Version:** The project currently uses React 18.3.1 for maximum ecosystem stability. Next.js 16 deprecates React 18 in favor of React 19, so migrating to React 19 is planned for the next release cycle once all charting and UI dependencies are fully validated.
 
 ---
 
-## Database Strategy & Data Sovereignty
+## Database Strategy & Open Internet Stack Alignment
 
-SikeliaSoil is built on the principles of the **Open Internet Stack**. To ensure **Data Sovereignty**, we avoid proprietary cloud lock-in (such as AWS or Google Cloud).
+SikeliaSoil is built to counter the trend of proprietary data silos in agriculture.
 
-**Why Turso for the MVP?**
-During the prototyping phase, the platform uses **Turso Cloud** for rapid iteration and high availability. However, Turso is built on **libSQL** (an MIT-licensed, open-source fork of SQLite). This is a strategic choice:
+During the MVP phase, the platform uses **Turso Cloud** for rapid iteration. However, Turso is built on **libSQL** (an MIT-licensed, open-source fork of SQLite). This is a strategic choice:
 
 1. **Zero Vendor Lock-in**: The code is 100% portable.
-2. **Path to Self-Hosting**: In the next phase, the database can be migrated to a self-hosted `sqld` instance on a European VPS (e.g., Hetzner) without changing a single line of application code.
-3. **Offline-First Ready**: libSQL is designed to work with embedded replicas, which aligns perfectly with our vision of offline-capable edge devices in rural areas.
+2. **Path to Self-Hosting**: The database can be migrated to a self-hosted `sqld` instance on a European VPS without changing a single line of application code.
+3. **Offline-First Ready**: libSQL is designed to work with embedded replicas, aligning perfectly with our vision of offline-capable edge devices (e.g., in rural Sicily with poor connectivity).
 
 ---
 
@@ -141,7 +139,11 @@ Apache License 2.0 — see [LICENSE](./LICENSE).
 
 ## Contact
 
-**Carmen María Buendía Sánchez**  
-Founder & Lead Developer  
-[carmenbuendiafullstack@gmail.com](mailto:carmenbuendiafullstack@gmail.com)  
+**Carmen María Buendía Sánchez**
+Founder & Lead Developer
+[carmenbuendiafullstack@gmail.com](mailto:carmenbuendiafullstack@gmail.com)
 [GitHub Profile](https://github.com/carmen-buendia)
+
+```
+
+```

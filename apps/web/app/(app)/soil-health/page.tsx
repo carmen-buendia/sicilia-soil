@@ -1,13 +1,15 @@
+// apps/web/app/(app)/soil-health/page.tsx ( SoilHealthView.tsx)
 "use client";
 
 import { useState } from "react";
 import { getLocale } from "@sicilia-soil/core";
+import { useCropSystemsContext } from "@/components/features/crops/CropSystemsProvider";
 import {
   SoilHealthSummary,
   RemediationTab,
   NetworksTab,
   BioindicatorsTab,
-} from "./tabs";
+} from "@/components/features/soil-health/tabs";
 import { Button } from "@sicilia-soil/ui";
 
 type TabId = "summary" | "remediation" | "networks" | "bioindicators";
@@ -16,7 +18,8 @@ export default function SoilHealthPage() {
   const [activeTab, setActiveTab] = useState<TabId>("summary");
   const locale = getLocale("es");
 
-  // Usamos las traducciones en el array de pestañas
+  const { systems } = useCropSystemsContext();
+
   const TABS: { id: TabId; label: string; icon: string }[] = [
     { id: "summary", label: locale.ui.soilHealthTabs.summary, icon: "🌱" },
     {
@@ -54,7 +57,7 @@ export default function SoilHealthPage() {
         </p>
       </div>
 
-      {/* TABS (Estilo índice de libro) */}
+      {/* TABS */}
       <div className="flex flex-wrap gap-0 border-b border-ink/20">
         {TABS.map((tab) => {
           const isActive = activeTab === tab.id;
@@ -77,12 +80,14 @@ export default function SoilHealthPage() {
         })}
       </div>
 
-      {/* CONTENIDO */}
+      {/* CONTENT */}
       <div className="pt-2">
-        {activeTab === "summary" && <SoilHealthSummary />}
-        {activeTab === "remediation" && <RemediationTab />}
-        {activeTab === "networks" && <NetworksTab />}
-        {activeTab === "bioindicators" && <BioindicatorsTab />}
+        {activeTab === "summary" && <SoilHealthSummary systems={systems} />}
+        {activeTab === "remediation" && <RemediationTab systems={systems} />}
+        {activeTab === "networks" && <NetworksTab systems={systems} />}
+        {activeTab === "bioindicators" && (
+          <BioindicatorsTab systems={systems} />
+        )}
       </div>
     </div>
   );
