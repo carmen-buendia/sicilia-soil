@@ -5,15 +5,7 @@ import { useState } from "react";
 import { getLocale } from "@sicilia-soil/core";
 import type { CropSystem } from "@sicilia-soil/core";
 import { DataCard, Button } from "@sicilia-soil/ui";
-import {
-  Sprout,
-  Info,
-  PenLine,
-  Leaf,
-  Bug,
-  CloudRain,
-  FileText,
-} from "lucide-react";
+import { Info, PenLine, Leaf, Bug, CloudRain, FileText } from "lucide-react";
 import { useCropSystemsContext } from "@/components/features/crops/CropSystemsProvider";
 
 const CATEGORY_CONFIG = {
@@ -198,7 +190,6 @@ export function BioindicatorsTab({ systems }: { systems: CropSystem[] }) {
 
               <div className="space-y-3 flex-1">
                 {system.observations?.map((obs) => {
-                  // 👇 Buscamos la config de la categoría (o usamos "other" por defecto)
                   const catConfig =
                     CATEGORY_CONFIG[
                       obs.category as keyof typeof CATEGORY_CONFIG
