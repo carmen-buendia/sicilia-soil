@@ -25,6 +25,7 @@ export interface CropObservation {
   key: string;
   text: string;
   level: ObservationLevel;
+  category?: "fungi" | "pest" | "weather" | "other";
   value?: number;
   threshold?: number;
   meta?: {
