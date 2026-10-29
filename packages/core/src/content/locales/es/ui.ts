@@ -226,10 +226,6 @@ export const ui = {
     viewDetails: "Ver detalles",
   },
 
-  mushroomChip: {
-    endemicLabel: "Endémica",
-  },
-
   // Navigation Menu
   nav: {
     about: "Acerca de",
