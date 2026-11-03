@@ -17,10 +17,10 @@ import {
 import { StatsCard } from "@/components/features/dashboard/components/StatsCards";
 import { ZoneCard } from "@/components/features/dashboard/components/ZoneCards";
 import { ServerStatus } from "@/components/features/dashboard/components/ServerStatus";
-import { SystemStatusCard } from "@/components/features/decision";
+import { SystemStatusCard } from "@/components/features/engine";
 import { useRecommendations } from "@/hooks/useRecommendations";
 import { useDashboardData } from "@/hooks/useDashboardData";
-import { useTodayDecision } from "@/hooks/useTodayDecision";
+import { useTodayEngine } from "@/hooks/useTodayEngine";
 import { PRIORITY_STYLES } from "@/config/recommendation.styles";
 import { DASHBOARD_ICONS } from "@/config/icon-map";
 import { getLocale, TELEMETRY_MOCK_SENSORS } from "@sicilia-soil/core";
@@ -34,10 +34,10 @@ export default function HomePage() {
   const t = locale.ui.telemetry;
 
   const {
-    output: decision,
-    context: decisionContext,
-    evidence: decisionEvidence,
-  } = useTodayDecision();
+    output: engine,
+    context: engineContext,
+    evidence: engineEvidence,
+  } = useTodayEngine();
   const recommendations = useRecommendations();
 
   const topAlerts = useMemo(
@@ -178,9 +178,9 @@ export default function HomePage() {
       {/* 4. ESTADO DEL SISTEMA */}
       <div>
         <SystemStatusCard
-          output={decision}
-          context={decisionContext}
-          evidence={decisionEvidence}
+          output={engine}
+          context={engineContext}
+          evidence={engineEvidence}
         />
       </div>
 
@@ -193,7 +193,7 @@ export default function HomePage() {
               {locale.ui.dashboard.zonesTitle}
             </h2>
             <Link
-              href="/crops" // 👈 CAMBIADO DE /ground-cover a /crops
+              href="/crops"
               className="font-mono text-xs uppercase tracking-widest font-bold text-solar hover:text-ink transition-colors flex items-center gap-1"
             >
               {locale.ui.actions.viewCrops} <ArrowRight className="w-3 h-3" />

@@ -10,7 +10,7 @@ This package contains **no React, no side effects, no logic**. It is importable 
 
 > Single source of truth for types, domain rules, mock data, and configuration.
 
-This package contains **no React and no side effects**. It holds the domain knowledge of SikeliaSoil (types, decision rules, static content) and is importable from both the frontend and the server.
+This package contains **no React and no side effects**. It holds the domain knowledge of SikeliaSoil (types, engine rules, static content) and is importable from both the frontend and the server.
 
 ---
 
@@ -40,15 +40,15 @@ packages/core/src/
 ```ts
 import {
   // Types
-  DecisionContext,
-  DecisionEvidence,
+  EngineContext,
+  EngineEvidence,
 
   // Domain Rules & Adapters
-  DECISION_RULES_V1,
+  ENGINE_RULES_V1,
   SiciliaSoilAdapter,
 
   // Default Data & Telemetry
-  DECISION_EVIDENCE_DEFAULT,
+  ENGINE_EVIDENCE_DEFAULT,
   TELEMETRY_MOCK_SENSORS,
   FARM_CENTER,
 } from "@sicilia-soil/core";
@@ -82,8 +82,8 @@ Example: telemetry.default.ts will be replaced by a useTelemetry() hook that fet
 
 ## Adding a new data domain
 
-1. Open rules/rules.v1.ts and add your new DecisionRule object.
+1. Open rules/rules.v1.ts and add your new EngineRule object.
 
-2. If the rule requires a new data field, update the DecisionEvidence type.
+2. If the rule requires a new data field, update the EngineEvidence type.
 
 3. Update sicilia-soil.adapter.ts so the engine knows how to read that new field.

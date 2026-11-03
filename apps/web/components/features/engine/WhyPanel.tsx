@@ -1,12 +1,12 @@
-// apps/web/components/features/decision/WhyPanel.tsx
+// apps/web/components/features/engine/WhyPanel.tsx
 "use client";
 
 import { Brain } from "lucide-react";
-import type { DecisionOutput } from "@sicilia-soil/core";
-import { VOTE_DOT_COLOR, weightTextColor } from "@/config/decision.styles";
+import type { EngineOutput } from "@sicilia-soil/core";
+import { VOTE_DOT_COLOR, weightTextColor } from "@/config/engine.styles";
 
 interface WhyPanelProps {
-  output: DecisionOutput;
+  output: EngineOutput;
 }
 
 export function WhyPanel({ output }: WhyPanelProps) {
