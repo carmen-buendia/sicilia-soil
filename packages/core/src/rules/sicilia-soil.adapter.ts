@@ -1,17 +1,15 @@
-// packages/core/src/decision/sicilia-soil.adapter.ts
-// SPDX-License-Identifier: Apache-2.0
-// Copyright 2026 Carmen María Buendía Sánchez
+// packages/core/src/engine/sicilia-soil.adapter.ts
 // ============================================================================
 // SikeliaSoil — Evidence Adapter
 // ----------------------------------------------------------------------------
-// Implements the generic EvidenceAdapter interface from @sicilia-soil/decision
+// Implements the generic EvidenceAdapter interface from @sicilia-soil/engine
 // with agriculture-specific paths (sensors.soil_moisture, eoIndices.NDVI...).
 // ============================================================================
 import type { EvidenceAdapter, InputConflict } from "@isola-node/rule-engine";
-import type { DecisionEvidence } from "../types/decision.types";
+import type { EngineEvidence } from "../types/rule-engine.types";
 
-export const SiciliaSoilAdapter: EvidenceAdapter<DecisionEvidence> = {
-  read(evidence: DecisionEvidence, path: string): number | undefined {
+export const SiciliaSoilAdapter: EvidenceAdapter<EngineEvidence> = {
+  read(evidence: EngineEvidence, path: string): number | undefined {
     if (path === "sensors.soil_moisture")
       return evidence.sensors.find((s) => s.sensorType === "soil_moisture")
         ?.value;
@@ -36,7 +34,7 @@ export const SiciliaSoilAdapter: EvidenceAdapter<DecisionEvidence> = {
     return undefined;
   },
 
-  detectConflicts(evidence: DecisionEvidence): InputConflict[] {
+  detectConflicts(evidence: EngineEvidence): InputConflict[] {
     const conflicts: InputConflict[] = [];
     const ssm = evidence.eoIndices.find((e) => e.indexType === "SSM")?.value;
     const iotMoisture = evidence.sensors.find(
@@ -57,7 +55,7 @@ export const SiciliaSoilAdapter: EvidenceAdapter<DecisionEvidence> = {
     return conflicts;
   },
 
-  sourcesUsed(evidence: DecisionEvidence): string[] {
+  sourcesUsed(evidence: EngineEvidence): string[] {
     const sources: string[] = [];
     if (evidence.eoIndices.length) sources.push("sentinel2");
     if (evidence.sensors.length) sources.push("iot");

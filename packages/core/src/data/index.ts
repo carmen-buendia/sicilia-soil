@@ -14,7 +14,7 @@ export * from "./sensors.defaults";
 export * from "./temperature.data";
 export * from "./light.data";
 export * from "./water.data";
-export * from "./decision.defaults";
+export * from "./rule-engine.defaults";
 export * from "./telemetry.defaults";
 
 // Dashboard

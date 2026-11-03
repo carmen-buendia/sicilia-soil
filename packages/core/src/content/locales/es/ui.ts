@@ -276,7 +276,7 @@ export const ui = {
     title: "Notificaciones",
   },
 
-  // Decision Engine Recommendations
+  // Rule Engine Recommendations
   recommendations: {
     action: "Acción recomendada",
     all: "Todos",

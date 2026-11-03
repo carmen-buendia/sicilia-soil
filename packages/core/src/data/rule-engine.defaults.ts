@@ -1,22 +1,19 @@
-// packages/core/src/data/decision.defaults.ts
+// packages/core/src/data/rule-engine.defaults.ts
 
 // ============================================================================
-// SikeliaSoil — Decision default data
+// SikeliaSoil — Rule Engine default data
 // ----------------------------------------------------------------------------
 // Real values from the Assoro farm, captured 2026-10-07.
 // Replace with API call once feat/db-crud is available.
 // ============================================================================
 
-import type {
-  DecisionContext,
-  DecisionEvidence,
-} from "../types/decision.types";
+import type { EngineContext, EngineEvidence } from "../types/rule-engine.types";
 
 // ---------------------------------------------------------------------------
 // Context: the farm we're deciding about
 // ---------------------------------------------------------------------------
 
-export const DECISION_CONTEXT_DEFAULT: DecisionContext = {
+export const ENGINE_CONTEXT_DEFAULT: EngineContext = {
   farmId: "farm-assoro",
   scopeType: "farm",
   scopeId: "farm",
@@ -29,7 +26,7 @@ export const DECISION_CONTEXT_DEFAULT: DecisionContext = {
 // Evidence: what the sensors and satellites told us
 // ---------------------------------------------------------------------------
 
-export const DECISION_EVIDENCE_DEFAULT: DecisionEvidence = {
+export const ENGINE_EVIDENCE_DEFAULT: EngineEvidence = {
   eoIndices: [
     {
       indexType: "NDVI",

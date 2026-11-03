@@ -1,6 +1,6 @@
-// packages/core/src/decision/rules.v1.ts
+// packages/core/src/rules/rules.v1.ts
 // ============================================================================
-// SikeliaSoil — Decision rules v1
+// SikeliaSoil — Engine rules v1
 // ----------------------------------------------------------------------------
 // Ten declarative rules. Each reads like a sentence:
 //   "IF soil is wet AND rain is coming THEN don't intervene"
@@ -8,9 +8,9 @@
 // The engine applies them. The learner adjusts weights over time.
 // ============================================================================
 
-import { DecisionRule } from "@isola-node/rule-engine";
+import { EngineRule } from "@isola-node/rule-engine";
 
-export const DECISION_RULES_V1: DecisionRule[] = [
+export const ENGINE_RULES_V1: EngineRule[] = [
   // -------------------------------------------------------------------------
   // WATER
   // -------------------------------------------------------------------------
@@ -18,8 +18,16 @@ export const DECISION_RULES_V1: DecisionRule[] = [
     id: "soil_wet_rain_coming",
     label: "El suelo está húmedo y va a llover",
     conditions: [
-      { field: "sensors.soil_moisture", operator: "gte", value: 55 },
-      { field: "weather.rainNext72hMm", operator: "gte", value: 5 },
+      {
+        field: "sensors.soil_moisture",
+        operator: "greaterThanOrEqual",
+        value: 55,
+      },
+      {
+        field: "weather.rainNext72hMm",
+        operator: "greaterThanOrEqual",
+        value: 5,
+      },
     ],
     votesFor: "green",
     baseConfidence: 0.9,
@@ -31,8 +39,12 @@ export const DECISION_RULES_V1: DecisionRule[] = [
     id: "soil_dry_no_rain",
     label: "El suelo está seco y no va a llover",
     conditions: [
-      { field: "sensors.soil_moisture", operator: "lte", value: 35 },
-      { field: "weather.rainNext72hMm", operator: "lte", value: 2 },
+      {
+        field: "sensors.soil_moisture",
+        operator: "lessThanOrEqual",
+        value: 35,
+      },
+      { field: "weather.rainNext72hMm", operator: "lessThanOrEqual", value: 2 },
     ],
     votesFor: "red",
     baseConfidence: 0.85,
@@ -44,7 +56,11 @@ export const DECISION_RULES_V1: DecisionRule[] = [
     id: "soil_moderate_dry",
     label: "El suelo se está secando",
     conditions: [
-      { field: "sensors.soil_moisture", operator: "between", value: [35, 50] },
+      {
+        field: "sensors.soil_moisture",
+        operator: "isBetween",
+        value: [35, 50],
+      },
     ],
     votesFor: "yellow",
     baseConfidence: 0.7,
@@ -59,7 +75,9 @@ export const DECISION_RULES_V1: DecisionRule[] = [
   {
     id: "ndvi_healthy_stable",
     label: "El cultivo está vigoroso y estable",
-    conditions: [{ field: "eoIndices.NDVI", operator: "gte", value: 0.6 }],
+    conditions: [
+      { field: "eoIndices.NDVI", operator: "greaterThanOrEqual", value: 0.6 },
+    ],
     votesFor: "green",
     baseConfidence: 0.8,
     criteria: ["water", "protection"],
@@ -69,7 +87,7 @@ export const DECISION_RULES_V1: DecisionRule[] = [
   {
     id: "ndvi_dropping",
     label: "El vigor del cultivo está bajando",
-    conditions: [{ field: "eoIndices.NDVI", operator: "lt", value: 0.5 }],
+    conditions: [{ field: "eoIndices.NDVI", operator: "lessThan", value: 0.5 }],
     votesFor: "yellow",
     baseConfidence: 0.75,
     criteria: ["water", "protection"],
@@ -79,7 +97,7 @@ export const DECISION_RULES_V1: DecisionRule[] = [
   {
     id: "ndwi_canopy_stress",
     label: "Las hojas tienen poca agua",
-    conditions: [{ field: "eoIndices.NDWI", operator: "lt", value: 0.3 }],
+    conditions: [{ field: "eoIndices.NDWI", operator: "lessThan", value: 0.3 }],
     votesFor: "yellow",
     baseConfidence: 0.75,
     criteria: ["water"],
@@ -93,7 +111,9 @@ export const DECISION_RULES_V1: DecisionRule[] = [
   {
     id: "lst_heat_stress",
     label: "La superficie está muy caliente",
-    conditions: [{ field: "eoIndices.LST", operator: "gte", value: 32 }],
+    conditions: [
+      { field: "eoIndices.LST", operator: "greaterThanOrEqual", value: 32 },
+    ],
     votesFor: "yellow",
     baseConfidence: 0.7,
     criteria: ["protection"],
@@ -108,7 +128,11 @@ export const DECISION_RULES_V1: DecisionRule[] = [
     id: "mycorrhiza_declining",
     label: "La red micorrícica está por debajo del umbral",
     conditions: [
-      { field: "kpis.mycorrhiza_colonisation", operator: "lt", value: 40 },
+      {
+        field: "kpis.mycorrhiza_colonisation",
+        operator: "lessThan",
+        value: 40,
+      },
     ],
     votesFor: "yellow",
     baseConfidence: 0.8,
@@ -120,7 +144,11 @@ export const DECISION_RULES_V1: DecisionRule[] = [
     id: "mycorrhiza_active",
     label: "La red micorrícica está activa y sana",
     conditions: [
-      { field: "kpis.mycorrhiza_colonisation", operator: "gte", value: 50 },
+      {
+        field: "kpis.mycorrhiza_colonisation",
+        operator: "greaterThanOrEqual",
+        value: 50,
+      },
     ],
     votesFor: "green",
     baseConfidence: 0.85,
@@ -131,7 +159,7 @@ export const DECISION_RULES_V1: DecisionRule[] = [
   {
     id: "glomalin_low",
     label: "La glomalina está baja: el suelo pierde estructura",
-    conditions: [{ field: "kpis.glomalin", operator: "lt", value: 1.5 }],
+    conditions: [{ field: "kpis.glomalin", operator: "lessThan", value: 1.5 }],
     votesFor: "yellow",
     baseConfidence: 0.75,
     criteria: ["fertilisation"],
