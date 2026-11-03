@@ -1,16 +1,16 @@
 import {
-  type DecisionOutput,
-  type DecisionContext,
-  type DecisionEvidence,
+  type EngineOutput,
+  type EngineContext,
+  type EngineEvidence,
   getLocale,
 } from "@sicilia-soil/core";
 import {
-  DECISION_STATE_THEME,
+  ENGINE_STATE_THEME,
   SOURCE_META,
   VOTE_DOT_COLOR,
   weightTextColor,
   DEFAULT_SOURCE_META,
-} from "@/config/decision.styles";
+} from "@/config/engine.styles";
 import { WhyPanel } from "./WhyPanel";
 import { useState } from "react";
 import {
@@ -28,9 +28,9 @@ import {
 import { Button, DataCard } from "@sicilia-soil/ui";
 
 interface SystemStatusCardProps {
-  output: DecisionOutput;
-  context: DecisionContext;
-  evidence?: DecisionEvidence;
+  output: EngineOutput;
+  context: EngineContext;
+  evidence?: EngineEvidence;
 }
 
 export function SystemStatusCard({
@@ -39,7 +39,7 @@ export function SystemStatusCard({
   evidence,
 }: SystemStatusCardProps) {
   const [whyOpen, setWhyOpen] = useState(false);
-  const stateStyle = DECISION_STATE_THEME[output.state];
+  const stateStyle = ENGINE_STATE_THEME[output.state];
   const locale = getLocale("es");
 
   const StateIcon =
