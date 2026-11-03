@@ -30,9 +30,12 @@ importers:
 
   apps/web:
     dependencies:
+      '@isola-node/adapters':
+        specifier: file:../../../isola-node-protocol/packages/adapters
+        version: file:../isola-node-protocol/packages/adapters
       '@isola-node/rule-engine':
-        specifier: workspace:*
-        version: link:../../packages/rule-engine
+        specifier: file:../../../isola-node-protocol/packages/rule-engine
+        version: file:../isola-node-protocol/packages/rule-engine
       '@sicilia-soil/core':
         specifier: workspace:*
         version: link:../../packages/core
@@ -107,13 +110,11 @@ importers:
         specifier: ^5.3.3
         version: 5.9.3
 
-  packages/adapters: {}
-
   packages/core:
     dependencies:
       '@isola-node/rule-engine':
-        specifier: workspace:*
-        version: link:../rule-engine
+        specifier: file:../../../isola-node-protocol/packages/rule-engine
+        version: file:../isola-node-protocol/packages/rule-engine
       typescript:
         specifier: ^5.3.3
         version: 5.9.3
@@ -142,19 +143,6 @@ importers:
       typescript:
         specifier: ^5.8.2
         version: 5.9.3
-
-  packages/edge:
-    dependencies:
-      '@isola-node/rule-engine':
-        specifier: workspace:*
-        version: link:../rule-engine
-      '@isola-node/sync':
-        specifier: workspace:*
-        version: link:../sync
-
-  packages/rule-engine: {}
-
-  packages/sync: {}
 
   packages/ui:
     dependencies:
@@ -933,6 +921,12 @@ packages:
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
     engines: {node: '>=12'}
+
+  '@isola-node/adapters@file:../isola-node-protocol/packages/adapters':
+    resolution: {directory: ../isola-node-protocol/packages/adapters, type: directory}
+
+  '@isola-node/rule-engine@file:../isola-node-protocol/packages/rule-engine':
+    resolution: {directory: ../isola-node-protocol/packages/rule-engine, type: directory}
 
   '@jridgewell/gen-mapping@0.3.13':
     resolution: {integrity: sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA==}
@@ -2441,7 +2435,6 @@ packages:
 
   libsql@0.4.7:
     resolution: {integrity: sha512-T9eIRCs6b0J1SHKYIvD8+KCJMcWZ900iZyxdnSCdqxN12Z1ijzT+jY5nrk72Jw4B0HGzms2NgpryArlJqvc3Lw==}
-    cpu: [x64, arm64, wasm32]
     os: [darwin, linux, win32]
 
   lilconfig@3.1.4:
@@ -3775,6 +3768,10 @@ snapshots:
       strip-ansi-cjs: strip-ansi@6.0.1
       wrap-ansi: 8.1.0
       wrap-ansi-cjs: wrap-ansi@7.0.0
+
+  '@isola-node/adapters@file:../isola-node-protocol/packages/adapters': {}
+
+  '@isola-node/rule-engine@file:../isola-node-protocol/packages/rule-engine': {}
 
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:
