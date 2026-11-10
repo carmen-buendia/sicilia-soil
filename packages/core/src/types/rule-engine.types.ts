@@ -1,12 +1,9 @@
-// packages/core/src/types/decision.types.ts
-// SPDX-License-Identifier: Apache-2.0
-// Copyright 2026 Carmen María Buendía Sánchez
+// packages/core/src/types/rule-engine.types.ts
 // ============================================================================
-// SikeliaSoil — Domain-specific decision types
+// SikeliaSoil — Domain-specific rule-engine types
 // ----------------------------------------------------------------------------
 // Only the agriculture-specific types live here.
-// Generic engine types (DecisionOutput, DecisionRule, RuleCondition, ...)
-// are re-exported from @sicilia-soil/decision via ./decision/index.ts.
+// Generic engine types (EngineOutput, EngineRule, RuleCondition, ...)
 // ============================================================================
 
 import type { KPIStatus, DDSCriterion } from "./kpi.types";
@@ -28,10 +25,10 @@ export type EvidenceSource =
   | "observation";
 
 // ----------------------------------------------------------------------------
-// Decision context (what's being decided about)
+// Engine context (what's being decided about)
 // ----------------------------------------------------------------------------
 
-export interface DecisionContext {
+export interface EngineContext {
   farmId: string;
   scopeType: SpatialTargetType;
   scopeId: string;
@@ -85,7 +82,7 @@ export interface WeatherEvidence {
   source: "open-meteo" | "manual";
 }
 
-export interface DecisionEvidence {
+export interface EngineEvidence {
   eoIndices: EOEvidence[];
   sensors: SensorEvidence[];
   kpis: KPIEvidence[];
@@ -102,7 +99,7 @@ export interface DecisionEvidence {
 // ----------------------------------------------------------------------------
 
 export interface UserFeedback {
-  decisionId: string;
+  engineId: string;
   followed: boolean;
   actionTaken?: string;
   outcome?: "good" | "bad" | "unknown";
@@ -112,7 +109,7 @@ export interface UserFeedback {
 }
 
 export interface Verification {
-  decisionId: string;
+  engineId: string;
   observedNdvi?: number;
   observedSoilMoisture?: number;
   observedLst?: number;

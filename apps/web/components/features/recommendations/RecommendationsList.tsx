@@ -29,7 +29,7 @@ const PRIORITY_ORDER: Record<RecommendationPriority, number> = {
 export function RecommendationsList({
   recommendations,
   onAction,
-  highlightId, // <-- AÑADIDO
+  highlightId,
 }: RecommendationsListProps) {
   const locale = getLocale("es");
   const t = locale.ui.recommendations;

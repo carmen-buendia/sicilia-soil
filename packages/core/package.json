@@ -15,7 +15,7 @@
     }
   },
   "dependencies": {
-    "@isola-node/rule-engine": "workspace:*"
+    "@isola-node/rule-engine": "file:../../../isola-node-protocol/packages/rule-engine"
   },
   "peerDependencies": {
     "typescript": "^5.3.3"
