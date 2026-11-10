@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [develop, master]
+    branches: ["**"]
   pull_request:
     branches: [develop, master]
 
@@ -11,7 +11,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout SikeliaSoil
+        uses: actions/checkout@v4
+
+      - name: Checkout Isola-Node Protocol
+        run: |
+          git clone https://github.com/carmen-buendia/isola-node-protocol.git ../isola-node-protocol
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
