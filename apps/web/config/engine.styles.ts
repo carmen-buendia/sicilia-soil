@@ -7,8 +7,8 @@
 // Web-specific: lives in apps/web, not in packages.
 // ============================================================================
 
+import { EngineState } from "@isola-node/rule-engine";
 import { Satellite, Wifi, Cloud, History, Info } from "lucide-react";
-import type { EngineState } from "@sicilia-soil/core";
 
 // ---------------------------------------------------------------------------
 // State palettes (green / yellow / red / unknown)
