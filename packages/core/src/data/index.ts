@@ -9,7 +9,6 @@ export * from "./cycle.data";
 export * from "./soilHealth.data";
 export * from "./groundCover.data";
 export * from "./copernicus.defaults";
-export * from "./recommendation.rules";
 export * from "./sensors.defaults";
 export * from "./temperature.data";
 export * from "./light.data";
