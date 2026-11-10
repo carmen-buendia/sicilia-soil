@@ -1,5 +1,4 @@
 import {
-  type EngineOutput,
   type EngineContext,
   type EngineEvidence,
   getLocale,
@@ -26,6 +25,7 @@ import {
   XCircle,
 } from "lucide-react";
 import { Button, DataCard } from "@sicilia-soil/ui";
+import { EngineOutput } from "@isola-node/rule-engine";
 
 interface SystemStatusCardProps {
   output: EngineOutput;

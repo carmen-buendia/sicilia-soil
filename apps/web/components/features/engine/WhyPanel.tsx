@@ -2,8 +2,8 @@
 "use client";
 
 import { Brain } from "lucide-react";
-import type { EngineOutput } from "@sicilia-soil/core";
 import { VOTE_DOT_COLOR, weightTextColor } from "@/config/engine.styles";
+import { EngineOutput } from "@isola-node/rule-engine";
 
 interface WhyPanelProps {
   output: EngineOutput;
