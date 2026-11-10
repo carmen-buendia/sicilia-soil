@@ -52,10 +52,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/carmen-buendia/sicilia-soil-web.git"
+    "url": "https://github.com/carmen-buendia/sicilia-soil.git"
   },
   "bugs": {
-    "url": "https://github.com/carmen-buendia/sicilia-soil-web/issues"
+    "url": "https://github.com/carmen-buendia/sicilia-soil/issues"
   },
   "homepage": "https://sicilia-soil-web-8wx5.vercel.app/"
 }
