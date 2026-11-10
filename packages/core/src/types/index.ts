@@ -19,4 +19,4 @@ export * from "./kpi.types";
 export * from "./alerts.types";
 export * from "./api.types";
 export * from "./report.types";
-export * from "./decision.types";
+export * from "./rule-engine.types";
