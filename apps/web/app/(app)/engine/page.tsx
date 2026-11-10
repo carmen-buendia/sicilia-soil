@@ -1,66 +1,51 @@
 "use client";
 
-import { useEffect, useMemo, useState, Suspense } from "react";
-import { useSearchParams } from "next/navigation"; // <-- Importamos
+import { useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { useNotifications } from "@/hooks/useNotifications";
 import Link from "next/link";
-import { ArrowLeft, Brain, RefreshCw } from "lucide-react";
+import { ArrowLeft, Brain } from "lucide-react";
 import { RecommendationsList } from "@/components/features/recommendations";
-import { generateRecommendations } from "@sicilia-soil/utils";
-import { getLocale, RECOMMENDATION_INPUT_DEFAULT } from "@sicilia-soil/core";
-import { getZones } from "@sicilia-soil/core/site";
-import { Button, DataCard } from "@sicilia-soil/ui";
+import { useRecommendations } from "@/hooks/useRecommendations";
+import { getLocale } from "@sicilia-soil/core";
+import { DataCard } from "@sicilia-soil/ui";
 
-// 1. Separamos el contenido en un componente interno
+// Handles the scroll to a highlighted card.
+// Isolated with its own Suspense to avoid hydration errors from useSearchParams.
+function HighlightHandler() {
+  const searchParams = useSearchParams();
+  const highlightId = searchParams.get("highlight");
+
+  useEffect(() => {
+    if (highlightId) {
+      const timer = setTimeout(() => {
+        const element = document.getElementById(highlightId);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [highlightId]);
+
+  return null;
+}
+
 function EngineContent() {
-  const [refreshKey, setRefreshKey] = useState(0);
   const { addNotificationsFromRecommendations } = useNotifications();
+  const recommendations = useRecommendations();
   const searchParams = useSearchParams();
   const highlightId = searchParams.get("highlight");
 
   const locale = getLocale("es");
   const t = locale.engine;
 
-  const firstZone = getZones()[0];
-  const zoneName = firstZone
-    ? (locale.zones[firstZone.id as keyof typeof locale.zones] ?? firstZone.id)
-    : "Unknown";
-
-  const engineInput = useMemo(
-    () => ({
-      ...RECOMMENDATION_INPUT_DEFAULT,
-      zoneId: firstZone?.id ?? "zone-unknown",
-      zoneName,
-    }),
-    [firstZone?.id, zoneName],
-  );
-
-  const recommendations = useMemo(
-    () => generateRecommendations(engineInput),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [refreshKey, engineInput],
-  );
-
   useEffect(() => {
     addNotificationsFromRecommendations(recommendations);
   }, [recommendations, addNotificationsFromRecommendations]);
 
-  // 2. Efecto para hacer scroll a la tarjeta resaltada
-  useEffect(() => {
-    if (highlightId) {
-      // Pequeño delay para asegurar que las tarjetas ya se renderizaron
-      setTimeout(() => {
-        const element = document.getElementById(highlightId);
-        if (element) {
-          element.scrollIntoView({ behavior: "smooth", block: "center" });
-        }
-      }, 300);
-    }
-  }, [highlightId]);
-
   return (
     <div className="max-w-7xl mx-auto space-y-8 pb-12">
-      {/* HEADER */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-ink/20 pb-6">
         <div className="flex items-center gap-4">
           <Link
@@ -81,15 +66,6 @@ function EngineContent() {
             </p>
           </div>
         </div>
-
-        <Button
-          variant="dark"
-          onClick={() => setRefreshKey((k) => k + 1)}
-          className="!rounded-none hover:!scale-100 flex items-center gap-2 px-4 py-2 font-mono text-xs uppercase tracking-widest font-bold shadow-sm"
-        >
-          <RefreshCw className="w-4 h-4" />
-          {t.header.recalculate}
-        </Button>
       </div>
 
       <DataCard className="p-6">
@@ -111,14 +87,20 @@ function EngineContent() {
 
 export default function EnginePage() {
   return (
-    <Suspense
-      fallback={
-        <div className="p-8 text-center font-mono text-sm">
-          Cargando motor...
-        </div>
-      }
-    >
-      <EngineContent />
-    </Suspense>
+    <>
+      <Suspense fallback={null}>
+        <HighlightHandler />
+      </Suspense>
+
+      <Suspense
+        fallback={
+          <div className="p-8 text-center font-mono text-sm">
+            Cargando motor...
+          </div>
+        }
+      >
+        <EngineContent />
+      </Suspense>
+    </>
   );
 }

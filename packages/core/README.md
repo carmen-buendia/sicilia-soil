@@ -1,89 +1,50 @@
 # @sicilia-soil/core
 
-> Single source of truth for types, mock data and configuration.
+Types, mock data, and static configuration for SikeliaSoil.
 
-This package contains **no React, no side effects, no logic**. It is importable from the frontend, the backend and any other package.
+This package doesn't have React or any side effects. It's just the shared foundation (types, defaults, locales, and site configs) that both the frontend and the backend can import.
 
----
-
-# @sicilia-soil/core
-
-> Single source of truth for types, domain rules, mock data, and configuration.
-
-This package contains **no React and no side effects**. It holds the domain knowledge of SikeliaSoil (types, decision rules, static content) and is importable from both the frontend and the server.
-
----
-
-## Structure
+## What's inside
 
 ```text
 packages/core/src/
-├── types/              TypeScript interfaces and types
-├── data/               Mock data, defaults, and telemetry
-│   ├── copernicus.defaults.ts
-│   ├── telemetry.default.ts
-│   └── ... (domain-specific mock files)
-│
-├── rules/              SikeliaSoil's domain rules
-│   ├── rules.v1.ts     Declarative agricultural rules
-│   └── sicilia-soil.adapter.ts  Adapter for the generic rule engine
-│
-├── content/            Static text and translations
+├── types/              TypeScript interfaces (EngineContext, EngineEvidence, etc.)
+├── data/               Mock data and default values (telemetry, rule-engine defaults)
+├── domain/             Domain models (CropSystem, etc.)
+├── content/            Static text and translations (locales)
+├── site/               Farm configuration (boundaries, sensor mapping)
 ├── constants.ts        Shared constants
-└── index.ts            Public API
+└── index.ts            Public API exports
 ```
 
----
-
-## Usage
+## How to use it
 
 ```ts
 import {
-  // Types
-  DecisionContext,
-  DecisionEvidence,
-
-  // Domain Rules & Adapters
-  DECISION_RULES_V1,
-  SiciliaSoilAdapter,
-
-  // Default Data & Telemetry
-  DECISION_EVIDENCE_DEFAULT,
-  TELEMETRY_MOCK_SENSORS,
-  FARM_CENTER,
+  ENGINE_CONTEXT_DEFAULT,
+  ENGINE_EVIDENCE_DEFAULT,
+  type EngineContext,
+  type EngineEvidence,
 } from "@sicilia-soil/core";
 ```
 
----
+## About the mock data
 
-## Data lifecycle
-
-All data lives here as **mock data** until the backend is connected. Once the API is ready:
+Right now, the files in `data/` hold static mock data (like the Assoro farm values).
+When the database is connected, the plan is simple:
 
 1. Keep the types in `types/`.
-2. Replace the mock values in `data/` with **fetch calls from hooks** in the app.
-3. Delete the mock file for that domain.
+2. Fetch the real data inside the web app (`apps/web/hooks`).
+3. Delete the mock file from `data/`.
 
-Example: telemetry.default.ts will be replaced by a useTelemetry() hook that fetches from the database or API.
+## How to add a new rule
 
----
+The generic rule engine is no longer in this package. It was extracted to `@isola-node/rule-engine`.
 
-## Conventions
+This means the farm-specific business rules (thresholds, conditions) now live in the web app.
 
-- One file per domain. No giant data.ts.
+To add or modify a rule:
 
-- Types first. Every data file imports its type from types/.
-
-- Pure logic. Rules and adapters must be pure functions with no side effects.
-
-- No React. Core is framework-agnostic.
-
----
-
-## Adding a new data domain
-
-1. Open rules/rules.v1.ts and add your new DecisionRule object.
-
-2. If the rule requires a new data field, update the DecisionEvidence type.
-
-3. Update sicilia-soil.adapter.ts so the engine knows how to read that new field.
+1. Go to `apps/web/hooks/useTodayEngine.ts` (or `useRecommendations.ts`).
+2. Add a new object to the rules array (like `SICILIA_RULES`) using the `EngineRule` format.
+3. If your new rule needs a data point that doesn't exist yet (e.g., "soil pH"), add it to the `EngineEvidence` type in `packages/core/src/types/rule-engine.types.ts`.

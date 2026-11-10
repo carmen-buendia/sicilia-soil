@@ -32,6 +32,7 @@ const nextConfig = {
     "@sicilia-soil/ui",
     "@sicilia-soil/utils",
     "@isola-node/rule-engine",
+    "@isola-node/adapters",
   ],
 
   webpack: (config, { isServer }) => {
@@ -44,6 +45,7 @@ const nextConfig = {
         libsql: false,
       };
     }
+
     return config;
   },
 };

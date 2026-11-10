@@ -1,14 +1,14 @@
-// apps/web/config/decision.styles.ts
+// apps/web/config/engine.styles.ts
 
 // ============================================================================
-// SikeliaSoil — Decision UI styles
+// SikeliaSoil — Engine UI styles
 // ----------------------------------------------------------------------------
-// Tailwind palettes + icon metadata for the Decision layer.
+// Tailwind palettes + icon metadata for the Engine layer.
 // Web-specific: lives in apps/web, not in packages.
 // ============================================================================
 
+import { EngineState } from "@isola-node/rule-engine";
 import { Satellite, Wifi, Cloud, History, Info } from "lucide-react";
-import type { DecisionState } from "@sicilia-soil/core";
 
 // ---------------------------------------------------------------------------
 // State palettes (green / yellow / red / unknown)
@@ -23,7 +23,7 @@ export interface StateStyle {
   label: string;
 }
 
-export const DECISION_STATE_THEME: Record<DecisionState, StateStyle> = {
+export const ENGINE_STATE_THEME: Record<EngineState, StateStyle> = {
   green: {
     bg: "bg-gradient-to-br from-emerald-50 via-emerald-50/70 to-white",
     border: "border-emerald-200",
@@ -86,7 +86,7 @@ export const DEFAULT_SOURCE_META: SourceMeta = {
 // Helpers
 // ---------------------------------------------------------------------------
 
-export const VOTE_DOT_COLOR: Record<DecisionState, string> = {
+export const VOTE_DOT_COLOR: Record<EngineState, string> = {
   green: "bg-emerald-500",
   yellow: "bg-amber-500",
   red: "bg-red-500",

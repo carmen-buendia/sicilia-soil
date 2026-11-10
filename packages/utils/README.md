@@ -1,16 +1,15 @@
 # @sicilia-soil/utils
 
-> Pure logic, domain engines and calculations.
+> Pure logic, domain engines, and calculations.
 
-This package contains the **business logic** of SikeliaSoil. It has no React and no side effects. It can run in the browser, on the server or in a Node script.
+This package contains the **business logic** of SikeliaSoil. It has no React and no side effects. It can run in the browser, on the server, or in a Node script.
 
----
+**Note:** The recommendation engine logic was extracted to the standalone `@isola-node/rule-engine` package. This utils package now focuses on the remaining domain helpers (symbiosis, notifications, etc.).
 
 ## Structure
 
-```
+```text
 packages/utils/src/
-├── recommendation.engine.ts    Generate recommendations from sensor + EO data
 ├── notification.engine.ts      Convert recommendations into notifications
 ├── symbiosis.engine.ts         Calculate the mycorrhizal symbiosis score
 ├── copernicusUtils.ts          Interpret NDVI, NDWI, SSM, LST
@@ -23,24 +22,7 @@ packages/utils/src/
 └── index.ts                    Public API
 ```
 
----
-
 ## Engines
-
-### `recommendation.engine.ts`
-
-Evaluates 20 rules against the current state of the farm and produces a sorted list of actionable recommendations.
-
-```ts
-import { generateRecommendations } from "@sicilia-soil/utils";
-
-const recommendations = generateRecommendations({
-  soilMoisture: 45,
-  airTemperature: 31,
-  cropType: "olivo",
-  // ...
-});
-```
 
 ### `symbiosis.engine.ts`
 
@@ -65,19 +47,19 @@ Converts recommendations into notifications based on priority.
 import { buildNotifications } from "@sicilia-soil/utils";
 ```
 
----
-
 ## Conventions
 
 - **Pure functions.** No side effects, no `window`, no `fetch`.
 - **Testable.** Each engine is isolated and can be unit-tested.
-- **Domain-driven.** File names reflect the domain (`recommendation`, `symbiosis`, `notification`).
+- **Domain-driven.** File names reflect the domain (`symbiosis`, `notification`, etc.).
 - **No React.** Utils is framework-agnostic.
-
----
 
 ## Adding a new engine
 
 1. Create `src/yourEngine.engine.ts`.
 2. Export the public functions from `index.ts`.
 3. Add a short docstring at the top of the file explaining the domain.
+
+```
+
+```
