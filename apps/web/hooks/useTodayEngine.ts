@@ -6,10 +6,7 @@ import { useMemo } from "react";
 import {
   ENGINE_CONTEXT_DEFAULT,
   ENGINE_EVIDENCE_DEFAULT,
-  ENGINE_RULES_V1,
-  SiciliaSoilAdapter,
 } from "@sicilia-soil/core";
-// Importamos los tipos correctos del nuevo motor
 import { decide } from "@isola-node/rule-engine";
 import type {
   EngineRule,
@@ -18,12 +15,42 @@ import type {
   EngineOutput as IsolaEngineOutput,
 } from "@isola-node/rule-engine";
 
-// Nota: Si los tipos de SikeliaSoil son diferentes, podemos hacer un cast seguro
-// ya que la estructura de datos es la misma.
-const rules = ENGINE_RULES_V1 as unknown as EngineRule[];
+// 1. Definimos las reglas específicas de SikeliaSoil usando el tipo del nuevo motor
+const SICILIA_RULES: EngineRule[] = [
+  {
+    id: "water-irrigation-urgent",
+    label: "Riego urgente requerido",
+    conditions: [
+      { field: "soilMoisture", operator: "lessThan", value: 40 },
+      { field: "airTemperature", operator: "greaterThan", value: 28 },
+    ],
+    votesFor: "red",
+    baseConfidence: 0.92,
+    criteria: ["water"],
+    version: 1,
+    active: true,
+  },
+  {
+    id: "soil-health-warning",
+    label: "Revisar salud del suelo",
+    conditions: [{ field: "ndvi", operator: "lessThan", value: 0.4 }],
+    votesFor: "yellow",
+    baseConfidence: 0.85,
+    criteria: ["soil"],
+    version: 1,
+    active: true,
+  },
+];
 
-// El adaptador de SikeliaSoil debe cumplir con la nueva interfaz
-const adapter = SiciliaSoilAdapter as unknown as EvidenceAdapter<EngineInput>;
+// 2. Creamos el adaptador de evidencia que lee los datos de SikeliaSoil
+const evidenceAdapter: EvidenceAdapter<EngineInput> = {
+  read: (input, path) => {
+    const value = input.data ? input.data[path] : (input as any)[path];
+    return typeof value === "number" ? value : undefined;
+  },
+  detectConflicts: () => [],
+  sourcesUsed: () => ["sensors", "copernicus"],
+};
 
 export interface UseTodayEngineReturn {
   output: IsolaEngineOutput;
@@ -33,15 +60,11 @@ export interface UseTodayEngineReturn {
 
 export function useTodayEngine(): UseTodayEngineReturn {
   return useMemo(() => {
-    // 1. evidence (los datos)
-    // 2. rules (las reglas de Sikelia)
-    // 3. adapter (el adaptador que sabe leer las reglas)
-
-    // El motor decide recibe la evidencia, las reglas y el adaptador
+    // 3. Ejecutamos el motor de Isola-Node con las reglas de Sikelia
     const output = decide(
       ENGINE_EVIDENCE_DEFAULT as unknown as EngineInput,
-      rules,
-      adapter,
+      SICILIA_RULES,
+      evidenceAdapter,
     );
 
     return {
