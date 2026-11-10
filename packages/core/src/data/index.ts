@@ -9,12 +9,11 @@ export * from "./cycle.data";
 export * from "./soilHealth.data";
 export * from "./groundCover.data";
 export * from "./copernicus.defaults";
-export * from "./recommendation.rules";
 export * from "./sensors.defaults";
 export * from "./temperature.data";
 export * from "./light.data";
 export * from "./water.data";
-export * from "./decision.defaults";
+export * from "./rule-engine.defaults";
 export * from "./telemetry.defaults";
 
 // Dashboard

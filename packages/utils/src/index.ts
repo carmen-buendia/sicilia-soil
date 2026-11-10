@@ -9,7 +9,6 @@ export * from "./lightUtils";
 export * from "./temperatureUtils";
 
 // Motores
-export * from "./recommendation.engine";
 export * from "./notification.engine";
 export * from "./symbiosis.engine";
 
