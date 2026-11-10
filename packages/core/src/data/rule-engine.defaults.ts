@@ -1,22 +1,13 @@
-// packages/core/src/data/decision.defaults.ts
+// packages/core/src/data/rule-engine.defaults.ts
 
-// ============================================================================
-// SikeliaSoil — Decision default data
-// ----------------------------------------------------------------------------
-// Real values from the Assoro farm, captured 2026-10-07.
-// Replace with API call once feat/db-crud is available.
-// ============================================================================
+// Valores por defecto del motor de reglas de SikeliaSoil.
+// Datos reales de Assoro (07/10/2026).
+// Cuando tengamos el CRUD, esto vendrá de la base de datos.
 
-import type {
-  DecisionContext,
-  DecisionEvidence,
-} from "../types/decision.types";
+import type { EngineContext, EngineEvidence } from "../types/rule-engine.types";
 
-// ---------------------------------------------------------------------------
-// Context: the farm we're deciding about
-// ---------------------------------------------------------------------------
-
-export const DECISION_CONTEXT_DEFAULT: DecisionContext = {
+// Contexto: la finca sobre la que decidimos
+export const ENGINE_CONTEXT_DEFAULT: EngineContext = {
   farmId: "farm-assoro",
   scopeType: "farm",
   scopeId: "farm",
@@ -25,11 +16,9 @@ export const DECISION_CONTEXT_DEFAULT: DecisionContext = {
   criteria: ["water", "fertilisation", "protection", "efficiency", "decisions"],
 };
 
-// ---------------------------------------------------------------------------
-// Evidence: what the sensors and satellites told us
-// ---------------------------------------------------------------------------
-
-export const DECISION_EVIDENCE_DEFAULT: DecisionEvidence = {
+// Evidencia: lo que nos dicen los sensores y los satélites
+export const ENGINE_EVIDENCE_DEFAULT: EngineEvidence = {
+  // Índices de satélite (Copernicus)
   eoIndices: [
     {
       indexType: "NDVI",
@@ -60,6 +49,8 @@ export const DECISION_EVIDENCE_DEFAULT: DecisionEvidence = {
       source: "sentinel3",
     },
   ],
+
+  // Sensores IoT en campo
   sensors: [
     {
       sensorId: "iot-soil-moist-01",
@@ -78,11 +69,16 @@ export const DECISION_EVIDENCE_DEFAULT: DecisionEvidence = {
       quality: "good",
     },
   ],
+
+  // KPIs de salud del suelo medidos manualmente
   kpis: [
     { kpiKey: "mycorrhiza_colonisation", value: 52, unit: "%", status: "good" },
     { kpiKey: "glomalin", value: 1.8, unit: "mg/g", status: "good" },
   ],
+
   observations: [],
+
+  // Previsión meteorológica (Open-Meteo)
   weather: {
     rainNext72hMm: 0,
     tempMaxC: 24,
@@ -90,6 +86,8 @@ export const DECISION_EVIDENCE_DEFAULT: DecisionEvidence = {
     timestamp: "2026-10-07T06:00:00Z",
     source: "open-meteo",
   },
+
+  // Histórico de los últimos 7 días (para tendencias)
   history: {
     ndvi7d: [0.71, 0.72, 0.71, 0.73, 0.74, 0.74, 0.74],
     soilMoisture7d: [58, 56, 55, 54, 53, 52, 52],

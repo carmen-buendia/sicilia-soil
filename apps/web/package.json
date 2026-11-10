@@ -21,7 +21,8 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@isola-node/rule-engine": "workspace:*",
+    "@isola-node/adapters": "file:../../../isola-node-protocol/packages/adapters",
+    "@isola-node/rule-engine": "file:../../../isola-node-protocol/packages/rule-engine",
     "@sicilia-soil/core": "workspace:*",
     "@sicilia-soil/db": "workspace:^",
     "@sicilia-soil/ui": "workspace:*",
