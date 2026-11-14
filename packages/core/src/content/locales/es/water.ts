@@ -1,3 +1,5 @@
+// packages/core/src/content/locales/es/water.ts
+
 export const water = {
   header: {
     title: "Humedad del Suelo",
@@ -26,6 +28,37 @@ export const water = {
     evapotranspirationNote: "Riego recomendado: {hint}L/m²",
   },
 
+  // 👇 AÑADIMOS LAS CLAVES DE LA TABLA Y EFICIENCIA GLOBAL AQUÍ
+  tableTitle: "Balance Hídrico por Zona",
+  tableBadge: "Tiempo Real",
+  tableHeaders: {
+    zone: "Zona",
+    current: "Humedad Actual",
+    optimal: "Humedad Óptima",
+    balance: "Balance",
+    status: "Estado",
+  },
+  deficit: "Déficit",
+  surplus: "Superávit",
+  statusRequiresWater: "Requiere Agua",
+  statusOptimal: "Óptimo",
+
+  globalEfficiency: "Eficiencia Global",
+  reserveUsage: "Uso de la reserva",
+  reserveWarning: "Cerca del límite. Reduce el riego.",
+  reserveNormal: "Consumo dentro de los parámetros normales.",
+
+  systemStress: "Estrés Hídrico del Sistema",
+  stressCritical: "Crítico",
+  stressModerate: "Moderado",
+  stressLow: "Bajo",
+  stressDesc:
+    "{critical} de {total} zonas presentan déficit hídrico. Humedad media del sistema: {average}%.",
+
+  atmosphericDemand: "Demanda Atmosférica (ET)",
+  etHigh: "Alta demanda de evaporación. El suelo pierde humedad rápido.",
+  etModerate: "Demanda de evaporación moderada.",
+
   zones: {
     sectionTitle: "Monitoreo por Zona",
     watering: "Riego",
@@ -45,6 +78,8 @@ export const water = {
     nextWateringLater: "En 6-8 horas",
     manualWatering: "💧 Riego manual ahora",
   },
+
+  wateringInProgress: "Regando...",
 
   control: {
     title: "Control de Riego Inteligente",
