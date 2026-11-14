@@ -20,7 +20,7 @@ import { Button, DataCard } from "@sicilia-soil/ui";
 import { getLocale } from "@sicilia-soil/core";
 
 const locale = getLocale("es");
-const t = locale.ui.configuration;
+const configContent = locale.ui.configuration;
 
 function Toggle({
   checked,
@@ -94,10 +94,10 @@ export default function ConfigurationPage() {
   };
 
   const tabs = [
-    { id: "general", label: t.tabs.general, icon: Settings },
-    { id: "alerts", label: t.tabs.alerts, icon: Bell },
-    { id: "sensors", label: t.tabs.sensors, icon: Wifi },
-    { id: "account", label: t.tabs.account, icon: User },
+    { id: "general", label: configContent.tabs.general, icon: Settings },
+    { id: "alerts", label: configContent.tabs.alerts, icon: Bell },
+    { id: "sensors", label: configContent.tabs.sensors, icon: Wifi },
+    { id: "account", label: configContent.tabs.account, icon: User },
   ] as const;
 
   return (
@@ -118,10 +118,10 @@ export default function ConfigurationPage() {
           <div>
             <h1 className="text-3xl md:text-4xl font-serif font-bold text-ink flex items-center gap-3">
               <Settings className="w-6 h-6 text-chloro" />
-              {t.title}
+              {configContent.title}
             </h1>
             <p className="font-mono text-[10px] uppercase tracking-widest text-ink/50 mt-1">
-              {t.subtitle}
+              {configContent.subtitle}
             </p>
           </div>
         </div>
@@ -155,19 +155,21 @@ export default function ConfigurationPage() {
             <DataCard className="p-6">
               <h3 className="text-lg font-bold text-ink mb-4 flex items-center gap-2">
                 <Monitor className="w-5 h-5 text-chloro" />
-                {t.general.appearanceTitle}
+                {configContent.general.appearanceTitle}
               </h3>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="font-medium text-ink">{t.general.darkMode}</p>
+                  <p className="font-medium text-ink">
+                    {configContent.general.darkMode}
+                  </p>
                   <p className="text-sm text-ink/60">
-                    {t.general.darkModeDesc}
+                    {configContent.general.darkModeDesc}
                   </p>
                 </div>
                 <Toggle
                   checked={darkMode}
                   onChange={() => setDarkMode(!darkMode)}
-                  label={t.general.darkMode}
+                  label={configContent.general.darkMode}
                 />
               </div>
             </DataCard>
@@ -175,39 +177,47 @@ export default function ConfigurationPage() {
             <DataCard className="p-6">
               <h3 className="text-lg font-bold text-ink mb-4 flex items-center gap-2">
                 <RefreshCw className="w-5 h-5 text-chloro" />
-                {t.general.dataTitle}
+                {configContent.general.dataTitle}
               </h3>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-medium text-ink">
-                      {t.general.autoRefresh}
+                      {configContent.general.autoRefresh}
                     </p>
                     <p className="text-sm text-ink/60">
-                      {t.general.autoRefreshDesc}
+                      {configContent.general.autoRefreshDesc}
                     </p>
                   </div>
                   <Toggle
                     checked={autoRefresh}
                     onChange={() => setAutoRefresh(!autoRefresh)}
-                    label={t.general.autoRefresh}
+                    label={configContent.general.autoRefresh}
                   />
                 </div>
 
                 {autoRefresh && (
                   <div>
                     <label className="block font-mono text-[10px] uppercase tracking-widest font-bold text-ink/60 mb-2">
-                      {t.general.interval}
+                      {configContent.general.interval}
                     </label>
                     <select
                       value={refreshInterval}
                       onChange={(e) => setRefreshInterval(e.target.value)}
                       className="w-full px-3 py-2 border border-ink/20 !rounded-none bg-paper text-ink font-mono text-sm focus:outline-none focus:border-ink"
                     >
-                      <option value="15">{t.general.interval15}</option>
-                      <option value="30">{t.general.interval30}</option>
-                      <option value="60">{t.general.interval60}</option>
-                      <option value="300">{t.general.interval300}</option>
+                      <option value="15">
+                        {configContent.general.interval15}
+                      </option>
+                      <option value="30">
+                        {configContent.general.interval30}
+                      </option>
+                      <option value="60">
+                        {configContent.general.interval60}
+                      </option>
+                      <option value="300">
+                        {configContent.general.interval300}
+                      </option>
                     </select>
                   </div>
                 )}
@@ -217,7 +227,7 @@ export default function ConfigurationPage() {
             <DataCard className="p-6">
               <h3 className="text-lg font-bold text-ink mb-4 flex items-center gap-2">
                 <Globe className="w-5 h-5 text-chloro" />
-                {t.general.languageTitle}
+                {configContent.general.languageTitle}
               </h3>
               <select className="w-full px-3 py-2 border border-ink/20 !rounded-none bg-paper text-ink font-mono text-sm focus:outline-none focus:border-ink">
                 <option value="es">Español</option>
@@ -238,7 +248,7 @@ export default function ConfigurationPage() {
                 )
               }
             >
-              {isSaved ? "¡Guardado!" : t.general.save}
+              {isSaved ? "¡Guardado!" : configContent.general.save}
             </Button>
           </div>
         )}
@@ -249,29 +259,37 @@ export default function ConfigurationPage() {
             <DataCard className="p-6">
               <h3 className="text-lg font-bold text-ink mb-4 flex items-center gap-2">
                 <Bell className="w-5 h-5 text-chloro" />
-                {t.alerts.notificationsTitle}
+                {configContent.alerts.notificationsTitle}
               </h3>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-medium text-ink">{t.alerts.push}</p>
-                    <p className="text-sm text-ink/60">{t.alerts.pushDesc}</p>
+                    <p className="font-medium text-ink">
+                      {configContent.alerts.push}
+                    </p>
+                    <p className="text-sm text-ink/60">
+                      {configContent.alerts.pushDesc}
+                    </p>
                   </div>
                   <Toggle
                     checked={pushAlerts}
                     onChange={() => setPushAlerts(!pushAlerts)}
-                    label={t.alerts.push}
+                    label={configContent.alerts.push}
                   />
                 </div>
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-medium text-ink">{t.alerts.email}</p>
-                    <p className="text-sm text-ink/60">{t.alerts.emailDesc}</p>
+                    <p className="font-medium text-ink">
+                      {configContent.alerts.email}
+                    </p>
+                    <p className="text-sm text-ink/60">
+                      {configContent.alerts.emailDesc}
+                    </p>
                   </div>
                   <Toggle
                     checked={emailAlerts}
                     onChange={() => setEmailAlerts(!emailAlerts)}
-                    label={t.alerts.email}
+                    label={configContent.alerts.email}
                   />
                 </div>
               </div>
@@ -280,12 +298,12 @@ export default function ConfigurationPage() {
             <DataCard className="p-6">
               <h3 className="text-lg font-bold text-ink mb-4 flex items-center gap-2">
                 <Droplets className="w-5 h-5 text-solar" />
-                {t.alerts.thresholdsTitle}
+                {configContent.alerts.thresholdsTitle}
               </h3>
               <div className="space-y-4">
                 <div>
                   <label className="block font-mono text-[10px] uppercase tracking-widest font-bold text-ink/60 mb-1">
-                    {t.alerts.minMoisture}
+                    {configContent.alerts.minMoisture}
                   </label>
                   <input
                     type="range"
@@ -302,7 +320,7 @@ export default function ConfigurationPage() {
                 </div>
                 <div>
                   <label className="block font-mono text-[10px] uppercase tracking-widest font-bold text-ink/60 mb-1">
-                    {t.alerts.maxTemp}
+                    {configContent.alerts.maxTemp}
                   </label>
                   <input
                     type="range"
@@ -319,7 +337,7 @@ export default function ConfigurationPage() {
                 </div>
                 <div>
                   <label className="block font-mono text-[10px] uppercase tracking-widest font-bold text-ink/60 mb-1">
-                    {t.alerts.minLight}
+                    {configContent.alerts.minLight}
                   </label>
                   <input
                     type="range"
@@ -349,7 +367,7 @@ export default function ConfigurationPage() {
                 )
               }
             >
-              {isSaved ? "¡Guardado!" : t.alerts.saveThresholds}
+              {isSaved ? "¡Guardado!" : configContent.alerts.saveThresholds}
             </Button>
           </div>
         )}
@@ -360,11 +378,11 @@ export default function ConfigurationPage() {
             <DataCard className="p-6">
               <h3 className="text-lg font-bold text-ink mb-4 flex items-center gap-2">
                 <Wifi className="w-5 h-5 text-chloro" />
-                {t.sensors.title}
+                {configContent.sensors.title}
               </h3>
               <div className="p-8 text-center border border-dashed border-ink/20 bg-paper/50">
                 <p className="font-mono text-sm text-ink/60">
-                  {t.sensors.noSensors}
+                  {configContent.sensors.noSensors}
                 </p>
               </div>
             </DataCard>
@@ -374,7 +392,7 @@ export default function ConfigurationPage() {
               className="w-full px-8 py-3 border-ink/20 text-ink hover:bg-ink/5 font-mono text-xs uppercase tracking-widest font-bold transition-colors"
               icon={<RefreshCw className="w-4 h-4" />}
             >
-              {t.sensors.retry}
+              {configContent.sensors.retry}
             </Button>
           </div>
         )}
@@ -385,12 +403,12 @@ export default function ConfigurationPage() {
             <DataCard className="p-6">
               <h3 className="text-lg font-bold text-ink mb-4 flex items-center gap-2">
                 <User className="w-5 h-5 text-chloro" />
-                {t.account.infoTitle}
+                {configContent.account.infoTitle}
               </h3>
               <div className="space-y-4">
                 <div>
                   <label className="block font-mono text-[10px] uppercase tracking-widest font-bold text-ink/60 mb-1">
-                    {t.account.name}
+                    {configContent.account.name}
                   </label>
                   <input
                     type="text"
@@ -400,7 +418,7 @@ export default function ConfigurationPage() {
                 </div>
                 <div>
                   <label className="block font-mono text-[10px] uppercase tracking-widest font-bold text-ink/60 mb-1">
-                    {t.account.email}
+                    {configContent.account.email}
                   </label>
                   <input
                     type="email"
@@ -410,7 +428,7 @@ export default function ConfigurationPage() {
                 </div>
                 <div>
                   <label className="block font-mono text-[10px] uppercase tracking-widest font-bold text-ink/60 mb-1">
-                    {t.account.phone}
+                    {configContent.account.phone}
                   </label>
                   <input
                     type="tel"
@@ -420,7 +438,7 @@ export default function ConfigurationPage() {
                 </div>
                 <div>
                   <label className="block font-mono text-[10px] uppercase tracking-widest font-bold text-ink/60 mb-1">
-                    {t.account.location}
+                    {configContent.account.location}
                   </label>
                   <input
                     type="text"
@@ -434,13 +452,13 @@ export default function ConfigurationPage() {
             <DataCard className="p-6">
               <h3 className="text-lg font-bold text-ink mb-4 flex items-center gap-2">
                 <Lock className="w-5 h-5 text-chloro" />
-                {t.account.securityTitle}
+                {configContent.account.securityTitle}
               </h3>
               <Button
                 variant="outline"
                 className="!rounded-none hover:scale-100 w-full px-8 py-3 border-ink/20 text-ink hover:bg-ink/5 font-mono text-xs uppercase tracking-widest font-bold transition-colors"
               >
-                {t.account.changePassword}
+                {configContent.account.changePassword}
               </Button>
             </DataCard>
 
@@ -456,7 +474,7 @@ export default function ConfigurationPage() {
                 )
               }
             >
-              {isSaved ? "¡Guardado!" : t.account.save}
+              {isSaved ? "¡Guardado!" : configContent.account.save}
             </Button>
           </div>
         )}
