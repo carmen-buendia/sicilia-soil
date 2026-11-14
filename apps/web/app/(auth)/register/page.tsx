@@ -4,10 +4,14 @@ import { Sprout, ShieldCheck, UserPlus, ArrowLeft } from "lucide-react";
 import { register } from "./actions";
 import { Button } from "@sicilia-soil/ui";
 
-const t = getLocale("es");
+const locale = getLocale("es");
+const authContent = locale.ui.auth;
+const navContent = locale.ui.nav;
+const formsContent = locale.forms;
+const registerQuote = locale.content.auth.quotes.register;
 
 export const metadata = {
-  title: t.ui.auth.registerTitle,
+  title: authContent.registerTitle,
 };
 
 export default async function RegisterPage({
@@ -36,7 +40,7 @@ export default async function RegisterPage({
             href="/login"
             className="absolute top-6 left-6 sm:top-8 sm:left-8 inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest font-bold text-ink/50 hover:text-ink transition-colors"
           >
-            <ArrowLeft className="w-4 h-4" /> {t.ui.nav.backToLogin}
+            <ArrowLeft className="w-4 h-4" /> {navContent.backToLogin}
           </Link>
 
           <div className="mb-6 mt-6 sm:mt-0">
@@ -53,29 +57,29 @@ export default async function RegisterPage({
             </Link>
 
             <h1 className="text-3xl font-serif font-bold text-ink mb-2">
-              {t.ui.auth.registerTitle}
+              {authContent.registerTitle}
             </h1>
             <p className="font-mono text-xs uppercase tracking-widest text-ink/50">
-              {t.ui.auth.registerSubtitle}
+              {authContent.registerSubtitle}
             </p>
           </div>
 
           {params.error === "user_exists" ? (
             <div className="mb-5 p-3 bg-solar/5 border border-solar/20 text-solar font-mono text-[10px] uppercase tracking-wider font-bold">
-              Este email ya está registrado.{" "}
+              {authContent.userExists}{" "}
               <Link
                 href="/login"
                 className="underline hover:text-ink transition-colors"
               >
-                Ve a Iniciar Sesión
+                {authContent.goToLogin}
               </Link>
             </div>
           ) : params.error ? (
             <div className="mb-5 p-3 bg-red-500/5 border border-red-500/20 text-red-500 font-mono text-[10px] uppercase tracking-wider font-bold flex items-start gap-2">
               <ShieldCheck className="w-4 h-4 flex-shrink-0 mt-0.5" />
               <span>
-                {(t.ui.auth.errors as Record<string, string>)[params.error] ||
-                  t.ui.auth.errors.unknown}
+                {(authContent.errors as Record<string, string>)[params.error] ||
+                  authContent.errors.unknown}
               </span>
             </div>
           ) : null}
@@ -86,7 +90,7 @@ export default async function RegisterPage({
                 htmlFor="name"
                 className="block font-mono text-[10px] uppercase tracking-widest font-bold text-ink/70 mb-1.5"
               >
-                {t.forms.name.label}
+                {formsContent.name.label}
               </label>
               <input
                 id="name"
@@ -94,7 +98,7 @@ export default async function RegisterPage({
                 type="text"
                 required
                 className="w-full px-4 py-3 border border-ink/20 focus:outline-none focus:border-ink bg-paper font-mono text-sm transition-colors"
-                placeholder={t.forms.name.placeholder}
+                placeholder={formsContent.name.placeholder}
               />
             </div>
 
@@ -103,7 +107,7 @@ export default async function RegisterPage({
                 htmlFor="email"
                 className="block font-mono text-[10px] uppercase tracking-widest font-bold text-ink/70 mb-1.5"
               >
-                {t.forms.email.label}
+                {formsContent.email.label}
               </label>
               <input
                 id="email"
@@ -112,7 +116,7 @@ export default async function RegisterPage({
                 autoComplete="email"
                 required
                 className="w-full px-4 py-3 border border-ink/20 focus:outline-none focus:border-ink bg-paper font-mono text-sm transition-colors"
-                placeholder={t.forms.email.placeholder}
+                placeholder={formsContent.email.placeholder}
               />
             </div>
 
@@ -121,7 +125,7 @@ export default async function RegisterPage({
                 htmlFor="password"
                 className="block font-mono text-[10px] uppercase tracking-widest font-bold text-ink/70 mb-1.5"
               >
-                {t.forms.password.label}
+                {formsContent.password.label}
               </label>
               <input
                 id="password"
@@ -130,7 +134,7 @@ export default async function RegisterPage({
                 autoComplete="new-password"
                 required
                 className="w-full px-4 py-3 border border-ink/20 focus:outline-none focus:border-ink bg-paper font-mono text-sm transition-colors"
-                placeholder={t.forms.password.newPlaceholder}
+                placeholder={formsContent.password.newPlaceholder}
               />
             </div>
 
@@ -140,17 +144,17 @@ export default async function RegisterPage({
               size="none"
               className="!rounded-none flex items-center justify-center gap-2 w-full px-8 py-4 bg-ink text-paper font-mono text-xs uppercase tracking-widest font-bold hover:bg-chloro hover:!scale-100 transition-colors"
             >
-              {t.ui.auth.registerButton} <UserPlus className="w-4 h-4" />
+              {authContent.registerButton} <UserPlus className="w-4 h-4" />
             </Button>
           </form>
 
           <p className="mt-6 font-mono text-xs text-ink/60 text-center font-bold uppercase tracking-wider">
-            {t.ui.auth.haveAccount}{" "}
+            {authContent.haveAccount}{" "}
             <Link
               href="/login"
               className="text-solar hover:text-ink transition-colors"
             >
-              {t.ui.auth.loginLink}
+              {authContent.loginLink}
             </Link>
           </p>
         </div>
@@ -170,10 +174,10 @@ export default async function RegisterPage({
           <div className="absolute bottom-10 left-8 right-8 text-center">
             <div className="bg-ink/80 border border-ink/20 p-6">
               <p className="text-paper font-serif italic text-lg leading-relaxed mb-3">
-                {t.content.auth.quotes.register.text}
+                {registerQuote.text}
               </p>
               <p className="font-mono text-[10px] uppercase tracking-widest text-solar font-bold">
-                — {t.content.auth.quotes.register.author}
+                — {registerQuote.author}
               </p>
             </div>
           </div>

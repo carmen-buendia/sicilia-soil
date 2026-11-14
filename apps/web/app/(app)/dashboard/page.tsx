@@ -25,30 +25,37 @@ import { PRIORITY_STYLES } from "@/config/recommendation.styles";
 import { DASHBOARD_ICONS } from "@/config/icon-map";
 import { getLocale, TELEMETRY_MOCK_SENSORS } from "@sicilia-soil/core";
 
+const locale = getLocale("es");
+const appContent = locale.ui.app;
+const actionsContent = locale.ui.actions;
+const dashboardContent = locale.ui.dashboard;
+const telemetryContent = locale.ui.telemetry;
+const cropsCtaContent = locale.content.home.cropsCta;
+const kpisContent = locale.kpis;
+
 export default function HomePage() {
   const [serverStatus, setServerStatus] = useState<
     "checking" | "online" | "offline"
   >("checking");
+
   const { zones, kpis, carbon } = useDashboardData();
-  const locale = getLocale("es");
-  const t = locale.ui.telemetry;
 
   const {
     output: engine,
     context: engineContext,
     evidence: engineEvidence,
   } = useTodayEngine();
+
   const recommendations = useRecommendations();
 
   const topAlerts = useMemo(
     () =>
       recommendations
-        .filter((recommendation) => {
-          return (
+        .filter(
+          (recommendation) =>
             recommendation.priority === "urgent" ||
-            recommendation.priority === "high"
-          );
-        })
+            recommendation.priority === "high",
+        )
         .slice(0, 3),
     [recommendations],
   );
@@ -78,21 +85,20 @@ export default function HomePage() {
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 border-b border-ink/20 pb-6">
         <div>
           <h1 className="text-3xl font-serif font-bold text-ink mb-1">
-            {locale.ui.app.name}
+            {appContent.name}
           </h1>
           <p className="font-mono text-xs uppercase tracking-widest text-chloro font-bold flex items-center gap-2">
-            <Trees className="w-4 h-4" /> {locale.ui.app.subtitle}
+            <Trees className="w-4 h-4" /> {appContent.subtitle}
           </p>
         </div>
         <ServerStatus status={serverStatus} />
       </div>
 
-      {/* 2. KPIs */}
       <div className="bg-card border border-ink/20">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 divide-x divide-y md:divide-y-0 divide-ink/10">
           {kpis.map((kpi) => {
             const Icon = (DASHBOARD_ICONS[kpi.icon] ?? Leaf) as LucideIcon;
-            const kpiLabels = locale.kpis[kpi.id as keyof typeof locale.kpis];
+            const kpiLabels = kpisContent[kpi.id as keyof typeof kpisContent];
             return (
               <StatsCard
                 key={kpi.id}
@@ -106,15 +112,14 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* 3. TELEMETRÍA DE SENSORES */}
       <div className="bg-card border border-ink/20">
         <div className="p-5 border-b border-ink/10 bg-paper/30 flex justify-between items-center">
           <h2 className="text-xl font-serif font-bold text-ink flex items-center gap-2">
             <Activity className="w-5 h-5 text-chloro" />
-            {t.title}
+            {telemetryContent.title}
           </h2>
           <span className="font-mono text-[10px] uppercase tracking-widest text-ink/50 bg-paper px-2 py-1 border border-ink/20">
-            {t.network}
+            {telemetryContent.network}
           </span>
         </div>
 
@@ -122,12 +127,24 @@ export default function HomePage() {
           <table className="w-full text-left font-mono text-sm">
             <thead className="bg-paper/50 border-b border-ink/20 text-ink/60 text-[10px] uppercase tracking-wider">
               <tr>
-                <th className="px-5 py-3 font-bold">{t.headers.sensorId}</th>
-                <th className="px-5 py-3 font-bold">{t.headers.type}</th>
-                <th className="px-5 py-3 font-bold">{t.headers.battery}</th>
-                <th className="px-5 py-3 font-bold">{t.headers.signal}</th>
-                <th className="px-5 py-3 font-bold">{t.headers.lastPing}</th>
-                <th className="px-5 py-3 font-bold">{t.headers.status}</th>
+                <th className="px-5 py-3 font-bold">
+                  {telemetryContent.headers.sensorId}
+                </th>
+                <th className="px-5 py-3 font-bold">
+                  {telemetryContent.headers.type}
+                </th>
+                <th className="px-5 py-3 font-bold">
+                  {telemetryContent.headers.battery}
+                </th>
+                <th className="px-5 py-3 font-bold">
+                  {telemetryContent.headers.signal}
+                </th>
+                <th className="px-5 py-3 font-bold">
+                  {telemetryContent.headers.lastPing}
+                </th>
+                <th className="px-5 py-3 font-bold">
+                  {telemetryContent.headers.status}
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-ink/10">
@@ -153,7 +170,9 @@ export default function HomePage() {
                     </span>
                   </td>
                   <td className="px-5 py-4 text-ink/50">
-                    {t.ping[sensor.ping.unit as keyof typeof t.ping]
+                    {telemetryContent.ping[
+                      sensor.ping.unit as keyof typeof telemetryContent.ping
+                    ]
                       .replace("{minutes}", String(sensor.ping.val))
                       .replace("{hours}", String(sensor.ping.val))}
                   </td>
@@ -165,7 +184,11 @@ export default function HomePage() {
                           : "border-solar/30 bg-solar/5 text-solar"
                       }`}
                     >
-                      {t.status[sensor.status as keyof typeof t.status]}
+                      {
+                        telemetryContent.status[
+                          sensor.status as keyof typeof telemetryContent.status
+                        ]
+                      }
                     </span>
                   </td>
                 </tr>
@@ -175,7 +198,6 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* 4. ESTADO DEL SISTEMA */}
       <div>
         <SystemStatusCard
           output={engine}
@@ -184,19 +206,18 @@ export default function HomePage() {
         />
       </div>
 
-      {/* 5. ZONAS + ALERTAS */}
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Zonas */}
         <div className="lg:col-span-2">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-serif font-bold text-ink">
-              {locale.ui.dashboard.zonesTitle}
+              {dashboardContent.zonesTitle}
             </h2>
             <Link
               href="/crops"
               className="font-mono text-xs uppercase tracking-widest font-bold text-solar hover:text-ink transition-colors flex items-center gap-1"
             >
-              {locale.ui.actions.viewCrops} <ArrowRight className="w-3 h-3" />
+              {actionsContent.viewCrops} <ArrowRight className="w-3 h-3" />
             </Link>
           </div>
           <div className="grid md:grid-cols-2 gap-4">
@@ -210,18 +231,17 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Alertas y Carbono */}
         <div className="space-y-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-serif font-bold text-ink flex items-center gap-2">
               <AlertTriangle className="w-5 h-5 text-solar" />
-              {locale.ui.dashboard.alertsTitle}
+              {dashboardContent.alertsTitle}
             </h2>
             <Link
               href="/engine"
               className="font-mono text-xs uppercase tracking-widest font-bold text-solar hover:text-ink transition-colors flex items-center gap-1"
             >
-              {locale.ui.actions.viewAll} <ArrowRight className="w-3 h-3" />
+              {actionsContent.viewAll} <ArrowRight className="w-3 h-3" />
             </Link>
           </div>
 
@@ -229,7 +249,7 @@ export default function HomePage() {
             {topAlerts.length === 0 ? (
               <div className="bg-card border border-ink/20 p-6 text-center">
                 <p className="font-mono text-xs uppercase tracking-widest text-chloro font-bold">
-                  {locale.ui.dashboard.alertsEmpty}
+                  {dashboardContent.alertsEmpty}
                 </p>
               </div>
             ) : (
@@ -263,16 +283,15 @@ export default function HomePage() {
             )}
           </div>
 
-          {/* Captura de carbono */}
           <div className="bg-card border border-ink/20 p-5 mt-6">
             <h4 className="font-mono text-xs uppercase tracking-widest font-bold text-chloro flex items-center gap-2 mb-4 pb-2 border-b border-ink/10">
               <Trees className="w-4 h-4" />
-              {locale.ui.dashboard.carbon.title}
+              {dashboardContent.carbon.title}
             </h4>
             <div className="space-y-0 font-mono">
               <div className="flex justify-between items-center py-2.5 border-b border-ink/10">
                 <span className="text-ink/60 uppercase text-[10px] tracking-wider">
-                  {locale.ui.dashboard.carbon.soc}
+                  {dashboardContent.carbon.soc}
                 </span>
                 <span className="font-bold text-sm text-ink">
                   {carbon.organicCarbonPercent}%
@@ -280,7 +299,7 @@ export default function HomePage() {
               </div>
               <div className="flex justify-between items-center py-2.5 border-b border-ink/10">
                 <span className="text-ink/60 uppercase text-[10px] tracking-wider">
-                  {locale.ui.dashboard.carbon.bulkDensity}
+                  {dashboardContent.carbon.bulkDensity}
                 </span>
                 <span className="font-bold text-sm text-ink">
                   {carbon.bulkDensity} g/cm³
@@ -288,7 +307,7 @@ export default function HomePage() {
               </div>
               <div className="flex justify-between items-center py-2.5 border-b border-ink/10">
                 <span className="text-ink/60 uppercase text-[10px] tracking-wider">
-                  {locale.ui.dashboard.carbon.depth}
+                  {dashboardContent.carbon.depth}
                 </span>
                 <span className="font-bold text-sm text-ink">
                   {carbon.depth} cm
@@ -296,7 +315,7 @@ export default function HomePage() {
               </div>
               <div className="flex justify-between items-center pt-3">
                 <span className="text-ink/60 uppercase text-[10px] tracking-wider">
-                  {locale.ui.dashboard.carbon.co2}
+                  {dashboardContent.carbon.co2}
                 </span>
                 <span className="font-serif text-xl font-bold text-solar">
                   {carbon.co2Sequestration} t/ha
@@ -307,24 +326,23 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* 6. CTA CULTIVOS */}
       <div className="bg-ink text-paper p-8 flex flex-col sm:flex-row items-center justify-between gap-6 relative overflow-hidden">
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-2">
             <Sprout className="w-5 h-5 text-solar" />
             <h2 className="text-xl font-serif font-bold">
-              {locale.content.home.cropsCta.title}
+              {cropsCtaContent.title}
             </h2>
           </div>
           <p className="font-mono text-xs text-paper/70 max-w-xl">
-            {locale.content.home.cropsCta.description}
+            {cropsCtaContent.description}
           </p>
         </div>
         <Link
-          href="/crops" // 👈 CAMBIADO DE /ground-cover a /crops
+          href="/crops"
           className="relative z-10 whitespace-nowrap flex items-center gap-2 bg-solar text-ink px-6 py-3 font-mono text-sm uppercase tracking-widest font-bold hover:bg-paper transition-colors"
         >
-          {locale.ui.actions.viewCrops} <ArrowRight className="w-4 h-4" />
+          {actionsContent.viewCrops} <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
     </div>

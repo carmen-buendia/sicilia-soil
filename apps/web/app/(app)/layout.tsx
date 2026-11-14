@@ -34,7 +34,6 @@ export default async function AppLayout({
             backgroundSize: "40px 40px",
           }}
         />
-        {/* Resplandores */}
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-solar/5 blur-[120px] rounded-full pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-chloro/5 blur-[120px] rounded-full pointer-events-none" />
 
