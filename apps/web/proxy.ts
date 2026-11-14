@@ -31,7 +31,11 @@ export default function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // Exclude API routes, Next.js internals, static assets, and auth pages
-    "/((?!api|_next/static|_next/image|favicon.ico|login|register|.*\\.(?:svg|png|jpg|jpeg|gif|webp|wasm)$).*)",
+    /*
+     * Protected all routes EXCEPT:
+     * - api, _next, favicon, images, and static files
+     * - login, register, about, manifesto
+     */
+    "/((?!api|_next/static|_next/image|favicon.ico|login|register|about|manifesto|.*\\.(?:svg|png|jpg|jpeg|gif|webp|wasm)$).*)",
   ],
 };

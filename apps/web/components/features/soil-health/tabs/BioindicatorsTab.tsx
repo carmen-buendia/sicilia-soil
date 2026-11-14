@@ -8,39 +8,39 @@ import { DataCard, Button } from "@sicilia-soil/ui";
 import { Info, PenLine, Leaf, Bug, CloudRain, FileText } from "lucide-react";
 import { useCropSystemsContext } from "@/components/features/crops/CropSystemsProvider";
 
+const locale = getLocale("es");
+const bioindicatorsContent = locale.content.soilHealthTabs.bioindicators;
+
 const CATEGORY_CONFIG = {
   fungi: {
-    label: "Hongos",
+    label: bioindicatorsContent.categoryFungi || "Hongos",
     icon: Leaf,
     color: "text-chloro bg-chloro/10 border-chloro/20",
   },
   pest: {
-    label: "Plaga",
+    label: bioindicatorsContent.categoryPest || "Plaga",
     icon: Bug,
     color: "text-solar bg-solar/10 border-solar/20",
   },
   weather: {
-    label: "Clima",
+    label: bioindicatorsContent.categoryWeather || "Clima",
     icon: CloudRain,
     color: "text-blue-500 bg-blue-500/10 border-blue-500/20",
   },
   other: {
-    label: "Otro",
+    label: bioindicatorsContent.categoryOther || "Otro",
     icon: FileText,
     color: "text-ink/60 bg-ink/5 border-ink/20",
   },
 };
 
 export function BioindicatorsTab({ systems }: { systems: CropSystem[] }) {
-  const locale = getLocale("es");
-  const t = locale.content.soilHealthTabs.bioindicators;
   const { updateSystem } = useCropSystemsContext();
 
   const [selectedSystemId, setSelectedSystemId] = useState<string>(
     systems[0]?.id || "",
   );
   const [note, setNote] = useState("");
-  // 👇 Nuevo estado para la categoría
   const [category, setCategory] = useState<
     "fungi" | "pest" | "weather" | "other"
   >("fungi");
@@ -61,8 +61,11 @@ export function BioindicatorsTab({ systems }: { systems: CropSystem[] }) {
       key: "bioindicator",
       text: note,
       level: "info" as const,
-      category, // 👈 Guardamos la categoría
-      meta: { source: "Diario de campo", date: new Date().toISOString() },
+      category,
+      meta: {
+        source: bioindicatorsContent.fieldJournal || "Diario de campo",
+        date: new Date().toISOString(),
+      },
     };
 
     updateSystem(selectedSystemId, {
@@ -76,22 +79,22 @@ export function BioindicatorsTab({ systems }: { systems: CropSystem[] }) {
       {/* Intro */}
       <DataCard className="p-6">
         <h2 className="text-xl font-serif font-bold text-ink mb-2">
-          {t.title}
+          {bioindicatorsContent.title}
         </h2>
-        <p className="font-sans text-sm text-ink/70">{t.description}</p>
+        <p className="font-sans text-sm text-ink/70">
+          {bioindicatorsContent.description}
+        </p>
       </DataCard>
 
-      {/* 👇 FORMULARIO REDISEÑADO */}
       <DataCard className="p-6 border-chloro/30 bg-chloro/5">
         <h3 className="font-mono text-xs uppercase tracking-wider font-bold text-chloro mb-4 flex items-center gap-2">
-          <PenLine className="w-4 h-4" /> Añadir nota al diario de campo
+          <PenLine className="w-4 h-4" /> {bioindicatorsContent.addNote}
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mb-3">
-          {/* Selector de Zona */}
           <div className="md:col-span-2">
             <label className="block font-mono text-[10px] uppercase text-ink/60 mb-1">
-              Zona
+              {bioindicatorsContent.zone}
             </label>
             <select
               value={selectedSystemId}
@@ -99,7 +102,7 @@ export function BioindicatorsTab({ systems }: { systems: CropSystem[] }) {
               className="w-full bg-card border border-ink/20 p-2 text-sm text-ink focus:outline-none focus:border-chloro"
             >
               {systems.length === 0 && (
-                <option value="">No hay sistemas</option>
+                <option value="">{bioindicatorsContent.noSystems}</option>
               )}
               {systems.map((s) => (
                 <option key={s.id} value={s.id}>
@@ -109,10 +112,9 @@ export function BioindicatorsTab({ systems }: { systems: CropSystem[] }) {
             </select>
           </div>
 
-          {/* Selector de Categoría */}
           <div className="md:col-span-2">
             <label className="block font-mono text-[10px] uppercase text-ink/60 mb-1">
-              Tipo de hallazgo
+              {bioindicatorsContent.findingType}
             </label>
             <div className="flex gap-2">
               {(
@@ -143,13 +145,12 @@ export function BioindicatorsTab({ systems }: { systems: CropSystem[] }) {
           </div>
         </div>
 
-        {/* Input de texto y botón */}
         <div className="flex flex-col md:flex-row gap-3">
           <input
             type="text"
             value={note}
             onChange={(e) => setNote(e.target.value)}
-            placeholder="Ej: Aparición de setas, mordida de insectos, helada..."
+            placeholder={bioindicatorsContent.placeholder}
             className="flex-1 bg-card border border-ink/20 p-3 text-sm text-ink focus:outline-none focus:border-chloro"
             onKeyDown={(e) => e.key === "Enter" && handleAddNote()}
           />
@@ -158,18 +159,16 @@ export function BioindicatorsTab({ systems }: { systems: CropSystem[] }) {
             onClick={handleAddNote}
             className="px-6 py-3 text-sm whitespace-nowrap"
           >
-            Guardar Nota
+            {bioindicatorsContent.saveNote}
           </Button>
         </div>
       </DataCard>
 
-      {/* Grid de Tarjetas */}
       {systemsWithObservations.length === 0 ? (
         <DataCard className="p-12 text-center border-dashed border-ink/20">
           <Info className="w-8 h-8 text-ink/30 mx-auto mb-3" />
           <p className="font-mono text-sm text-ink/50">
-            No hay notas en el diario. Usa el formulario de arriba para añadir
-            la primera.
+            {bioindicatorsContent.emptyJournal}
           </p>
         </DataCard>
       ) : (
@@ -201,7 +200,6 @@ export function BioindicatorsTab({ systems }: { systems: CropSystem[] }) {
                       key={obs.id}
                       className="bg-paper/50 border border-ink/10 p-3 relative group"
                     >
-                      {/* Etiqueta de categoría */}
                       <div
                         className={`inline-flex items-center gap-1 px-2 py-0.5 border text-[9px] font-mono uppercase font-bold mb-2 ${catConfig.color}`}
                       >
