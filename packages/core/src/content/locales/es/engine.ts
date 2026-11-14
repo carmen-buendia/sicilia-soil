@@ -53,7 +53,6 @@ export const engine = {
 
   empty: "No hay recomendaciones que coincidan con los filtros seleccionados.",
 
-  //  NUEVA SECCIÓN PARA EL DIAGNÓSTICO (Usada en CerealTab)
   diagnostics: {
     title: "Diagnóstico del Motor de Reglas",
     subtitle:
