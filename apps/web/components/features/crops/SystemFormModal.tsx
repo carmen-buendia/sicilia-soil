@@ -13,7 +13,7 @@ import type {
 } from "@sicilia-soil/core";
 
 interface SystemFormModalProps {
-  systemToEdit?: CropSystem; // 👈 Si viene, es modo edición
+  systemToEdit?: CropSystem;
   onClose: () => void;
 }
 
@@ -25,7 +25,6 @@ export function SystemFormModal({
 
   const isEditing = !!systemToEdit;
 
-  // 👇 Inicializamos los estados con los datos del sistema (si estamos editando)
   const [name, setName] = useState(systemToEdit?.name || "");
   const [template, setTemplate] = useState<SystemTemplate>(
     systemToEdit?.template || "herbaceous",
@@ -165,7 +164,6 @@ export function SystemFormModal({
     };
 
     if (isEditing && systemToEdit) {
-      // 👇 MODO EDICIÓN: Mantenemos sus gráficos y métricas intactas
       updateSystem(systemToEdit.id, {
         ...baseData,
         icon:
@@ -210,7 +208,6 @@ export function SystemFormModal({
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-ink/60 backdrop-blur-sm">
       <div className="bg-paper border border-ink/20 w-full max-w-md max-h-[90vh] overflow-y-auto shadow-2xl flex flex-col relative">
         <div className="sticky top-0 bg-paper z-10 flex items-center justify-between p-4 border-b border-ink/10">
-          {/* 👇 Título dinámico */}
           <h2 className="font-serif text-xl font-bold text-ink">
             {isEditing ? "Editar Zona" : "Añadir Zona"}
           </h2>

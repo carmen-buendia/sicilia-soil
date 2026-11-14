@@ -10,6 +10,9 @@ import { useRecommendations } from "@/hooks/useRecommendations";
 import { getLocale } from "@sicilia-soil/core";
 import { DataCard } from "@sicilia-soil/ui";
 
+const locale = getLocale("es");
+const engineContent = locale.engine;
+
 // Handles the scroll to a highlighted card.
 // Isolated with its own Suspense to avoid hydration errors from useSearchParams.
 function HighlightHandler() {
@@ -31,14 +34,11 @@ function HighlightHandler() {
   return null;
 }
 
-function EngineContent() {
+function EngineView() {
   const { addNotificationsFromRecommendations } = useNotifications();
   const recommendations = useRecommendations();
   const searchParams = useSearchParams();
   const highlightId = searchParams.get("highlight");
-
-  const locale = getLocale("es");
-  const t = locale.engine;
 
   useEffect(() => {
     addNotificationsFromRecommendations(recommendations);
@@ -59,10 +59,10 @@ function EngineContent() {
               <div className="w-12 h-12 bg-chloro/10 border border-chloro/20 flex items-center justify-center">
                 <Brain className="w-6 h-6 text-chloro" />
               </div>
-              {t.header.title}
+              {engineContent.header.title}
             </h1>
             <p className="font-mono text-xs uppercase tracking-widest text-chloro font-bold mt-1">
-              {t.header.subtitle}
+              {engineContent.header.subtitle}
             </p>
           </div>
         </div>
@@ -70,10 +70,10 @@ function EngineContent() {
 
       <DataCard className="p-6">
         <h2 className="text-lg font-serif font-bold text-ink mb-2">
-          {t.infoBox.title}
+          {engineContent.infoBox.title}
         </h2>
         <p className="font-sans text-sm text-ink/70 leading-relaxed">
-          {t.infoBox.description}
+          {engineContent.infoBox.description}
         </p>
       </DataCard>
 
@@ -99,7 +99,7 @@ export default function EnginePage() {
           </div>
         }
       >
-        <EngineContent />
+        <EngineView />
       </Suspense>
     </>
   );

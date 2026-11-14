@@ -2,7 +2,41 @@
 
 import { Droplets, Thermometer, Sun, Wind, ArrowRight } from "lucide-react";
 import { getLocale } from "@sicilia-soil/core";
-import { Button, DataCard } from "@sicilia-soil/ui"; // <-- Importamos el componente inteligente
+import { Button, DataCard } from "@sicilia-soil/ui";
+
+const locale = getLocale("es");
+const dashboardContent = locale.ui.dashboard;
+
+const STATUS_STYLES: Record<string, string> = {
+  optimal: "text-chloro border-chloro/30 bg-chloro/5",
+  needsWater: "text-solar border-solar/30 bg-solar/5",
+  needsAttention: "text-amber-600 border-amber-600/30 bg-amber-600/5",
+  offline: "text-ink/50 border-ink/20 bg-ink/5",
+};
+const DEFAULT_STATUS_STYLE = "text-ink/50 border-ink/20 bg-ink/5";
+
+// 👇 Helper para los colores de los valores
+function getValueColor(
+  value: number,
+  type: "moisture" | "temp" | "light",
+): string {
+  if (type === "moisture") {
+    if (value >= 70) return "text-chloro";
+    if (value >= 50) return "text-solar";
+    return "text-red-500";
+  }
+  if (type === "temp") {
+    if (value >= 20 && value <= 25) return "text-chloro";
+    if (value >= 15 && value <= 30) return "text-solar";
+    return "text-red-500";
+  }
+  if (type === "light") {
+    if (value >= 60) return "text-chloro";
+    if (value >= 40) return "text-solar";
+    return "text-red-500";
+  }
+  return "text-ink";
+}
 
 interface ZoneData {
   id: string;
@@ -23,9 +57,6 @@ interface ZoneCardProps {
 }
 
 export function ZoneCard({ zone, onViewHistory }: ZoneCardProps) {
-  const locale = getLocale("es");
-  const t = locale.ui.dashboard;
-
   const zoneName =
     locale.zones[zone.id as keyof typeof locale.zones] ?? zone.id;
   const zoneStatus =
@@ -38,43 +69,7 @@ export function ZoneCard({ zone, onViewHistory }: ZoneCardProps) {
     : null;
 
   const zoneNumber = zone.id.replace(/^zone-/, "");
-
-  const getStatusColor = (statusKey: string) => {
-    switch (statusKey) {
-      case "optimal":
-        return "text-chloro border-chloro/30 bg-chloro/5";
-      case "needsWater":
-        return "text-solar border-solar/30 bg-solar/5";
-      case "needsAttention":
-        return "text-amber-600 border-amber-600/30 bg-amber-600/5";
-      case "offline":
-        return "text-ink/50 border-ink/20 bg-ink/5";
-      default:
-        return "text-ink/50 border-ink/20 bg-ink/5";
-    }
-  };
-
-  const getValueColor = (
-    value: number,
-    type: "moisture" | "temp" | "light",
-  ) => {
-    if (type === "moisture") {
-      if (value >= 70) return "text-chloro";
-      if (value >= 50) return "text-solar";
-      return "text-red-500";
-    }
-    if (type === "temp") {
-      if (value >= 20 && value <= 25) return "text-chloro";
-      if (value >= 15 && value <= 30) return "text-solar";
-      return "text-red-500";
-    }
-    if (type === "light") {
-      if (value >= 60) return "text-chloro";
-      if (value >= 40) return "text-solar";
-      return "text-red-500";
-    }
-    return "text-ink";
-  };
+  const statusStyle = STATUS_STYLES[zone.statusKey] ?? DEFAULT_STATUS_STYLE;
 
   return (
     <DataCard className="p-0 flex flex-col group hover:bg-paper/30 overflow-hidden">
@@ -94,7 +89,7 @@ export function ZoneCard({ zone, onViewHistory }: ZoneCardProps) {
           </div>
         </div>
         <span
-          className={`px-2 py-0.5 border font-mono text-[10px] uppercase tracking-widest font-bold ${getStatusColor(zone.statusKey)}`}
+          className={`px-2 py-0.5 border font-mono text-[10px] uppercase tracking-widest font-bold ${statusStyle}`}
         >
           {zoneStatus}
         </span>
@@ -106,7 +101,7 @@ export function ZoneCard({ zone, onViewHistory }: ZoneCardProps) {
           <div className="flex items-center gap-2 mb-1">
             <Droplets className="w-3.5 h-3.5 text-chloro/70" />
             <span className="font-mono text-[10px] uppercase tracking-wider text-ink/60">
-              {t.moisture}
+              {dashboardContent.moisture}
             </span>
           </div>
           <span
@@ -120,7 +115,7 @@ export function ZoneCard({ zone, onViewHistory }: ZoneCardProps) {
           <div className="flex items-center gap-2 mb-1">
             <Thermometer className="w-3.5 h-3.5 text-solar/70" />
             <span className="font-mono text-[10px] uppercase tracking-wider text-ink/60">
-              {t.temperature}
+              {dashboardContent.temperature}
             </span>
           </div>
           <span
@@ -134,7 +129,7 @@ export function ZoneCard({ zone, onViewHistory }: ZoneCardProps) {
           <div className="flex items-center gap-2 mb-1">
             <Sun className="w-3.5 h-3.5 text-solar/70" />
             <span className="font-mono text-[10px] uppercase tracking-wider text-ink/60">
-              {t.light}
+              {dashboardContent.light}
             </span>
           </div>
           <span
@@ -148,7 +143,7 @@ export function ZoneCard({ zone, onViewHistory }: ZoneCardProps) {
           <div className="flex items-center gap-2 mb-1">
             <Wind className="w-3.5 h-3.5 text-ink/40" />
             <span className="font-mono text-[10px] uppercase tracking-wider text-ink/60">
-              {t.wind}
+              {dashboardContent.wind}
             </span>
           </div>
           <span className="font-mono text-xl font-bold text-ink">
@@ -176,7 +171,7 @@ export function ZoneCard({ zone, onViewHistory }: ZoneCardProps) {
           onClick={() => onViewHistory(zone.id)}
           className="font-mono text-[10px] uppercase tracking-widest font-bold text-solar hover:text-ink transition-colors flex items-center gap-1"
         >
-          {t.viewHistory} <ArrowRight className="w-3 h-3" />
+          {dashboardContent.viewHistory} <ArrowRight className="w-3 h-3" />
         </Button>
       </div>
     </DataCard>

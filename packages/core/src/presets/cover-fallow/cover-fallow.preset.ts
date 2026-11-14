@@ -13,8 +13,9 @@ import {
 import { content } from "../../content/locales/es/content";
 
 export function buildCoverFallowPreset(): CropSystem {
-  const t = content.cropsPage.coverFallow;
   const now = new Date().toISOString();
+
+  const t = content.cropsPage.coverFallow;
 
   const observations: CropObservation[] = t.presetObservations.map((o) => ({
     id: o.id,
@@ -92,7 +93,7 @@ export function buildCoverFallowPreset(): CropSystem {
     series: [
       {
         key: "rotation",
-        name: t.rotationLabel,
+        name: t.rotationLabel, // 👈 Ahora 't' sí existe y encuentra la etiqueta
         categories: FALLOW_TIMELINE.map((s) => s.month),
         data: FALLOW_TIMELINE.map((s) =>
           s.state === "done" ? 100 : s.state === "active" ? 60 : 20,
