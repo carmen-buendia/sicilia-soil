@@ -6,25 +6,35 @@ import { DataCard } from "@sicilia-soil/ui";
 import { getLocale } from "@sicilia-soil/core";
 import { useAllObservations } from "@/hooks/useAllObservations";
 
+const locale = getLocale("es");
+const observationsContent = locale.content.cropsPage.observations;
+
 const LEVEL_ICON = {
   success: CheckCircle2,
   warning: AlertTriangle,
   info: Info,
 } as const;
+
 const LEVEL_STYLE = {
   success: "bg-chloro/10 border-chloro/20 text-chloro",
   warning: "bg-solar/10 border-solar/20 text-solar",
   info: "bg-ink/5 border-ink/15 text-ink/70",
 } as const;
 
+function formatObservationDate(dateString?: string): string {
+  if (!dateString) return "—";
+  return new Date(dateString).toLocaleDateString("es-IT");
+}
+
 export function ObservationsTab() {
-  const t = getLocale("es").content.cropsPage.observations;
   const observations = useAllObservations();
 
   if (observations.length === 0) {
     return (
       <DataCard className="p-12 text-center border-dashed border-ink/20">
-        <p className="font-mono text-sm text-ink/50">{t.empty}</p>
+        <p className="font-mono text-sm text-ink/50">
+          {observationsContent.empty}
+        </p>
       </DataCard>
     );
   }
@@ -32,16 +42,18 @@ export function ObservationsTab() {
   return (
     <div className="space-y-4">
       <div className="border-b border-ink/20 pb-2">
-        <h3 className="text-xl font-serif font-bold text-ink">{t.title}</h3>
-        <p className="font-sans text-sm text-ink/60 mt-1">{t.desc}</p>
+        <h3 className="text-xl font-serif font-bold text-ink">
+          {observationsContent.title}
+        </h3>
+        <p className="font-sans text-sm text-ink/60 mt-1">
+          {observationsContent.desc}
+        </p>
       </div>
+
       <DataCard className="p-0 overflow-hidden">
         <ul className="divide-y divide-ink/10">
           {observations.map((obs) => {
             const Icon = LEVEL_ICON[obs.level];
-            const date = obs.meta?.date
-              ? new Date(obs.meta.date).toLocaleDateString("es-IT")
-              : "—";
             return (
               <li
                 key={obs.id}
@@ -57,7 +69,8 @@ export function ObservationsTab() {
                   </div>
                   <p className="font-sans text-sm text-ink">{obs.text}</p>
                   <p className="font-mono text-[10px] text-ink/50 mt-1 uppercase tracking-wider">
-                    {obs.meta?.source ?? "—"} · {date}
+                    {obs.meta?.source || "—"} ·{" "}
+                    {formatObservationDate(obs.meta?.date)}
                   </p>
                 </div>
               </li>

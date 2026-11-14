@@ -45,6 +45,8 @@ export const ui = {
     success: {
       registered: "Cuenta creada con éxito. Por favor, inicia sesión.",
     },
+    userExists: "Este email ya está registrado.",
+    goToLogin: "Ve a Iniciar Sesión",
   },
   // Configuration
   configuration: {
