@@ -1,10 +1,30 @@
+// apps/web/components/features/shared/SymbiosisCard.tsx
 "use client";
 
 import { ArrowLeftRight, Info } from "lucide-react";
 import type { SymbiosisResult } from "@sicilia-soil/core";
 import { SoilChart, SOIL_COLORS } from "@/components/features/shared";
 import { getLocale } from "@sicilia-soil/core";
-import { DataCard } from "@sicilia-soil/ui"; // <-- Importamos el componente
+import { DataCard } from "@sicilia-soil/ui";
+
+const locale = getLocale("es");
+const symbiosisContent = locale.ui.symbiosis;
+
+const CATEGORY_STYLES: Record<string, string> = {
+  Establecida: "border-chloro/30 text-chloro bg-chloro/5",
+  "En desarrollo": "border-solar/30 text-solar bg-solar/5",
+  Inicial: "border-amber-500/30 text-amber-600 bg-amber-500/5",
+  Ausente: "border-red-500/30 text-red-600 bg-red-500/5",
+};
+const DEFAULT_CATEGORY_STYLE = "border-ink/20 text-ink bg-paper";
+
+const CATEGORY_COLORS: Record<string, string> = {
+  Establecida: SOIL_COLORS.chloro,
+  "En desarrollo": SOIL_COLORS.solar,
+  Inicial: SOIL_COLORS.ink,
+  Ausente: SOIL_COLORS.red,
+};
+const DEFAULT_CATEGORY_COLOR = SOIL_COLORS.stone;
 
 interface SymbiosisCardProps {
   result: SymbiosisResult;
@@ -15,51 +35,16 @@ export function SymbiosisCard({
   result,
   variant = "full",
 }: SymbiosisCardProps) {
-  const locale = getLocale("es");
-  const t = locale.ui.symbiosis;
+  const style = CATEGORY_STYLES[result.category] ?? DEFAULT_CATEGORY_STYLE;
+  const barColor = CATEGORY_COLORS[result.category] ?? DEFAULT_CATEGORY_COLOR;
 
-  // Mapeo de estilos de categoría a nuestra paleta
-  const getCategoryStyle = (category: SymbiosisResult["category"]) => {
-    switch (category) {
-      case "Establecida":
-        return "border-chloro/30 text-chloro bg-chloro/5";
-      case "En desarrollo":
-        return "border-solar/30 text-solar bg-solar/5";
-      case "Inicial":
-        return "border-amber-500/30 text-amber-600 bg-amber-500/5";
-      case "Ausente":
-        return "border-red-500/30 text-red-600 bg-red-500/5";
-      default:
-        return "border-ink/20 text-ink bg-paper";
-    }
-  };
-
-  const getCategoryColor = (category: SymbiosisResult["category"]) => {
-    switch (category) {
-      case "Establecida":
-        return SOIL_COLORS.chloro;
-      case "En desarrollo":
-        return SOIL_COLORS.solar;
-      case "Inicial":
-        return SOIL_COLORS.ink;
-      case "Ausente":
-        return SOIL_COLORS.red;
-      default:
-        return SOIL_COLORS.stone;
-    }
-  };
-
-  const style = getCategoryStyle(result.category);
-  const barColor = getCategoryColor(result.category);
-
-  // ---- Compact variant ----
   if (variant === "compact") {
     return (
       <DataCard className={`p-4 ${style}`}>
         <div className="flex items-center gap-2 mb-2">
           <ArrowLeftRight className="w-4 h-4" />
           <span className="font-mono text-[10px] font-bold uppercase tracking-widest">
-            {t.title}
+            {symbiosisContent.title}
           </span>
         </div>
         <p className="font-mono text-2xl font-bold">{result.score}/100</p>
@@ -68,7 +53,6 @@ export function SymbiosisCard({
     );
   }
 
-  // ---- Datos para el radar ----
   const radarData = [
     result.indicators.substrateFlow,
     result.indicators.nutrientFlow,
@@ -76,7 +60,6 @@ export function SymbiosisCard({
     result.indicators.structuralStability,
   ];
 
-  // ---- Datos para el bar de hosts ----
   const hostsAmf = result.hosts.filter((h) => h.type === "AMF");
   const hostsEcm = result.hosts.filter((h) => h.type === "ECM");
   const allHosts = [...hostsAmf, ...hostsEcm];
@@ -94,28 +77,27 @@ export function SymbiosisCard({
     },
   ];
 
-  // ---- Full variant ----
   return (
-    // Usamos DataCard con p-0 para que los bordes internos fluyan sin padding externo
     <DataCard className="p-0 flex flex-col bg-card">
       {/* HEADER */}
       <div className="flex flex-wrap items-center justify-between p-5 border-b border-ink/10 bg-paper/50 gap-4">
         <div className="flex items-center gap-2">
           <ArrowLeftRight className="w-5 h-5 text-ink/60" />
-          <h3 className="text-xl font-serif font-bold text-ink">{t.title}</h3>
+          <h3 className="text-xl font-serif font-bold text-ink">
+            {symbiosisContent.title}
+          </h3>
         </div>
         <span
           className={`font-mono text-[10px] uppercase tracking-widest font-bold px-2 py-1 border ${style}`}
         >
-          {t.badge}
+          {symbiosisContent.badge}
         </span>
       </div>
 
-      {/* KPI GRID (Tabla técnica) */}
       <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-ink/10 border-b border-ink/10">
         <div className="p-5">
           <p className="font-mono text-[10px] uppercase tracking-wider text-ink/50 mb-1">
-            {t.score}
+            {symbiosisContent.score}
           </p>
           <p className="font-mono text-3xl font-bold text-ink">
             {result.score}/100
@@ -128,51 +110,52 @@ export function SymbiosisCard({
         </div>
         <div className="p-5">
           <p className="font-mono text-[10px] uppercase tracking-wider text-ink/50 mb-1">
-            {t.networkAmf}
+            {symbiosisContent.networkAmf}
           </p>
           <p className="font-mono text-2xl font-bold text-ink">
             {result.networks.amf}
           </p>
           <p className="font-sans text-xs text-ink/60 mt-1">
-            {t.networkAmfSub}
+            {symbiosisContent.networkAmfSub}
           </p>
         </div>
         <div className="p-5">
           <p className="font-mono text-[10px] uppercase tracking-wider text-ink/50 mb-1">
-            {t.networkEcm}
+            {symbiosisContent.networkEcm}
           </p>
           <p className="font-mono text-2xl font-bold text-ink">
             {result.networks.ecm}
           </p>
           <p className="font-sans text-xs text-ink/60 mt-1">
-            {t.networkEcmSub}
+            {symbiosisContent.networkEcmSub}
           </p>
         </div>
         <div className="p-5">
           <p className="font-mono text-[10px] uppercase tracking-wider text-ink/50 mb-1">
-            {t.carbon}
+            {symbiosisContent.carbon}
           </p>
           <p className="font-mono text-2xl font-bold text-ink">
             {result.indicators.carbonFlow}
           </p>
-          <p className="font-sans text-xs text-ink/60 mt-1">{t.carbonSub}</p>
+          <p className="font-sans text-xs text-ink/60 mt-1">
+            {symbiosisContent.carbonSub}
+          </p>
         </div>
       </div>
 
-      {/* CONTENIDO: Gráficos */}
       <div className="p-5 space-y-6">
         {/* Radar */}
         <div className="border border-ink/10 bg-paper/30 p-4">
           <p className="font-mono text-[10px] font-bold uppercase tracking-widest text-ink/60 mb-4 border-b border-ink/10 pb-2">
-            {t.radarTitle}
+            {symbiosisContent.radarTitle}
           </p>
           <SoilChart
             type="radar"
             categories={[
-              t.radarSubstrate,
-              t.radarReturn,
-              t.radarCarbon,
-              t.radarStructure,
+              symbiosisContent.radarSubstrate,
+              symbiosisContent.radarReturn,
+              symbiosisContent.radarCarbon,
+              symbiosisContent.radarStructure,
             ]}
             series={[{ name: "Red actual", data: radarData, color: barColor }]}
             yAxisMax={100}
@@ -182,7 +165,7 @@ export function SymbiosisCard({
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-4 font-mono text-xs border-t border-ink/10 pt-4">
             <div className="text-center">
               <p className="text-ink/50 uppercase tracking-wider mb-1 text-[10px]">
-                {t.radarSubstrate}
+                {symbiosisContent.radarSubstrate}
               </p>
               <p className="font-bold text-ink">
                 {result.indicators.substrateFlow}%
@@ -190,7 +173,7 @@ export function SymbiosisCard({
             </div>
             <div className="text-center">
               <p className="text-ink/50 uppercase tracking-wider mb-1 text-[10px]">
-                {t.radarReturn}
+                {symbiosisContent.radarReturn}
               </p>
               <p className="font-bold text-ink">
                 {result.indicators.nutrientFlow}%
@@ -198,7 +181,7 @@ export function SymbiosisCard({
             </div>
             <div className="text-center">
               <p className="text-ink/50 uppercase tracking-wider mb-1 text-[10px]">
-                {t.radarCarbon}
+                {symbiosisContent.radarCarbon}
               </p>
               <p className="font-bold text-ink">
                 {result.indicators.carbonFlow}%
@@ -206,7 +189,7 @@ export function SymbiosisCard({
             </div>
             <div className="text-center">
               <p className="text-ink/50 uppercase tracking-wider mb-1 text-[10px]">
-                {t.radarStructure}
+                {symbiosisContent.radarStructure}
               </p>
               <p className="font-bold text-ink">
                 {result.indicators.structuralStability}%
@@ -215,11 +198,10 @@ export function SymbiosisCard({
           </div>
         </div>
 
-        {/* Bar chart de hosts */}
         {allHosts.length > 0 && (
           <div className="border border-ink/10 bg-paper/30 p-4">
             <p className="font-mono text-[10px] font-bold uppercase tracking-widest text-ink/60 mb-4 border-b border-ink/10 pb-2">
-              {t.hostsTitle}
+              {symbiosisContent.hostsTitle}
             </p>
             <SoilChart
               type="bar"
@@ -234,18 +216,17 @@ export function SymbiosisCard({
             <div className="flex items-center gap-6 mt-4 font-mono text-[10px] uppercase tracking-wider text-ink/60">
               <span className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 bg-chloro" />
-                {t.hostsAmf}
+                {symbiosisContent.hostsAmf}
               </span>
               <span className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 bg-solar" />
-                {t.hostsEcm}
+                {symbiosisContent.hostsEcm}
               </span>
             </div>
           </div>
         )}
       </div>
 
-      {/* INTERPRETACIÓN Y NOTAS (Pie de página del informe) */}
       <div className="border-t border-ink/10 bg-paper/30 p-5 space-y-4">
         <div className="flex items-start gap-3">
           <Info className="w-5 h-5 text-ink/40 shrink-0 mt-0.5" />
@@ -262,7 +243,8 @@ export function SymbiosisCard({
         </div>
 
         <p className="font-mono text-[10px] uppercase tracking-widest text-ink/40 text-right mt-2 pt-2 border-t border-ink/10">
-          {t.updated}: {new Date(result.timestamp).toLocaleDateString("es-ES")}
+          {symbiosisContent.updated}:{" "}
+          {new Date(result.timestamp).toLocaleDateString("es-ES")}
         </p>
       </div>
     </DataCard>
