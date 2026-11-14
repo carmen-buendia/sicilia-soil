@@ -7,12 +7,12 @@ import { NotificationItem } from "@/components/features/notifications";
 import { getLocale } from "@sicilia-soil/core";
 import { Button, DataCard } from "@sicilia-soil/ui";
 
+const locale = getLocale("es");
+const notificationsContent = locale.ui.notificationsPage;
+
 export default function NotificationsPage() {
   const { notifications, unreadCount, markAsRead, markAllAsRead, clearAll } =
     useNotifications();
-
-  const locale = getLocale("es");
-  const t = locale.ui.notificationsPage;
 
   const criticalCount = notifications.filter(
     (n) => n.severity === "critical",
@@ -37,10 +37,10 @@ export default function NotificationsPage() {
               <div className="w-12 h-12 bg-chloro/10 border border-chloro/20 flex items-center justify-center">
                 <Bell className="w-6 h-6 text-chloro" />
               </div>
-              {t.title}
+              {notificationsContent.title}
             </h1>
             <p className="font-mono text-xs uppercase tracking-widest text-chloro font-bold mt-1">
-              {t.subtitle}
+              {notificationsContent.subtitle}
             </p>
           </div>
         </div>
@@ -52,7 +52,7 @@ export default function NotificationsPage() {
               className="flex items-center gap-2 border border-ink/20 bg-ink text-paper px-4 py-2 font-mono text-xs uppercase tracking-widest font-bold hover:bg-chloro hover:border-chloro transition-colors shadow-sm"
             >
               <CheckCheck className="w-4 h-4" />
-              {t.markAll}
+              {notificationsContent.markAll}
             </Button>
           )}
           {notifications.length > 0 && (
@@ -61,18 +61,17 @@ export default function NotificationsPage() {
               className="flex items-center gap-2 border border-red-500/30 bg-transparent text-red-500 px-4 py-2 font-mono text-xs uppercase tracking-widest font-bold hover:bg-red-500/10 transition-colors"
             >
               <Trash2 className="w-4 h-4" />
-              {t.clear}
+              {notificationsContent.clear}
             </Button>
           )}
         </div>
       </div>
 
-      {/* STATS (Data Panel) */}
       <div className="bg-card border border-ink/20">
         <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-ink/10">
           <div className="p-5">
             <p className="font-mono text-[10px] uppercase tracking-wider text-ink/50 mb-1">
-              {t.stats.total}
+              {notificationsContent.stats.total}
             </p>
             <p className="font-mono text-3xl font-bold text-ink">
               {notifications.length}
@@ -80,7 +79,7 @@ export default function NotificationsPage() {
           </div>
           <div className="p-5">
             <p className="font-mono text-[10px] uppercase tracking-wider text-ink/50 mb-1">
-              {t.stats.unread}
+              {notificationsContent.stats.unread}
             </p>
             <p className="font-mono text-3xl font-bold text-chloro">
               {unreadCount}
@@ -88,7 +87,7 @@ export default function NotificationsPage() {
           </div>
           <div className="p-5">
             <p className="font-mono text-[10px] uppercase tracking-wider text-ink/50 mb-1">
-              {t.stats.critical}
+              {notificationsContent.stats.critical}
             </p>
             <p className="font-mono text-3xl font-bold text-red-500">
               {criticalCount}
@@ -96,7 +95,7 @@ export default function NotificationsPage() {
           </div>
           <div className="p-5">
             <p className="font-mono text-[10px] uppercase tracking-wider text-ink/50 mb-1">
-              {t.stats.warning}
+              {notificationsContent.stats.warning}
             </p>
             <p className="font-mono text-3xl font-bold text-solar">
               {warningCount}
@@ -105,22 +104,21 @@ export default function NotificationsPage() {
         </div>
       </div>
 
-      {/* LIST OF NOTIFICATIONS */}
       <DataCard className="p-4">
         {notifications.length === 0 ? (
           <div className="text-center py-16">
             <Bell className="w-16 h-16 text-ink/10 mx-auto mb-4" />
             <h2 className="text-xl font-serif font-bold text-ink mb-2">
-              {t.emptyTitle}
+              {notificationsContent.emptyTitle}
             </h2>
             <p className="font-sans text-sm text-ink/60 mb-6 max-w-md mx-auto">
-              {t.emptyDesc}
+              {notificationsContent.emptyDesc}
             </p>
             <Link
               href="/engine"
               className="inline-flex items-center gap-2 border border-ink/20 bg-paper text-ink px-4 py-2 font-mono text-xs uppercase tracking-widest font-bold hover:bg-ink hover:text-paper transition-colors"
             >
-              {t.goToRecs} →
+              {notificationsContent.goToRecs} →
             </Link>
           </div>
         ) : (
@@ -136,10 +134,11 @@ export default function NotificationsPage() {
         )}
       </DataCard>
 
-      {/* INFO FOOTER */}
       <DataCard className="p-4 border-l-4 border-solar bg-solar/5">
         <p className="font-sans text-sm text-ink/80 leading-relaxed">
-          💡 <strong className="text-ink">{t.infoTitle}</strong> {t.infoDesc}
+          💡{" "}
+          <strong className="text-ink">{notificationsContent.infoTitle}</strong>{" "}
+          {notificationsContent.infoDesc}
         </p>
       </DataCard>
     </div>
