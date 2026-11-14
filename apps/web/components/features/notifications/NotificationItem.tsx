@@ -8,6 +8,9 @@ import type { Notification, NotificationSeverity } from "@sicilia-soil/core";
 import { getLocale } from "@sicilia-soil/core";
 import { DataCard } from "@sicilia-soil/ui";
 
+const locale = getLocale("es");
+const notificationsContent = locale.ui.notifications;
+
 interface NotificationItemProps {
   notification: Notification;
   onMarkAsRead: (id: string) => void;
@@ -29,8 +32,6 @@ export function NotificationItem({
   notification,
   onMarkAsRead,
 }: NotificationItemProps) {
-  const locale = getLocale("es");
-  const t = locale.ui.notifications;
   const style = SEVERITY_MAP[notification.severity];
   const Icon = style.icon;
 
@@ -65,7 +66,7 @@ export function NotificationItem({
           </p>
           <div className="flex items-center justify-between mt-2 pt-2 border-t border-ink/10">
             <span className="font-mono text-[10px] uppercase tracking-wider text-ink/50">
-              {notification.zoneName ?? t.system}
+              {notification.zoneName ?? notificationsContent.system}
             </span>
             {notification.actionUrl && (
               <Link
@@ -73,7 +74,7 @@ export function NotificationItem({
                 className="font-mono text-[10px] uppercase tracking-wider font-bold text-solar hover:text-ink transition-colors"
                 onClick={(e) => e.stopPropagation()}
               >
-                {t.viewMore} →
+                {notificationsContent.viewMore} →
               </Link>
             )}
           </div>

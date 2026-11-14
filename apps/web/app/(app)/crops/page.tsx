@@ -7,7 +7,6 @@ import { useCropSystemsContext } from "@/components/features/crops/CropSystemsPr
 import { SystemTab } from "@/components/features/crops/tabs/SystemTab";
 import { ObservationsTab } from "@/components/features/crops/tabs/ObservationsTab";
 import { AnalyticsTab } from "@/components/features/crops/tabs/AnalyticsTab";
-// 👇 Importamos el nuevo modal y el icono del lápiz
 import { SystemFormModal } from "@/components/features/crops/SystemFormModal";
 import { Button, DataCard } from "@sicilia-soil/ui";
 import {
@@ -21,15 +20,15 @@ import {
 } from "lucide-react";
 import type { CropSystem } from "@sicilia-soil/core";
 
+const locale = getLocale("es");
+const cropsContent = locale.content.cropsPage;
+
 export default function CropsPage() {
   const { systems } = useCropSystemsContext();
-  const locale = getLocale("es");
-  const t = locale.content.cropsPage;
 
   const [viewMode, setViewMode] = useState<"directory" | "detail">("directory");
   const [activeTab, setActiveTab] = useState<string>("observations");
 
-  // 👇 Estados para el modal (Crear / Editar)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [systemToEdit, setSystemToEdit] = useState<CropSystem | undefined>(
     undefined,
@@ -46,12 +45,12 @@ export default function CropsPage() {
   };
 
   const handleCreate = () => {
-    setSystemToEdit(undefined); // Nos aseguramos de que es modo creación
+    setSystemToEdit(undefined);
     setIsModalOpen(true);
   };
 
   const handleEdit = (e: React.MouseEvent, system: CropSystem) => {
-    e.stopPropagation(); // 👈 Evita que al pulsar el lápiz se abra el detalle
+    e.stopPropagation();
     setSystemToEdit(system);
     setIsModalOpen(true);
   };
@@ -69,10 +68,10 @@ export default function CropsPage() {
               </div>
               <div>
                 <h1 className="text-3xl font-serif font-bold text-ink">
-                  {t.title}
+                  {cropsContent.title}
                 </h1>
                 <p className="font-mono text-xs uppercase tracking-widest text-chloro font-bold mt-1">
-                  Directorio de Zonas
+                  {cropsContent.directoryTitle}
                 </p>
               </div>
             </div>
@@ -81,18 +80,19 @@ export default function CropsPage() {
               className="flex items-center gap-2"
               onClick={handleCreate}
             >
-              <Plus className="w-4 h-4" /> Añadir Zona
+              <Plus className="w-4 h-4" /> {cropsContent.addSystem}
             </Button>
           </div>
           <p className="font-sans text-base text-ink/70 max-w-2xl">
-            {t.description}
+            {cropsContent.description}
           </p>
         </div>
 
-        {/* Grid de Tarjetas */}
         {systems.length === 0 ? (
           <DataCard className="p-12 text-center border-dashed border-ink/20">
-            <p className="font-mono text-sm text-ink/50">{t.emptySystems}</p>
+            <p className="font-mono text-sm text-ink/50">
+              {cropsContent.emptySystems}
+            </p>
           </DataCard>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -102,12 +102,10 @@ export default function CropsPage() {
                 className="p-6 flex flex-col hover:border-chloro/50 hover:shadow-md transition-all cursor-pointer group relative"
                 onClick={() => handleOpenSystem(system.id)}
               >
-                {/* Flecha indicadora */}
                 <div className="absolute top-4 right-12 text-ink/30 group-hover:text-chloro group-hover:translate-x-1 transition-all">
                   <ChevronRight className="w-5 h-5" />
                 </div>
 
-                {/* 👇 Botón de Editar (Lápiz) */}
                 <button
                   onClick={(e) => handleEdit(e, system)}
                   className="absolute top-4 right-4 p-1 text-ink/30 hover:text-solar transition-colors"
@@ -131,7 +129,7 @@ export default function CropsPage() {
                 <div className="grid grid-cols-2 gap-2 mt-auto pt-4 border-t border-ink/10">
                   <div className="flex flex-col">
                     <span className="font-mono text-[10px] uppercase text-ink/50 flex items-center gap-1">
-                      <Activity className="w-3 h-3" /> SHI
+                      <Activity className="w-3 h-3" /> {cropsContent.shiLabel}
                     </span>
                     <span className="font-mono text-lg font-bold text-ink">
                       {system.metrics.shi ?? "—"}
@@ -139,7 +137,8 @@ export default function CropsPage() {
                   </div>
                   <div className="flex flex-col">
                     <span className="font-mono text-[10px] uppercase text-ink/50 flex items-center gap-1">
-                      <Droplets className="w-3 h-3" /> Humedad
+                      <Droplets className="w-3 h-3" />{" "}
+                      {cropsContent.moistureLabel}
                     </span>
                     <span className="font-mono text-lg font-bold text-ink">
                       {system.metrics.moisture
@@ -151,10 +150,10 @@ export default function CropsPage() {
 
                 <div className="mt-4 pt-3 border-t border-ink/10 flex items-center justify-between">
                   <span className="font-mono text-[10px] uppercase tracking-wider text-ink/40">
-                    Ver analíticas
+                    {cropsContent.viewAnalytics}
                   </span>
                   <span className="font-mono text-[10px] font-bold text-chloro uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity">
-                    Entrar
+                    {cropsContent.enterButton}
                   </span>
                 </div>
               </DataCard>
@@ -162,7 +161,6 @@ export default function CropsPage() {
           </div>
         )}
 
-        {/* Modal (Crear / Editar) */}
         {isModalOpen && (
           <SystemFormModal
             systemToEdit={systemToEdit}
@@ -173,11 +171,10 @@ export default function CropsPage() {
     );
   }
 
-  // --- VISTA 2: DETALLE DE LA ZONA  ---
   const tabs = [
     ...systems.map((s) => ({ id: s.id, label: s.name, icon: s.icon })),
-    { id: "observations", label: t.tabs.observations, icon: "🔬" },
-    { id: "analytics", label: t.tabs.analytics, icon: "📈" },
+    { id: "observations", label: cropsContent.tabs.observations, icon: "🔬" },
+    { id: "analytics", label: cropsContent.tabs.analytics, icon: "📈" },
   ];
 
   const activeSystem = systems.find((s) => s.id === activeTab);
@@ -191,7 +188,7 @@ export default function CropsPage() {
             onClick={handleBackToDirectory}
             className="!rounded-none hover:scale-100 text-ink/60 hover:text-ink flex items-center gap-2 px-0"
           >
-            <ArrowLeft className="w-4 h-4" /> Volver al directorio
+            <ArrowLeft className="w-4 h-4" /> {cropsContent.backToDirectory}
           </Button>
         </div>
         <div className="flex items-center gap-4 flex-wrap mt-2">
@@ -200,15 +197,15 @@ export default function CropsPage() {
           </div>
           <div>
             <h1 className="text-3xl font-serif font-bold text-ink">
-              {t.title}
+              {cropsContent.title}
             </h1>
             <p className="font-mono text-xs uppercase tracking-widest text-chloro font-bold mt-1">
-              {t.badge}
+              {cropsContent.badge}
             </p>
           </div>
         </div>
         <p className="font-sans text-base text-ink/70 max-w-2xl">
-          {t.description}
+          {cropsContent.description}
         </p>
       </div>
 

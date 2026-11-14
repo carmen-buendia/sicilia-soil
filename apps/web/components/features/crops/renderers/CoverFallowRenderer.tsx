@@ -8,29 +8,29 @@ import { DataCard, Button } from "@sicilia-soil/ui";
 import { getLocale } from "@sicilia-soil/core";
 import type { CropSystem } from "@sicilia-soil/core";
 
+const locale = getLocale("es");
+const coverFallowContent = locale.content.cropsPage.coverFallow;
+const sharedContent = locale.content.cropsPage.shared;
+
+const COVER_STATUS_CONFIG: Record<string, { key: string; style: string }> = {
+  "High density": {
+    key: "highDensity",
+    style: "bg-chloro/10 border-chloro/20 text-chloro",
+  },
+  Emergence: {
+    key: "emergence",
+    style: "bg-chloro/10 border-chloro/20 text-chloro",
+  },
+  Senescence: {
+    key: "senescence",
+    style: "bg-solar/10 border-solar/20 text-solar",
+  },
+};
+
+const FALLBACK_STATUS_STYLE = "bg-solar/10 border-solar/20 text-solar";
+
 export function CoverFallowRenderer({ system }: { system: CropSystem }) {
-  const locale = getLocale("es");
-  const t = locale.content.cropsPage.coverFallow;
-  const shared = locale.content.cropsPage.shared;
-
   const [isEditingRotation, setIsEditingRotation] = useState(false);
-
-  const COVER_STATUS_CONFIG: Record<string, { key: string; style: string }> = {
-    "High density": {
-      key: "highDensity",
-      style: "bg-chloro/10 border-chloro/20 text-chloro",
-    },
-    Emergence: {
-      key: "emergence",
-      style: "bg-chloro/10 border-chloro/20 text-chloro",
-    },
-    Senescence: {
-      key: "senescence",
-      style: "bg-solar/10 border-solar/20 text-solar",
-    },
-  };
-
-  const FALLBACK_STATUS_STYLE = "bg-solar/10 border-solar/20 text-solar";
 
   const subCrops = system.subCrops ?? [];
   const fallowSeries = system.series?.find((s) => s.key === "rotation");
@@ -42,7 +42,7 @@ export function CoverFallowRenderer({ system }: { system: CropSystem }) {
         <div className="flex items-center justify-between border-b border-ink/20 pb-2 mb-4">
           <h3 className="text-xl font-serif font-bold text-ink flex items-center gap-2">
             <Leaf className="w-5 h-5 text-chloro" />
-            {t.coverTitle}
+            {coverFallowContent.coverTitle}
           </h3>
           <Button
             variant="bare"
@@ -50,42 +50,44 @@ export function CoverFallowRenderer({ system }: { system: CropSystem }) {
             className="!rounded-none hover:scale-100 text-xs font-mono uppercase tracking-widest font-bold text-chloro hover:text-ink flex items-center gap-1"
             icon={<Plus className="w-4 h-4" />}
           >
-            {t.addCover}
+            {coverFallowContent.addCover}
           </Button>
         </div>
 
         {subCrops.length === 0 ? (
           <DataCard className="p-8 text-center border-dashed border-ink/20 mb-6">
-            <p className="font-mono text-sm text-ink/50">{t.noData}</p>
+            <p className="font-mono text-sm text-ink/50">
+              {coverFallowContent.noData}
+            </p>
           </DataCard>
         ) : (
           <>
             {/* Chart: Cover vs Biomass vs Nitrogen */}
             <DataCard className="p-6 mb-6">
               <h4 className="font-serif font-bold text-ink mb-4">
-                {t.comparatorTitle}
+                {coverFallowContent.comparatorTitle}
               </h4>
               <SoilChart
                 type="column"
                 categories={subCrops.map((c) => c.name)}
                 series={[
                   {
-                    name: t.series.cover,
+                    name: coverFallowContent.series.cover,
                     data: subCrops.map((c) => c.water ?? 0),
                     color: SOIL_COLORS.chloro,
                   },
                   {
-                    name: t.series.biomass,
+                    name: coverFallowContent.series.biomass,
                     data: subCrops.map((c) => c.residue ?? 0),
                     color: SOIL_COLORS.solar,
                   },
                   {
-                    name: t.series.nitrogen,
+                    name: coverFallowContent.series.nitrogen,
                     data: subCrops.map((c) => c.extraction ?? 0),
                     color: SOIL_COLORS.ink,
                   },
                 ]}
-                yAxisLabel={shared.yAxisValue}
+                yAxisLabel={sharedContent.yAxisValue}
                 height={320}
                 legend
               />
@@ -93,10 +95,9 @@ export function CoverFallowRenderer({ system }: { system: CropSystem }) {
 
             {/* Table: Cover species details */}
             <DataCard className="p-0 overflow-x-auto">
-              {/* Forzamos un ancho mínimo mayor y repartimos mejor las columnas */}
               <div className="min-w-[850px] w-full">
                 <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1.5fr_1.5fr] gap-2 p-3 bg-paper/50 border-b border-ink/10 font-mono text-[10px] uppercase tracking-wider text-ink/60 font-bold">
-                  {t.tableHeaders.map((h, i) => (
+                  {coverFallowContent.tableHeaders.map((h, i) => (
                     <span key={i} className="whitespace-nowrap">
                       {h}
                     </span>
@@ -105,7 +106,7 @@ export function CoverFallowRenderer({ system }: { system: CropSystem }) {
                 {subCrops.map((crop) => {
                   const statusCfg = COVER_STATUS_CONFIG[crop.stage ?? ""];
                   const statusLabel = statusCfg
-                    ? t.statusLabels[
+                    ? coverFallowContent.statusLabels[
                         statusCfg.key as
                           | "highDensity"
                           | "emergence"
@@ -119,7 +120,6 @@ export function CoverFallowRenderer({ system }: { system: CropSystem }) {
                       key={crop.id}
                       className="grid grid-cols-[2fr_1fr_1fr_1fr_1.5fr_1.5fr] gap-2 p-3 border-t border-ink/10 text-sm items-center hover:bg-paper/30 transition-colors"
                     >
-                      {/* Añadimos whitespace-nowrap a todos los textos para que no se rompan */}
                       <span className="flex items-center gap-2 font-serif font-bold text-ink whitespace-nowrap">
                         <span className="text-lg">{crop.icon}</span> {crop.name}
                       </span>
@@ -154,7 +154,7 @@ export function CoverFallowRenderer({ system }: { system: CropSystem }) {
         <div className="flex items-center justify-between border-b border-ink/20 pb-2 mb-4">
           <h3 className="text-xl font-serif font-bold text-ink flex items-center gap-2">
             <RotateCcw className="w-5 h-5 text-ink/60" />
-            {t.fallowTitle}
+            {coverFallowContent.fallowTitle}
           </h3>
           <Button
             variant="bare"
@@ -163,18 +163,22 @@ export function CoverFallowRenderer({ system }: { system: CropSystem }) {
             className="!rounded-none hover:scale-100 text-xs font-mono uppercase tracking-widest font-bold text-solar hover:text-ink flex items-center gap-1"
             icon={<Edit2 className="w-4 h-4" />}
           >
-            {isEditingRotation ? t.cancelEdit : t.editRotation}
+            {isEditingRotation
+              ? coverFallowContent.cancelEdit
+              : coverFallowContent.editRotation}
           </Button>
         </div>
 
         {isEditingRotation && (
           <DataCard className="p-6 mb-6 border-solar/30 bg-solar/5">
             <h4 className="font-serif font-bold text-ink mb-4 text-sm">
-              {t.editRotationTitle}
+              {coverFallowContent.editRotationTitle}
             </h4>
-            <p className="text-sm text-ink/70 mb-4">{t.editRotationDesc}</p>
+            <p className="text-sm text-ink/70 mb-4">
+              {coverFallowContent.editRotationDesc}
+            </p>
             <Button variant="cta" className="text-xs">
-              {t.saveRotation}
+              {coverFallowContent.saveRotation}
             </Button>
           </DataCard>
         )}
@@ -182,19 +186,19 @@ export function CoverFallowRenderer({ system }: { system: CropSystem }) {
         {fallowSeries && (
           <DataCard className="p-6">
             <h4 className="font-serif font-bold text-ink mb-4">
-              {t.rotationTitle}
+              {coverFallowContent.rotationTitle}
             </h4>
             <SoilChart
               type="bar"
               categories={fallowSeries.categories ?? []}
               series={[
                 {
-                  name: t.rotationLabel,
+                  name: coverFallowContent.rotationLabel,
                   data: fallowSeries.data,
                   color: SOIL_COLORS.chloro,
                 },
               ]}
-              yAxisLabel={shared.yAxisProgress}
+              yAxisLabel={sharedContent.yAxisProgress}
               yAxisUnit="%"
               height={280}
               legend={false}
