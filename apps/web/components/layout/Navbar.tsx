@@ -1,3 +1,4 @@
+// apps/web/components/layout/Navbar.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -20,14 +21,16 @@ import { NotificationBell } from "@/components/features/notifications";
 import { getLocale } from "@sicilia-soil/core";
 import { logout } from "@/app/(auth)/login/actions";
 
-const t = getLocale("es");
+const locale = getLocale("es");
+const appContent = locale.ui.app;
+const navContent = locale.ui.nav;
 
-const navItems = [
-  { id: "/dashboard", label: t.ui.nav.dashboard, icon: Home },
-  { id: "/soil-health", label: t.ui.nav.soilHealth, icon: Layers },
-  { id: "/water", label: t.ui.nav.water, icon: Droplets },
-  { id: "/crops", label: t.ui.nav.groundCover, icon: Sprout },
-  { id: "/engine", label: t.ui.nav.engine || "Motor", icon: Brain },
+const NAV_ITEMS = [
+  { id: "/dashboard", label: navContent.dashboard, icon: Home },
+  { id: "/soil-health", label: navContent.soilHealth, icon: Layers },
+  { id: "/water", label: navContent.water, icon: Droplets },
+  { id: "/crops", label: navContent.groundCover, icon: Sprout },
+  { id: "/engine", label: navContent.engine || "Motor", icon: Brain },
 ];
 
 export function Navbar({
@@ -51,20 +54,18 @@ export function Navbar({
     <nav className="fixed top-0 left-0 right-0 z-50 bg-paper border-b-2 border-ink">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16 sm:h-20">
-          {/* BrandLogo + subtitle debajo */}
           <Link
             href="/dashboard"
             className="flex flex-col items-start gap-1 group"
           >
             <BrandLogo />
             <span className="font-mono text-[9px] uppercase tracking-widest text-ink/50 hidden sm:block">
-              {t.ui.app.subtitle}
+              {appContent.subtitle}
             </span>
           </Link>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-1">
-            {navItems.map((item) => {
+            {NAV_ITEMS.map((item) => {
               const Icon = item.icon;
               const active = isActive(item.id);
               return (
@@ -84,7 +85,6 @@ export function Navbar({
             })}
           </div>
 
-          {/* User Menu + Iconos */}
           <div className="flex items-center gap-3 sm:gap-4">
             <NotificationBell />
 
@@ -95,13 +95,12 @@ export function Navbar({
                   ? "text-solar"
                   : "text-ink/60 hover:text-ink"
               }`}
-              aria-label={t.ui.nav.configuration}
-              title={t.ui.nav.configuration}
+              aria-label={navContent.configuration}
+              title={navContent.configuration}
             >
               <Settings className="w-5 h-5" />
             </Link>
 
-            {/* Perfil de Usuario (Desktop) */}
             <div className="hidden sm:flex items-center gap-3 border-l-2 border-ink/10 pl-4">
               <div className="flex flex-col items-end">
                 <p className="font-mono text-xs font-bold text-ink uppercase tracking-wider leading-tight">
@@ -117,14 +116,13 @@ export function Navbar({
                   variant="bare"
                   size="none"
                   className="!rounded-none hover:scale-100 p-2 text-ink/50 hover:text-solar transition-colors"
-                  title={t.ui.nav.logout}
+                  title={navContent.logout}
                 >
                   <LogOut className="w-5 h-5" />
                 </Button>
               </form>
             </div>
 
-            {/* Botón Menú Móvil */}
             <Button
               variant="bare"
               size="none"
@@ -140,10 +138,8 @@ export function Navbar({
           </div>
         </div>
 
-        {/* Mobile Menu */}
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t-2 border-ink/10 bg-paper">
-            {/* Perfil Móvil */}
             <div className="flex items-center justify-between border-2 border-ink/10 p-3 mb-4 bg-paper-dark/30">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 bg-ink text-paper rounded-full flex items-center justify-center">
@@ -171,7 +167,7 @@ export function Navbar({
             </div>
 
             <div className="space-y-1">
-              {navItems.map((item) => {
+              {NAV_ITEMS.map((item) => {
                 const Icon = item.icon;
                 const active = isActive(item.id);
                 return (

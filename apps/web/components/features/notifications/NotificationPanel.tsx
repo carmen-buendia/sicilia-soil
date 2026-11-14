@@ -1,3 +1,4 @@
+// apps/web/components/features/notifications/NotificationPanel.tsx
 "use client";
 
 import { Bell, CheckCheck, Trash2 } from "lucide-react";
@@ -6,6 +7,9 @@ import { getLocale } from "@sicilia-soil/core";
 import { NotificationItem } from "./NotificationItem";
 import Link from "next/link";
 import { Button } from "@sicilia-soil/ui";
+
+const locale = getLocale("es");
+const notificationsContent = locale.ui.notifications;
 
 interface NotificationPanelProps {
   notifications: Notification[];
@@ -24,9 +28,6 @@ export function NotificationPanel({
   onClearAll,
   onClose,
 }: NotificationPanelProps) {
-  const locale = getLocale("es");
-  const t = locale.ui.notifications;
-
   return (
     <div
       className="absolute right-0 mt-2 w-80 sm:w-96 bg-card border border-ink/20 shadow-xl overflow-hidden z-50 !rounded-none"
@@ -37,7 +38,7 @@ export function NotificationPanel({
         <div className="flex items-center gap-2">
           <Bell className="w-4 h-4 text-chloro" />
           <span className="font-serif font-bold text-ink text-sm">
-            {t.title}
+            {notificationsContent.title}
           </span>
           {unreadCount > 0 && (
             <span className="font-mono text-[10px] bg-solar text-ink px-2 py-0.5 font-bold">
@@ -52,7 +53,7 @@ export function NotificationPanel({
               variant="bare"
               onClick={onMarkAllAsRead}
               className="p-1.5 text-ink/50 hover:text-chloro transition-colors"
-              title={t.markAllAsRead}
+              title={notificationsContent.markAllAsRead}
             >
               <CheckCheck className="w-4 h-4" />
             </Button>
@@ -63,7 +64,7 @@ export function NotificationPanel({
               variant="bare"
               onClick={onClearAll}
               className="p-1.5 text-ink/50 hover:text-red-500 transition-colors"
-              title={t.clearAll}
+              title={notificationsContent.clearAll}
             >
               <Trash2 className="w-4 h-4" />
             </Button>
@@ -77,7 +78,7 @@ export function NotificationPanel({
           <div className="text-center py-10">
             <Bell className="w-10 h-10 text-ink/10 mx-auto mb-3" />
             <p className="font-mono text-xs uppercase tracking-widest text-ink/40">
-              {t.empty}
+              {notificationsContent.empty}
             </p>
           </div>
         ) : (
@@ -99,7 +100,7 @@ export function NotificationPanel({
             onClick={onClose}
             className="font-mono text-[10px] uppercase tracking-widest font-bold text-solar hover:text-ink transition-colors"
           >
-            {t.viewAll} →
+            {notificationsContent.viewAll} →
           </Link>
         </div>
       )}

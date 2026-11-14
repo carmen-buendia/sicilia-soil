@@ -6,7 +6,10 @@ import type { RecommendationItem } from "@sicilia-soil/core";
 import { getLocale } from "@sicilia-soil/core";
 import { Button, DataCard } from "@sicilia-soil/ui";
 import { PRIORITY_STYLES } from "@/config/recommendation.styles";
-import { RECOMMENDATION_ICONS } from "@/config/icon-map"; 
+import { RECOMMENDATION_ICONS } from "@/config/icon-map";
+
+const locale = getLocale("es");
+const recommendationsContent = locale.ui.recommendations;
 
 interface RecommendationCardProps {
   recommendation: RecommendationItem;
@@ -19,10 +22,6 @@ export function RecommendationCard({
   onAction,
   highlightId,
 }: RecommendationCardProps) {
-  const locale = getLocale("es");
-  const t = locale.ui.recommendations;
-
-  // Usamos el mapa importado
   const Icon = RECOMMENDATION_ICONS[recommendation.category] || Activity;
   const isHighlighted = recommendation.id === highlightId;
   const style = PRIORITY_STYLES[recommendation.priority];
@@ -46,10 +45,16 @@ export function RecommendationCard({
             <div>
               <div className="flex items-center gap-2 flex-wrap mb-1 font-mono text-[10px] uppercase tracking-wider font-bold">
                 <span className="px-2 py-0.5 border border-ink/20 text-ink/60">
-                  {t[recommendation.topic as keyof typeof t] || t.general}
+                  {recommendationsContent[
+                    recommendation.topic as keyof typeof recommendationsContent
+                  ] || recommendationsContent.general}
                 </span>
                 <span className={style.text}>
-                  {t[recommendation.priority as keyof typeof t]}
+                  {
+                    recommendationsContent[
+                      recommendation.priority as keyof typeof recommendationsContent
+                    ]
+                  }
                 </span>
                 {recommendation.zoneName && (
                   <span className="text-ink/40">
@@ -75,7 +80,7 @@ export function RecommendationCard({
         {/* Action */}
         <div className="bg-paper/50 border border-ink/10 p-3 mb-4">
           <p className="font-mono text-[10px] text-ink/50 uppercase tracking-wider mb-1 font-bold">
-            {t.action}
+            {recommendationsContent.action}
           </p>
           <p className="font-sans text-sm font-bold text-ink flex items-start gap-2">
             <Zap className="w-4 h-4 text-solar flex-shrink-0 mt-0.5" />
@@ -87,7 +92,7 @@ export function RecommendationCard({
         <div className="flex items-center justify-between font-mono text-[10px] text-ink/50 mt-auto pt-3 border-t border-ink/10">
           <span className="flex items-center gap-1 uppercase tracking-wider">
             <Activity className="w-3 h-3" />
-            {t.source}: {recommendation.dataSource}
+            {recommendationsContent.source}: {recommendation.dataSource}
           </span>
           {onAction && (
             <Button
@@ -95,7 +100,7 @@ export function RecommendationCard({
               onClick={() => onAction(recommendation.id)}
               className="text-solar hover:text-ink font-bold uppercase tracking-wider transition-colors"
             >
-              {t.markDone} →
+              {recommendationsContent.markDone} →
             </Button>
           )}
         </div>
