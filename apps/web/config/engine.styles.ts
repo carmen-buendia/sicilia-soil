@@ -1,18 +1,10 @@
 // apps/web/config/engine.styles.ts
 
-// ============================================================================
 // SikeliaSoil — Engine UI styles
-// ----------------------------------------------------------------------------
-// Tailwind palettes + icon metadata for the Engine layer.
-// Web-specific: lives in apps/web, not in packages.
-// ============================================================================
 
 import { EngineState } from "@isola-node/rule-engine";
 import { Satellite, Wifi, Cloud, History, Info } from "lucide-react";
 
-// ---------------------------------------------------------------------------
-// State palettes (green / yellow / red / unknown)
-// ---------------------------------------------------------------------------
 
 export interface StateStyle {
   bg: string;
@@ -58,9 +50,7 @@ export const ENGINE_STATE_THEME: Record<EngineState, StateStyle> = {
   },
 };
 
-// ---------------------------------------------------------------------------
 // Evidence source icons
-// ---------------------------------------------------------------------------
 
 export interface SourceMeta {
   label: string;
@@ -82,9 +72,7 @@ export const DEFAULT_SOURCE_META: SourceMeta = {
   Icon: Info,
 };
 
-// ---------------------------------------------------------------------------
 // Helpers
-// ---------------------------------------------------------------------------
 
 export const VOTE_DOT_COLOR: Record<EngineState, string> = {
   green: "bg-emerald-500",
