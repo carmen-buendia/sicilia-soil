@@ -24,7 +24,7 @@ export function useDashboardData() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Simular carga de datos (después conectarás con API real)
+    // Simular carga de datos (después se conecta con la API real)
     setTimeout(() => {
       setData({
         stats: {

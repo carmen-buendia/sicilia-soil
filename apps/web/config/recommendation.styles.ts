@@ -1,14 +1,10 @@
 // apps/web/config/recommendation.styles.ts
 
-// ============================================================================
-// SikeliaSoil — Recommendation UI styles
-// ----------------------------------------------------------------------------
 // Shared palettes for recommendation priorities (urgent/high/medium/low/info).
 // Used by:
 //   • /app/page.tsx (Alertas)
 //   • /features/recommendations/RecommendationCard
 //   • /features/recommendations/RecommendationsList (filters)
-// ============================================================================
 
 import type { ComponentProps } from "react";
 import type { RecommendationPriority } from "@sicilia-soil/core";
