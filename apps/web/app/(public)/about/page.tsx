@@ -10,6 +10,10 @@ import {
   Users,
   BookOpen,
   MapPin,
+  SlidersHorizontal,
+  Workflow,
+  BellRing,
+  ShieldCheck,
 } from "lucide-react";
 import { BrandLogo, Button, DataCard } from "@sicilia-soil/ui";
 
@@ -49,6 +53,7 @@ export default function AboutPage() {
       </header>
 
       <main className="max-w-4xl mx-auto px-6 py-16 relative z-10">
+        {/* Hero */}
         <div className="mb-16">
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-ink mb-4">
             {about.title}
@@ -57,6 +62,8 @@ export default function AboutPage() {
             {about.subtitle}
           </p>
         </div>
+
+        {/* El contexto */}
         <section className="mb-16">
           <h2 className="text-2xl font-serif font-bold text-ink mb-4">
             {about.problemTitle}
@@ -68,6 +75,8 @@ export default function AboutPage() {
             {about.problemText2}
           </p>
         </section>
+
+        {/* Misión */}
         <DataCard className="bg-paper-dark/30 border-ink/5 p-8 mb-16">
           <h2 className="text-2xl font-serif font-bold text-ink mb-4">
             {about.missionTitle}
@@ -78,6 +87,82 @@ export default function AboutPage() {
           <p className="text-ink/80 leading-relaxed">{about.missionText2}</p>
         </DataCard>
 
+        {/* ───────────────────────────────────────────── */}
+        {/* MOTOR DE REGLAS                                */}
+        {/* ───────────────────────────────────────────── */}
+        <section className="mb-16">
+          <div className="mb-8">
+            <h2 className="text-2xl font-serif font-bold text-ink mb-2">
+              {about.engineTitle}
+            </h2>
+            <p className="font-mono text-xs uppercase tracking-widest text-solar font-bold">
+              {about.engineSubtitle}
+            </p>
+          </div>
+
+          <p className="text-lg text-ink/80 leading-relaxed mb-8 max-w-3xl">
+            {about.engineIntro}
+          </p>
+
+          {/* 3 pasos */}
+          <div className="grid md:grid-cols-3 gap-4 mb-8">
+            <DataCard className="bg-paper border-ink/10 p-6 relative">
+              <span className="absolute top-4 right-4 font-mono text-xs text-ink/25 font-bold">
+                01
+              </span>
+              <SlidersHorizontal className="w-8 h-8 text-solar mb-4" />
+              <h3 className="font-bold text-ink mb-2">
+                {about.engineStep1Title}
+              </h3>
+              <p className="text-sm text-ink/70 leading-relaxed">
+                {about.engineStep1Desc}
+              </p>
+            </DataCard>
+
+            <DataCard className="bg-paper border-ink/10 p-6 relative">
+              <span className="absolute top-4 right-4 font-mono text-xs text-ink/25 font-bold">
+                02
+              </span>
+              <Workflow className="w-8 h-8 text-chloro mb-4" />
+              <h3 className="font-bold text-ink mb-2">
+                {about.engineStep2Title}
+              </h3>
+              <p className="text-sm text-ink/70 leading-relaxed">
+                {about.engineStep2Desc}
+              </p>
+            </DataCard>
+
+            <DataCard className="bg-paper border-ink/10 p-6 relative">
+              <span className="absolute top-4 right-4 font-mono text-xs text-ink/25 font-bold">
+                03
+              </span>
+              <BellRing className="w-8 h-8 text-ink mb-4" />
+              <h3 className="font-bold text-ink mb-2">
+                {about.engineStep3Title}
+              </h3>
+              <p className="text-sm text-ink/70 leading-relaxed">
+                {about.engineStep3Desc}
+              </p>
+            </DataCard>
+          </div>
+
+          {/* Callout: reglas vs IA */}
+          <div className="border-l-2 border-solar pl-6 py-2 bg-solar/5">
+            <div className="flex items-start gap-3">
+              <ShieldCheck className="w-5 h-5 text-solar flex-shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-bold text-ink mb-1">
+                  {about.engineWhyTitle}
+                </h4>
+                <p className="text-sm text-ink/70 leading-relaxed">
+                  {about.engineWhyDesc}
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Qué hacemos */}
         <section className="mb-16">
           <h2 className="text-2xl font-serif font-bold text-ink mb-6">
             {about.whatWeDoTitle}
@@ -109,6 +194,7 @@ export default function AboutPage() {
           </div>
         </section>
 
+        {/* Validación en campo */}
         <section className="mb-16">
           <h2 className="text-2xl font-serif font-bold text-ink mb-6">
             {about.validateTitle}
@@ -131,6 +217,7 @@ export default function AboutPage() {
           </DataCard>
         </section>
 
+        {/* Equipo */}
         <section className="mb-16">
           <h2 className="text-2xl font-serif font-bold text-ink mb-6 flex items-center gap-3">
             <Users className="w-6 h-6 text-chloro" />
@@ -175,6 +262,7 @@ export default function AboutPage() {
           </div>
         </section>
 
+        {/* CTA open source */}
         <DataCard className="bg-paper-dark/30 border-ink/5 p-8 mb-12">
           <h2 className="text-2xl font-serif font-bold text-ink mb-3">
             {about.openSourceTitle}
