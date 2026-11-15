@@ -5,6 +5,7 @@ export const content = {
   landing: {
     energyTag: "Energía",
     waterTag: "Agua",
+    soilTag: "Recuperación del suelo",
     headline: "Mide tu suelo sin depender de la nube.",
 
     intro:
@@ -12,7 +13,17 @@ export const content = {
 
     featuresTitle: "Qué hacemos",
     featuresSubtitle: "Herramientas para el día a día en el campo.",
-
+    valuesTitle: "Por qué confiar en esto",
+    valueSovereigntyTitle: "Soberanía y privacidad",
+    valueSovereigntyDesc:
+      "Tus datos son solo tuyos. No pasan por servidores de terceros ni los puede leer nadie más.",
+    valueResilienceTitle: "Resiliencia",
+    valueResilienceDesc:
+      "Diseñado para el campo. Si se cae la red o no hay cobertura, el sistema sigue funcionando.",
+    valueTransparencyTitle: "Transparencia",
+    valueTransparencyDesc:
+      "Sin cajas negras. El código es abierto y puedes ver exactamente cómo funciona el motor.",
+    graphLabel: "Red de sensores y micorrizas",
     pillar1Desc:
       "Sensores en el campo que miden humedad, temperatura y CO₂ sin necesitar internet.",
     pillar2Desc:
@@ -22,9 +33,9 @@ export const content = {
 
     philosophyTitle: "Nuestro enfoque",
     philosophyQuote:
-      "La tierra tiene sus propias reglas. Nosotros solo medimos lo que pasa para entenderla mejor.",
+      "La tierra tiene sus propias reglas. Y nuestro objetivo es medir lo que está pasando y entenderlo mejor.",
     philosophyDesc:
-      "No pretendemos salvar el mundo. Solo queremos dejar nuestra finca mejor de como la encontramos y tener los datos necesarios para demostrarlo.",
+      "Nuestro objetivo es dejar la tierra mejor que como la encontramos, y tener los datos necesarios para demostrarlo.",
     philosophyAuthor: "Carmen y Domenico",
 
     footerNote: "© 2026 SikeliaSoil. Construido con código abierto.",
@@ -37,27 +48,48 @@ export const content = {
 
     problemTitle: "El contexto",
     problemText1:
-      "La tecnología agrícola actual está pensada para grandes extensiones o depende de plataformas en la nube (SaaS). Ninguna de esas opciones encajaba en nuestra finca.",
+      "La tecnología agrícola actual está más pensada para grandes extensiones o depende de plataformas en la nube (SaaS). Ese modelo nos dejaba fuera a los que producimos a pequeña escala o valoramos la recuperación del suelo por encima de los ingresos generados.",
     problemText2:
-      "Necesitábamos herramientas abiertas que funcionaran sin cobertura y que midieran la salud del suelo, no solo la humedad.",
-
+      "No encontrabamos herramientas abiertas que funcionen sin cobertura y que midan la salud del suelo, no solo la humedad. Eso es exactamente lo que sentíamos que nos faltaba.",
     missionTitle: "Nuestra misión",
     missionText1:
-      "Desarrollamos herramientas para que agricultores e investigadores vean qué pasa bajo sus pies. Combinamos hardware local y satélites para tomar decisiones basadas en datos reales.",
+      "Construir herramientas abiertas que combinan hardware local y satélites para que agricultores e investigadores vean qué pasa bajo sus pies, sin depender de cobertura ni de la nube.",
     missionText2:
-      "Queremos demostrar que la tecnología libre puede ser útil en el campo real, no solo en un laboratorio.",
+      "El motor de reglas es el corazón del sistema: tú defines los umbrales y él vigila los datos por ti.",
 
+    // MOTOR DE REGLAS
+    engineTitle: "El motor de reglas",
+    engineSubtitle: "Determinista, transparente, bajo tu control",
+    engineIntro:
+      "Tú defines qué es «óptimo» para cada parcela. El motor compara cada lectura con tus umbrales y decide si hay que avisarte.",
+
+    engineStep1Title: "Tú defines los umbrales",
+    engineStep1Desc:
+      "Humedad mínima, temperatura máxima, CO₂… Lo que tú decidas para cada cultivo y cada época.",
+
+    engineStep2Title: "El motor evalúa",
+    engineStep2Desc:
+      "Satélite, sensores y suelo entran al motor. Cada valor se compara con tus reglas en tiempo real.",
+
+    engineStep3Title: "Recibes alertas con contexto",
+    engineStep3Desc:
+      "Qué sensor, qué valor y qué regla se ha superado. Sin mensajes genéricos.",
+
+    engineWhyTitle: "Por qué reglas y no IA",
+    engineWhyDesc:
+      "Una IA te da una predicción que no puedes auditar. Una regla te da una decisión que puedes leer, cambiar y versionar.",
+
+    // QUÉ HACEMOS
     whatWeDoTitle: "Qué hacemos",
-    iotTitle: "Sensores en el campo",
-    iotDesc:
-      "Sensores de bajo consumo que miden humedad, temperatura y CO₂. Funcionan sin cobertura y guardan los datos en el propio dispositivo.",
-    eoTitle: "Datos desde el espacio",
+    eoTitle: "Observación satelital",
     eoDesc:
-      "Procesamos imágenes de Copernicus (Sentinel-1, 2 y 3) para ver la vegetación y el estrés térmico de tus cultivos.",
-    shiTitle: "Salud biológica del suelo",
+      "Leemos el satélite. Cruzamos imágenes de Copernicus (Sentinel-1, 2 y 3) para ver el estrés térmico y la vegetación de tus cultivos.",
+    iotTitle: "Sensores en campo",
+    iotDesc:
+      "Ponemos los pies en la tierra. Sensores de bajo consumo que miden humedad, temperatura y CO₂ sin necesitar internet.",
+    shiTitle: "Salud del suelo",
     shiDesc:
-      "Analizamos la vida del suelo (hongos, micorrizas, materia orgánica) para comprobar su salud y su capacidad de capturar carbono.",
-
+      "Miramos bajo el microscopio. Analizamos la vida real (hongos, micorrizas) para comprobar si tu suelo está capturando carbono.",
     validateTitle: "Dónde lo probamos",
     livingLab: "Sikelia Lab (Living Lab)",
     location: "Assoro — Sicilia",
@@ -87,13 +119,11 @@ export const content = {
 
     introTitle: "Por qué existe SikeliaSoil",
     introText1:
-      "Queríamos mejorar nuestra tierra y saber cuánto carbono capturaba, pero nos faltaban datos reales. Lo que encontramos en el mercado no nos servía, estaba pensado para otras formas de cultivar.",
-
+      "Queríamos mejorar nuestra tierra y saber cuánto carbono capturaba, pero nos faltaban datos reales de nuestra propia finca.",
     introText2:
-      "Así que me puse a programar. Empezó siendo una herramienta para nuestra finca, pero la dejé abierta para que otros agricultores pudieran usarla.",
+      "Así que me puse a programar, empezó siendo una herramienta para nuestra finca, pero la dejé abierta para que otros agricultores pudieran usarla.",
 
-    quoteText:
-      "Tus datos son solo tuyos. No viajan a la nube de ninguna gran empresa.",
+    quoteText: "Tus datos son solo tuyos. No viajan a la nube de nadie.",
 
     quoteAuthor: "Carmen María Buendía Sánchez, creadora",
 
@@ -101,7 +131,7 @@ export const content = {
 
     belief1Title: "Tus datos son tuyos",
     belief1Desc:
-      "No hay nubes ni servidores de por medio. Lo que mides en el campo se queda guardado en tu móvil o en tu ordenador, bajo tu control.",
+      "No creemos en los datos en la nube ni en grandes corporaciones. Lo que mides en el campo se queda guardado en tu móvil o en tu ordenador, bajo tu control.",
 
     belief2Title: "Tú pones las reglas",
     belief2Desc:
@@ -124,7 +154,7 @@ export const content = {
 
     futureTitle: "El futuro: Sikelia Lab",
     futureDesc:
-      "Queremos que la finca sea un Living Lab oficial. Un espacio donde probar la herramienta con datos reales, comprobar que la regeneración funciona y compartir ese conocimiento con otros.",
+      "Queremos que la finca sea un Living Lab. Un espacio donde probar la herramienta con datos reales, comprobar que la regeneración funciona y compartir ese conocimiento con otros.",
 
     infraTitle: "Cómo funciona por dentro",
 
