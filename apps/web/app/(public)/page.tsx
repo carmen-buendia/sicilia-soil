@@ -9,6 +9,10 @@ import {
   LogIn,
   LayoutDashboard,
   Wind,
+  Sprout,
+  ShieldCheck,
+  WifiOff,
+  Code,
 } from "lucide-react";
 import { getLocale } from "@sicilia-soil/core";
 import { verifySession, COOKIE_NAME } from "@/lib/auth/session";
@@ -106,14 +110,13 @@ export default async function LandingPage() {
           </div>
         </div>
 
-        {/* SOLO EL SVG FLOTANTE (Sin tarjeta, sin textos) */}
-        <div className="relative flex items-center justify-center">
-          {/* Halo de luz detrás del SVG */}
+        {/* GRÁFICO ABSTRACT + ETIQUETA */}
+        <div className="relative w-full max-w-lg mx-auto">
           <div className="absolute inset-0 bg-solar/10 blur-[100px] rounded-full" />
 
           <svg
             viewBox="0 0 200 200"
-            className="w-full max-w-[450px] h-auto relative z-10"
+            className="w-full max-w-[450px] h-auto relative z-10 mx-auto block"
           >
             {/* Líneas topográficas */}
             <path
@@ -234,6 +237,13 @@ export default async function LandingPage() {
               strokeWidth="3"
             />
           </svg>
+
+          {/* Etiqueta debajo del gráfico */}
+          <div className="text-center mt-6 relative z-10">
+            <span className="font-mono text-[10px] uppercase tracking-widest text-ink/40 border border-ink/10 bg-paper px-3 py-1">
+              {locale.content.landing.graphLabel}
+            </span>
+          </div>
         </div>
       </main>
 
@@ -283,6 +293,56 @@ export default async function LandingPage() {
         </div>
       </section>
 
+      {/* SECCIÓN DE VALORES (NUEVA) */}
+      <section className="w-full relative z-10 py-16 px-6 bg-paper/30 border-y border-ink/10">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-2xl font-serif font-bold text-ink mb-10 text-center">
+            {locale.content.landing.valuesTitle}
+          </h2>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Soberanía */}
+            <div className="flex flex-col items-center text-center">
+              <div className="w-12 h-12 bg-chloro/10 border border-chloro/20 flex items-center justify-center mb-4">
+                <ShieldCheck className="w-6 h-6 text-chloro" />
+              </div>
+              <h3 className="font-serif font-bold text-ink mb-2">
+                {locale.content.landing.valueSovereigntyTitle}
+              </h3>
+              <p className="font-sans text-sm text-ink/70 leading-relaxed">
+                {locale.content.landing.valueSovereigntyDesc}
+              </p>
+            </div>
+
+            {/* Resiliencia */}
+            <div className="flex flex-col items-center text-center">
+              <div className="w-12 h-12 bg-solar/10 border border-solar/20 flex items-center justify-center mb-4">
+                <WifiOff className="w-6 h-6 text-solar" />
+              </div>
+              <h3 className="font-serif font-bold text-ink mb-2">
+                {locale.content.landing.valueResilienceTitle}
+              </h3>
+              <p className="font-sans text-sm text-ink/70 leading-relaxed">
+                {locale.content.landing.valueResilienceDesc}
+              </p>
+            </div>
+
+            {/* Transparencia */}
+            <div className="flex flex-col items-center text-center">
+              <div className="w-12 h-12 bg-ink/5 border border-ink/20 flex items-center justify-center mb-4">
+                <Code className="w-6 h-6 text-ink" />
+              </div>
+              <h3 className="font-serif font-bold text-ink mb-2">
+                {locale.content.landing.valueTransparencyTitle}
+              </h3>
+              <p className="font-sans text-sm text-ink/70 leading-relaxed">
+                {locale.content.landing.valueTransparencyDesc}
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* SECCIÓN FILOSOFÍA */}
       <section className="w-full relative z-10 py-24 border-t border-ink/20 bg-card">
         <div className="max-w-5xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
@@ -301,6 +361,10 @@ export default async function LandingPage() {
               <span className="border border-ink/20 px-4 py-2 flex items-center gap-2 text-ink/70 bg-paper">
                 <Droplets className="w-4 h-4 text-chloro" />{" "}
                 {locale.content.landing.waterTag}
+              </span>
+              <span className="border border-ink/20 px-4 py-2 flex items-center gap-2 text-ink/70 bg-paper">
+                <Sprout className="w-4 h-4 text-chloro" />{" "}
+                {locale.content.landing.soilTag}
               </span>
             </div>
           </div>
