@@ -1,7 +1,7 @@
 // apps/web/app/(app)/dashboard/page.tsx
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import Link from "next/link";
 import {
   Trees,
@@ -16,7 +16,6 @@ import {
 } from "lucide-react";
 import { StatsCard } from "@/components/features/dashboard/components/StatsCards";
 import { ZoneCard } from "@/components/features/dashboard/components/ZoneCards";
-import { ServerStatus } from "@/components/features/dashboard/components/ServerStatus";
 import { SystemStatusCard } from "@/components/features/engine";
 import { useRecommendations } from "@/hooks/useRecommendations";
 import { useDashboardData } from "@/hooks/useDashboardData";
@@ -34,10 +33,6 @@ const cropsCtaContent = locale.content.home.cropsCta;
 const kpisContent = locale.kpis;
 
 export default function HomePage() {
-  const [serverStatus, setServerStatus] = useState<
-    "checking" | "online" | "offline"
-  >("checking");
-
   const { zones, kpis, carbon } = useDashboardData();
 
   const {
@@ -60,39 +55,10 @@ export default function HomePage() {
     [recommendations],
   );
 
-  useEffect(() => {
-    async function fetchRealData() {
-      try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 8000);
-        const response = await fetch(
-          "https://sicilia-soil-backend.onrender.com/api/zones",
-          { signal: controller.signal },
-        );
-        clearTimeout(timeoutId);
-        if (response.ok) setServerStatus("online");
-        else throw new Error();
-      } catch {
-        setServerStatus("offline");
-      }
-    }
-    fetchRealData();
-  }, []);
-
   return (
     <div className="max-w-7xl mx-auto space-y-8 pb-12">
       {/* 1. HEADER */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 border-b border-ink/20 pb-6">
-        <div>
-          <h1 className="text-3xl font-serif font-bold text-ink mb-1">
-            {appContent.name}
-          </h1>
-          <p className="font-mono text-xs uppercase tracking-widest text-chloro font-bold flex items-center gap-2">
-            <Trees className="w-4 h-4" /> {appContent.subtitle}
-          </p>
-        </div>
-        <ServerStatus status={serverStatus} />
-      </div>
+      <h1 className="sr-only">{appContent.name}</h1>
 
       <div className="bg-card border border-ink/20">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 divide-x divide-y md:divide-y-0 divide-ink/10">

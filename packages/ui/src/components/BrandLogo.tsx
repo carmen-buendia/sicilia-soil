@@ -44,7 +44,7 @@ export function BrandLogo({
 
   const content = (
     <>
-      <div className={`${s.box} bg-ink text-paper`}>
+      <div className={s.box}>
         <SikeliaLogo
           size={s.icon}
           className="text-chloro group-hover:text-solar transition-colors"

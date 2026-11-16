@@ -15,9 +15,12 @@ import {
   Brain,
   Layers,
   LogOut,
+  Trees,
 } from "lucide-react";
 import { BrandLogo, Button } from "@sicilia-soil/ui";
 import { NotificationBell } from "@/components/features/notifications";
+import { ServerStatus } from "@/components/features/dashboard/components/ServerStatus";
+import { useServerStatus } from "@/hooks/useServerStatus";
 import { getLocale } from "@sicilia-soil/core";
 import { logout } from "@/app/(auth)/login/actions";
 
@@ -42,6 +45,7 @@ export function Navbar({
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
+  const serverStatus = useServerStatus();
 
   const isActive = (path: string) => pathname === path;
 
@@ -59,7 +63,8 @@ export function Navbar({
             className="flex flex-col items-start gap-1 group"
           >
             <BrandLogo />
-            <span className="font-mono text-[9px] uppercase tracking-widest text-ink/50 hidden sm:block">
+            <span className="font-mono text-[9px] uppercase tracking-widest text-chloro font-bold whitespace-nowrap hidden lg:flex items-center gap-1.5">
+              <Trees className="w-3 h-3 shrink-0" aria-hidden="true" />
               {appContent.subtitle}
             </span>
           </Link>
@@ -86,6 +91,7 @@ export function Navbar({
           </div>
 
           <div className="flex items-center gap-3 sm:gap-4">
+            <ServerStatus status={serverStatus} />
             <NotificationBell />
 
             <Link
