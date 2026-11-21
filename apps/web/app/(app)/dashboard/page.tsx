@@ -72,6 +72,7 @@ export default function HomePage() {
                 label={kpiLabels?.label ?? kpi.id}
                 icon={<Icon className="w-5 h-5" />}
                 subtext={kpiLabels?.subtext}
+                help={kpiLabels?.help}
               />
             );
           })}
