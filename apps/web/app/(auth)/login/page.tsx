@@ -3,12 +3,13 @@ import { getLocale } from "@sicilia-soil/core";
 import { Sprout, ShieldCheck, ArrowRight, ArrowLeft } from "lucide-react";
 import { login } from "./actions";
 import { Button } from "@sicilia-soil/ui";
+import { LoginCarousel } from "@/components/features/auth/LoginCarousel";
 
 const locale = getLocale("es");
 const authContent = locale.ui.auth;
 const navContent = locale.ui.nav;
 const formsContent = locale.forms;
-const loginQuote = locale.content.auth.quotes.login;
+const loginCarousel = locale.content.auth.carousel;
 
 export const metadata = {
   title: authContent.signIn,
@@ -144,20 +145,15 @@ export default async function LoginPage({
             <div className="absolute w-[200px] h-[200px] border border-solar rounded-full" />
           </div>
 
-          <div className="relative z-10 w-32 h-32 bg-ink border-2 border-chloro rotate-45 flex items-center justify-center">
-            <Sprout className="w-16 h-16 text-chloro -rotate-45" />
-          </div>
-
-          <div className="absolute bottom-10 left-8 right-8 text-center">
-            <div className="bg-ink/80 border border-ink/20 p-6">
-              <p className="text-paper font-serif italic text-lg leading-relaxed mb-3">
-                {loginQuote.text}
-              </p>
-              <p className="font-mono text-[10px] uppercase tracking-widest text-solar font-bold">
-                — {loginQuote.author}
-              </p>
-            </div>
-          </div>
+          <LoginCarousel
+            slides={loginCarousel.slides}
+            labels={{
+              region: loginCarousel.region,
+              goTo: loginCarousel.goTo,
+              pause: loginCarousel.pause,
+              play: loginCarousel.play,
+            }}
+          />
         </div>
       </div>
     </div>
