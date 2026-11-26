@@ -22,13 +22,13 @@ export const cropsPage = {
     interpretationTitle: "Interpretación",
     series: {
       colonisation: "Colonización AMF (%)",
-      glomalin: "Glomalina (mg/g × 10)",
+      glomalin: "Glomalina (mg/g x 10)",
       shi: "SHI (0-100)",
     },
     thresholds: {
       shiHigh: "SHI ≥ 75 · red micorrícica consolidada",
       shiLow: "SHI < 50 · red en recuperación",
-      shiMid: "SHI 50–74 · red en desarrollo",
+      shiMid: "SHI 50-74 · red en desarrollo",
     },
     thresholdsTitle: "Umbrales de referencia",
     title: "Comparador de sistemas",
@@ -46,6 +46,34 @@ export const cropsPage = {
     noData: "Sin datos para este sistema.",
     noObservations: "Sin observaciones registradas.",
     observationsTitle: "Observaciones del sistema",
+
+    presetObservations: [
+      {
+        id: "preset-barbecho-obs-north",
+        key: "north-zone",
+        level: "success",
+        meta: { source: "muestreo de campo", date: "{date}" },
+        systemId: "preset-barbecho-mediterraneo",
+        text: "Zona norte: cobertura consolidada",
+      },
+      {
+        id: "preset-barbecho-obs-south",
+        key: "south-fallow",
+        level: "warning",
+        meta: { source: "muestreo de campo", date: "{date}" },
+        systemId: "preset-barbecho-mediterraneo",
+        text: "Barbecho sur: recuperación en curso",
+      },
+      {
+        id: "preset-barbecho-obs-clover",
+        key: "clover-nitrogen",
+        level: "info",
+        meta: { source: "análisis de suelo", date: "{date}" },
+        systemId: "preset-barbecho-mediterraneo",
+        text: "Trébol: fijación de N dentro del rango esperado",
+      },
+    ],
+
     rotationLabel: "Progreso",
     rotationTitle: "Cronograma de rotación",
     saveRotation: "Guardar rotación",
