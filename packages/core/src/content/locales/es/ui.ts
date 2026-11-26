@@ -1,12 +1,5 @@
-// ============================================================================
-// SikeliaSoil - UI Translations (Spanish)
-// ----------------------------------------------------------------------------
-// Centralized strings for the user interface.
-// Sorted alphabetically by key for maintainability.
-// ============================================================================
-
+// packages/core/src/content/locales/es/ui.ts
 export const ui = {
-  // Generic actions used across the app
   actions: {
     cancel: "Cancelar",
     delete: "Eliminar",
@@ -18,13 +11,11 @@ export const ui = {
     viewFull: "Ver completo",
   },
 
-  // Global app metadata
   app: {
     name: "SikeliaSoil",
     subtitle: "Infraestructura open-source para la recuperación de suelo",
   },
 
-  // Authentication (Login, Register, Errors)
   auth: {
     errors: {
       invalidCredentials: "Email o contraseña incorrectos.",
@@ -33,6 +24,7 @@ export const ui = {
       userExists:
         "Este email ya está registrado. Por favor, ve a Iniciar Sesión.",
     },
+    goToLogin: "Ve a Iniciar Sesión",
     haveAccount: "¿Ya tienes cuenta?",
     loginLink: "Inicia sesión",
     noAccount: "¿No tienes cuenta?",
@@ -46,25 +38,38 @@ export const ui = {
       registered: "Cuenta creada con éxito. Por favor, inicia sesión.",
     },
     userExists: "Este email ya está registrado.",
-    goToLogin: "Ve a Iniciar Sesión",
   },
-  // Configuration
+
   configuration: {
-    title: "Configuración",
-    subtitle: "Ajusta las preferencias de tu huerto sintrópico",
-    tabs: {
-      general: "General",
-      alerts: "Alertas",
-      sensors: "Sensores",
-      account: "Cuenta",
+    account: {
+      changePassword: "Cambiar contraseña",
+      email: "Email",
+      infoTitle: "Información personal",
+      location: "Ubicación",
+      name: "Nombre",
+      phone: "Teléfono",
+      save: "Guardar cambios",
+      securityTitle: "Seguridad",
+    },
+    alerts: {
+      email: "Alertas por email",
+      emailDesc: "Recibir alertas en tu correo",
+      maxTemp: "Temperatura máxima (°C)",
+      minLight: "Luz mínima (%)",
+      minMoisture: "Humedad mínima (%)",
+      notificationsTitle: "Notificaciones",
+      push: "Notificaciones push",
+      pushDesc: "Recibir alertas en el navegador",
+      saveThresholds: "Guardar umbrales",
+      thresholdsTitle: "Umbrales de alerta",
     },
     general: {
       appearanceTitle: "Apariencia",
+      autoRefresh: "Auto-refresco",
+      autoRefreshDesc: "Actualizar datos automáticamente",
       darkMode: "Modo oscuro",
       darkModeDesc: "Alternar entre tema claro y oscuro",
       dataTitle: "Datos",
-      autoRefresh: "Auto-refresco",
-      autoRefreshDesc: "Actualizar datos automáticamente",
       interval: "Intervalo de refresco",
       interval15: "Cada 15 segundos",
       interval30: "Cada 30 segundos",
@@ -73,37 +78,23 @@ export const ui = {
       languageTitle: "Idioma",
       save: "Guardar cambios",
     },
-    alerts: {
-      notificationsTitle: "Notificaciones",
-      push: "Notificaciones push",
-      pushDesc: "Recibir alertas en el navegador",
-      email: "Alertas por email",
-      emailDesc: "Recibir alertas en tu correo",
-      thresholdsTitle: "Umbrales de alerta",
-      minMoisture: "Humedad mínima (%)",
-      maxTemp: "Temperatura máxima (°C)",
-      minLight: "Luz mínima (%)",
-      saveThresholds: "Guardar umbrales",
-    },
     sensors: {
-      title: "Estado de sensores",
       connected: "Conectado",
       disconnected: "Desconectado",
-      retry: "Reintentar conexión",
       noSensors: "No hay sensores conectados actualmente.",
+      retry: "Reintentar conexión",
+      title: "Estado de sensores",
     },
-    account: {
-      infoTitle: "Información personal",
-      name: "Nombre",
-      email: "Email",
-      phone: "Teléfono",
-      location: "Ubicación",
-      securityTitle: "Seguridad",
-      changePassword: "Cambiar contraseña",
-      save: "Guardar cambios",
+    subtitle: "Ajusta las preferencias de tu huerto sintrópico",
+    tabs: {
+      account: "Cuenta",
+      alerts: "Alertas",
+      general: "General",
+      sensors: "Sensores",
     },
+    title: "Configuración",
   },
-  // Copernicus Earth Observation and Satellite data
+
   copernicus: {
     badge: "Data Cube Engine",
     cloudCover: "Cobertura de Nubes",
@@ -125,7 +116,6 @@ export const ui = {
     title: "Copernicus Earth Observation",
   },
 
-  // Main Dashboard widgets and metrics
   dashboard: {
     alertsEmpty: "✓ Sin alertas urgentes",
     alertsTitle: "Alertas",
@@ -146,25 +136,6 @@ export const ui = {
     zonesTitle: "Zonas de sensores",
   },
 
-  // Esparto crop specific metrics
-  espartoSummary: {
-    density: "Densidad",
-    growthStatus: "Estado de Crecimiento",
-    harvest: "Cosecha",
-    height: "Altura",
-    moisture: "Humedad",
-    newShoots: "nuevos brotes",
-    nextHarvest: "Próxima cosecha",
-    nutrients: "Nutrientes",
-    ph: "pH",
-    plantHealth: "Salud de la Planta",
-    quality: "Calidad",
-    soilCondition: "Condición del Suelo",
-    stock: "Stock",
-    yield: "Rendimiento",
-  },
-
-  // Global footer
   footer: {
     about: "Sobre el proyecto",
     createdBy: "Proyecto creado por Carmen María Buendía Sánchez",
@@ -174,7 +145,6 @@ export const ui = {
     manifesto: "Manifiesto",
   },
 
-  // Public Landing Page
   landing: {
     badge: "Open Source Infrastructure",
     cta: {
@@ -206,7 +176,6 @@ export const ui = {
     techTitle: "Infraestructura Abierta y Descentralizada",
   },
 
-  // Mycology specific components
   mushroomCard: {
     co2: "CO₂",
     colonisation: "Colonización",
@@ -228,7 +197,6 @@ export const ui = {
     viewDetails: "Ver detalles",
   },
 
-  // Navigation Menu
   nav: {
     about: "Acerca de",
     backToHome: "Volver al inicio",
@@ -246,7 +214,6 @@ export const ui = {
     water: "Agua",
   },
 
-  // Notifications dropdown/widget
   notifications: {
     clearAll: "Limpiar todo",
     empty: "No hay notificaciones",
@@ -257,7 +224,6 @@ export const ui = {
     viewMore: "Ver más",
   },
 
-  // Dedicated Notifications Page
   notificationsPage: {
     clear: "Limpiar",
     emptyDesc:
@@ -278,7 +244,6 @@ export const ui = {
     title: "Notificaciones",
   },
 
-  // Rule Engine Recommendations
   recommendations: {
     action: "Acción recomendada",
     all: "Todos",
@@ -299,7 +264,6 @@ export const ui = {
     water: "Agua",
   },
 
-  // Soil Health Page Tabs
   soilHealthTabs: {
     bioindicators: "Bioindicadores",
     networks: "Redes",
@@ -307,7 +271,6 @@ export const ui = {
     summary: "Resumen",
   },
 
-  // Generic UI states
   states: {
     empty: "Sin datos disponibles",
     error: "Ha ocurrido un error",
@@ -315,7 +278,6 @@ export const ui = {
     offline: "Sin conexión",
   },
 
-  // Plant-Fungi Symbiosis Widget
   symbiosis: {
     badge: "Ciclo regenerativo",
     carbon: "Carbono",
@@ -337,7 +299,6 @@ export const ui = {
     updated: "Actualizado",
   },
 
-  // IoT Sensor Telemetry
   telemetry: {
     headers: {
       battery: "Batería",

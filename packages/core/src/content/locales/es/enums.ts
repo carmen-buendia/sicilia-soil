@@ -1,31 +1,32 @@
+// packages/core/src/content/locales/es/enums.ts
 export const enums = {
-  waterNeed: {
-    low: "Baja",
-    medium: "Media",
-    high: "Alta",
-  },
   alertSeverity: {
-    info: "Informativa",
-    warning: "Advertencia",
     alert: "Alerta",
     critical: "Crítica",
+    info: "Informativa",
+    warning: "Advertencia",
   },
   dataSource: {
     mock: "Mock",
-    sensor: "Sensor",
     satellite: "Satélite",
+    sensor: "Sensor",
   },
   mycorrhizalAffinity: {
     high: "Alta",
-    medium: "Media",
     low: "Baja",
+    medium: "Media",
     none: "Ninguna",
   },
+  waterNeed: {
+    high: "Alta",
+    low: "Baja",
+    medium: "Media",
+  },
   zoneStatus: {
-    optimal: "Óptimo",
-    needsWater: "Necesita riego",
     needsAttention: "Requiere atención",
+    needsWater: "Necesita riego",
     offline: "Sin conexión",
+    optimal: "Óptimo",
     unknown: "Sin datos",
   },
 } as const;

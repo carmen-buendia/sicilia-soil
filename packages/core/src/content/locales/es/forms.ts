@@ -1,8 +1,5 @@
+// packages/core/src/content/locales/es/forms.ts
 export const forms = {
-  zone: {
-    label: "Zona",
-    placeholder: "Selecciona una zona",
-  },
   crop: {
     label: "Cultivo",
     placeholder: "Selecciona un cultivo",
@@ -14,13 +11,17 @@ export const forms = {
     label: "Email",
     placeholder: "tu@email.com",
   },
-  password: {
-    label: "Contraseña",
-    placeholder: "••••••••",
-    newPlaceholder: "Crea una contraseña segura",
-  },
   name: {
     label: "Nombre completo",
     placeholder: "Tu nombre",
+  },
+  password: {
+    label: "Contraseña",
+    newPlaceholder: "Crea una contraseña segura",
+    placeholder: "••••••••",
+  },
+  zone: {
+    label: "Zona",
+    placeholder: "Selecciona una zona",
   },
 } as const;

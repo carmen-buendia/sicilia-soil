@@ -1,110 +1,110 @@
 // packages/core/src/content/locales/es/water.ts
-
 export const water = {
-  header: {
-    title: "Humedad del Suelo",
-    subtitle: "Monitoreo detallado de humedad por zona",
-    rangeLastWeek: "Última semana",
-    exportData: "Exportar datos",
-  },
-
-  stats: {
-    average: "Promedio general",
-    averageTrend: "↑ 2% vs ayer",
-    optimalZones: "Zonas óptimas",
-    ofZones: "de {count} zonas",
-    needsWater: "Necesitan riego",
-    urgentAttention: "⚠️ Atención urgente",
-    lastReading: "Última lectura",
-    activeSensors: "sensores activos",
-  },
+  atmosphericDemand: "Demanda Atmosférica (ET)",
 
   climate: {
-    temperatureLabel: "Temperatura",
-    temperatureNote: "Sensación térmica: {feelsLike}°C",
-    humidityLabel: "Humedad ambiental",
-    humidityNote: "Viento: {windKmh} km/h",
     evapotranspirationLabel: "Evapotranspiración",
     evapotranspirationNote: "Riego recomendado: {hint}L/m²",
+    humidityLabel: "Humedad ambiental",
+    humidityNote: "Viento: {windKmh} km/h",
+    temperatureLabel: "Temperatura",
+    temperatureNote: "Sensación térmica: {feelsLike}°C",
   },
-
-  // 👇 AÑADIMOS LAS CLAVES DE LA TABLA Y EFICIENCIA GLOBAL AQUÍ
-  tableTitle: "Balance Hídrico por Zona",
-  tableBadge: "Tiempo Real",
-  tableHeaders: {
-    zone: "Zona",
-    current: "Humedad Actual",
-    optimal: "Humedad Óptima",
-    balance: "Balance",
-    status: "Estado",
-  },
-  deficit: "Déficit",
-  surplus: "Superávit",
-  statusRequiresWater: "Requiere Agua",
-  statusOptimal: "Óptimo",
-
-  globalEfficiency: "Eficiencia Global",
-  reserveUsage: "Uso de la reserva",
-  reserveWarning: "Cerca del límite. Reduce el riego.",
-  reserveNormal: "Consumo dentro de los parámetros normales.",
-
-  systemStress: "Estrés Hídrico del Sistema",
-  stressCritical: "Crítico",
-  stressModerate: "Moderado",
-  stressLow: "Bajo",
-  stressDesc:
-    "{critical} de {total} zonas presentan déficit hídrico. Humedad media del sistema: {average}%.",
-
-  atmosphericDemand: "Demanda Atmosférica (ET)",
-  etHigh: "Alta demanda de evaporación. El suelo pierde humedad rápido.",
-  etModerate: "Demanda de evaporación moderada.",
-
-  zones: {
-    sectionTitle: "Monitoreo por Zona",
-    watering: "Riego",
-    wateringHoursAgo: "hace {hours}h",
-    wateringAuto: "automático",
-    trendUp: "Aumentando",
-    trendDown: "Disminuyendo",
-    trendStable: "Estable",
-    evolution24h: "Evolución últimas 24h",
-    optimal: "Óptimo",
-    current: "Actual",
-    recommendation: "Recomendación",
-    recommendationWater: "Regar {liters}L/m²",
-    recommendationKeep: "Mantener nivel actual",
-    nextWatering: "Próximo riego",
-    nextWateringNow: "Inmediato",
-    nextWateringLater: "En 6-8 horas",
-    manualWatering: "💧 Riego manual ahora",
-  },
-
-  wateringInProgress: "Regando...",
 
   control: {
-    title: "Control de Riego Inteligente",
+    advancedConfig: "⚙️ Configuración avanzada",
     autoIrrigation: "Riego automático",
-    status: "Estado",
-    statusOn: "Activado",
-    statusOff: "Desactivado",
-    nextScheduled: "Próximo riego programado",
-    nextInHours: "en {hours} horas",
+    consumptionLimit: "límite",
+    consumptionPeriod: "en las últimas {hours}h",
+    consumptionTitle: "Consumo de agua",
     duration: "Duración estimada",
     durationMinutes: "{minutes} minutos",
-    consumptionTitle: "Consumo de agua",
-    consumptionPeriod: "en las últimas {hours}h",
-    consumptionLimit: "límite",
-    quickActions: "Acciones rápidas",
-    scheduleWatering: "📅 Programar riego",
-    advancedConfig: "⚙️ Configuración avanzada",
     forecast: "Pronóstico",
     forecastTemplate:
       "Se esperan temperaturas de {temp}°C mañana. Aumentar riego en un {percent}% en zonas críticas.",
+    nextInHours: "en {hours} horas",
+    nextScheduled: "Próximo riego programado",
+    quickActions: "Acciones rápidas",
+    scheduleWatering: "📅 Programar riego",
+    status: "Estado",
+    statusOff: "Desactivado",
+    statusOn: "Activado",
+    title: "Control de Riego Inteligente",
   },
 
+  deficit: "Déficit",
+  etHigh: "Alta demanda de evaporación. El suelo pierde humedad rápido.",
+  etModerate: "Demanda de evaporación moderada.",
+
   footer: {
+    allOperational: "Todos los sensores operativos",
     realtime: "💧 Datos actualizados en tiempo real desde sensores IoT",
     syncMinutesAgo: "Última sincronización: hace {minutes} minutos",
-    allOperational: "Todos los sensores operativos",
+  },
+
+  globalEfficiency: "Eficiencia Global",
+
+  header: {
+    exportData: "Exportar datos",
+    rangeLastWeek: "Última semana",
+    subtitle: "Monitoreo detallado de humedad por zona",
+    title: "Humedad del Suelo",
+  },
+
+  reserveNormal: "Consumo dentro de los parámetros normales.",
+  reserveUsage: "Uso de la reserva",
+  reserveWarning: "Cerca del límite. Reduce el riego.",
+
+  stats: {
+    activeSensors: "sensores activos",
+    average: "Promedio general",
+    averageTrend: "↑ 2% vs ayer",
+    lastReading: "Última lectura",
+    needsWater: "Necesitan riego",
+    ofZones: "de {count} zonas",
+    optimalZones: "Zonas óptimas",
+    urgentAttention: "⚠️ Atención urgente",
+  },
+
+  statusOptimal: "Óptimo",
+  statusRequiresWater: "Requiere Agua",
+  stressCritical: "Crítico",
+  stressDesc:
+    "{critical} de {total} zonas presentan déficit hídrico. Humedad media del sistema: {average}%.",
+  stressLow: "Bajo",
+  stressModerate: "Moderado",
+  surplus: "Superávit",
+  systemStress: "Estrés Hídrico del Sistema",
+
+  tableBadge: "Tiempo Real",
+  tableHeaders: {
+    balance: "Balance",
+    current: "Humedad Actual",
+    optimal: "Humedad Óptima",
+    status: "Estado",
+    zone: "Zona",
+  },
+  tableTitle: "Balance Hídrico por Zona",
+
+  wateringInProgress: "Regando...",
+
+  zones: {
+    current: "Actual",
+    evolution24h: "Evolución últimas 24h",
+    manualWatering: "💧 Riego manual ahora",
+    nextWatering: "Próximo riego",
+    nextWateringLater: "En 6-8 horas",
+    nextWateringNow: "Inmediato",
+    optimal: "Óptimo",
+    recommendation: "Recomendación",
+    recommendationKeep: "Mantener nivel actual",
+    recommendationWater: "Regar {liters}L/m²",
+    sectionTitle: "Monitoreo por Zona",
+    trendDown: "Disminuyendo",
+    trendStable: "Estable",
+    trendUp: "Aumentando",
+    watering: "Riego",
+    wateringAuto: "automático",
+    wateringHoursAgo: "hace {hours}h",
   },
 } as const;

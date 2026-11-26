@@ -8,7 +8,6 @@
     Evaluar subir a 6.x cuando haya tiempo para probar los gráficos.
   - `esbuild@0.18.20`: dev-only vía drizzle-kit. Riesgo bajo.
 - [ ] Migrar a React 19 antes de actualizar a Next.js 17.
-      echarts-for-react (verificar), @types/react (actualizar).
 - [ ] Eliminar types legacy huérfanos:
   - `packages/core/src/types/farm.types.ts` → `FarmConfig` (deprecated, usar `Farm` de spatial.types)
   - `packages/core/src/types/monitoring.types.ts` → `ZoneConfig` (legacy site.config)

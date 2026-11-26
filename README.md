@@ -73,6 +73,79 @@ cd sicilia-soil
 pnpm install
 ```
 
+### Environment Variables
+
+The app connects to a **local-first** libSQL/SQLite database and signs auth sessions with a secret. During development we use **Turso Cloud as a temporary convenience**, but SikeliaSoil is designed to be **offline-first**: once the app is finalized it will **not depend on any cloud service**. See "Database Strategy" below.
+
+- **Turso is a development shortcut, not a commitment.**
+- The final target is a **local `libSQL`/`sqld` instance** (or an embedded replica) running on the edge device itself, with **no network dependency**.
+- Switching from Turso to a local database requires **only an env variable change** — no code changes.
+
+#### 1. Create the file
+
+Next.js only reads environment files from the app directory (`apps/web/`), **not from the monorepo root** and **not from `packages/db/`**.
+
+```bash
+cp apps/web/.env.example apps/web/.env.local
+```
+
+#### 2. Fill in the values
+
+Two supported modes — pick one. **Both require `AUTH_SECRET`.**
+
+**A. Offline / local-first (final target, recommended for real use):**
+
+```env
+# apps/web/.env.local
+TURSO_DATABASE_URL=file:./local.db
+TURSO_AUTH_TOKEN=
+AUTH_SECRET=<random-32-byte-string>
+```
+
+**B. Turso Cloud (temporary, for fast iteration during early development):**
+
+```env
+# apps/web/.env.local
+TURSO_DATABASE_URL=libsql://your-database.turso.io
+TURSO_AUTH_TOKEN=your-turso-auth-token
+AUTH_SECRET=<random-32-byte-string>
+```
+
+Generate `AUTH_SECRET` with:
+
+```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
+
+> **Turso is temporary.** It exists only to make iteration faster while the schema and Server Actions are still changing. The finalized app must run offline. Do not build features that assume Turso Cloud is present.
+
+#### 3. Variable reference
+
+| Variable             | Required | Owner         | Description                                                                                                       |
+| :------------------- | :------: | :------------ | :---------------------------------------------------------------------------------------------------------------- |
+| `TURSO_DATABASE_URL` |   Yes    | `packages/db` | libSQL connection URL. `file:./local.db` for offline/local, `libsql://…` for Turso Cloud or a self-hosted `sqld`. |
+| `TURSO_AUTH_TOKEN`   |    !     | `packages/db` | Auth token **only for Turso Cloud**. Leave empty for `file:` URLs and open `sqld`.                                |
+| `AUTH_SECRET`        |   Yes    | `apps/web`    | Secret used to sign auth sessions (login). Any long random string (≥ 32 bytes).                                   |
+
+#### 4. Where to get Turso credentials (temporary mode only)
+
+Skip if using mode **A** (`file:./local.db`).
+
+- `curl -sSfL https://get.tur.so/install.sh | bash`
+- `turso auth login`
+- `turso db create sicilia-soil`
+- `turso db show sicilia-soil --url` → `TURSO_DATABASE_URL`
+- `turso db tokens create sicilia-soil` → `TURSO_AUTH_TOKEN`
+
+#### 5. Important notes
+
+- `apps/web/.env.local` is **git-ignored** and must **never be committed**.
+- Do **not** place the file in the monorepo root — Next.js will not load it.
+- Do **not** place it in `packages/db/` — `packages/db` receives the variables through `apps/web` at runtime.
+- After creating or editing `.env.local`, **restart `pnpm dev`**. Next.js does not hot-reload environment variables reliably.
+- Server-only variables (like these) must **not** be prefixed with `NEXT_PUBLIC_`.
+- **Turso-specific features must not leak into the codebase.** The migration path to a fully local database must remain a one-line env change.
+
 ### Development
 
 To start the Next.js application:
@@ -118,6 +191,22 @@ Right now, we use **Turso Cloud** because it makes iteration easy. But Turso is 
 2. **Self-hosting is easy**: If we want, we can move the database to a local `sqld` instance on a VPS without changing a single line of application code.
 3. **Offline-first**: libSQL supports embedded replicas, which is exactly what we need to run the app on edge devices in areas with poor connectivity.
 
+> **Turso is temporary — the app is offline-first.**
+>
+> We use **Turso Cloud** during early development purely because it makes iteration fast while the schema is still moving. It is **not** a long-term dependency and it is **not** how the finalized app will run.
+>
+> The final deployment target is a **local `libSQL` / `sqld` instance (or an embedded replica)** running on the device itself, with **zero cloud dependency**. Because Turso is built on `libSQL` (an open-source SQLite fork), the application code is already portable and switching between the two requires only an environment variable change:
+>
+> | Mode                         | `TURSO_DATABASE_URL`           | `TURSO_AUTH_TOKEN` |
+> | :--------------------------- | :----------------------------- | :----------------- |
+> | Local file (offline, target) | `file:./local.db`              | _(empty)_          |
+> | Self-hosted `sqld` (target)  | `libsql://your-sqld-host:8080` | _(empty / custom)_ |
+> | Turso Cloud (temporary, dev) | `libsql://your-db.turso.io`    | `<token>`          |
+>
+> **Rule of thumb for contributors:** if a change only works because Turso Cloud is reachable, it is wrong. The app must keep working offline.
+>
+> See [Environment Variables](#environment-variables) for the setup.
+
 ---
 
 ## License
@@ -132,7 +221,3 @@ Apache License 2.0 — see [LICENSE](./LICENSE).
 Founder & Lead Developer  
 [carmenbuendiafullstack@gmail.com](mailto:carmenbuendiafullstack@gmail.com)  
 [GitHub Profile](https://github.com/carmen-buendia)
-
-```
-
-```
