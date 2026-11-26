@@ -3,9 +3,10 @@
 
 import { ArrowLeftRight, Info } from "lucide-react";
 import type { SymbiosisResult } from "@sicilia-soil/core";
-import { SoilChart, SOIL_COLORS } from "@/components/features/shared";
 import { getLocale } from "@sicilia-soil/core";
 import { DataCard } from "@sicilia-soil/ui";
+
+import { SoilChart, SOIL_COLORS } from "@/components/features/shared/SoilChart";
 
 const locale = getLocale("es");
 const symbiosisContent = locale.ui.symbiosis;
