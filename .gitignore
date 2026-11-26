@@ -65,3 +65,11 @@ licenses.json
 
 # Local SQLite database
 **/data/*.db
+
+# Security & Certificates
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+secrets/

@@ -1,25 +1,26 @@
-import { ui } from "./ui";
-import { forms } from "./forms";
-import { enums } from "./enums";
+// packages/core/src/content/locales/es/index.ts
+import { content } from "./content";
 import { crops } from "./crops";
-import { zones } from "./zones";
+import { engine } from "./engine";
+import { enums } from "./enums";
+import { forms } from "./forms";
+import { glossary } from "./glossary";
 import { kpis } from "./kpis";
 import { systemStatus } from "./system-status";
+import { ui } from "./ui";
 import { water } from "./water";
-import { content } from "./content";
-import { glossary } from "./glossary";
-import { engine } from "./engine";
+import { zones } from "./zones";
 
 export const es = {
-  ui,
-  forms,
-  enums,
+  content,
   crops,
-  zones,
+  engine,
+  enums,
+  forms,
+  glossary,
   kpis,
   systemStatus,
+  ui,
   water,
-  content,
-  glossary,
-  engine,
+  zones,
 } as const;

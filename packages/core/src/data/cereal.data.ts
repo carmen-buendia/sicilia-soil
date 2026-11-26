@@ -1,7 +1,5 @@
-// ============================================================================
 // MOCK DATA — Cereal test plot
 // Reemplazar por hook useCerealData() cuando IoT/Data Cube estén listos
-// ============================================================================
 
 export type CerealKpi = {
   label: string;

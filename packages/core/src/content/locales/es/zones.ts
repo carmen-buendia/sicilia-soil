@@ -1,3 +1,4 @@
+// packages/core/src/content/locales/es/zones.ts
 export const zones = {
   "zone-01": "Zona 1",
   "zone-02": "Zona 2",

@@ -1,90 +1,89 @@
 // packages/core/src/content/locales/es/engine.ts
-
 export const engine = {
-  header: {
-    title: "Motor de decisión",
-    subtitle: "Reglas deterministas · Trazabilidad auditable",
-    recalculate: "Recalcular",
+  card: {
+    actionLabel: "Acción recomendada",
+    markAsDone: "Marcar como hecho →",
+    priorityLabels: {
+      high: "Alta",
+      info: "Info",
+      low: "Baja",
+      medium: "Media",
+      urgent: "Urgente",
+    },
+    sourcePrefix: "Fuente:",
+    topicLabels: {
+      general: "General",
+      soil: "Suelo",
+      water: "Agua",
+    },
   },
 
-  infoBox: {
-    title: "🧠 Motor de reglas determinista",
-    description:
-      "El motor evalúa los datos de sensores IoT y Copernicus contra un conjunto de reglas agronómicas auditables. Cada recomendación muestra la regla que la disparó, su peso y la fuente del dato.",
+  diagnostics: {
+    engineVersion: "Rule Engine v1.0",
+    metrics: {
+      glomalin: {
+        descSuccess:
+          "Los niveles de estructura del suelo se mantienen estables.",
+        label: "Glomalina",
+        threshold: "> 1.5 mg/g",
+      },
+      mycorrhiza: {
+        descWarning:
+          "Actividad fúngica por debajo del umbral de referencia en la parcela.",
+        label: "Colonización micorrícica",
+        threshold: "> 40%",
+      },
+      ndvi: {
+        descSuccess:
+          "Curva ascendente. Crecimiento vegetativo normal para la semana 6 de desarrollo.",
+        label: "Índice NDVI (Vigor)",
+        threshold: "> 0.60",
+      },
+      soilMoisture: {
+        descWarning:
+          "El sensor in-situ detecta un nivel inferior al rango óptimo para la etapa actual.",
+        label: "Humedad del suelo",
+        threshold: "65% - 80%",
+      },
+    },
+    statusSuccess: "Óptimo",
+    statusWarning: "Alerta",
+    subtitle:
+      "Observaciones deterministas basadas en la fusión de datos IoT y Copernicus. No se utilizan cajas negras de IA.",
+    title: "Diagnóstico del Motor de Reglas",
   },
+
+  empty: "No hay recomendaciones que coincidan con los filtros seleccionados.",
 
   filters: {
-    topicLabel: "Tema:",
+    priorities: {
+      all: "Todas",
+      high: "Alta",
+      info: "Info",
+      low: "Baja",
+      medium: "Media",
+      urgent: "Urgente",
+    },
     priorityLabel: "Prioridad:",
     topics: {
       all: "Todos",
       soil: "Suelo",
       water: "Agua",
     },
-    priorities: {
-      all: "Todas",
-      urgent: "Urgente",
-      high: "Alta",
-      medium: "Media",
-      low: "Baja",
-      info: "Info",
-    },
+    topicLabel: "Tema:",
     urgentCount: "{count} urgente",
     urgentCountPlural: "{count} urgentes",
   },
 
-  card: {
-    actionLabel: "Acción recomendada",
-    sourcePrefix: "Fuente:",
-    markAsDone: "Marcar como hecho →",
-    priorityLabels: {
-      urgent: "Urgente",
-      high: "Alta",
-      medium: "Media",
-      low: "Baja",
-      info: "Info",
-    },
-    topicLabels: {
-      soil: "Suelo",
-      water: "Agua",
-      general: "General",
-    },
+  header: {
+    recalculate: "Recalcular",
+    subtitle: "Reglas deterministas · Trazabilidad auditable",
+    title: "Motor de decisión",
   },
 
-  empty: "No hay recomendaciones que coincidan con los filtros seleccionados.",
-
-  diagnostics: {
-    title: "Diagnóstico del Motor de Reglas",
-    subtitle:
-      "Observaciones deterministas basadas en la fusión de datos IoT y Copernicus. No se utilizan cajas negras de IA.",
-    engineVersion: "Rule Engine v1.0",
-    statusWarning: "Alerta",
-    statusSuccess: "Óptimo",
-    metrics: {
-      soilMoisture: {
-        label: "Humedad del suelo",
-        threshold: "65% - 80%",
-        descWarning:
-          "El sensor in-situ detecta un nivel inferior al rango óptimo para la etapa actual.",
-      },
-      ndvi: {
-        label: "Índice NDVI (Vigor)",
-        threshold: "> 0.60",
-        descSuccess:
-          "Curva ascendente. Crecimiento vegetativo normal para la semana 6 de desarrollo.",
-      },
-      mycorrhiza: {
-        label: "Colonización micorrícica",
-        threshold: "> 40%",
-        descWarning:
-          "Actividad fúngica por debajo del umbral de referencia en la parcela.",
-      },
-      glomalin: {
-        label: "Glomalina",
-        threshold: "> 1.5 mg/g",
-        descSuccess:
-          "Los niveles de estructura del suelo se mantienen estables.",
-      },
-    },
+  infoBox: {
+    description:
+      "El motor evalúa los datos de sensores IoT y Copernicus contra un conjunto de reglas agronómicas auditables. Cada recomendación muestra la regla que la disparó, su peso y la fuente del dato.",
+    title: "🧠 Motor de reglas determinista",
   },
 } as const;
