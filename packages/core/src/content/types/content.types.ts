@@ -6,15 +6,11 @@
  * from and avoids collisions across domains.
  */
 
-// ----------------------------------------------------------------------------
 // Re-exports from canonical types
-// ----------------------------------------------------------------------------
 
 export type { AlertSeverity } from "../../types/alerts.types";
 
-// ----------------------------------------------------------------------------
 // Enums specific to content module
-// ----------------------------------------------------------------------------
 
 export type WaterNeed = "low" | "medium" | "high";
 
@@ -38,9 +34,7 @@ export type ZoneStatusKey =
   | "offline"
   | "unknown";
 
-// ----------------------------------------------------------------------------
 // Domain shapes
-// ----------------------------------------------------------------------------
 
 export interface CropDefinition {
   id: string; // "crop-tomato"
